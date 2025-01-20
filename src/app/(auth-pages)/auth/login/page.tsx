@@ -2,15 +2,27 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 
 import CustomButton from "~/components/common/common-button/common-button";
 import { FormField } from "~/components/common/FormFields";
 import { Logo } from "~/components/common/logo";
+import { withDependency } from "~/HOC/withDependencies";
 import { LoginFormData, loginSchema } from "~/schemas";
+import type { AuthService } from "~/services/auth.service";
+import { dependencies } from "~/utils/dependencies";
 
-const LoginPage = () => {
+interface LoginPageProperties {
+  authService: AuthService;
+}
+
+const BaseLoginPage = ({ authService }: LoginPageProperties) => {
+  const [isPending, startTransition] = useTransition();
+  const [isGooglePending, startGoogleTransition] = useTransition();
+  const router = useRouter();
   const methods = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -20,8 +32,15 @@ const LoginPage = () => {
   });
 
   const handleSubmit = async (data: LoginFormData) => {
-    // TODO: Implement login logic
-    console.log(data);
+    startTransition(async () => {
+      await authService.login(data, router);
+    });
+  };
+
+  const handleGoogleSignIn = () => {
+    startGoogleTransition(async () => {
+      await authService.googleSignIn();
+    });
   };
 
   return (
@@ -41,6 +60,12 @@ const LoginPage = () => {
             onSubmit={methods.handleSubmit(handleSubmit)}
             className="space-y-4"
           >
+            {methods.formState.errors.root && (
+              <p className="text-sm text-red-500">
+                {methods.formState.errors.root.message}
+              </p>
+            )}
+
             <FormField
               label="Email"
               name="email"
@@ -55,6 +80,7 @@ const LoginPage = () => {
                 label="Password"
                 name="password"
                 type="password"
+                placeholder="********"
                 className={`h-12 w-full bg-low-grey-III`}
                 required
               />
@@ -74,6 +100,8 @@ const LoginPage = () => {
                 variant={`primary`}
                 type="submit"
                 className="w-full"
+                isDisabled={isPending}
+                isLoading={isPending}
               >
                 Sign in
               </CustomButton>
@@ -99,9 +127,9 @@ const LoginPage = () => {
           variant="outline"
           className="w-full"
           size={`xl`}
-          onClick={() => {
-            // TODO: Implement Google sign-in
-          }}
+          isDisabled={isGooglePending}
+          isLoading={isGooglePending}
+          onClick={handleGoogleSignIn}
         >
           Continue with Google
         </CustomButton>
@@ -116,5 +144,9 @@ const LoginPage = () => {
     </div>
   );
 };
+
+const LoginPage = withDependency(BaseLoginPage, {
+  authService: dependencies.AUTH_SERVICE,
+});
 
 export default LoginPage;

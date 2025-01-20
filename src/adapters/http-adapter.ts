@@ -1,43 +1,67 @@
 import http from "~/config/httpConfig";
 import tryCatchWrapper from "~/utils/tryCatchFunction";
 
-// import tryCatchWrapper from "~/utils/tryCatchFunction";
+interface HttpResponse<T> {
+  data: T;
+  status: number;
+}
 
 type QueryParameters = Record<string, string | number | boolean>;
 
 export class HttpAdapter {
   private buildQueryString(query: QueryParameters): string {
+    if (Object.keys(query).length === 0) return "";
+
     return Object.entries(query)
       .map(
         ([key, value]) =>
-          `${encodeURIComponent(key)}=${encodeURIComponent(value)}`,
+          `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`,
       )
       .join("&");
   }
 
-  async get<T>(endpoint: string, query: QueryParameters = {}): Promise<T> {
+  private async handleRequest<T>(
+    requestFunction: () => Promise<{ data: T; status: number }>,
+  ): Promise<HttpResponse<T> | undefined> {
+    const result = await tryCatchWrapper(async () => {
+      const response = await requestFunction();
+      return {
+        data: response.data,
+        status: response.status,
+      };
+    });
+
+    return result;
+  }
+
+  async get<T>(
+    endpoint: string,
+    query: QueryParameters = {},
+  ): Promise<HttpResponse<T> | undefined> {
     const queryString = this.buildQueryString(query);
     const url = queryString ? `${endpoint}?${queryString}` : endpoint;
-    const response = await http.get(url);
-    return response.data;
+
+    return this.handleRequest<T>(() => http.get(url));
   }
 
-  async post<T>(url: string, data: T) {
-    return tryCatchWrapper(async () => {
-      const response = await http.post(url, data);
-      return { ...response.data, status: response.status };
-    });
+  async post<T>(
+    url: string,
+    data: unknown,
+  ): Promise<HttpResponse<T> | undefined> {
+    return this.handleRequest<T>(() => http.post(url, data));
   }
 
-  async patch<T>(url: string, data: T) {
-    const response = await http.patch(url, data);
-    return response.data;
+  async patch<T>(
+    url: string,
+    data: unknown,
+  ): Promise<HttpResponse<T> | undefined> {
+    return this.handleRequest<T>(() => http.patch(url, data));
   }
 
-  async delete<T>(url: string, data?: T) {
-    const response = await http.delete(url, {
-      data, // Axios supports sending a request body with DELETE.
-    });
-    return response.data;
+  async delete<T>(
+    url: string,
+    data?: unknown,
+  ): Promise<HttpResponse<T> | undefined> {
+    return this.handleRequest<T>(() => http.delete(url, { data }));
   }
 }

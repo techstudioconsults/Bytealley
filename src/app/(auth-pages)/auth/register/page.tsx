@@ -3,32 +3,47 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 
 import CustomButton from "~/components/common/common-button/common-button";
 import { FormField } from "~/components/common/FormFields";
 import { Logo } from "~/components/common/logo";
+import { withDependency } from "~/HOC/withDependencies";
 import { RegisterFormData, registerSchema } from "~/schemas";
+import type { AuthService } from "~/services/auth.service";
+import { dependencies } from "~/utils/dependencies";
 
-const Register = () => {
+interface RegisterPageProperties {
+  authService: AuthService;
+}
+
+const BaseRegisterPage = ({ authService }: RegisterPageProperties) => {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+  const [isGooglePending, startGoogleTransition] = useTransition();
+
   const methods = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
+    defaultValues: {
+      full_name: "",
+      email: "",
+      password: "",
+      password_confirmation: "",
+    },
   });
 
-  const {
-    handleSubmit,
-    formState: { isSubmitting },
-  } = methods;
+  const handleSubmit = async (data: RegisterFormData) => {
+    startTransition(async () => {
+      await authService.register(data, router);
+    });
+  };
 
-  const onSubmit = async (data: RegisterFormData) => {
-    try {
-      // TODO: Implement registration logic here
-      console.log(data);
-    } catch (error) {
-      console.error(error);
-    }
+  const handleGoogleSignIn = () => {
+    startGoogleTransition(async () => {
+      await authService.googleSignIn();
+    });
   };
 
   return (
@@ -44,21 +59,18 @@ const Register = () => {
 
         <FormProvider {...methods}>
           <form
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={methods.handleSubmit(handleSubmit)}
             className="mt-[56px] space-y-4"
           >
-            <FormField
-              label="First Name"
-              name="firstName"
-              type="text"
-              placeholder="Enter full name"
-              className={`h-12 bg-low-grey-III`}
-              required
-            />
+            {methods.formState.errors.root && (
+              <p className="text-sm text-red-500">
+                {methods.formState.errors.root.message}
+              </p>
+            )}
 
             <FormField
-              label="Last Name"
-              name="lastName"
+              label="Full Name"
+              name="full_name"
               type="text"
               placeholder="Enter full name"
               className={`h-12 bg-low-grey-III`}
@@ -85,7 +97,7 @@ const Register = () => {
 
             <FormField
               label="Confirm Password"
-              name="confirmPassword"
+              name="password_confirmation"
               type="password"
               placeholder="Re-enter Password"
               className={`h-12 bg-low-grey-III`}
@@ -112,8 +124,8 @@ const Register = () => {
               <CustomButton
                 type="submit"
                 variant="primary"
-                isDisabled={isSubmitting}
-                isLoading={isSubmitting}
+                isDisabled={isPending}
+                isLoading={isPending}
                 className="w-full"
                 size="xl"
               >
@@ -140,9 +152,9 @@ const Register = () => {
             size="xl"
             variant="outline"
             className="w-full"
-            onClick={() => {
-              /* TODO: Implement Google sign in */
-            }}
+            isDisabled={isGooglePending}
+            isLoading={isGooglePending}
+            onClick={handleGoogleSignIn}
           >
             Continue with Google
           </CustomButton>
@@ -159,4 +171,8 @@ const Register = () => {
   );
 };
 
-export default Register;
+const RegisterPage = withDependency(BaseRegisterPage, {
+  authService: dependencies.AUTH_SERVICE,
+});
+
+export default RegisterPage;

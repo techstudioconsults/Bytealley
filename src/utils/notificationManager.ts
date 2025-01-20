@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-import { ExtendedToastProps } from "~/types";
 
 export class Toast {
   private static instance: Toast;

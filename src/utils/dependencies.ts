@@ -1,4 +1,3 @@
-import { IDependencyContainer } from "~/types/interfaces";
 import { HttpAdapter } from "../adapters/http-adapter";
 import { AuthService } from "../services/auth.service";
 
@@ -40,6 +39,7 @@ class DependencyContainer implements IDependencyContainer {
 
 // Initialize container and dependencies
 const container = DependencyContainer.getInstance();
+
 const httpAdapter = new HttpAdapter();
 const authService = new AuthService(httpAdapter);
 

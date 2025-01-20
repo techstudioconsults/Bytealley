@@ -1,7 +1,8 @@
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 import { HttpAdapter } from "~/adapters/http-adapter";
-import { deleteSession, encrypt, setCookie } from "~/lib/session/session";
+import { createSession, deleteSession } from "~/lib/session/session";
+import { RegisterFormData } from "~/schemas";
 import { Toast } from "~/utils/notificationManager";
 
 export class AuthService {
@@ -11,28 +12,43 @@ export class AuthService {
     this.http = httpAdapter;
   }
 
-  async register() {}
+  async register(data: RegisterFormData, router: AppRouterInstance) {
+    const response = await this.http.post(`/auth/register`, data);
+
+    if (response?.status === 201) {
+      Toast.getInstance().showToast({
+        title: "Registration Successful",
+        description:
+          "Your account has been created successfully. Please login.",
+        variant: "success",
+      });
+      router.push("/auth/login");
+    }
+  }
 
   async login(data: object, router: AppRouterInstance) {
-    const response = await this.http.post(`/auth/login`, data);
+    const response = await this.http.post<ILoginResponse>(`/auth/login`, data);
+
     if (response?.status === 200) {
       const user = {
-        name: response.user.name,
-        userName: response.user.username,
-        email: response.user.email,
-        role: response.user.role,
-        token: response.token,
+        id: response.data.user.id,
+        email: response.data.user.email,
+        name: response.data.user.name,
+        role: response.data.user.role,
+        token: response.data.token,
       };
-      const expires = new Date(Date.now() + 60 * 60 * 1000);
-      const session = await encrypt({ user, expires });
 
-      await setCookie(session, { expires, httpOnly: true });
+      await createSession({
+        user,
+        expires: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
+      });
+
       Toast.getInstance().showToast({
         title: `Success`,
-        description: `Welcome Back ${response.user.name}!`,
+        description: `Welcome, ${response.data.user.name}!`,
         variant: `success`,
       });
-      router.push("/admin/home");
+      router.push(`/dashboard/${response.data.user.id}/home`);
     }
   }
 
@@ -45,6 +61,48 @@ export class AuthService {
       variant: "warning",
     });
 
-    router.push("/admin/login"); // Redirect to login
+    router.push("/auth/login"); // Redirect to login
+  }
+
+  async googleSignIn() {
+    const response = await this.http.get<{ redirect_url: string }>(
+      "/auth/oauth/redirect?provider=google",
+    );
+
+    if (response?.status === 200 && response.data.redirect_url) {
+      window.location.href = response.data.redirect_url;
+    }
+  }
+
+  async handleGoogleCallback(
+    credentials: { code: string; provider: string },
+    router: AppRouterInstance,
+  ) {
+    const response = await this.http.post<ILoginResponse>(
+      "/auth/oauth/callback",
+      credentials,
+    );
+
+    if (response?.status === 200) {
+      const user = {
+        id: response.data.user.id,
+        email: response.data.user.email,
+        name: response.data.user.name,
+        role: response.data.user.role,
+        token: response.data.token,
+      };
+
+      await createSession({
+        user,
+        expires: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
+      });
+
+      Toast.getInstance().showToast({
+        title: `Success`,
+        description: `Welcome, ${response.data.user.name}!`,
+        variant: `success`,
+      });
+      router.push(`/dashboard/${response.data.user.id}/home`);
+    }
   }
 }

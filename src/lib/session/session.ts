@@ -3,11 +3,19 @@
 import { jwtVerify, SignJWT } from "jose";
 import { cookies } from "next/headers";
 
-import { ICookieMetadata, ISessionData } from "~/types/interfaces";
+// Get secret key from environment variable or use a default for development
+const secretKey =
+  process.env.NEXTAUTH_SECRET ||
+  (process.env.NODE_ENV === "development"
+    ? "3489y34r304u93p98rhfweuirf834ry032e29ry348ry783eg32r784rg834r8y348ry2309e20"
+    : undefined);
 
-// import { NextRequest, NextResponse } from "next/server";
+if (!secretKey) {
+  throw new Error(
+    "NEXTAUTH_SECRET environment variable is required in production",
+  );
+}
 
-const secretKey = process.env.NEXTAUTH_SECRET;
 const key = new TextEncoder().encode(secretKey);
 
 export async function encrypt(payload: ISessionData): Promise<string> {
@@ -22,6 +30,12 @@ export async function decrypt(input: string): Promise<ISessionData> {
   const { payload } = await jwtVerify(input, key, {
     algorithms: ["HS256"],
   });
+
+  // Validate the payload has the required properties
+  if (!payload.user || !payload.expires) {
+    throw new Error("Invalid session data");
+  }
+
   return payload as ISessionData;
 }
 

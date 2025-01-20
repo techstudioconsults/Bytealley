@@ -1,15 +1,15 @@
 /* eslint-disable react/display-name */
 
-import { ComponentProps } from "react";
-
-import { DependencyInjector, ResolveDependencies } from "~/types";
 import { container } from "~/utils/dependencies";
 
-export const withDependency: DependencyInjector = (Component, dependencies) => {
-  const resolvedDependencies: ResolveDependencies = {};
+export const withDependency = <T extends object>(
+  Component: React.ComponentType<T>,
+  dependencies: Record<string, symbol>,
+) => {
+  const resolvedDependencies = {};
 
   for (const property of Object.keys(dependencies)) {
-    const dependencyKey: symbol = Object.getOwnPropertyDescriptor(
+    const dependencyKey = Object.getOwnPropertyDescriptor(
       dependencies,
       property,
     )?.value;
@@ -24,7 +24,7 @@ export const withDependency: DependencyInjector = (Component, dependencies) => {
     }
   }
 
-  return (properties: ComponentProps<typeof Component>) => (
+  return (properties: Omit<T, keyof typeof resolvedDependencies>) => (
     <Component {...properties} {...resolvedDependencies} />
   );
 };

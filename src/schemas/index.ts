@@ -2,15 +2,14 @@ import * as z from "zod";
 
 export const registerSchema = z
   .object({
-    firstName: z.string().min(2, "First name must be at least 2 characters"),
-    lastName: z.string().min(2, "Last name must be at least 2 characters"),
+    full_name: z.string().min(2, "Full name must be at least 2 characters"),
     email: z.string().email("Please enter a valid email"),
     password: z.string().min(8, "Password must be at least 8 characters"),
-    confirmPassword: z.string(),
+    password_confirmation: z.string(),
   })
-  .refine((data) => data.password === data.confirmPassword, {
+  .refine((data) => data.password === data.password_confirmation, {
     message: "Passwords don't match",
-    path: ["confirmPassword"],
+    path: ["password_confirmation"],
   });
 
 export const loginSchema = z.object({
@@ -33,7 +32,7 @@ export const resetPasswordSchema = z.object({
     .string()
     .min(1, "Password is required")
     .min(8, "Password must be at least 8 characters"),
-  confirmPassword: z.string().min(1, "Confirm password is required"),
+  password_confirmation: z.string().min(1, "Confirm password is required"),
 });
 
 export type RegisterFormData = z.infer<typeof registerSchema>;
