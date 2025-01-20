@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --port=4200",
     "build": "next build",
     "start": "next start",
     "shad:add": "pnpm dlx shadcn@latest add",
