@@ -20,7 +20,7 @@ type Variant =
   | "secondary"
   | "ghost"
   | "link";
-type Size = "default" | "sm" | "lg" | "link" | "icon" | "circle";
+type Size = "default" | "sm" | "lg" | "xl" | "link" | "icon" | "circle";
 
 interface ButtonProperties {
   type?: "submit" | "button" | "reset";

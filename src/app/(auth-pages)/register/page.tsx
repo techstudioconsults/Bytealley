@@ -1,10 +1,10 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
+import { FcGoogle } from "react-icons/fc";
 
 import CustomButton from "~/components/common/common-button/common-button";
 import { FormField } from "~/components/common/FormFields";
@@ -32,10 +32,10 @@ const Register = () => {
   };
 
   return (
-    <div className="mx-auto w-full max-w-md space-y-8 p-6">
-      <div className="flex flex-col items-center space-y-2">
+    <div className="mx-auto w-full max-w-[547px] bg-white p-12">
+      <div className="mb-[56px] flex flex-col items-center space-y-4">
         <Logo />
-        <h1 className="text-center text-2xl font-semibold">
+        <h1 className="text-2xl font-bold text-high-grey-III">
           Welcome to Productize - Where Creativity Meets Opportunity!
         </h1>
       </div>
@@ -47,6 +47,7 @@ const Register = () => {
             name="firstName"
             type="text"
             placeholder="Enter full name"
+            className={`h-12 bg-low-grey-III`}
             required
           />
 
@@ -55,6 +56,7 @@ const Register = () => {
             name="lastName"
             type="text"
             placeholder="Enter full name"
+            className={`h-12 bg-low-grey-III`}
             required
           />
 
@@ -63,6 +65,7 @@ const Register = () => {
             name="email"
             type="email"
             placeholder="Enter email"
+            className={`h-12 bg-low-grey-III`}
             required
           />
 
@@ -71,6 +74,7 @@ const Register = () => {
             name="password"
             type="password"
             placeholder="Enter Password"
+            className={`h-12 bg-low-grey-III`}
             required
           />
 
@@ -79,59 +83,71 @@ const Register = () => {
             name="confirmPassword"
             type="password"
             placeholder="Re-enter Password"
+            className={`h-12 bg-low-grey-III`}
             required
           />
 
-          <div className="text-center text-sm">
-            <p>
-              You agree to our{" "}
-              <Link href="/terms" className="text-purple-600 hover:underline">
-                Terms Of Use
-              </Link>{" "}
-              and{" "}
-              <Link href="/privacy" className="text-purple-600 hover:underline">
-                Privacy Policy
-              </Link>
-            </p>
-          </div>
+          <section className={`pt-[56px]`}>
+            <div className="mb-4 text-center text-sm">
+              <p>
+                You agree to our{" "}
+                <Link href="/terms" className="text-mid-purple hover:underline">
+                  Terms Of Use
+                </Link>{" "}
+                and{" "}
+                <Link
+                  href="/privacy"
+                  className="text-mid-purple hover:underline"
+                >
+                  Privacy Policy
+                </Link>
+              </p>
+            </div>
 
-          <CustomButton
-            type="submit"
-            variant="default"
-            isDisabled={isSubmitting}
-            isLoading={isSubmitting}
-            className="w-full"
-          >
-            Create Account
-          </CustomButton>
+            <CustomButton
+              type="submit"
+              variant="primary"
+              isDisabled={isSubmitting}
+              isLoading={isSubmitting}
+              className="w-full"
+              size={`xl`}
+            >
+              Create Account
+            </CustomButton>
+          </section>
+        </form>
 
+        <div>
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-gray-300"></div>
             </div>
-            <div className="relative flex justify-center text-sm">
+            <div className="relative my-6 flex justify-center text-sm">
               <span className="bg-white px-2 text-gray-500">Or</span>
             </div>
           </div>
 
           <CustomButton
+            type="button"
+            isLeftIconVisible
+            icon={<FcGoogle />}
+            size="xl"
             variant="outline"
             className="flex w-full items-center justify-center space-x-2"
             onClick={() => {
               /* TODO: Implement Google sign in */
             }}
           >
-            <Image src="/google-icon.svg" alt="Google" width={20} height={20} />
-            <span>Continue with Google</span>
+            Continue with Google
           </CustomButton>
 
-          <p className="text-center text-sm">
+          <p className="mt-6 text-center text-sm">
             Have an account already?{" "}
-            <Link href="/login" className="text-purple-600 hover:underline">
+            <Link href="/login" className="text-mid-purple hover:underline">
               Sign In
             </Link>
           </p>
-        </form>
+        </div>
       </FormProvider>
     </div>
   );
