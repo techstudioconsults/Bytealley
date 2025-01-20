@@ -1,32 +1,50 @@
-import { IDependencyContainer } from "~/types";
+import { IDependencyContainer } from "~/types/interfaces";
 import { HttpAdapter } from "../adapters/http-adapter";
 import { AuthService } from "../services/auth.service";
 
-const dependencies = {
+// Dependency keys
+export const dependencies = {
   HTTP_ADAPTER: Symbol("httpAdapter"),
-  AUTH_SERVICE: Symbol("AuthService"),
-};
-
-const httpAdapter = new HttpAdapter();
-const authService = new AuthService(httpAdapter);
+  AUTH_SERVICE: Symbol("authService"),
+} as const;
 
 class DependencyContainer implements IDependencyContainer {
-  _dependencies = {};
+  private static instance: DependencyContainer;
+  private readonly dependencies = new Map<symbol, unknown>();
+  _dependencies: { [key: symbol]: object } = {};
 
-  add<T>(key: symbol, dependency: T) {
-    Object.defineProperty(this._dependencies, key, {
-      value: dependency,
-    });
+  private constructor() {}
+
+  static getInstance(): DependencyContainer {
+    if (!this.instance) {
+      this.instance = new DependencyContainer();
+    }
+    return this.instance;
+  }
+
+  add<T>(key: symbol, dependency: T): void {
+    if (this.dependencies.has(key)) {
+      throw new Error(`Dependency already registered: ${key.toString()}`);
+    }
+    this.dependencies.set(key, dependency);
   }
 
   get<T>(key: symbol): T {
-    return Object.getOwnPropertyDescriptor(this._dependencies, key)?.value as T;
+    const dependency = this.dependencies.get(key);
+    if (!dependency) {
+      throw new Error(`Dependency not found: ${key.toString()}`);
+    }
+    return dependency as T;
   }
 }
 
-const container = new DependencyContainer();
+// Initialize container and dependencies
+const container = DependencyContainer.getInstance();
+const httpAdapter = new HttpAdapter();
+const authService = new AuthService(httpAdapter);
 
-container.add(dependencies.AUTH_SERVICE, authService);
+// Register core dependencies
 container.add(dependencies.HTTP_ADAPTER, httpAdapter);
+container.add(dependencies.AUTH_SERVICE, authService);
 
-export { container, dependencies };
+export { container };

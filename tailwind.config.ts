@@ -56,26 +56,36 @@ const config = {
         "chart-5": "hsl(var(--chart-5))",
         white: "hsl(var(--white))",
         black: "hsl(var(--black))",
-        "high-blue": "hsl(var(--high-blue))",
-        "mid-blue": "hsl(var(--mid-blue))",
-        "low-blue": "hsl(var(--low-blue))",
+        "high-purple": "hsl(var(--high-purple))",
+        "mid-purple": "hsl(var(--mid-purple))",
+        "low-purple": "hsl(var(--low-purple))",
+
+        "high-coral": "hsl(var(--high-coral))",
+        "mid-coral": "hsl(var(--mid-coral))",
+        "low-coral": "hsl(var(--low-coral))",
+
         "high-danger": "hsl(var(--high-danger))",
         "mid-danger": "hsl(var(--mid-danger))",
         "low-danger": "hsl(var(--low-danger))",
+
         "high-warning": "hsl(var(--high-warning))",
         "mid-warning": "hsl(var(--mid-warning))",
         "low-warning": "hsl(var(--low-warning))",
+
         "high-success": "hsl(var(--high-success))",
         "mid-success": "hsl(var(--mid-success))",
         "low-success": "hsl(var(--low-success))",
+
         "high-grey-III": "hsl(var(--high-grey-III))",
-        "mid-grey-III": "hsl(var(--mid-grey-III))",
-        "low-grey-III": "hsl(var(--low-grey-III))",
         "high-grey-II": "hsl(var(--high-grey-II))",
-        "mid-grey-II": "hsl(var(--mid-grey-II))",
-        "low-grey-II": "hsl(var(--low-grey-II))",
         "high-grey-I": "hsl(var(--high-grey-I))",
+
+        "mid-grey-III": "hsl(var(--mid-grey-III))",
+        "mid-grey-II": "hsl(var(--mid-grey-II))",
         "mid-grey-I": "hsl(var(--mid-grey-I))",
+
+        "low-grey-III": "hsl(var(--low-grey-III))",
+        "low-grey-II": "hsl(var(--low-grey-II))",
         "low-grey-I": "hsl(var(--low-grey-I))",
       },
       borderRadius: {

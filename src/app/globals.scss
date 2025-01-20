@@ -16,7 +16,7 @@
     --default: 0, 0%, 100%;
     --default-foreground: 0, 0%, 0%;
 
-    --primary: 202, 100%, 38%;
+    --primary: 250, 53%, 60%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 252, 67%, 26%;
@@ -28,8 +28,8 @@
     --accent: 203, 100%, 96%, 1;
     --accent-foreground: 222.2 47.4% 11.2%;
 
-    --destructive: 0, 100%, 50%;
-    --destructive-hover: 0 72% 51%;
+    --destructive: 0, 71%, 55%;
+    --destructive-hover: 0, 71%, 55%;
     --destructive-foreground: 0 0% 100%;
 
     --subtle: 0, 0%, 97%, 1;
@@ -46,9 +46,9 @@
 
     --link: 222 47% 11%;
 
-    --error: 0 72% 51%;
-    --success: 163, 86%, 40%;
-    --warning: 45 93% 47%;
+    --error: 0, 71%, 55%;
+    --success: 143, 79%, 32%;
+    --warning: 45, 92%, 54%;
 
     --border: 214 32% 91%;
     --input: 214 32% 91%;
@@ -61,43 +61,51 @@
     --neutralColor-dark-1: 252, 67%, 26%;
     --neutralColor-dark-2: 0, 0%, 16%;
 
-    /* ski-com design system */
+    /* byte-alley design system */
     --white: 0, 0%, 100%;
     --black: 222.2 84% 4.9%;
 
-    --high-blue: 202, 90%, 20%, 1;
-    --mid-blue: 202, 100%, 38%;
-    --low-blue: 203, 100%, 96%, 1;
+    --high-purple: 252, 63%, 11%;
+    --mid-purple: 250, 53%, 60%;
+    --low-purple: 251, 50%, 97%;
 
-    --high-danger: 4, 62%, 35%, 1;
-    --mid-danger: 0, 100%, 50%;
-    --low-danger: 0, 84%, 94%, 1;
+    --high-coral: 180, 9%, 13%;
+    --mid-coral: 182, 78%, 41%;
+    --low-coral: 182, 38%, 78%;
 
-    --high-warning: 38, 58%, 24%, 1;
-    --mid-warning: 38, 100%, 68%, 1;
-    --low-warning: 38, 100%, 87%, 1;
+    --high-danger: 0, 84%, 22%;
+    --mid-danger: 0, 71%, 55%;
+    --low-danger: 0, 92%, 87%;
 
-    --high-success: 140, 69%, 20%, 1;
-    --mid-success: 163, 86%, 40%, 1;
-    --low-success: 129, 100%, 96%, 1;
+    --high-warning: 39, 32%, 17%;
+    --mid-warning: 45, 92%, 54%;
+    --low-warning: 45, 92%, 79%;
 
-    --high-grey-III: 0, 0%, 12%, 1;
-    --mid-grey-III: 0, 0%, 21%, 1;
-    --low-grey-III: 0, 0%, 28%, 1;
+    --high-success: 150, 13%, 10%;
+    --mid-success: 143, 79%, 32%;
+    --low-success: 144, 39%, 85%;
 
-    --high-grey-II: 0, 0%, 56%, 1;
-    --mid-grey-II: 248, 1%, 71%, 1;
-    --low-grey-II: 0, 0%, 85%, 1;
+    --high-grey-III: 260, 8%, 7%;
+    --high-grey-II: 270, 5%, 12%;
+    --high-grey-I: 240, 3%, 16%;
 
-    --high-grey-I: 0, 0%, 95%, 1;
-    --mid-grey-I: 0, 0%, 98%, 1;
-    --low-grey-I: 0, 0%, 100%, 1;
+    --mid-grey-III: 240, 2%, 30%;
+    --mid-grey-II: 240, 1%, 54%;
+    --mid-grey-I: 240, 1%, 82%;
+
+    --low-grey-III: 0, 0%, 95%;
+    --low-grey-II: 0, 0%, 98%;
+    --low-grey-I: 0, 0%, 100%;
   }
 }
 
 #nprogress .bar {
-  background: linear-gradient(90deg, #fff0bf, #007bc2) !important;
-  box-shadow: 10px 0px 20px rgba(255, 240, 191, 0.641) !important;
+  background: linear-gradient(
+    90deg,
+    hsl(44, 100%, 87%),
+    hsl(203, 100%, 38%)
+  ) !important;
+  box-shadow: 10px 0px 20px hsla(44, 100%, 87%, 0.641) !important;
   position: fixed;
   z-index: 99999999 !important;
   top: 0;

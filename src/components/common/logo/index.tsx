@@ -5,7 +5,7 @@ export const Logo = () => {
   return (
     <Link href="/" className="" data-testid="logo">
       <Image
-        src="/images/logo/skicom.svg"
+        src="/images/logo/bytealley.svg"
         alt="skicom"
         height={52}
         width={283}

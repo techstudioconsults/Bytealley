@@ -1,17 +1,16 @@
 "use server";
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { JWTPayload, jwtVerify, SignJWT } from "jose";
+import { jwtVerify, SignJWT } from "jose";
 import { cookies } from "next/headers";
 
-// import { NextRequest, NextResponse } from "next/server";
+import { ICookieMetadata, ISessionData } from "~/types/interfaces";
 
-import { Session } from "~/types";
+// import { NextRequest, NextResponse } from "next/server";
 
 const secretKey = process.env.NEXTAUTH_SECRET;
 const key = new TextEncoder().encode(secretKey);
 
-export async function encrypt(payload: JWTPayload) {
+export async function encrypt(payload: ISessionData): Promise<string> {
   return await new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
@@ -19,22 +18,22 @@ export async function encrypt(payload: JWTPayload) {
     .sign(key);
 }
 
-export async function decrypt(input: string): Promise<any> {
+export async function decrypt(input: string): Promise<ISessionData> {
   const { payload } = await jwtVerify(input, key, {
     algorithms: ["HS256"],
   });
-  return payload;
+  return payload as ISessionData;
 }
 
-export async function getSession(): Promise<Session | null> {
-  const skicom = cookies().get("skicom")?.value;
-  if (!skicom) return null;
-  return await decrypt(skicom);
+export async function getSession(): Promise<ISessionData | null> {
+  const bytealley = cookies().get("bytealley")?.value;
+  if (!bytealley) return null;
+  return await decrypt(bytealley);
 }
 
-export async function setCookie(data: any, metaData: any) {
+export async function setCookie(data: string, metaData: ICookieMetadata) {
   cookies().set({
-    name: "skicom",
+    name: "bytealley",
     value: data,
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
@@ -46,7 +45,7 @@ export async function setCookie(data: any, metaData: any) {
 
 export async function deleteSession() {
   cookies().set({
-    name: "skicom",
+    name: "bytealley",
     value: "",
     expires: new Date(0), // Expire immediately
     httpOnly: true,
@@ -54,4 +53,10 @@ export async function deleteSession() {
     sameSite: "strict",
     path: "/",
   });
+}
+
+export async function createSession(sessionData: ISessionData) {
+  const encrypted = await encrypt(sessionData);
+  await setCookie(encrypted, {});
+  return sessionData;
 }
