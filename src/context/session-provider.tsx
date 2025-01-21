@@ -4,12 +4,13 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 
 import { getSession } from "~/lib/session/session"; // Adjust the path to your getSession function
-import { Session, SessionContextType } from "~/types"; // Define the structure of your session in a types file if not done already
 
-const SessionContext = createContext<SessionContextType | undefined>(undefined);
+const SessionContext = createContext<ISessionContextType | undefined>(
+  undefined,
+);
 
 const SessionProvider = ({ children }: { children: ReactNode }) => {
-  const [session, setSession] = useState<Session | null>(null);
+  const [session, setSession] = useState<ISessionData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   const fetchSession = async () => {

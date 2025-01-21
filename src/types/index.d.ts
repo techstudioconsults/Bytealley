@@ -14,20 +14,6 @@ declare global {
     logo: string;
   };
 
-  type Session = {
-    user: {
-      id: string;
-      name: string;
-      email: string;
-      avatar: string | null;
-      role: string;
-      token: string;
-    };
-    expires: string;
-    iat: number;
-    exp: number;
-  };
-
   type RootState = ReturnType<typeof import("@/store").store.getState>;
   type AppDispatch = typeof import("@/store").store.dispatch;
 

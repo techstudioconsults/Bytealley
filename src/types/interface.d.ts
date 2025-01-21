@@ -29,6 +29,8 @@ declare global {
       id: string;
       email: string;
       name?: string;
+      role?: string;
+      token?: string;
     };
     expires: string;
   }
@@ -39,27 +41,6 @@ declare global {
     secure?: boolean;
     sameSite?: "strict" | "lax" | "none";
     path?: string;
-  }
-
-  interface IUser {
-    id: string;
-    email: string;
-    name: string;
-    role: UserRole;
-  }
-
-  interface ISession {
-    user: IUser;
-    accessToken: string;
-    refreshToken?: string;
-  }
-
-  interface IAuthResponse {
-    user: IUser;
-    tokens: {
-      accessToken: string;
-      refreshToken: string;
-    };
   }
 
   interface ILayoutProperties {

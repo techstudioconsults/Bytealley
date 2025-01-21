@@ -3,7 +3,7 @@
 const nextConfig = {
   output: "standalone",
   transpilePackages: ["lucide-react"],
-  strictMode: false,
+  reactStrictMode: false,
 };
 
 export default nextConfig;
