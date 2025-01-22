@@ -1,5 +1,9 @@
 "use client";
 
+import warningIcon from "@/images/bad.svg";
+import errorIcon from "@/images/error.svg";
+import defaultIcon from "@/images/info.svg";
+import successIcon from "@/images/success.svg";
 import * as ToastPrimitives from "@radix-ui/react-toast";
 import { cva, type VariantProps } from "class-variance-authority";
 import Image from "next/image";
@@ -42,31 +46,24 @@ const toastVariants = cva(
 );
 
 const variantIcons = {
-  default: "/images/info.svg",
-  error: "/images/error.svg",
-  success: "/images/success.svg",
-  warning: "/images/bad.svg",
+  default: defaultIcon,
+  error: errorIcon,
+  success: successIcon,
+  warning: warningIcon,
 } as const;
 
 const Toast = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Root>,
-  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Root> &
-    VariantProps<typeof toastVariants>
+  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Root> & VariantProps<typeof toastVariants>
 >(({ className, variant, ...properties }, reference) => {
   return (
-    <ToastPrimitives.Root
-      ref={reference}
-      className={cn(toastVariants({ variant }), className)}
-      {...properties}
-    >
+    <ToastPrimitives.Root ref={reference} className={cn(toastVariants({ variant }), className)} {...properties}>
       <div className="flex flex-col">
         <div className="flex items-center gap-4">
           <Image
             src={variantIcons[variant ?? "default"]}
             alt=""
-            width={50}
-            height={50}
-            className="h-[50px] w-[50px] border-r border-r-black"
+            className="h-[50px] w-[50px] border-r border-r-black object-contain"
           />
           {properties.children}
         </div>
@@ -97,10 +94,7 @@ const ToastClose = React.forwardRef<
 >(({ className, ...properties }, reference) => (
   <ToastPrimitives.Close
     ref={reference}
-    className={cn(
-      "absolute bottom-4 right-4 text-sm text-primary hover:text-gray-700",
-      className,
-    )}
+    className={cn("absolute bottom-4 right-4 text-sm text-primary hover:text-gray-700", className)}
     toast-close=""
     {...properties}
   >
@@ -113,11 +107,7 @@ const ToastTitle = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Title>,
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Title>
 >(({ className, ...properties }, reference) => (
-  <ToastPrimitives.Title
-    ref={reference}
-    className={cn("text-sm font-semibold", className)}
-    {...properties}
-  />
+  <ToastPrimitives.Title ref={reference} className={cn("text-sm font-semibold", className)} {...properties} />
 ));
 ToastTitle.displayName = ToastPrimitives.Title.displayName;
 
@@ -125,11 +115,7 @@ const ToastDescription = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Description>,
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Description>
 >(({ className, ...properties }, reference) => (
-  <ToastPrimitives.Description
-    ref={reference}
-    className={cn("text-sm opacity-90", className)}
-    {...properties}
-  />
+  <ToastPrimitives.Description ref={reference} className={cn("text-sm opacity-90", className)} {...properties} />
 ));
 ToastDescription.displayName = ToastPrimitives.Description.displayName;
 

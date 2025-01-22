@@ -4,16 +4,11 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect } from "react";
 
 import Loading from "~/app/Loading";
-import { withDependency } from "~/HOC/withDependencies";
-import { AuthService } from "~/services/auth.service";
-import { dependencies } from "~/utils/dependencies";
+import { useSession } from "~/hooks/use-session";
 
-interface PreLoaderProperties {
-  authService: AuthService;
-}
-
-function PreLoader({ authService }: PreLoaderProperties) {
+function PreLoader() {
   const router = useRouter();
+  const { handleGoogleCallback } = useSession();
 
   const googleRedirect = useCallback(
     async (code: string) => {
@@ -22,9 +17,9 @@ function PreLoader({ authService }: PreLoaderProperties) {
         code: code,
       };
 
-      await authService.handleGoogleCallback(data, router);
+      await handleGoogleCallback(data, router);
     },
-    [authService, router],
+    [handleGoogleCallback, router],
   );
 
   useEffect(() => {
@@ -40,9 +35,4 @@ function PreLoader({ authService }: PreLoaderProperties) {
   return <Loading />;
 }
 
-// Assuming you have AUTH_SERVICE_TOKEN defined in your dependencies container
-const preloader = withDependency(PreLoader, {
-  authService: dependencies.AUTH_SERVICE,
-});
-
-export default preloader;
+export default PreLoader;

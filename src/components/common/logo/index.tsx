@@ -1,16 +1,13 @@
+import logo from "@/images/logo.svg";
 import Image from "next/image";
 import Link from "next/link";
 
-export const Logo = () => {
+import { cn } from "~/utils/utils";
+
+export const Logo = ({ width = 283, height = 52 }: { width?: number; height?: number }) => {
   return (
     <Link href="/" className="" data-testid="logo">
-      <Image
-        src="/images/logo.svg"
-        alt="skicom"
-        height={52}
-        width={283}
-        className="h-full w-full object-contain"
-      />
+      <Image priority src={logo} alt="bytealley" className={cn(`h-[${height}px] w-[${width}px]`, "object-contain")} />
     </Link>
   );
 };

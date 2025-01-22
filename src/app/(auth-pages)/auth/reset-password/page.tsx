@@ -14,7 +14,7 @@ const ResetPasswordPage = () => {
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
       password: "",
-      confirmPassword: "",
+      password_confirmation: "",
     },
   });
 

@@ -10,19 +10,14 @@ import { FcGoogle } from "react-icons/fc";
 import CustomButton from "~/components/common/common-button/common-button";
 import { FormField } from "~/components/common/FormFields";
 import { Logo } from "~/components/common/logo";
-import { withDependency } from "~/HOC/withDependencies";
+import { useSession } from "~/hooks/use-session";
 import { RegisterFormData, registerSchema } from "~/schemas";
-import type { AuthService } from "~/services/auth.service";
-import { dependencies } from "~/utils/dependencies";
 
-interface RegisterPageProperties {
-  authService: AuthService;
-}
-
-const BaseRegisterPage = ({ authService }: RegisterPageProperties) => {
+const RegisterPage = () => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [isGooglePending, startGoogleTransition] = useTransition();
+  const { register, googleSignIn } = useSession();
 
   const methods = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
@@ -36,13 +31,13 @@ const BaseRegisterPage = ({ authService }: RegisterPageProperties) => {
 
   const handleSubmit = async (data: RegisterFormData) => {
     startTransition(async () => {
-      await authService.register(data, router);
+      await register(data, router);
     });
   };
 
   const handleGoogleSignIn = () => {
     startGoogleTransition(async () => {
-      await authService.googleSignIn();
+      await googleSignIn();
     });
   };
 
@@ -170,9 +165,5 @@ const BaseRegisterPage = ({ authService }: RegisterPageProperties) => {
     </div>
   );
 };
-
-const RegisterPage = withDependency(BaseRegisterPage, {
-  authService: dependencies.AUTH_SERVICE,
-});
 
 export default RegisterPage;

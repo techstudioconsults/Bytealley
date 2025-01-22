@@ -17,13 +17,10 @@ declare global {
   type RootState = ReturnType<typeof import("@/store").store.getState>;
   type AppDispatch = typeof import("@/store").store.dispatch;
 
-  type DependencyInjector = <T extends React.ComponentType<any>>(
-    Component: T,
-    dependencies: { [key: string]: symbol },
-  ) => (props: React.ComponentProps<T>) => React.ReactElement;
+  type DependencyInjector = (Component: React.ElementType, dependencies: { [key: string]: symbol }) => any;
 
   type ResolveDependencies = {
-    [key: string]: unknown;
+    [key: string]: object;
   };
 }
 

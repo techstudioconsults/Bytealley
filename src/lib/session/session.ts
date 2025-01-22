@@ -11,9 +11,7 @@ const secretKey =
     : undefined);
 
 if (!secretKey) {
-  throw new Error(
-    "NEXTAUTH_SECRET environment variable is required in production",
-  );
+  throw new Error("NEXTAUTH_SECRET environment variable is required in production");
 }
 
 const key = new TextEncoder().encode(secretKey);
@@ -27,16 +25,22 @@ export async function encrypt(payload: ISessionData): Promise<string> {
 }
 
 export async function decrypt(input: string): Promise<ISessionData> {
-  const { payload } = await jwtVerify(input, key, {
-    algorithms: ["HS256"],
-  });
+  try {
+    const { payload } = await jwtVerify(input, key, {
+      algorithms: ["HS256"],
+    });
 
-  // Validate the payload has the required properties
-  if (!payload.user || !payload.expires) {
-    throw new Error("Invalid session data");
+    // Validate the payload has the required properties
+    if (!payload.user || !payload.expires) {
+      throw new Error("Invalid session data");
+    }
+
+    return payload as ISessionData;
+  } catch (error) {
+    // Handle JWT verification errors (including expiration)
+    deleteSession(); // Clear the invalid cookie
+    throw error; // Re-throw to be handled by caller
   }
-
-  return payload as ISessionData;
 }
 
 export async function getSession(): Promise<ISessionData | null> {
