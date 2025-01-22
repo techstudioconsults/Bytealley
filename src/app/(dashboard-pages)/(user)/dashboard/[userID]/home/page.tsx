@@ -1,18 +1,11 @@
-interface UserHomePageProperties {
-  params: {
-    userID: string;
-  };
-}
+import { Wrapper } from "~/components/layout/wrapper";
+import { Onboarding } from "./_views/onboarding";
 
-const UserHomePage = ({ params }: UserHomePageProperties) => {
-  const { userID } = params;
-  console.log("User ID:", userID);
+const UserHomePage = () => {
   return (
-    <div>
-      <h1>Welcome to Dashboard</h1>
-      <p>User ID: {userID}</p>
-      {/* Add your dashboard content here */}
-    </div>
+    <Wrapper className="max-w-[751px]">
+      <Onboarding />
+    </Wrapper>
   );
 };
 

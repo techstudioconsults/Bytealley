@@ -11,7 +11,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <Sidebar />
         <section className="w-full">
           <DashboardNavbar />
-          <div className="bg-high-grey-I p-[16px] lg:p-[32px]">
+          <div className="p-[16px] lg:p-[32px]">
             <Suspense>{children}</Suspense>
           </div>
         </section>
