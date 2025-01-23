@@ -1,15 +1,13 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { JWTPayload } from "jose";
 
 declare global {
   interface ISessionContextType {
     user: IUser | null;
-    isLoading: boolean;
-    login: (data: LoginFormData, router: AppRouterInstance) => Promise<void>;
-    register: (data: RegisterFormData, router: AppRouterInstance) => Promise<void>;
-    logout: (router: AppRouterInstance) => Promise<void>;
+    login: (data: LoginFormData) => Promise<void>;
+    register: (data: RegisterFormData) => Promise<void>;
+    logout: () => Promise<void>;
     googleSignIn: () => Promise<void>;
-    handleGoogleCallback: (credentials: { code: string; provider: string }, router: AppRouterInstance) => Promise<void>;
+    handleGoogleCallback: (credentials: { code: string; provider: string }) => Promise<void>;
   }
 
   interface IAuthState {
@@ -30,11 +28,32 @@ declare global {
   }
 
   interface IUser {
-    avatar: string;
     id: string;
-    email: string;
     name: string;
+    username: string | null;
+    email: string;
+    phone_number: string | null;
+    bio: string | null;
+    account_type: string;
+    logo: string | null;
     role: string;
+    status: string | null;
+    twitter_account: string | null;
+    facebook_account: string | null;
+    youtube_account: string | null;
+    alt_email: string | null;
+    email_verified: boolean;
+    profile_completed: boolean;
+    first_product_created: boolean;
+    payout_setup: boolean;
+    first_sale: boolean;
+    product_creation_notification: boolean;
+    purchase_notification: boolean;
+    news_and_update_notification: boolean;
+    payout_notification: boolean;
+    kyc_complete: boolean;
+    created_at: string;
+    updated_at: string;
     token: string;
   }
 
@@ -56,12 +75,7 @@ declare global {
   }
 
   interface ILoginResponse {
-    user: {
-      id: string;
-      email: string;
-      name: string;
-      role: string;
-    };
+    user: IUser;
     token: string;
   }
 
@@ -82,6 +96,11 @@ declare global {
     sideNavitems?: SidebarItem[];
     logoComponent?: React.ReactNode;
     className?: string;
+  }
+
+  interface IEmailVerificationResponse {
+    message: string;
+    success: boolean;
   }
 }
 

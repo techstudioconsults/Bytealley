@@ -1,9 +1,11 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState, useTransition } from "react";
 
+import Loading from "~/app/Loading";
 import { withDependency } from "~/HOC/withDependencies";
+import { getSession } from "~/lib/session/session";
 import { LoginFormData, RegisterFormData } from "~/schemas";
 import { AuthService } from "~/services/auth.service";
 import { dependencies } from "~/utils/dependencies";
@@ -13,21 +15,38 @@ export const SessionContext = createContext<ISessionContextType | undefined>(und
 
 const BaseSessionProvider = ({ children, authService }: { children: React.ReactNode; authService: AuthService }) => {
   const [user, setUser] = useState<IUser | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
   const router = useRouter();
 
+  useEffect(() => {
+    const initSession = async () => {
+      try {
+        const session = await getSession();
+        if (session?.user) {
+          setUser(session.user);
+        }
+      } finally {
+        setIsInitialLoading(false);
+      }
+    };
+
+    initSession();
+  }, []);
+
+  if (isInitialLoading) {
+    return <Loading />;
+  }
+
   const handleAuthAction = async <T,>(action: () => Promise<T>): Promise<T | undefined> => {
-    setIsLoading(true);
     try {
       return await action();
     } finally {
-      setIsLoading(false);
+      // Transition will automatically complete when the action is done
     }
   };
 
   const login = async (data: LoginFormData) => {
     const userData = await handleAuthAction(() => authService.login(data));
-
     if (userData) {
       setUser(userData);
       Toast.getInstance().showToast({
@@ -74,10 +93,7 @@ const BaseSessionProvider = ({ children, authService }: { children: React.ReactN
   };
 
   const handleGoogleCallback = async (credentials: { code: string; provider: string }) => {
-    if (isLoading) return;
-
     const userData = await handleAuthAction(() => authService.handleGoogleCallback(credentials));
-
     if (userData) {
       setUser(userData);
       Toast.getInstance().showToast({
@@ -95,7 +111,6 @@ const BaseSessionProvider = ({ children, authService }: { children: React.ReactN
     <SessionContext.Provider
       value={{
         user,
-        isLoading,
         login,
         register,
         logout,

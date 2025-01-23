@@ -11,6 +11,7 @@ import { cn } from "~/utils/utils";
 
 const Sidebar: FC<ISidebarProperties> = ({ sideNavitems = sideItems, logoComponent, className = "" }) => {
   const pathname = usePathname();
+  const userID = pathname.split("/")[2];
 
   const renderIcon = (item: SidebarItem) => {
     if (item.icon) {
@@ -35,11 +36,12 @@ const Sidebar: FC<ISidebarProperties> = ({ sideNavitems = sideItems, logoCompone
     }
 
     const isActive = pathname.includes(item.id);
+    const dynamicLink = item.link.replace(":userID", userID);
 
     return (
       <Link
         key={item.id}
-        href={item.link}
+        href={dynamicLink}
         data-testid={item.id}
         role="sidebar-link"
         className={cn(

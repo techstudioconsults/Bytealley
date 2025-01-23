@@ -5,6 +5,7 @@ import { useCallback, useEffect } from "react";
 
 import Loading from "~/app/Loading";
 import { useSession } from "~/hooks/use-session";
+import { getSession } from "~/lib/session/session";
 
 function PreLoader() {
   const router = useRouter();
@@ -12,12 +13,19 @@ function PreLoader() {
 
   const googleRedirect = useCallback(
     async (code: string) => {
+      // Check if we already have a valid session
+      const session = await getSession();
+      if (session?.user) {
+        router.push(`/dashboard/${session.user.id}/home`);
+        return;
+      }
+
       const data = {
         provider: "google",
         code: code,
       };
 
-      await handleGoogleCallback(data, router);
+      await handleGoogleCallback(data);
     },
     [handleGoogleCallback, router],
   );
@@ -32,7 +40,7 @@ function PreLoader() {
     }
   }, [googleRedirect]);
 
-  return <Loading />;
+  return <Loading text={`Getting credentials from Google...`} />;
 }
 
 export default PreLoader;

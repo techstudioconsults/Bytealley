@@ -1,6 +1,7 @@
 import { HttpAdapter } from "~/adapters/http-adapter";
 import { createSession, deleteSession } from "~/lib/session/session";
 import { LoginFormData, RegisterFormData } from "~/schemas";
+import { Toast } from "~/utils/notificationManager";
 
 export class AuthService {
   private readonly http: HttpAdapter;
@@ -14,44 +15,56 @@ export class AuthService {
     return response?.status === 201;
   }
 
-  async login(data: LoginFormData): Promise<IUser | null> {
+  async login(data: LoginFormData) {
     const response = await this.http.post<ILoginResponse>(`/auth/login`, data);
-
     if (response?.status === 200) {
-      const user = this.mapUserResponse(response.data);
+      const user: IUser = this.mapUserResponse(response.data);
       await this.createUserSession(user);
       return user;
     }
-    return null;
   }
 
   async logout(): Promise<void> {
     await deleteSession();
   }
 
-  async googleSignIn(): Promise<string | null> {
+  async googleSignIn() {
     const response = await this.http.get<{ redirect_url: string }>("/auth/oauth/redirect?provider=google");
-
-    return response?.status === 200 ? response.data.redirect_url : null;
+    if (response?.status === 200) {
+      return response.data.redirect_url;
+    }
   }
 
-  async handleGoogleCallback(credentials: { code: string; provider: string }): Promise<IUser | null> {
-    const response = await this.http.post<ILoginResponse>("/auth/oauth/callback", credentials);
+  async verifyEmail() {
+    const response = await this.http.get<IEmailVerificationResponse>(`/auth/email/resend`);
+    if (response?.status === 200) {
+      Toast.getInstance().showToast({
+        title: "Verification Email",
+        description: response.data.message,
+        variant: "success",
+      });
+    }
+  }
 
+  async handleGoogleCallback(credentials: { code: string; provider: string }) {
+    const response = await this.http.post<ILoginResponse>("/auth/oauth/callback", credentials);
     if (response?.status === 200) {
       const user = this.mapUserResponse(response.data);
       await this.createUserSession(user);
       return user;
     }
-    return null;
+  }
+
+  async getCurrentUser() {
+    const response = await this.http.get<IUser>("/users/me");
+    if (response?.status === 200) {
+      return response.data;
+    }
   }
 
   private mapUserResponse(data: ILoginResponse): IUser {
     return {
-      id: data.user.id,
-      email: data.user.email,
-      name: data.user.name,
-      role: data.user.role,
+      ...data.user,
       token: data.token,
     };
   }

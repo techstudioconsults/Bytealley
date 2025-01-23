@@ -14,19 +14,19 @@ import payouts from "@/icons/Property_2_Wallet_3_teopvy.svg";
 export const sideItems: SidebarItem[] = [
   {
     route: "Home",
-    link: "/admin/home",
+    link: "/dashboard/:userID/home",
     iconUrl: home,
     id: "home",
   },
   {
     route: "Products",
-    link: "/admin/products",
+    link: "/dashboard/:userID/products",
     iconUrl: products,
     id: "products",
   },
   {
     route: "Orders",
-    link: "/admin/orders",
+    link: "/dashboard/:userID/orders",
     iconUrl: orders,
     id: "orders",
     badge: {
@@ -36,19 +36,19 @@ export const sideItems: SidebarItem[] = [
   },
   {
     route: "Analytics",
-    link: "/admin/analytics",
+    link: "/dashboard/:userID/analytics",
     iconUrl: analytics,
     id: "analytics",
   },
   {
     route: "Customers",
-    link: "/admin/customers",
+    link: "/dashboard/:userID/customers",
     iconUrl: customers,
     id: "customers",
   },
   {
     route: "Payouts",
-    link: "/admin/payouts",
+    link: "/dashboard/:userID/payouts",
     iconUrl: payouts,
     id: "payouts",
   },
@@ -60,19 +60,19 @@ export const sideItems: SidebarItem[] = [
   },
   {
     route: "Downloads",
-    link: "/admin/downloads",
+    link: "/dashboard/:userID/downloads",
     iconUrl: downloads,
     id: "downloads",
   },
   {
     route: "Explore",
-    link: "/admin/explore",
+    link: "/dashboard/:userID/explore",
     iconUrl: explore,
     id: "explore",
   },
   {
     route: "Integration",
-    link: "/admin/integration",
+    link: "/dashboard/:userID/integration",
     iconUrl: integration,
     id: "integration",
   },
@@ -84,19 +84,19 @@ export const sideItems: SidebarItem[] = [
   },
   {
     route: "Help",
-    link: "/admin/help",
+    link: "/dashboard/:userID/help",
     iconUrl: help,
     id: "help",
   },
   {
     route: "Settings",
-    link: "/admin/settings",
+    link: "/dashboard/:userID/settings",
     iconUrl: settings,
     id: "settings",
   },
   {
     route: "Profile",
-    link: "/admin/profile",
+    link: "/dashboard/:userID/profile",
     iconUrl: profile,
     id: "profile",
   },

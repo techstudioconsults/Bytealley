@@ -2,7 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
@@ -16,7 +15,6 @@ import { LoginFormData, loginSchema } from "~/schemas";
 const LoginPage = () => {
   const [isPending, startTransition] = useTransition();
   const [isGooglePending, startGoogleTransition] = useTransition();
-  const router = useRouter();
   const { login, googleSignIn } = useSession();
 
   const methods = useForm<LoginFormData>({
@@ -29,7 +27,7 @@ const LoginPage = () => {
 
   const handleSubmit = async (data: LoginFormData) => {
     startTransition(async () => {
-      await login(data, router);
+      await login(data);
     });
   };
 

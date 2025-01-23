@@ -22,6 +22,15 @@ declare global {
   type ResolveDependencies = {
     [key: string]: object;
   };
+
+  type OnboardingStep = {
+    title: string;
+    description: string;
+    buttonLabel: string;
+    icon: string;
+    isCompleted: boolean | undefined;
+    action: () => void;
+  };
 }
 
 // This export is needed to make the file a module

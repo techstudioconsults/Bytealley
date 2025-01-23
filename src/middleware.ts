@@ -78,11 +78,14 @@ export async function middleware(request: Request) {
       case "USER": {
         // Users can only access their own routes
         const isUserRoute = userRoutes.some((route) => {
-          if (isUserSpecificRoute(session.user.id!, route)) {
-            const actualRoute = route.replace(":userID", session.user.id!);
-            return pathname.startsWith(actualRoute);
+          // Check if the route pattern contains :userID
+          if (route.includes(":userID")) {
+            // Replace :userID with the actual user ID to create the base path
+            const basePath = `/dashboard/${session.user.id}`;
+            // Check if the current pathname starts with the user's base path
+            return pathname.startsWith(basePath);
           }
-          return false;
+          return pathname.startsWith(route);
         });
 
         if (isUserRoute) {

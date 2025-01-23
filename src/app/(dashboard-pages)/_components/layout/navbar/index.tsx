@@ -24,19 +24,11 @@ import { UnreadNotificationCard } from "./notification";
 
 const BaseDashboardNavbar = ({ authService }: { authService: AuthService }) => {
   // const router = useRouter();
-  const { user, isLoading } = useSession();
+  const { user, logout } = useSession();
 
   const handleLogOut = async () => {
-    await authService.logout();
+    await logout();
   };
-
-  // if (isLoading) {
-  //   return <div>Loading...</div>; // Show a loader while session is being fetched
-  // }
-
-  // if (!user) {
-  //   return <div>No session found</div>; // Handle the unauthenticated state
-  // }
 
   return (
     <nav className="sticky top-0 z-[1] border-b-[0.5px] border-border" role="navbar">
@@ -66,7 +58,7 @@ const BaseDashboardNavbar = ({ authService }: { authService: AuthService }) => {
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center gap-[5px] focus:outline-none active:outline-none">
                 <Avatar>
-                  <AvatarImage src={user?.avatar || "https://github.com/shadcn.png"} />
+                  <AvatarImage src={user?.logo || "https://github.com/shadcn.png"} />
                   <AvatarFallback>{user?.name[0]?.toUpperCase() || "U"}</AvatarFallback>
                 </Avatar>
                 <p className="hidden lg:block">{user?.name || "Skicom Admin"}</p>

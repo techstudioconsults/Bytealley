@@ -1,12 +1,21 @@
+"use client";
+
 import { Wrapper } from "~/components/layout/wrapper";
+import { withDependency } from "~/HOC/withDependencies";
+import { AuthService } from "~/services/auth.service";
+import { dependencies } from "~/utils/dependencies";
 import { Onboarding } from "./_views/onboarding";
 
-const UserHomePage = () => {
+const UserHomePage = ({ authService, params }: { authService: AuthService; params: { userID: string } }) => {
   return (
     <Wrapper className="max-w-[751px]">
-      <Onboarding />
+      <Onboarding params={params} authService={authService} />
     </Wrapper>
   );
 };
 
-export default UserHomePage;
+const HomePage = withDependency(UserHomePage, {
+  authService: dependencies.AUTH_SERVICE,
+});
+
+export default HomePage;

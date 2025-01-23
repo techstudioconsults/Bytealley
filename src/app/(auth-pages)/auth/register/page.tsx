@@ -2,7 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
@@ -14,7 +13,6 @@ import { useSession } from "~/hooks/use-session";
 import { RegisterFormData, registerSchema } from "~/schemas";
 
 const RegisterPage = () => {
-  const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [isGooglePending, startGoogleTransition] = useTransition();
   const { register, googleSignIn } = useSession();
@@ -31,7 +29,7 @@ const RegisterPage = () => {
 
   const handleSubmit = async (data: RegisterFormData) => {
     startTransition(async () => {
-      await register(data, router);
+      await register(data);
     });
   };
 
@@ -53,14 +51,9 @@ const RegisterPage = () => {
         </h1>
 
         <FormProvider {...methods}>
-          <form
-            onSubmit={methods.handleSubmit(handleSubmit)}
-            className="mt-[56px] space-y-4"
-          >
+          <form onSubmit={methods.handleSubmit(handleSubmit)} className="mt-[56px] space-y-4">
             {methods.formState.errors.root && (
-              <p className="text-sm text-red-500">
-                {methods.formState.errors.root.message}
-              </p>
+              <p className="text-sm text-red-500">{methods.formState.errors.root.message}</p>
             )}
 
             <FormField
@@ -107,10 +100,7 @@ const RegisterPage = () => {
                     Terms Of Use
                   </Link>{" "}
                   and{" "}
-                  <Link
-                    href="/privacy"
-                    className="text-primary hover:underline"
-                  >
+                  <Link href="/privacy" className="text-primary hover:underline">
                     Privacy Policy
                   </Link>
                 </p>
@@ -134,9 +124,7 @@ const RegisterPage = () => {
               <div className="w-full border-t"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="bg-white px-2 text-muted-foreground">
-                or continue with
-              </span>
+              <span className="bg-white px-2 text-muted-foreground">or continue with</span>
             </div>
           </div>
 
