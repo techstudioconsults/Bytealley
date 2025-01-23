@@ -12,10 +12,10 @@ export const DashboardBanner = ({ img, title, desc }: DashboardBannerProperties)
   return (
     <div
       className={cn(
-        "flex min-h-[140px] flex-col items-center gap-4 rounded-[9px] bg-primary",
+        "flex flex-col items-center gap-4 rounded-[9px] bg-primary",
         "bg-cover bg-right bg-no-repeat p-3",
-        "sm:min-h-[160px] sm:p-8",
-        "md:h-[189px] md:flex-row md:items-center md:justify-between",
+        "sm:p-8",
+        "md:flex-row md:items-center md:justify-between",
         `bg-[url(/images/lines.svg)]`,
       )}
     >

@@ -102,6 +102,15 @@ declare global {
     message: string;
     success: boolean;
   }
+
+  interface OnboardingStep {
+    title: string;
+    description: string;
+    buttonLabel: string;
+    icon: string;
+    isCompleted: boolean | undefined;
+    action: () => void;
+  }
 }
 
 export {};
