@@ -48,9 +48,6 @@ export const NewUser = ({ steps, completedSteps }: NewUserProps) => {
           }}
           title="You do not have any sales activities yet."
           buttonText="Create your first product"
-          onButtonClick={() => {
-            /* handle click */
-          }}
         />
       </div>
     </section>

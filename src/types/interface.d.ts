@@ -111,6 +111,36 @@ declare global {
     isCompleted: boolean | undefined;
     action: () => void;
   }
+
+  interface ColumnDef<T extends DataItem> {
+    header: string;
+    accessorKey: keyof T;
+    className?: string;
+    render?: (value: any, item: T) => ReactNode;
+  }
+
+  interface DashboardTableProps<T extends DataItem> {
+    data: T[];
+    columns: ColumnDef<T>[];
+    actions?: ActionType[];
+    currentPage?: number;
+    onPageChange?: (page: number) => void;
+    totalPages?: number;
+    totalItems?: number;
+    itemsPerPage?: number;
+    isLoading?: boolean;
+    tableClassName?: string;
+    showPagination?: boolean;
+    onRowClick?: (item: T) => void;
+    rowClassName?: string | ((item: T) => string);
+    noDataMessage?: string;
+    loadingMessage?: string;
+    stickyHeader?: boolean;
+    sortable?: boolean;
+    onSort?: (column: keyof T, direction: "asc" | "desc") => void;
+    currentSortColumn?: keyof T;
+    currentSortDirection?: "asc" | "desc";
+  }
 }
 
 export {};
