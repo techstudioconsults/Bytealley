@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+
 import { Wrapper } from "~/components/layout/wrapper";
 import { withDependency } from "~/HOC/withDependencies";
 import { useSession } from "~/hooks/use-session";
@@ -60,21 +61,21 @@ const UserHomePage = ({ authService, params }: { authService: AuthService; param
   const completedSteps = ONBOARDING_STEPS.filter((step) => step.isCompleted).length;
 
   // Less than 4 steps completed -> Onboarding
-  if (completedSteps < 3) {
-    return (
-      <Wrapper className="max-w-[751px]">
-        <Onboarding steps={ONBOARDING_STEPS} />
-      </Wrapper>
-    );
-  }
+  // if (completedSteps < 3) {
+  //   return (
+  //     <Wrapper className="max-w-[751px]">
+  //       <Onboarding steps={ONBOARDING_STEPS} />
+  //     </Wrapper>
+  //   );
+  // }
 
-  // Exactly 4 steps completed -> NewUser
-  if (completedSteps > 3 || completedSteps < 5) {
-    return <NewUser steps={ONBOARDING_STEPS} completedSteps={completedSteps} />;
-  }
+  // // Exactly 4 steps completed -> NewUser
+  // if (completedSteps > 3 || completedSteps < 5) {
+  //   return <NewUser steps={ONBOARDING_STEPS} completedSteps={completedSteps} />;
+  // }
 
   // All 5 steps completed -> ActiveUser
-  return <Wrapper className="max-w-[751px]">{/* <ActiveUser authService={authService} params={params} /> */}</Wrapper>;
+  return <ActiveUser authService={authService} params={params} />;
 };
 
 const HomePage = withDependency(UserHomePage, {
