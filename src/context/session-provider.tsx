@@ -33,9 +33,9 @@ const BaseSessionProvider = ({ children, authService }: { children: React.ReactN
     initSession();
   }, []);
 
-  if (isInitialLoading) {
-    return <Loading />;
-  }
+  // if (isInitialLoading) {
+  //   return <Loading />;
+  // }
 
   const handleAuthAction = async <T,>(action: () => Promise<T>): Promise<T | undefined> => {
     try {

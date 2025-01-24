@@ -1,8 +1,8 @@
 "use client";
 
-// import { useRouter } from "next/navigation";
 import bell from "@/icons/Property_2_Notifications_1_w4v7g4.svg";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { LuChevronDown } from "react-icons/lu";
 
 import { SearchInput } from "~/components/common/search-input";
@@ -16,14 +16,12 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
-import { withDependency } from "~/HOC/withDependencies";
 import { useSession } from "~/hooks/use-session";
-import { AuthService } from "~/services/auth.service";
-import { dependencies } from "~/utils/dependencies";
 import { UnreadNotificationCard } from "./notification";
 
-const BaseDashboardNavbar = ({ authService }: { authService: AuthService }) => {
-  // const router = useRouter();
+export const DashboardNavbar = () => {
+  const pathname = usePathname();
+  const title = pathname.split("/")[3].charAt(0).toUpperCase() + pathname.split("/")[3].slice(1);
   const { user, logout } = useSession();
 
   const handleLogOut = async () => {
@@ -33,7 +31,7 @@ const BaseDashboardNavbar = ({ authService }: { authService: AuthService }) => {
   return (
     <nav className="sticky top-0 z-[1] border-b-[0.5px] border-border" role="navbar">
       <section className="flex w-full items-center justify-between gap-[20px] bg-white px-[16px] py-[20px] lg:px-[32px]">
-        <h6 className="font-semibold">Home</h6>
+        <h6 className="font-semibold">{title}</h6>
         <section className="flex items-center justify-between gap-1 md:gap-2 lg:gap-6">
           <SearchInput inputBackgroundColor="bg-low-grey-III" className="hidden w-[100%] lg:flex lg:w-[270px]" />
           <div className="relative flex items-center justify-center">
@@ -82,9 +80,3 @@ const BaseDashboardNavbar = ({ authService }: { authService: AuthService }) => {
     </nav>
   );
 };
-
-const DashboardNavbar = withDependency(BaseDashboardNavbar, {
-  authService: dependencies.AUTH_SERVICE,
-});
-
-export default DashboardNavbar;

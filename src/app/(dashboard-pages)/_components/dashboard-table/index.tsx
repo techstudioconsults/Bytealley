@@ -54,7 +54,7 @@ export const DashboardTable = <T extends DataItem>({
   return (
     <div className="w-full space-y-4">
       {/* Desktop Table View */}
-      <div className="hidden rounded-md border md:block">
+      <div className="hidden md:block">
         <Table>
           <TableHeader className={`bg-muted`}>
             <TableRow>
@@ -124,7 +124,13 @@ export const DashboardTable = <T extends DataItem>({
             {/* Card Header - Can show primary info like ID, status, etc */}
             <div className="mb-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="text-sm font-medium text-muted-foreground">{item[columns[0].accessorKey]}</div>
+                <div className="text-sm font-medium text-muted-foreground">
+                  {columns[0].render ? (
+                    columns[0].render(item[columns[0].accessorKey], item)
+                  ) : (
+                    item[columns[0].accessorKey]
+                  )}
+                </div>
                 {columns[columns.length - 1].render ? (
                   columns[columns.length - 1].render!(item[columns[columns.length - 1].accessorKey], item)
                 ) : (

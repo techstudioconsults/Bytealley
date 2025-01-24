@@ -46,7 +46,7 @@ export const NewUser = ({ steps, completedSteps }: NewUserProps) => {
             src: productImage.src,
             alt: "Empty state illustration",
           }}
-          title="You do not have any sales activities yet."
+          message="You do not have any sales activities yet."
           buttonText="Create your first product"
         />
       </div>

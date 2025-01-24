@@ -9,7 +9,7 @@ import { Logo } from "~/components/common/logo";
 import { sideItems } from "~/utils/constants";
 import { cn } from "~/utils/utils";
 
-const Sidebar: FC<ISidebarProperties> = ({ sideNavitems = sideItems, logoComponent, className = "" }) => {
+export const Sidebar: FC<ISidebarProperties> = ({ sideNavitems = sideItems, logoComponent, className = "" }) => {
   const pathname = usePathname();
   const userID = pathname.split("/")[2];
 
@@ -46,7 +46,7 @@ const Sidebar: FC<ISidebarProperties> = ({ sideNavitems = sideItems, logoCompone
         role="sidebar-link"
         className={cn(
           "relative flex items-center gap-3 rounded-lg px-3 py-2.5 font-medium transition-all duration-200",
-          isActive ? "shadow-active border-2 border-primary text-primary" : "text-mid-grey-II hover:bg-low-grey-I",
+          isActive ? "border-2 border-primary text-primary shadow-active" : "text-mid-grey-II hover:bg-low-grey-I",
         )}
       >
         {renderIcon(item)}
@@ -77,5 +77,3 @@ const Sidebar: FC<ISidebarProperties> = ({ sideNavitems = sideItems, logoCompone
     </div>
   );
 };
-
-export default Sidebar;
