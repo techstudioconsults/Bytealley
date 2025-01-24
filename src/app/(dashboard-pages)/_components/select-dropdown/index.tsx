@@ -1,28 +1,38 @@
-import * as React from "react";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "~/components/ui/select";
+interface Option {
+  value: string;
+  label: string;
+}
 
-export const SelectDropdown = () => {
+interface SelectDropdownProperties {
+  options: Option[];
+  placeholder?: string;
+  value?: string;
+  onValueChange?: (value: string) => void;
+  triggerClassName?: string;
+}
+
+export const SelectDropdown = ({
+  options,
+  placeholder = "Select an option",
+  value,
+  onValueChange,
+
+  triggerClassName = "h-[48px] w-[180px]",
+}: SelectDropdownProperties) => {
   return (
-    <Select>
-      <SelectTrigger className="h-[48px] w-[180px]">
-        <SelectValue placeholder="Select a product" />
+    <Select value={value} onValueChange={onValueChange}>
+      <SelectTrigger className={triggerClassName}>
+        <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectItem value="apple">All Products</SelectItem>
-          <SelectItem value="banana">UI/UX Design</SelectItem>
-          <SelectItem value="blueberry">Web Development</SelectItem>
-          <SelectItem value="grapes">Mobile Development</SelectItem>
-          <SelectItem value="pineapple">Product Management</SelectItem>
+          {options.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
         </SelectGroup>
       </SelectContent>
     </Select>

@@ -3,10 +3,11 @@
 import { LuLoader } from "react-icons/lu";
 
 import { Logo } from "~/components/common/logo";
+import { cn } from "~/utils/utils";
 
-export default function Loading({ text }: { text?: string }) {
+export default function Loading({ text, className }: { text?: string; className?: string }) {
   return (
-    <div className="fixed inset-0 flex min-h-screen flex-col items-center justify-center bg-white">
+    <div className={cn("flex h-screen flex-col items-center justify-center bg-white", className)}>
       <div className="flex flex-col items-center gap-2">
         <div className="flex items-center gap-1">
           <LuLoader className="animate-spin text-xl text-primary" />

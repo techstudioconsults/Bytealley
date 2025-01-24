@@ -45,7 +45,7 @@ export const Sidebar: FC<ISidebarProperties> = ({ sideNavitems = sideItems, logo
         data-testid={item.id}
         role="sidebar-link"
         className={cn(
-          "relative flex items-center gap-3 rounded-lg px-3 py-2.5 font-medium transition-all duration-200",
+          "relative z-50 flex items-center gap-3 rounded-lg px-3 py-2.5 font-medium transition-all duration-200",
           isActive ? "border-2 border-primary text-primary shadow-active" : "text-mid-grey-II hover:bg-low-grey-I",
         )}
       >

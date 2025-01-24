@@ -64,7 +64,7 @@ export const ActiveUser = () => {
         <section className="flex w-full flex-col gap-4 sm:items-center md:flex-row md:justify-between">
           <div className="flex w-full flex-col gap-2 sm:flex-row md:w-auto">
             <DateRangePicker />
-            <SelectDropdown />
+            <SelectDropdown options={[]} />
           </div>
           <div className="flex w-full flex-row gap-2 sm:w-auto sm:justify-start">
             <CustomButton

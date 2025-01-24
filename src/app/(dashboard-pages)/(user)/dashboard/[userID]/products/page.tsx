@@ -1,26 +1,23 @@
 "use client";
 
-import empty1 from "@/images/empty_img_1.svg";
-import empty2 from "@/images/empty_img_2.svg";
 import { LucidePlusCircle } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import CustomButton from "~/components/common/common-button/common-button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { withDependency } from "~/HOC/withDependencies";
+import { ProductService } from "~/services/product.service";
 import { dependencies } from "~/utils/dependencies";
+import { AllProducts } from "./_views/all-products";
 
-const Page = () => {
+const Page = ({ productService }: { productService: ProductService }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParameters = useSearchParams();
 
-  // Get current tab from URL or default to "all-products"
   const currentTab = searchParameters.get("tab") || "all-products";
 
   const onTabChange = (value: string) => {
-    // Update URL without a full navigation
     const parameters = new URLSearchParams(searchParameters);
     parameters.set("tab", value);
     router.replace(`${pathname}?${parameters.toString()}`, { scroll: false });
@@ -83,19 +80,12 @@ const Page = () => {
           </CustomButton>
         </section>
       </TabsList>
+
+      {/* tab content */}
       <TabsContent value="all-products">
-        <EmptyState
-          images={[
-            { src: empty1.src, alt: "Empty product", width: 322, height: 220 },
-            { src: empty2.src, alt: "Empty product", width: 322, height: 220 },
-            { src: empty1.src, alt: "Empty product", width: 322, height: 220 },
-          ]}
-          title="Create your first product."
-          description="Unlock your creative potential and take the first step towards success on our platform. Create your first product today and join our vibrant community of digital creators. Your masterpiece is just a click away!"
-          button={{ text: "Add New Product", onClick: () => {} }}
-        />
+        <AllProducts productService={productService} />
       </TabsContent>
-      <TabsContent value="live">Live content</TabsContent>
+      <TabsContent value="live"></TabsContent>
       <TabsContent value="drafts">Drafts content</TabsContent>
       <TabsContent value="deleted">Deleted content</TabsContent>
     </Tabs>
@@ -103,7 +93,7 @@ const Page = () => {
 };
 
 const ProductsPage = withDependency(Page, {
-  authService: dependencies.AUTH_SERVICE,
+  productService: dependencies.PRODUCT_SERVICE,
 });
 
 export default ProductsPage;

@@ -75,7 +75,7 @@ const UserHomePage = ({ authService, params }: { authService: AuthService; param
   // }
 
   // All 5 steps completed -> ActiveUser
-  return <ActiveUser authService={authService} params={params} />;
+  return <ActiveUser />;
 };
 
 const HomePage = withDependency(UserHomePage, {

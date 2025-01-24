@@ -1,6 +1,6 @@
 "use client";
 
-import { addDays, format } from "date-fns";
+import { format } from "date-fns";
 import { ChevronDown } from "lucide-react";
 import * as React from "react";
 import { DateRange } from "react-day-picker";
@@ -10,11 +10,21 @@ import { Calendar } from "~/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
 import { cn } from "~/utils/utils";
 
-export const DateRangePicker = ({ className }: React.HTMLAttributes<HTMLDivElement>) => {
+export const DateRangePicker = ({
+  className,
+  onDateChange,
+}: React.HTMLAttributes<HTMLDivElement> & {
+  onDateChange: (range: DateRange | undefined) => void;
+}) => {
   const [date, setDate] = React.useState<DateRange | undefined>({
-    from: new Date(2022, 0, 20),
-    to: addDays(new Date(2022, 0, 20), 20),
+    from: undefined,
+    to: undefined,
   });
+
+  const handleSelect = (range: DateRange | undefined) => {
+    setDate(range);
+    onDateChange(range);
+  };
 
   return (
     <div className={cn("grid gap-2", className)}>
@@ -25,7 +35,7 @@ export const DateRangePicker = ({ className }: React.HTMLAttributes<HTMLDivEleme
             variant={"outline"}
             size={"xl"}
             className={cn(
-              "w-full justify-between text-left font-normal lg:max-w-[300px]",
+              "w-full justify-between text-left font-normal shadow-none lg:max-w-[300px]",
               !date && "text-muted-foreground",
             )}
           >
@@ -49,7 +59,7 @@ export const DateRangePicker = ({ className }: React.HTMLAttributes<HTMLDivEleme
             mode="range"
             defaultMonth={date?.from}
             selected={date}
-            onSelect={setDate}
+            onSelect={handleSelect}
             numberOfMonths={2}
           />
         </PopoverContent>

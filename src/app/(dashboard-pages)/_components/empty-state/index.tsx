@@ -52,7 +52,7 @@ export const EmptyState = ({ images, title, description, button, className = "" 
         <p className="max-w-[500px] text-base text-muted-foreground">{description}</p>
 
         {button && (
-          <CustomButton onClick={button.onClick} variant="primary" size="lg" className="mt-6">
+          <CustomButton onClick={button.onClick} variant="primary" size="xl" className="mt-6">
             {button.icon && <span className="mr-2">{button.icon}</span>}
             {button.text}
           </CustomButton>

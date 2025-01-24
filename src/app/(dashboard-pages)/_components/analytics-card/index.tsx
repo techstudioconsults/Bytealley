@@ -1,10 +1,10 @@
-import React from "react";
+import React, { ReactNode } from "react";
 
 import { cn } from "~/utils/utils";
 
-interface AnalyticsCardProps {
+interface AnalyticsCardProperties {
   title: string;
-  value: string | number;
+  value: string | number | ReactNode | undefined;
   icon?: React.ReactNode;
   trend?: {
     value: number;
@@ -17,7 +17,7 @@ interface AnalyticsCardProps {
   backgroundImage?: string;
 }
 
-export const AnalyticsCard: React.FC<AnalyticsCardProps> = ({
+export const AnalyticsCard: React.FC<AnalyticsCardProperties> = ({
   title,
   value,
   icon,
@@ -56,7 +56,7 @@ export const AnalyticsCard: React.FC<AnalyticsCardProps> = ({
             <div
               className={cn(
                 "flex items-center gap-1 rounded-full px-2 py-1 text-sm font-medium",
-                trend.isPositive ? "bg-green-100 text-green-600" : "bg-red-100 text-red-600",
+                trend.isPositive ? "bg-low-success text-mid-success" : "bg-low-danger text-mid-danger",
               )}
             >
               <span>

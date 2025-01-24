@@ -11,6 +11,10 @@ import profile from "@/icons/Property_2_User_iiqfxz.svg";
 import customers from "@/icons/Property_2_User-folder_n4spfl.svg";
 import payouts from "@/icons/Property_2_Wallet_3_teopvy.svg";
 
+
+
+
+
 export const sideItems: SidebarItem[] = [
   {
     route: "Home",
@@ -99,5 +103,30 @@ export const sideItems: SidebarItem[] = [
     link: "/dashboard/:userID/profile",
     iconUrl: profile,
     id: "profile",
+  },
+];
+
+export const statusOptions = [
+  { label: "All Products", value: "all" },
+  { label: "Published", value: "published" },
+  { label: "Draft", value: "draft" },
+];
+
+export const rowActions: IRowAction<IProduct>[] = [
+  {
+    label: "Unpublish to draft",
+    onClick: () => {},
+  },
+  {
+    label: "Edit",
+    onClick: () => {},
+  },
+  {
+    label: "Delete",
+    onClick: () => {},
+  },
+  {
+    label: "Preview",
+    onClick: () => {},
   },
 ];

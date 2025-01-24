@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { JWTPayload } from "jose";
 
 declare global {
@@ -112,34 +113,103 @@ declare global {
     action: () => void;
   }
 
-  interface ColumnDef<T extends DataItem> {
-    header: string;
-    accessorKey: keyof T;
-    className?: string;
-    render?: (value: any, item: T) => ReactNode;
+  interface IProduct {
+    id: string;
+    user_id: string;
+    title: string;
+    logo: string | null;
+    price: number;
+    discount_price: number;
+    description: string;
+    product_type: string;
+    highlights: string[];
+    thumbnail: string;
+    cover_photos: string[];
+    tags: string[];
+    stock_count: boolean;
+    choose_quantity: boolean;
+    show_sales_count: boolean;
+    link: string;
+    status: "draft" | "published" | "deleted";
+    slug: string;
+    total_order: number;
+    total_sales: number;
+    assets: any[]; // You may want to define a specific type for assets
+    avg_rating: number;
+    created_at: string;
+    updated_at: string;
+    deleted_at: string | null;
   }
 
-  interface DashboardTableProps<T extends DataItem> {
+  interface IPaginationLink {
+    url: string | null;
+    label: string;
+    active: boolean;
+  }
+
+  interface IPaginationMeta {
+    current_page: number;
+    from: number;
+    last_page: number;
+    links: IPaginationLink[];
+    path: string;
+    per_page: number;
+    to: number;
+    total: number;
+  }
+
+  interface IPaginationLinks {
+    first: string;
+    last: string;
+    prev: string | null;
+    next: string | null;
+  }
+
+  interface IPaginatedResponse<T> {
     data: T[];
-    columns: ColumnDef<T>[];
-    actions?: ActionType[];
+    links: IPaginationLinks;
+    meta: IPaginationMeta;
+  }
+
+  interface IDashboardAnalytics {
+    total_products: number;
+    total_sales: number;
+    total_customers: number;
+    total_revenues: number;
+    new_orders: number;
+    new_orders_revenue: number;
+    views: number;
+  }
+
+  interface IProductFilters {
+    page?: number;
+    status?: "draft" | "deleted" | "published";
+    start_date?: string;
+    end_date?: string;
+  }
+
+  interface IColumnDefinition<T extends DataItem> {
+    header: string;
+    accessorKey: keyof T;
+    render?: (value: T[keyof T], row: T) => ReactNode;
+  }
+
+  interface IRowAction<T> {
+    label: string;
+    icon?: ReactNode;
+    onClick: (row: T) => void;
+  }
+
+  interface IDashboardTableProperties<T extends DataItem> {
+    data: T[];
+    columns: IColumnDefinition<T>[];
     currentPage?: number;
     onPageChange?: (page: number) => void;
     totalPages?: number;
-    totalItems?: number;
     itemsPerPage?: number;
-    isLoading?: boolean;
-    tableClassName?: string;
+    rowActions?: IRowAction<T>[];
+    onRowClick?: (row: T) => void;
     showPagination?: boolean;
-    onRowClick?: (item: T) => void;
-    rowClassName?: string | ((item: T) => string);
-    noDataMessage?: string;
-    loadingMessage?: string;
-    stickyHeader?: boolean;
-    sortable?: boolean;
-    onSort?: (column: keyof T, direction: "asc" | "desc") => void;
-    currentSortColumn?: keyof T;
-    currentSortDirection?: "asc" | "desc";
   }
 }
 

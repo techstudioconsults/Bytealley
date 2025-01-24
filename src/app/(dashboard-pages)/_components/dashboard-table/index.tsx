@@ -1,7 +1,6 @@
 "use client";
 
 import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontal } from "lucide-react";
-import { ReactNode } from "react";
 
 import CustomButton from "~/components/common/common-button/common-button";
 import {
@@ -13,33 +12,6 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "~/components/ui/table";
 import { cn } from "~/utils/utils";
 
-// Simplified types
-type DataItem = Record<string, any>;
-
-interface ColumnDef<T extends DataItem> {
-  header: string;
-  accessorKey: keyof T;
-  render?: (value: T[keyof T], row: T) => ReactNode;
-}
-
-interface RowAction<T> {
-  label: string;
-  icon?: ReactNode;
-  onClick: (row: T) => void;
-}
-
-interface DashboardTableProps<T extends DataItem> {
-  data: T[];
-  columns: ColumnDef<T>[];
-  currentPage?: number;
-  onPageChange?: (page: number) => void;
-  totalPages?: number;
-  itemsPerPage?: number;
-  rowActions?: RowAction<T>[];
-  onRowClick?: (row: T) => void;
-  showPagination?: boolean;
-}
-
 export const DashboardTable = <T extends DataItem>({
   data,
   columns,
@@ -50,7 +22,7 @@ export const DashboardTable = <T extends DataItem>({
   rowActions,
   onRowClick,
   showPagination = true,
-}: DashboardTableProps<T>) => {
+}: IDashboardTableProperties<T>) => {
   return (
     <div className="w-full space-y-4">
       {/* Desktop Table View */}
@@ -71,7 +43,7 @@ export const DashboardTable = <T extends DataItem>({
                 onClick={() => {
                   if (onRowClick) onRowClick(item);
                 }}
-                className={onRowClick ? "cursor-pointer hover:bg-muted/50" : ""}
+                className={cn(onRowClick ? "cursor-pointer hover:bg-muted/50" : "", "text-[16px] hover:bg-muted/50")}
               >
                 {columns.map((column, colIndex) => (
                   <TableCell key={`${rowIndex}-${colIndex}`}>
@@ -88,8 +60,8 @@ export const DashboardTable = <T extends DataItem>({
                         {rowActions.map((action, actionIndex) => (
                           <DropdownMenuItem
                             key={actionIndex}
-                            onClick={(e) => {
-                              e.stopPropagation();
+                            onClick={(event) => {
+                              event.stopPropagation();
                               action.onClick(item);
                             }}
                           >
@@ -125,16 +97,14 @@ export const DashboardTable = <T extends DataItem>({
             <div className="mb-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="text-sm font-medium text-muted-foreground">
-                  {columns[0].render ? (
-                    columns[0].render(item[columns[0].accessorKey], item)
-                  ) : (
-                    item[columns[0].accessorKey]
-                  )}
+                  {columns[0].render
+                    ? columns[0].render(item[columns[0].accessorKey], item)
+                    : item[columns[0].accessorKey]}
                 </div>
-                {columns[columns.length - 1].render ? (
-                  columns[columns.length - 1].render!(item[columns[columns.length - 1].accessorKey], item)
+                {columns?.at(-1)?.render ? (
+                  columns?.at(-1)?.render!(item[columns.at(-1)?.accessorKey], item)
                 ) : (
-                  <span>{item[columns[columns.length - 1].accessorKey]}</span>
+                  <span>{item[columns.at(-1)?.accessorKey]}</span>
                 )}
               </div>
               {rowActions && (
@@ -147,8 +117,8 @@ export const DashboardTable = <T extends DataItem>({
                     {rowActions.map((action, actionIndex) => (
                       <DropdownMenuItem
                         key={actionIndex}
-                        onClick={(e) => {
-                          e.stopPropagation();
+                        onClick={(event) => {
+                          event.stopPropagation();
                           action.onClick(item);
                         }}
                       >
