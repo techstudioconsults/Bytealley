@@ -10,10 +10,10 @@ import settings from "@/icons/Property_2_Settings_4_tm54pe.svg";
 import profile from "@/icons/Property_2_User_iiqfxz.svg";
 import customers from "@/icons/Property_2_User-folder_n4spfl.svg";
 import payouts from "@/icons/Property_2_Wallet_3_teopvy.svg";
+import Image from "next/image";
 
-
-
-
+import { Badge } from "~/components/ui/badge";
+import { cn } from "./utils";
 
 export const sideItems: SidebarItem[] = [
   {
@@ -128,5 +128,71 @@ export const rowActions: IRowAction<IProduct>[] = [
   {
     label: "Preview",
     onClick: () => {},
+  },
+];
+
+export const productColumns: IColumnDefinition<IProduct>[] = [
+  {
+    header: "Product Name",
+    accessorKey: "title",
+    render: (_, product: IProduct) => (
+      <div className={`flex w-fit items-center gap-2`}>
+        <Image
+          src={product.thumbnail}
+          alt="product"
+          width={100}
+          height={64}
+          className={`h-[64px] w-[100px] rounded-md bg-low-grey-III object-cover`}
+        />
+        <div className="flex flex-col space-y-2">
+          <span className="text-[16px] font-medium">{product.title}</span>
+          <span className="space-x-1 text-sm text-mid-grey-II">
+            {`PDF-55.MB • `}
+            <span>
+              {new Date(product.created_at).toLocaleString("en-US", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              })}
+            </span>
+            <span>•</span>
+            <span>
+              {new Date(product.created_at).toLocaleString("en-US", {
+                hour: "numeric",
+                minute: "numeric",
+                hour12: true,
+              })}
+            </span>
+          </span>
+        </div>
+      </div>
+    ),
+  },
+  {
+    header: "Price",
+    accessorKey: "price",
+    render: (_, product: IProduct) => <span>₦{product.price?.toLocaleString()}</span>,
+  },
+  {
+    header: "Sales",
+    accessorKey: "total_sales",
+  },
+  {
+    header: "Type",
+    accessorKey: "product_type",
+  },
+  {
+    header: "Status",
+    accessorKey: "status",
+    render: (_, product: IProduct) => (
+      <Badge
+        className={cn(
+          product.status === "draft" ? "bg-mid-warning text-high-warning" : "bg-mid-success text-high-success",
+          "rounded-sm px-4 py-2",
+        )}
+      >
+        {product.status}
+      </Badge>
+    ),
   },
 ];

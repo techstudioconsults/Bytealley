@@ -92,24 +92,25 @@ export const DashboardTable = <T extends DataItem>({
             onClick={() => {
               if (onRowClick) onRowClick(item);
             }}
+            aria-label={`View details for item ${item.id || index}`}
           >
             {/* Card Header - Can show primary info like ID, status, etc */}
             <div className="mb-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="text-sm font-medium text-muted-foreground">
-                  {columns[0].render
-                    ? columns[0].render(item[columns[0].accessorKey], item)
-                    : item[columns[0].accessorKey]}
+                  {columns[0]?.render
+                    ? columns[0].render(item[columns[0]?.accessorKey ?? ""], item)
+                    : (item[columns[0]?.accessorKey ?? ""] ?? "N/A")}
                 </div>
-                {columns?.at(-1)?.render ? (
-                  columns?.at(-1)?.render!(item[columns.at(-1)?.accessorKey], item)
+                {columns.at(-1)?.render ? (
+                  columns.at(-1).render(item[columns.at(-1)?.accessorKey ?? ""], item)
                 ) : (
-                  <span>{item[columns.at(-1)?.accessorKey]}</span>
+                  <span>{item[columns.at(-1)?.accessorKey ?? ""] ?? "N/A"}</span>
                 )}
               </div>
               {rowActions && (
                 <DropdownMenu>
-                  <DropdownMenuTrigger className="h-8 w-8 p-0">
+                  <DropdownMenuTrigger className="h-8 w-8 p-0" aria-label="Open menu">
                     <span className="sr-only">Open menu</span>
                     <MoreHorizontal className="h-4 w-4" />
                   </DropdownMenuTrigger>
@@ -138,9 +139,9 @@ export const DashboardTable = <T extends DataItem>({
                   <p className="text-xs font-medium uppercase text-muted-foreground/60">{column.header}</p>
                   <div className="text-sm font-medium">
                     {column.render ? (
-                      column.render(item[column.accessorKey], item)
+                      column.render(item[column.accessorKey ?? ""], item)
                     ) : (
-                      <span>{item[column.accessorKey]}</span>
+                      <span>{item[column.accessorKey ?? ""] ?? "N/A"}</span>
                     )}
                   </div>
                 </div>

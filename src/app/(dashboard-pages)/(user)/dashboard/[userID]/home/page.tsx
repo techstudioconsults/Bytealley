@@ -6,12 +6,21 @@ import { Wrapper } from "~/components/layout/wrapper";
 import { withDependency } from "~/HOC/withDependencies";
 import { useSession } from "~/hooks/use-session";
 import { AuthService } from "~/services/auth.service";
+import { ProductService } from "~/services/product.service";
 import { dependencies } from "~/utils/dependencies";
 import { ActiveUser } from "./_views/active-user";
 import { NewUser } from "./_views/new-user";
 import { Onboarding } from "./_views/onboarding";
 
-const UserHomePage = ({ authService, params }: { authService: AuthService; params: { userID: string } }) => {
+const UserHomePage = ({
+  productService,
+  authService,
+  params,
+}: {
+  productService: ProductService;
+  authService: AuthService;
+  params: { userID: string };
+}) => {
   const router = useRouter();
   const { user } = useSession();
 
@@ -61,25 +70,26 @@ const UserHomePage = ({ authService, params }: { authService: AuthService; param
   const completedSteps = ONBOARDING_STEPS.filter((step) => step.isCompleted).length;
 
   // Less than 4 steps completed -> Onboarding
-  // if (completedSteps < 3) {
-  //   return (
-  //     <Wrapper className="max-w-[751px]">
-  //       <Onboarding steps={ONBOARDING_STEPS} />
-  //     </Wrapper>
-  //   );
-  // }
+  if (completedSteps < 3) {
+    return (
+      <Wrapper className="max-w-[751px]">
+        <Onboarding steps={ONBOARDING_STEPS} />
+      </Wrapper>
+    );
+  }
 
-  // // Exactly 4 steps completed -> NewUser
-  // if (completedSteps > 3 || completedSteps < 5) {
-  //   return <NewUser steps={ONBOARDING_STEPS} completedSteps={completedSteps} />;
-  // }
+  // Exactly 4 steps completed -> NewUser
+  if (completedSteps > 3 || completedSteps < 5) {
+    return <NewUser steps={ONBOARDING_STEPS} completedSteps={completedSteps} />;
+  }
 
   // All 5 steps completed -> ActiveUser
-  return <ActiveUser />;
+  return <ActiveUser productService={productService} />;
 };
 
 const HomePage = withDependency(UserHomePage, {
   authService: dependencies.AUTH_SERVICE,
+  productService: dependencies.PRODUCT_SERVICE,
 });
 
 export default HomePage;

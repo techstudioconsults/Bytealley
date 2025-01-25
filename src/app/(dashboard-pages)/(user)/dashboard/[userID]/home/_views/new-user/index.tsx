@@ -1,17 +1,17 @@
 import productImage from "@/images/empty_product.svg";
 import onboardingImage from "@/images/home_banner_illustration.svg";
 
+import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import { ActionBanner } from "../../_components/action-banner";
 import { DashboardBanner } from "../../_components/home-banner";
-import { EmptyState } from "../empty-state";
 import { OnboardingHeader } from "../onboarding/onboarding-header";
 
-interface NewUserProps {
+interface NewUserProperties {
   steps: OnboardingStep[];
   completedSteps: number;
 }
 
-export const NewUser = ({ steps, completedSteps }: NewUserProps) => {
+export const NewUser = ({ steps, completedSteps }: NewUserProperties) => {
   // Find the first incomplete step
   const nextStep = steps.find((step) => !step.isCompleted);
 
@@ -42,12 +42,17 @@ export const NewUser = ({ steps, completedSteps }: NewUserProps) => {
       <div className="space-y-4">
         <h6 className="text-lg font-semibold">Activity</h6>
         <EmptyState
-          image={{
-            src: productImage.src,
-            alt: "Empty state illustration",
+          images={[
+            {
+              src: productImage.src,
+              alt: "Empty state illustration",
+            },
+          ]}
+          description="You do not have any sales activities yet."
+          button={{
+            text: "Create your first product",
+            onClick: () => {},
           }}
-          message="You do not have any sales activities yet."
-          buttonText="Create your first product"
         />
       </div>
     </section>

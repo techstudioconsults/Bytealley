@@ -9,6 +9,9 @@ import { withDependency } from "~/HOC/withDependencies";
 import { ProductService } from "~/services/product.service";
 import { dependencies } from "~/utils/dependencies";
 import { AllProducts } from "./_views/all-products";
+import { DeletedProducts } from "./_views/deleted-products";
+import { DraftProducts } from "./_views/draft-products";
+import { LiveProducts } from "./_views/live-products";
 
 const Page = ({ productService }: { productService: ProductService }) => {
   const router = useRouter();
@@ -85,9 +88,15 @@ const Page = ({ productService }: { productService: ProductService }) => {
       <TabsContent value="all-products">
         <AllProducts productService={productService} />
       </TabsContent>
-      <TabsContent value="live"></TabsContent>
-      <TabsContent value="drafts">Drafts content</TabsContent>
-      <TabsContent value="deleted">Deleted content</TabsContent>
+      <TabsContent value="live">
+        <LiveProducts productService={productService} />
+      </TabsContent>
+      <TabsContent value="drafts">
+        <DraftProducts productService={productService} />
+      </TabsContent>
+      <TabsContent value="deleted">
+        <DeletedProducts productService={productService} />
+      </TabsContent>
     </Tabs>
   );
 };
