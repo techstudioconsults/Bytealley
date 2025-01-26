@@ -1,8 +1,7 @@
-import uploadIcon from "@/icons/Property_2_Upload_cm42yb.svg";
 import empty1 from "@/images/empty_img_1.svg";
 import empty2 from "@/images/empty_img_2.svg";
 import { format } from "date-fns";
-import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import { DateRange } from "react-day-picker";
 
@@ -10,15 +9,16 @@ import { AnalyticsCard } from "~/app/(dashboard-pages)/_components/analytics-car
 import { DashboardTable } from "~/app/(dashboard-pages)/_components/dashboard-table";
 import { DateRangePicker } from "~/app/(dashboard-pages)/_components/date-range-picker";
 import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
+import ExportAction from "~/app/(dashboard-pages)/_components/export-action";
 import { SelectDropdown } from "~/app/(dashboard-pages)/_components/select-dropdown";
 import Loading from "~/app/Loading";
-import CustomButton from "~/components/common/common-button/common-button";
 import { LoadingSpinner } from "~/components/miscellaneous/loading-spinner";
 import { useDebounce } from "~/hooks/use-debounce";
 import { ProductService } from "~/services/product.service";
-import { productColumns, rowActions, statusOptions } from "~/utils/constants";
+import { productColumns, RowActions, statusOptions } from "~/utils/constants";
 
 export const AllProducts = ({ productService }: { productService: ProductService }) => {
+  const router = useRouter();
   const [isPendingProducts, startTransitionProducts] = useTransition();
   const [isPendingAnalytics, startTransitionAnalytics] = useTransition();
   const [analytics, setAnalytics] = useState<IDashboardAnalytics | null>(null);
@@ -104,15 +104,15 @@ export const AllProducts = ({ productService }: { productService: ProductService
                   placeholder="Filter by status"
                 />
               </div>
-              <CustomButton
-                variant={`outline`}
-                className={`w-full border-primary lg:w-auto`}
-                size={`lg`}
-                isLeftIconVisible
-                icon={<Image src={uploadIcon} width={16} height={16} alt="export" />}
-              >
-                Export
-              </CustomButton>
+              <ExportAction
+                service={productService}
+                currentPage={currentPage}
+                dateRange={dateRange}
+                status={status}
+                onDownloadComplete={() => {
+                  // Handle any additional logic after download if needed
+                }}
+              />
             </section>
             {products.length > 0 ? (
               <section>
@@ -123,8 +123,11 @@ export const AllProducts = ({ productService }: { productService: ProductService
                   totalPages={paginationMeta?.last_page}
                   itemsPerPage={paginationMeta?.per_page}
                   onPageChange={handlePageChange}
-                  rowActions={rowActions}
+                  rowActions={(product) => RowActions(product, productService)}
                   showPagination
+                  onRowClick={(product) => {
+                    router.push(`/dashboard/${product.user_id}/products/${product.id}`);
+                  }}
                 />
               </section>
             ) : (

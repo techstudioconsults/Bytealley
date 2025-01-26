@@ -1,5 +1,3 @@
-"use client";
-
 import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontal } from "lucide-react";
 
 import CustomButton from "~/components/common/common-button/common-button";
@@ -57,7 +55,7 @@ export const DashboardTable = <T extends DataItem>({
                         <MoreHorizontal className="h-4 w-4" />
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        {rowActions.map((action, actionIndex) => (
+                        {rowActions(item).map((action: IRowAction<T>, actionIndex: number) => (
                           <DropdownMenuItem
                             key={actionIndex}
                             onClick={(event) => {
@@ -103,7 +101,7 @@ export const DashboardTable = <T extends DataItem>({
                     : (item[columns[0]?.accessorKey ?? ""] ?? "N/A")}
                 </div>
                 {columns.at(-1)?.render ? (
-                  columns.at(-1).render(item[columns.at(-1)?.accessorKey ?? ""], item)
+                  columns.at(-1)?.render(item[columns.at(-1)?.accessorKey ?? ""], item)
                 ) : (
                   <span>{item[columns.at(-1)?.accessorKey ?? ""] ?? "N/A"}</span>
                 )}
@@ -115,7 +113,7 @@ export const DashboardTable = <T extends DataItem>({
                     <MoreHorizontal className="h-4 w-4" />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    {rowActions.map((action, actionIndex) => (
+                    {rowActions(item).map((action: IRowAction<T>, actionIndex: number) => (
                       <DropdownMenuItem
                         key={actionIndex}
                         onClick={(event) => {

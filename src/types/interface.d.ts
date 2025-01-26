@@ -207,7 +207,7 @@ declare global {
     onPageChange?: (page: number) => void;
     totalPages?: number;
     itemsPerPage?: number;
-    rowActions?: IRowAction<T>[];
+    rowActions?: (row: T) => IRowAction<T>[];
     onRowClick?: (row: T) => void;
     showPagination?: boolean;
   }

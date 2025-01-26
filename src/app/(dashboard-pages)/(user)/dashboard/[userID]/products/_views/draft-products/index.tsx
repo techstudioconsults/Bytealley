@@ -9,7 +9,7 @@ import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import Loading from "~/app/Loading";
 import { useDebounce } from "~/hooks/use-debounce";
 import { ProductService } from "~/services/product.service";
-import { productColumns, rowActions } from "~/utils/constants";
+import { productColumns, RowActions } from "~/utils/constants";
 
 export const DraftProducts = ({ productService }: { productService: ProductService }) => {
   const [isPendingDraftProducts, startTransitionDraftProducts] = useTransition();
@@ -64,7 +64,7 @@ export const DraftProducts = ({ productService }: { productService: ProductServi
                 totalPages={paginationMeta?.last_page}
                 itemsPerPage={paginationMeta?.per_page}
                 onPageChange={handlePageChange}
-                rowActions={rowActions}
+                rowActions={(product) => RowActions(product, productService)}
                 showPagination
               />
             </section>
