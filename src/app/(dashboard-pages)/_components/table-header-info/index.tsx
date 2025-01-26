@@ -51,7 +51,7 @@ export const TableHeaderInfo: React.FC<TableHeaderInfoProperties> = ({ headers, 
         <thead>
           <tr className="border-t">
             {headers.map((header, index) => (
-              <th key={index} className="px-4 py-3 text-left text-sm font-semibold text-mid-grey-III">
+              <th key={index} className="pb-3 pt-6 text-left font-semibold text-mid-grey-III">
                 {header}
               </th>
             ))}
@@ -60,7 +60,7 @@ export const TableHeaderInfo: React.FC<TableHeaderInfoProperties> = ({ headers, 
         <tbody>
           <tr className="border-b">
             {headers.map((header, index) => (
-              <td key={index} className="px-4 py-3 text-mid-grey-III">
+              <td key={index} className="pb-6 pt-3 text-mid-grey-III">
                 {renderCellContent(header, product)}
               </td>
             ))}
@@ -70,7 +70,7 @@ export const TableHeaderInfo: React.FC<TableHeaderInfoProperties> = ({ headers, 
 
       {/* Mobile View */}
       <section className="md:hidden">
-        <section className="space-y-4 border-b p-4">
+        <section className="space-y-4 border-b py-4">
           {headers.map((header, index) => (
             <div key={index} className="space-y-2">
               <p className="font-semibold">{header}:</p>

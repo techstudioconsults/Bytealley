@@ -19,7 +19,7 @@ export const DashboardTable = <T extends DataItem>({
   itemsPerPage = 10,
   rowActions,
   onRowClick,
-  showPagination = true,
+  showPagination = false,
 }: IDashboardTableProperties<T>) => {
   return (
     <div className="w-full space-y-4">

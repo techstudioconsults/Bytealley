@@ -268,3 +268,22 @@ export const productColumns: IColumnDefinition<IProduct>[] = [
     ),
   },
 ];
+
+export const singleProductCustomerColumns: IColumnDefinition<IProductOrderFlat>[] = [
+  {
+    header: "Customer Name",
+    accessorKey: "name",
+  },
+  {
+    header: "Customer Email",
+    accessorKey: "email",
+  },
+  {
+    header: "Quantity",
+    accessorKey: "quantity",
+  },
+  {
+    header: "Date",
+    accessorKey: "date",
+  },
+];

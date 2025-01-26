@@ -44,6 +44,12 @@ export class ProductService {
       return response.data.data;
     }
   }
+  async getProductOrderByProductId(productId: string) {
+    const response = await this.http.get<{ data: IProductOrder[] }>(`/orders/products/${productId}`);
+    if (response?.status === 200) {
+      return response.data.data;
+    }
+  }
 
   private buildQueryParameters(filters: IProductFilters): string {
     const queryParameters = new URLSearchParams();

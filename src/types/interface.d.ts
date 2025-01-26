@@ -211,6 +211,27 @@ declare global {
     onRowClick?: (row: T) => void;
     showPagination?: boolean;
   }
+
+  interface ICustomer {
+    name: string;
+    email: string;
+  }
+
+  interface IProductOrder {
+    id: string;
+    reference_no: string;
+    quantity: number;
+    total_amount: number;
+    product: IProduct;
+    customer: ICustomer;
+    created_at: string;
+  }
+  interface IProductOrderFlat {
+    name: string;
+    email: string;
+    quantity: number | string;
+    date: string;
+  }
 }
 
 export {};
