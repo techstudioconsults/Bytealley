@@ -470,7 +470,15 @@ export function FileUpload({
   );
 }
 
-export function Highlights({ name }: { name: string }) {
+export function Highlights({
+  name,
+  label,
+  placeholder = "Enter information",
+  description = "Write key description of your product",
+  addButtonText = "Add more highlight",
+  maxFields = 10,
+  className = "",
+}: HighlightsProperties) {
   const { control } = useFormContext();
   const { fields, append, remove } = useFieldArray({
     control,
@@ -478,45 +486,56 @@ export function Highlights({ name }: { name: string }) {
   });
 
   return (
-    <div className="max-w-[552px] space-y-4">
+    <div className={`max-w-[552px] space-y-4 ${className}`}>
       <Label className="text-sm font-medium">
-        Highlights
+        {label}
         <div className="flex items-center gap-1 text-mid-grey-II">
           <InfoIcon className="h-4 w-4" />
-          <span className="text-xs font-semibold">Write key features that highlight your product.</span>
+          <span className="text-xs font-semibold">{description}</span>
         </div>
       </Label>
+
       {fields.map((field, index) => (
         <div key={field.id} className="flex items-center space-x-2">
-          <Input
-            {...control.register(`highlights.${index}`)}
-            placeholder="Enter information"
-            className="`h-12 flex-1 bg-low-grey-III"
+          <Controller
+            name={`${name}.${index}`}
+            control={control}
+            render={({ field: { value, onChange } }) => (
+              <Input
+                value={value}
+                onChange={onChange}
+                placeholder={placeholder}
+                className="h-12 flex-1 bg-low-grey-III"
+              />
+            )}
           />
           <CustomButton
             isIconOnly
             icon={<MdCancel className="h-4 w-4" />}
-            variant={`ghost`}
+            variant="ghost"
             type="button"
-            size={`icon`}
+            size="icon"
             onClick={() => remove(index)}
           />
         </div>
       ))}
-      <CustomButton
-        isLeftIconVisible
-        size={`xl`}
-        icon={<PlusIcon className="mr-2 h-4 w-4" />}
-        type="button"
-        variant="outline"
-        onClick={(event) => {
-          event.preventDefault();
-          append("");
-        }}
-        className="w-full border-primary text-primary"
-      >
-        Add more highlight
-      </CustomButton>
+
+      {fields.length < maxFields && (
+        <CustomButton
+          isLeftIconVisible
+          size="xl"
+          icon={<PlusIcon className="mr-2 h-4 w-4" />}
+          type="button"
+          variant="outline"
+          onClick={(event) => {
+            event.preventDefault();
+            append("");
+          }}
+          className="w-full border-primary text-primary"
+        >
+          {addButtonText}
+        </CustomButton>
+      )}
     </div>
   );
 }

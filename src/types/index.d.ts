@@ -66,14 +66,30 @@ declare global {
     acceptedFormats?: string;
   };
 
+  interface HighlightsProperties {
+    name: string;
+    label?: string;
+    placeholder?: string;
+    description?: string;
+    addButtonText?: string;
+    maxFields?: number;
+    className?: string;
+  }
+
   type ProductFormValues = {
     product_type: string;
     title: string;
     category: string;
     price: number;
     discount: number;
+    data: File[];
     description: string;
     cover_photo: File[];
+    highlights: string[];
+    thumbnail: File | null;
+    tags: string[];
+    resource_link: string[];
+    portfolio_link: string;
   };
 }
 
