@@ -1,6 +1,15 @@
 import { FormProvider, useForm } from "react-hook-form";
 
-import { FormField, ImageUpload, RadioCardGroup, RichTextEditor } from "~/components/common/FormFields";
+import {
+  FileUpload,
+  FormField,
+  Highlights,
+  ImageUpload,
+  MultiSelect,
+  RadioCardGroup,
+  RichTextEditor,
+  ThumbNailUpload,
+} from "~/components/common/FormFields";
 
 // import { cn } from "~/utils/utils";
 
@@ -14,6 +23,8 @@ export const ProductForm = () => {
       discount: 0,
       description: "",
       cover_photo: [],
+      highlights: [],
+      thumbnail: [],
     },
   });
 
@@ -82,7 +93,28 @@ export const ProductForm = () => {
           <RichTextEditor label="Description" name="description" placeholder="Enter description of your product" />
         </section>
         <section>
-          <ImageUpload label="Cover photo" name="cover_photo" />
+          <FileUpload label="Digital Product" name="data" />
+        </section>
+        <section>
+          <ImageUpload required label="Cover photo" name="cover_photo" />
+        </section>
+        <section className="grid gap-4 lg:grid-cols-2">
+          <Highlights name="highlights" />
+          <ThumbNailUpload name="thumbnail" />
+        </section>
+        <section>
+          <MultiSelect
+            className={`h-12 bg-low-grey-III`}
+            label="Tags"
+            name="tags"
+            options={[
+              { value: "option1", label: "Option 1" },
+              { value: "option2", label: "Option 2" },
+              { value: "option3", label: "Option 3" },
+            ]}
+            placeholder="Choose options"
+            required
+          />
         </section>
         <button type="submit">Submit</button>
       </form>

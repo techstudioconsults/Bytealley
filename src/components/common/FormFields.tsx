@@ -1,8 +1,9 @@
 /* eslint-disable unicorn/prefer-spread */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import fileIcon from "@/icons/Property_2_Selected-file_ybygib.svg";
 import uploadIcon from "@/icons/Property_2_Uploaded-file_sxo5a6.svg";
 import Image from "next/image";
-import { Controller, useFormContext } from "react-hook-form";
+import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import ReactQuill from "react-quill";
 
 import { Input } from "~/components/ui/input";
@@ -13,9 +14,12 @@ import { cn } from "~/utils/utils";
 
 import "react-quill/dist/quill.snow.css"; // Import Quill styles
 
-import { InfoIcon } from "lucide-react";
+import { CameraIcon, InfoIcon, PlusIcon } from "lucide-react";
 import { useState } from "react";
+import { MdCancel } from "react-icons/md";
 
+import { Badge } from "../ui/badge";
+import { Checkbox } from "../ui/checkbox";
 import CustomButton from "./common-button/common-button";
 
 export function FormField({
@@ -234,13 +238,10 @@ export function ImageUpload({
     if (files && files.length > 0) {
       // Convert FileList to an array and slice to respect maxFiles
       const newFiles = Array.from(files).slice(0, maxFiles - (field.value?.length || 0));
-
       // Create new previews for the selected files
       const newPreviews = newFiles.map((file) => URL.createObjectURL(file));
-
       // Append new previews to the existing previews
       setPreviews((previousPreviews) => [...previousPreviews, ...newPreviews].slice(0, maxFiles));
-
       // Append new files to the existing files in the form state
       const updatedFiles = field.value ? [...field.value, ...newFiles] : newFiles;
       field.onChange(updatedFiles.slice(0, maxFiles)); // Ensure we don't exceed maxFiles
@@ -270,7 +271,7 @@ export function ImageUpload({
               type="button"
               onClick={(event) => {
                 event.preventDefault();
-                (document.querySelector("#file-upload") as HTMLInputElement)?.click();
+                (document.querySelector("#image-upload") as HTMLInputElement)?.click();
               }}
             >
               Add Photos
@@ -286,14 +287,14 @@ export function ImageUpload({
           <div>
             <div
               className={cn(
-                "flex cursor-pointer flex-wrap gap-4 rounded-lg",
+                "flex cursor-pointer flex-wrap gap-4",
                 error && "border-destructive",
                 disabled && "cursor-not-allowed opacity-50",
                 className,
               )}
             >
               <input
-                id="file-upload"
+                id="image-upload"
                 type="file"
                 multiple
                 accept={acceptedFormats}
@@ -303,7 +304,7 @@ export function ImageUpload({
               />
 
               {previews.length === 0 && (
-                <div className="flex h-[200px] w-full flex-col items-center justify-center gap-2 border bg-low-purple">
+                <div className="flex h-[200px] w-full flex-col items-center justify-center gap-2 rounded-md border bg-low-purple">
                   <CustomButton
                     variant={`outline`}
                     className={`border-primary text-primary`}
@@ -312,7 +313,7 @@ export function ImageUpload({
                     type="button"
                     onClick={(event) => {
                       event.preventDefault();
-                      (document.querySelector("#file-upload") as HTMLInputElement)?.click();
+                      (document.querySelector("#image-upload") as HTMLInputElement)?.click();
                     }}
                   >
                     Add Photos
@@ -331,6 +332,399 @@ export function ImageUpload({
             </div>
           </div>
         )}
+      />
+
+      {error && <p className="text-sm text-destructive">{error.message?.toString()}</p>}
+    </div>
+  );
+}
+
+export function FileUpload({
+  label = "Product",
+  name,
+  required = false,
+  disabled = false,
+  className = "",
+  maxFiles = 4,
+  acceptedFormats = "application/pdf",
+}: ImageUploadProperties) {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+  const error = errors[name];
+
+  const [previews, setPreviews] = useState<{ name: string; size: number; type: string }[]>([]);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, field: any) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      // Convert FileList to an array and slice to respect maxFiles
+      const newFiles = Array.from(files).slice(0, maxFiles - (field.value?.length || 0));
+      // Create new previews for the selected files
+      const newPreviews = newFiles.map((file) => ({ name: file.name, size: file.size, type: file.type }));
+      // Append new previews to the existing previews
+      setPreviews((previousPreviews) => [...previousPreviews, ...newPreviews].slice(0, maxFiles));
+      // Append new files to the existing files in the form state
+      const updatedFiles = field.value ? [...field.value, ...newFiles] : newFiles;
+      field.onChange(updatedFiles.slice(0, maxFiles)); // Ensure we don't exceed maxFiles
+    }
+  };
+
+  return (
+    <div className="space-y-2">
+      {label && (
+        <section className="flex flex-col justify-between lg:flex-row lg:items-center">
+          <div className="">
+            <Label className="text-sm font-medium">
+              {label}
+              {required && <span className="ml-1 text-destructive">*</span>}
+            </Label>
+            <p className="text-xs text-mid-grey-II">
+              Upload the actual product you want to sell. Upload the product file
+            </p>
+          </div>
+          {previews.length > 0 && (
+            <CustomButton
+              variant={`outline`}
+              className={`border-primary text-primary`}
+              isLeftIconVisible
+              icon={<Image src={uploadIcon} alt="upload" width={16} height={16} />}
+              type="button"
+              onClick={(event) => {
+                event.preventDefault();
+                (document.querySelector("#file-upload") as HTMLInputElement)?.click();
+              }}
+            >
+              Upload Files
+            </CustomButton>
+          )}
+        </section>
+      )}
+
+      <Controller
+        name={name}
+        control={control}
+        render={({ field }) => (
+          <div>
+            <div
+              className={cn(
+                "flex cursor-pointer flex-wrap gap-4",
+                error && "border-destructive",
+                disabled && "cursor-not-allowed opacity-50",
+                className,
+              )}
+            >
+              <input
+                id="file-upload"
+                type="file"
+                multiple
+                accept={acceptedFormats}
+                disabled={disabled}
+                onChange={(event) => handleFileChange(event, field)}
+                className="hidden"
+              />
+
+              {previews.length === 0 && (
+                <div className="flex h-[200px] w-full flex-col items-center justify-center gap-2 rounded-md border bg-low-purple">
+                  <CustomButton
+                    variant={`outline`}
+                    className={`border-primary text-primary`}
+                    isLeftIconVisible
+                    icon={<Image src={uploadIcon} alt="upload" width={16} height={16} />}
+                    type="button"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      (document.querySelector("#file-upload") as HTMLInputElement)?.click();
+                    }}
+                  >
+                    Upload Files
+                  </CustomButton>
+                  <div className="flex items-center gap-1 text-mid-grey-II">
+                    <InfoIcon className="h-4 w-4" />
+                    <span className="text-xs font-semibold">
+                      File can be an image, video, document in various formats (jpg, png, mp4, pdf etc). min: 100mb
+                    </span>
+                  </div>
+                </div>
+              )}
+              {previews.map((preview, index) => (
+                <section
+                  key={index}
+                  className="relative flex min-h-[94px] max-w-[560px] items-center gap-4 rounded-md bg-low-purple p-6"
+                >
+                  <Image src={fileIcon} alt={`Preview ${index + 1}`} width={72} height={72} />
+                  <div className="flex flex-col gap-1">
+                    <span className="text-sm font-bold">{preview.name}</span>
+                    <span className="text-xs text-mid-grey-II">{preview.size}mb</span>
+                  </div>
+                </section>
+              ))}
+            </div>
+          </div>
+        )}
+      />
+
+      {error && <p className="text-sm text-destructive">{error.message?.toString()}</p>}
+    </div>
+  );
+}
+
+export function Highlights({ name }: { name: string }) {
+  const { control } = useFormContext();
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name,
+  });
+
+  return (
+    <div className="max-w-[552px] space-y-4">
+      <Label className="text-sm font-medium">
+        Highlights
+        <div className="flex items-center gap-1 text-mid-grey-II">
+          <InfoIcon className="h-4 w-4" />
+          <span className="text-xs font-semibold">Write key features that highlight your product.</span>
+        </div>
+      </Label>
+      {fields.map((field, index) => (
+        <div key={field.id} className="flex items-center space-x-2">
+          <Input
+            {...control.register(`highlights.${index}`)}
+            placeholder="Enter information"
+            className="`h-12 flex-1 bg-low-grey-III"
+          />
+          <CustomButton
+            isIconOnly
+            icon={<MdCancel className="h-4 w-4" />}
+            variant={`ghost`}
+            type="button"
+            size={`icon`}
+            onClick={() => remove(index)}
+          />
+        </div>
+      ))}
+      <CustomButton
+        isLeftIconVisible
+        size={`xl`}
+        icon={<PlusIcon className="mr-2 h-4 w-4" />}
+        type="button"
+        variant="outline"
+        onClick={(event) => {
+          event.preventDefault();
+          append("");
+        }}
+        className="w-full border-primary text-primary"
+      >
+        Add more highlight
+      </CustomButton>
+    </div>
+  );
+}
+
+export function ThumbNailUpload({
+  label = "Thumbnail",
+  name,
+  required = false,
+  disabled = false,
+  className = "",
+  maxFiles = 1,
+  acceptedFormats = "image/jpeg, image/png",
+}: ImageUploadProperties) {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+  const error = errors[name];
+
+  const [previews, setPreviews] = useState<string[]>([]);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, field: any) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      // Convert FileList to an array and slice to respect maxFiles
+      const newFiles = Array.from(files).slice(0, maxFiles - (field.value?.length || 0));
+      // Create new previews for the selected files
+      const newPreviews = newFiles.map((file) => URL.createObjectURL(file));
+      // Append new previews to the existing previews
+      setPreviews((previousPreviews) => [...previousPreviews, ...newPreviews].slice(0, maxFiles));
+      // Append new files to the existing files in the form state
+      const updatedFiles = field.value ? [...field.value, ...newFiles] : newFiles;
+      field.onChange(updatedFiles.slice(0, maxFiles)); // Ensure we don't exceed maxFiles
+    }
+  };
+
+  return (
+    <div className="space-y-2">
+      {label && (
+        <section className="flex flex-col justify-between lg:flex-row lg:items-center">
+          <div className="">
+            <Label className="text-sm font-medium">
+              {label}
+              {required && <span className="ml-1 text-destructive">*</span>}
+            </Label>
+            <p className="text-xs text-mid-grey-II">
+              This image will appear in the explore page, upload a square size of 2mb.
+            </p>
+          </div>
+          {previews.length > 0 && (
+            <CustomButton
+              variant={`outline`}
+              className={`border-primary text-primary`}
+              isLeftIconVisible
+              icon={<CameraIcon className="h-4 w-4" />}
+              type="button"
+              onClick={(event) => {
+                event.preventDefault();
+                (document.querySelector("#thumbnail-upload") as HTMLInputElement)?.click();
+              }}
+            >
+              Upload Image
+            </CustomButton>
+          )}
+        </section>
+      )}
+
+      <Controller
+        name={name}
+        control={control}
+        render={({ field }) => (
+          <div>
+            <div
+              className={cn(
+                "flex flex-wrap gap-4",
+                error && "border-destructive",
+                disabled && "cursor-not-allowed opacity-50",
+                className,
+              )}
+            >
+              <input
+                id="thumbnail-upload"
+                type="file"
+                multiple
+                accept={acceptedFormats}
+                disabled={disabled}
+                onChange={(event) => handleFileChange(event, field)}
+                className="hidden"
+              />
+
+              {previews.length === 0 && (
+                <div className="flex h-[200px] w-full flex-col items-center justify-center gap-2 rounded-md border bg-low-purple">
+                  <CustomButton
+                    variant={`outline`}
+                    className={`border-primary text-primary`}
+                    isLeftIconVisible
+                    icon={<CameraIcon className="h-4 w-4" />}
+                    type="button"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      (document.querySelector("#thumbnail-upload") as HTMLInputElement)?.click();
+                    }}
+                  >
+                    Upload Image
+                  </CustomButton>
+                </div>
+              )}
+              {previews.map((preview, index) => (
+                <div key={index} className="relative h-[200px] w-[200px]">
+                  <Image src={preview} alt={`Preview ${index + 1}`} fill className={cn("rounded-lg object-cover")} />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      />
+
+      {error && <p className="text-sm text-destructive">{error.message?.toString()}</p>}
+    </div>
+  );
+}
+
+export function MultiSelect({
+  label,
+  name,
+  options,
+  placeholder = "Select options",
+  required = false,
+  // disabled = false,
+  className = "",
+}: {
+  label?: string;
+  name: string;
+  options: { value: string; label: string }[];
+  placeholder?: string;
+  required?: boolean;
+  disabled?: boolean;
+  className?: string;
+}) {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+  const error = errors[name];
+
+  return (
+    <div className="space-y-2">
+      {label && (
+        <Label className="text-sm font-medium">
+          {label}
+          {required && <span className="ml-1 text-destructive">*</span>}
+        </Label>
+      )}
+
+      <Controller
+        name={name}
+        control={control}
+        render={({ field }) => {
+          const selectedValues = field.value || [];
+
+          const handleSelect = (value: string) => {
+            const newSelectedValues = selectedValues.includes(value)
+              ? selectedValues.filter((v: string) => v !== value) // Deselect if already selected
+              : [...selectedValues, value]; // Select if not already selected
+            field.onChange(newSelectedValues);
+          };
+
+          return (
+            <>
+              <Select>
+                <SelectTrigger className={cn(error && "border-destructive", className)}>
+                  <SelectValue placeholder={placeholder}>
+                    {selectedValues.length > 0 ? `${selectedValues.length} selected` : placeholder}
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  {options.map((option) => (
+                    <div
+                      key={option.value}
+                      className="flex items-center space-x-2 p-2"
+                      onClick={() => handleSelect(option.value)}
+                    >
+                      <Checkbox
+                        checked={selectedValues.includes(option.value)}
+                        onCheckedChange={() => handleSelect(option.value)}
+                      />
+                      <label className="text-sm">{option.label}</label>
+                    </div>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              {/* Display selected values below the input */}
+              {selectedValues.length > 0 && (
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {selectedValues.map((value: string) => {
+                    const label = options.find((opt) => opt.value === value)?.label;
+                    return label ? (
+                      <Badge key={value} className="text-xs">
+                        {label}
+                      </Badge>
+                    ) : null;
+                  })}
+                </div>
+              )}
+            </>
+          );
+        }}
       />
 
       {error && <p className="text-sm text-destructive">{error.message?.toString()}</p>}
