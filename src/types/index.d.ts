@@ -55,18 +55,17 @@ declare global {
     className?: string;
   };
 
-  type ImageUploadProperties = {
+  type ThumbNailUploadProperties = {
     label?: string;
     name: string;
     required?: boolean;
     disabled?: boolean;
     className?: string;
-    maxFiles?: number;
-    maxResolution?: { width: number; height: number };
     acceptedFormats?: string;
+    maxFileSize?: number;
   };
 
-  interface HighlightsProperties {
+  type HighlightsProperties = {
     name: string;
     label?: string;
     placeholder?: string;
@@ -74,7 +73,29 @@ declare global {
     addButtonText?: string;
     maxFields?: number;
     className?: string;
-  }
+  };
+
+  type ImageUploadProperties = {
+    label?: string;
+    name: string;
+    required?: boolean;
+    disabled?: boolean;
+    className?: string;
+    maxFiles?: number;
+    acceptedFormats?: string;
+    maxFileSize?: number;
+  };
+
+  type FileUploadProperties = {
+    label?: string;
+    name: string;
+    required?: boolean;
+    disabled?: boolean;
+    className?: string;
+    maxFiles?: number;
+    acceptedFormats?: string;
+    maxFileSize?: number;
+  };
 
   type ProductFormValues = {
     product_type: string;

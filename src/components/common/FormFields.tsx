@@ -224,6 +224,7 @@ export function ImageUpload({
   className = "",
   maxFiles = 4,
   acceptedFormats = "image/jpeg, image/png",
+  maxFileSize = 2 * 1024 * 1024, // Default to 2MB
 }: ImageUploadProperties) {
   const {
     control,
@@ -238,18 +239,38 @@ export function ImageUpload({
     if (files && files.length > 0) {
       // Convert FileList to an array and slice to respect maxFiles
       const newFiles = Array.from(files).slice(0, maxFiles - (field.value?.length || 0));
-      // Create new previews for the selected files
-      const newPreviews = newFiles.map((file) => URL.createObjectURL(file));
+      // Validate file size and type
+      const validFiles = newFiles.filter((file) => {
+        if (file.size > maxFileSize) {
+          alert(`File "${file.name}" exceeds the maximum size of ${maxFileSize / 1024 / 1024}MB.`);
+          return false;
+        }
+        if (!acceptedFormats.includes(file.type)) {
+          alert(`File "${file.name}" is not a supported format. Accepted formats: ${acceptedFormats}.`);
+          return false;
+        }
+        return true;
+      });
+
+      // Create new previews for the valid files
+      const newPreviews = validFiles.map((file) => URL.createObjectURL(file));
       // Append new previews to the existing previews
       setPreviews((previousPreviews) => [...previousPreviews, ...newPreviews].slice(0, maxFiles));
       // Append new files to the existing files in the form state
-      const updatedFiles = field.value ? [...field.value, ...newFiles] : newFiles;
+      const updatedFiles = field.value ? [...field.value, ...validFiles] : validFiles;
       field.onChange(updatedFiles.slice(0, maxFiles)); // Ensure we don't exceed maxFiles
     }
   };
 
+  const handleRemoveFile = (index: number, field: any) => {
+    const updatedPreviews = previews.filter((_, i) => i !== index);
+    const updatedFiles = field.value.filter((_: any, i: number) => i !== index);
+    setPreviews(updatedPreviews);
+    field.onChange(updatedFiles);
+  };
+
   return (
-    <div className="space-y-2">
+    <div className={cn("space-y-2", className)}>
       {label && (
         <section className="flex flex-col justify-between lg:flex-row lg:items-center">
           <div className="">
@@ -259,13 +280,13 @@ export function ImageUpload({
             </Label>
             <p className="text-xs text-mid-grey-II">
               Upload the photos to promote your product, a maximum of {maxFiles} photos. Images should be horizontal, at
-              least 1280x720px, and 72 DPI (dots per inch)
+              least 1280x720px, and 72 DPI (dots per inch).
             </p>
           </div>
-          {previews.length > 0 && (
+          {previews.length > 0 && previews.length < maxFiles && (
             <CustomButton
-              variant={`outline`}
-              className={`border-primary text-primary`}
+              variant="outline"
+              className="border-primary text-primary"
               isLeftIconVisible
               icon={<Image src={uploadIcon} alt="upload" width={16} height={16} />}
               type="button"
@@ -290,7 +311,6 @@ export function ImageUpload({
                 "flex cursor-pointer flex-wrap gap-4",
                 error && "border-destructive",
                 disabled && "cursor-not-allowed opacity-50",
-                className,
               )}
             >
               <input
@@ -306,8 +326,8 @@ export function ImageUpload({
               {previews.length === 0 && (
                 <div className="flex h-[200px] w-full flex-col items-center justify-center gap-2 rounded-md border bg-low-purple">
                   <CustomButton
-                    variant={`outline`}
-                    className={`border-primary text-primary`}
+                    variant="outline"
+                    className="border-primary text-primary"
                     isLeftIconVisible
                     icon={<Image src={uploadIcon} alt="upload" width={16} height={16} />}
                     type="button"
@@ -324,9 +344,22 @@ export function ImageUpload({
                   </div>
                 </div>
               )}
+
               {previews.map((preview, index) => (
                 <div key={index} className="relative h-[200px] w-[368px]">
-                  <Image src={preview} alt={`Preview ${index + 1}`} fill className={cn("rounded-lg object-cover")} />
+                  <Image src={preview} alt={`Preview ${index + 1}`} fill className="rounded-lg object-cover" />
+                  <CustomButton
+                    isIconOnly
+                    icon={<MdCancel className="h-4 w-4" />}
+                    variant="ghost"
+                    type="button"
+                    size="icon"
+                    className="absolute right-2 top-2 bg-background/80 backdrop-blur-sm"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      handleRemoveFile(index, field);
+                    }}
+                  />
                 </div>
               ))}
             </div>
@@ -347,7 +380,8 @@ export function FileUpload({
   className = "",
   maxFiles = 4,
   acceptedFormats = "application/pdf",
-}: ImageUploadProperties) {
+  maxFileSize = 100 * 1024 * 1024, // Default to 100MB
+}: FileUploadProperties) {
   const {
     control,
     formState: { errors },
@@ -361,18 +395,38 @@ export function FileUpload({
     if (files && files.length > 0) {
       // Convert FileList to an array and slice to respect maxFiles
       const newFiles = Array.from(files).slice(0, maxFiles - (field.value?.length || 0));
-      // Create new previews for the selected files
-      const newPreviews = newFiles.map((file) => ({ name: file.name, size: file.size, type: file.type }));
+      // Validate file size and type
+      const validFiles = newFiles.filter((file) => {
+        if (file.size > maxFileSize) {
+          alert(`File "${file.name}" exceeds the maximum size of ${maxFileSize / 1024 / 1024}MB.`);
+          return false;
+        }
+        if (!acceptedFormats.includes(file.type)) {
+          alert(`File "${file.name}" is not a supported format. Accepted formats: ${acceptedFormats}.`);
+          return false;
+        }
+        return true;
+      });
+
+      // Create new previews for the valid files
+      const newPreviews = validFiles.map((file) => ({ name: file.name, size: file.size, type: file.type }));
       // Append new previews to the existing previews
       setPreviews((previousPreviews) => [...previousPreviews, ...newPreviews].slice(0, maxFiles));
       // Append new files to the existing files in the form state
-      const updatedFiles = field.value ? [...field.value, ...newFiles] : newFiles;
+      const updatedFiles = field.value ? [...field.value, ...validFiles] : validFiles;
       field.onChange(updatedFiles.slice(0, maxFiles)); // Ensure we don't exceed maxFiles
     }
   };
 
+  const handleRemoveFile = (index: number, field: any) => {
+    const updatedPreviews = previews.filter((_, i) => i !== index);
+    const updatedFiles = field.value.filter((_: any, i: number) => i !== index);
+    setPreviews(updatedPreviews);
+    field.onChange(updatedFiles);
+  };
+
   return (
-    <div className="space-y-2">
+    <div className={cn("space-y-2", className)}>
       {label && (
         <section className="flex flex-col justify-between lg:flex-row lg:items-center">
           <div className="">
@@ -381,13 +435,13 @@ export function FileUpload({
               {required && <span className="ml-1 text-destructive">*</span>}
             </Label>
             <p className="text-xs text-mid-grey-II">
-              Upload the actual product you want to sell. Upload the product file
+              Upload the actual product you want to sell. Upload the product file.
             </p>
           </div>
-          {previews.length > 0 && (
+          {previews.length > 0 && previews.length < maxFiles && (
             <CustomButton
-              variant={`outline`}
-              className={`border-primary text-primary`}
+              variant="outline"
+              className="border-primary text-primary"
               isLeftIconVisible
               icon={<Image src={uploadIcon} alt="upload" width={16} height={16} />}
               type="button"
@@ -412,7 +466,6 @@ export function FileUpload({
                 "flex cursor-pointer flex-wrap gap-4",
                 error && "border-destructive",
                 disabled && "cursor-not-allowed opacity-50",
-                className,
               )}
             >
               <input
@@ -428,8 +481,8 @@ export function FileUpload({
               {previews.length === 0 && (
                 <div className="flex h-[200px] w-full flex-col items-center justify-center gap-2 rounded-md border bg-low-purple">
                   <CustomButton
-                    variant={`outline`}
-                    className={`border-primary text-primary`}
+                    variant="outline"
+                    className="border-primary text-primary"
                     isLeftIconVisible
                     icon={<Image src={uploadIcon} alt="upload" width={16} height={16} />}
                     type="button"
@@ -443,11 +496,12 @@ export function FileUpload({
                   <div className="flex items-center gap-1 text-mid-grey-II">
                     <InfoIcon className="h-4 w-4" />
                     <span className="text-xs font-semibold">
-                      File can be an image, video, document in various formats (jpg, png, mp4, pdf etc). min: 100mb
+                      File can be an image, video, document in various formats (jpg, png, mp4, pdf etc). Min: 100MB
                     </span>
                   </div>
                 </div>
               )}
+
               {previews.map((preview, index) => (
                 <section
                   key={index}
@@ -456,8 +510,20 @@ export function FileUpload({
                   <Image src={fileIcon} alt={`Preview ${index + 1}`} width={72} height={72} />
                   <div className="flex flex-col gap-1">
                     <span className="text-sm font-bold">{preview.name}</span>
-                    <span className="text-xs text-mid-grey-II">{preview.size}mb</span>
+                    <span className="text-xs text-mid-grey-II">{(preview.size / 1024 / 1024).toFixed(2)}MB</span>
                   </div>
+                  <CustomButton
+                    isIconOnly
+                    icon={<MdCancel className="h-4 w-4" />}
+                    variant="ghost"
+                    type="button"
+                    size="icon"
+                    className="absolute right-2 top-2 bg-background/80 backdrop-blur-sm"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      handleRemoveFile(index, field);
+                    }}
+                  />
                 </section>
               ))}
             </div>
@@ -546,34 +612,46 @@ export function ThumbNailUpload({
   required = false,
   disabled = false,
   className = "",
-  maxFiles = 1,
   acceptedFormats = "image/jpeg, image/png",
-}: ImageUploadProperties) {
+  maxFileSize = 2 * 1024 * 1024,
+}: ThumbNailUploadProperties) {
   const {
     control,
     formState: { errors },
   } = useFormContext();
   const error = errors[name];
 
-  const [previews, setPreviews] = useState<string[]>([]);
+  const [preview, setPreview] = useState<string | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, field: any) => {
-    const files = event.target.files;
-    if (files && files.length > 0) {
-      // Convert FileList to an array and slice to respect maxFiles
-      const newFiles = Array.from(files).slice(0, maxFiles - (field.value?.length || 0));
-      // Create new previews for the selected files
-      const newPreviews = newFiles.map((file) => URL.createObjectURL(file));
-      // Append new previews to the existing previews
-      setPreviews((previousPreviews) => [...previousPreviews, ...newPreviews].slice(0, maxFiles));
-      // Append new files to the existing files in the form state
-      const updatedFiles = field.value ? [...field.value, ...newFiles] : newFiles;
-      field.onChange(updatedFiles.slice(0, maxFiles)); // Ensure we don't exceed maxFiles
+    const file = event.target.files?.[0];
+    if (file) {
+      // Validate file size
+      if (file.size > maxFileSize) {
+        alert(`File size must be less than ${maxFileSize / 1024 / 1024}MB.`);
+        return;
+      }
+
+      // Validate file type
+      if (!acceptedFormats.includes(file.type)) {
+        alert(`File type must be one of: ${acceptedFormats}.`);
+        return;
+      }
+
+      // Create a preview URL for the file
+      setPreview(URL.createObjectURL(file));
+      // Update the form state with the file
+      field.onChange(file);
     }
   };
 
+  const handleRemoveFile = (field: any) => {
+    setPreview(null); // Clear the preview
+    field.onChange(null); // Clear the file in the form state
+  };
+
   return (
-    <div className="space-y-2">
+    <div className={cn("space-y-2", className)}>
       {label && (
         <section className="flex flex-col justify-between lg:flex-row lg:items-center">
           <div className="">
@@ -582,13 +660,13 @@ export function ThumbNailUpload({
               {required && <span className="ml-1 text-destructive">*</span>}
             </Label>
             <p className="text-xs text-mid-grey-II">
-              This image will appear in the explore page, upload a square size of 2mb.
+              This image will appear in the explore page. Upload a square image of 2MB or less.
             </p>
           </div>
-          {previews.length > 0 && (
+          {preview && (
             <CustomButton
-              variant={`outline`}
-              className={`border-primary text-primary`}
+              variant="outline"
+              className="border-primary text-primary"
               isLeftIconVisible
               icon={<CameraIcon className="h-4 w-4" />}
               type="button"
@@ -597,7 +675,7 @@ export function ThumbNailUpload({
                 (document.querySelector("#thumbnail-upload") as HTMLInputElement)?.click();
               }}
             >
-              Upload Image
+              Replace Image
             </CustomButton>
           )}
         </section>
@@ -613,24 +691,22 @@ export function ThumbNailUpload({
                 "flex flex-wrap gap-4",
                 error && "border-destructive",
                 disabled && "cursor-not-allowed opacity-50",
-                className,
               )}
             >
               <input
                 id="thumbnail-upload"
                 type="file"
-                multiple
                 accept={acceptedFormats}
                 disabled={disabled}
                 onChange={(event) => handleFileChange(event, field)}
                 className="hidden"
               />
 
-              {previews.length === 0 && (
+              {!preview && (
                 <div className="flex h-[200px] w-full flex-col items-center justify-center gap-2 rounded-md border bg-low-purple">
                   <CustomButton
-                    variant={`outline`}
-                    className={`border-primary text-primary`}
+                    variant="outline"
+                    className="border-primary text-primary"
                     isLeftIconVisible
                     icon={<CameraIcon className="h-4 w-4" />}
                     type="button"
@@ -643,11 +719,21 @@ export function ThumbNailUpload({
                   </CustomButton>
                 </div>
               )}
-              {previews.map((preview, index) => (
-                <div key={index} className="relative h-[200px] w-[200px]">
-                  <Image src={preview} alt={`Preview ${index + 1}`} fill className={cn("rounded-lg object-cover")} />
+
+              {preview && (
+                <div className="relative h-[200px] w-[200px]">
+                  <Image src={preview} alt="Thumbnail Preview" fill className="rounded-lg object-cover" />
+                  <CustomButton
+                    isIconOnly
+                    icon={<MdCancel className="h-4 w-4" />}
+                    variant="ghost"
+                    type="button"
+                    size="icon"
+                    className="absolute right-2 top-2 bg-background/80 backdrop-blur-sm"
+                    onClick={() => handleRemoveFile(field)}
+                  />
                 </div>
-              ))}
+              )}
             </div>
           </div>
         )}

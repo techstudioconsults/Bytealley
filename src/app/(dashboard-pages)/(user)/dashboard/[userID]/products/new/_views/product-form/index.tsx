@@ -96,10 +96,24 @@ export const ProductForm = () => {
           <RichTextEditor label="Description" name="description" placeholder="Enter description of your product" />
         </section>
         <section className={cn(methods.watch("product_type") === "digital" ? "block" : "hidden")}>
-          <FileUpload label="Digital Product" name="data" />
+          <FileUpload
+            name="data"
+            label="Product Files"
+            required
+            maxFiles={4}
+            acceptedFormats="application/pdf, video/mp4"
+            maxFileSize={100 * 1024 * 1024}
+          />
         </section>
         <section>
-          <ImageUpload required label="Cover photo" name="cover_photo" />
+          <ImageUpload
+            name="cover_photo"
+            label="Cover Photo"
+            required
+            maxFiles={4}
+            acceptedFormats="image/jpeg, image/png"
+            maxFileSize={2 * 1024 * 1024}
+          />
         </section>
         <section
           className={cn(methods.watch("product_type") === "skill" ? "block" : "hidden", "grid gap-4 lg:grid-cols-2")}
@@ -114,7 +128,13 @@ export const ProductForm = () => {
         </section>
         <section className="grid gap-4 lg:grid-cols-2">
           <Highlights name="highlights" label="Highlights" />
-          <ThumbNailUpload name="thumbnail" />
+          <ThumbNailUpload
+            name="thumbnail"
+            label="Thumbnail"
+            required
+            acceptedFormats="image/jpeg, image/png"
+            maxFileSize={2 * 1024 * 1024}
+          />
         </section>
         <section className="grid gap-4 lg:grid-cols-2">
           <MultiSelect
