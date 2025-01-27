@@ -63,7 +63,7 @@ declare global {
     className?: string;
     maxFiles?: number;
     maxResolution?: { width: number; height: number };
-    acceptedFormats?: Record<string, string[]>;
+    acceptedFormats?: string;
   };
 
   type ProductFormValues = {
@@ -73,7 +73,7 @@ declare global {
     price: number;
     discount: number;
     description: string;
-    cover_photo: string[];
+    cover_photo: File[];
   };
 }
 

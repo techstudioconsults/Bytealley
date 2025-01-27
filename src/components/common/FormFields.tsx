@@ -1,3 +1,5 @@
+/* eslint-disable unicorn/prefer-spread */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import uploadIcon from "@/icons/Property_2_Uploaded-file_sxo5a6.svg";
 import Image from "next/image";
 import { Controller, useFormContext } from "react-hook-form";
@@ -12,8 +14,7 @@ import { cn } from "~/utils/utils";
 import "react-quill/dist/quill.snow.css"; // Import Quill styles
 
 import { InfoIcon } from "lucide-react";
-import { useCallback, useState } from "react";
-import { useDropzone } from "react-dropzone";
+import { useState } from "react";
 
 import CustomButton from "./common-button/common-button";
 
@@ -218,7 +219,7 @@ export function ImageUpload({
   disabled = false,
   className = "",
   maxFiles = 4,
-  acceptedFormats = { "image/jpeg": [], "image/png": [] },
+  acceptedFormats = "image/jpeg, image/png",
 }: ImageUploadProperties) {
   const {
     control,
@@ -228,20 +229,23 @@ export function ImageUpload({
 
   const [previews, setPreviews] = useState<string[]>([]);
 
-  const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      const newPreviews = acceptedFiles.map((file) => URL.createObjectURL(file));
-      setPreviews((previousPreviews) => [...previousPreviews, ...newPreviews].slice(0, maxFiles));
-    },
-    [maxFiles],
-  );
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, field: any) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      // Convert FileList to an array and slice to respect maxFiles
+      const newFiles = Array.from(files).slice(0, maxFiles - (field.value?.length || 0));
 
-  const { getRootProps, getInputProps } = useDropzone({
-    onDrop,
-    accept: acceptedFormats,
-    maxFiles,
-    disabled,
-  });
+      // Create new previews for the selected files
+      const newPreviews = newFiles.map((file) => URL.createObjectURL(file));
+
+      // Append new previews to the existing previews
+      setPreviews((previousPreviews) => [...previousPreviews, ...newPreviews].slice(0, maxFiles));
+
+      // Append new files to the existing files in the form state
+      const updatedFiles = field.value ? [...field.value, ...newFiles] : newFiles;
+      field.onChange(updatedFiles.slice(0, maxFiles)); // Ensure we don't exceed maxFiles
+    }
+  };
 
   return (
     <div className="space-y-2">
@@ -253,25 +257,24 @@ export function ImageUpload({
               {required && <span className="ml-1 text-destructive">*</span>}
             </Label>
             <p className="text-xs text-mid-grey-II">
-              Upload the photos to promote your product, a maximum of 4 photos. Images should be horizontal, at least
-              1280x720px, and 72 DPI (dots per inch)
+              Upload the photos to promote your product, a maximum of {maxFiles} photos. Images should be horizontal, at
+              least 1280x720px, and 72 DPI (dots per inch)
             </p>
           </div>
           {previews.length > 0 && (
-            <div {...getRootProps()}>
-              <CustomButton
-                variant={`outline`}
-                className={`border-primary text-primary`}
-                isLeftIconVisible
-                icon={<Image src={uploadIcon} alt="upload" width={16} height={16} />}
-                type="button"
-                onClick={(event) => {
-                  event.preventDefault();
-                }}
-              >
-                Add Photos
-              </CustomButton>
-            </div>
+            <CustomButton
+              variant={`outline`}
+              className={`border-primary text-primary`}
+              isLeftIconVisible
+              icon={<Image src={uploadIcon} alt="upload" width={16} height={16} />}
+              type="button"
+              onClick={(event) => {
+                event.preventDefault();
+                (document.querySelector("#file-upload") as HTMLInputElement)?.click();
+              }}
+            >
+              Add Photos
+            </CustomButton>
           )}
         </section>
       )}
@@ -282,7 +285,6 @@ export function ImageUpload({
         render={({ field }) => (
           <div>
             <div
-              {...getRootProps()}
               className={cn(
                 "flex cursor-pointer flex-wrap gap-4 rounded-lg",
                 error && "border-destructive",
@@ -290,24 +292,31 @@ export function ImageUpload({
                 className,
               )}
             >
-              <input {...field} {...getInputProps()} />
+              <input
+                id="file-upload"
+                type="file"
+                multiple
+                accept={acceptedFormats}
+                disabled={disabled}
+                onChange={(event) => handleFileChange(event, field)}
+                className="hidden"
+              />
 
               {previews.length === 0 && (
                 <div className="flex h-[200px] w-full flex-col items-center justify-center gap-2 border bg-low-purple">
-                  <div>
-                    <CustomButton
-                      variant={`outline`}
-                      className={`border-primary text-primary`}
-                      isLeftIconVisible
-                      icon={<Image src={uploadIcon} alt="upload" width={16} height={16} />}
-                      type="button"
-                      onClick={(event) => {
-                        event.preventDefault();
-                      }}
-                    >
-                      Add Photos
-                    </CustomButton>
-                  </div>
+                  <CustomButton
+                    variant={`outline`}
+                    className={`border-primary text-primary`}
+                    isLeftIconVisible
+                    icon={<Image src={uploadIcon} alt="upload" width={16} height={16} />}
+                    type="button"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      (document.querySelector("#file-upload") as HTMLInputElement)?.click();
+                    }}
+                  >
+                    Add Photos
+                  </CustomButton>
                   <div className="flex items-center gap-1 text-mid-grey-II">
                     <InfoIcon className="h-4 w-4" />
                     <span className="text-xs font-semibold"> Upload images various formats (jpg, png)</span>

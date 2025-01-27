@@ -84,6 +84,7 @@ export const ProductForm = () => {
         <section>
           <ImageUpload label="Cover photo" name="cover_photo" />
         </section>
+        <button type="submit">Submit</button>
       </form>
     </FormProvider>
   );
