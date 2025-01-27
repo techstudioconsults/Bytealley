@@ -1,3 +1,4 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 
 import {
@@ -10,10 +11,11 @@ import {
   RichTextEditor,
   ThumbNailUpload,
 } from "~/components/common/FormFields";
-import { cn } from "~/utils/utils";
+import { ProductFormSchema } from "~/schemas";
 
 export const ProductForm = () => {
   const methods = useForm<ProductFormValues>({
+    resolver: zodResolver(ProductFormSchema),
     defaultValues: {
       product_type: "",
       title: "",
@@ -32,9 +34,43 @@ export const ProductForm = () => {
   });
 
   const onSubmit = (data: ProductFormValues) => {
-    console.log(data);
+    if (data.product_type === "digital_product") {
+      // Handle digital product submission
+      const digitalProductData = {
+        title: data.title,
+        category: data.category,
+        price: data.price,
+        discount: data.discount,
+        description: data.description,
+        data: data.data,
+        cover_photo: data.cover_photo,
+        highlights: data.highlights,
+        thumbnail: data.thumbnail,
+        tags: data.tags,
+      };
+      console.log("Digital Product Data:", digitalProductData);
+      // Submit digitalProductData to your API or perform other actions
+    } else if (data.product_type === "skill_selling") {
+      // Handle skill selling submission
+      const skillSellingData = {
+        title: data.title,
+        category: data.category,
+        price: data.price,
+        discount: data.discount,
+        description: data.description,
+        cover_photo: data.cover_photo,
+        resource_link: data.resource_link,
+        portfolio_link: data.portfolio_link,
+        highlights: data.highlights,
+        thumbnail: data.thumbnail,
+        tags: data.tags,
+      };
+      console.log("Skill Selling Data:", skillSellingData);
+      // Submit skillSellingData to your API or perform other actions
+    }
   };
-  //   className={cn(methods.watch("productType") === "skill" ? "block" : "hidden")}
+
+  const productType = methods.watch("product_type");
 
   return (
     <FormProvider {...methods}>
@@ -45,13 +81,13 @@ export const ProductForm = () => {
             label="Product Type"
             options={[
               {
-                value: "digital",
+                value: "digital_product",
                 label: "Digital Product",
                 description: "Any set of files to download or stream",
                 icon: "/images/digital_product_icon.svg",
               },
               {
-                value: "skill",
+                value: "skill_selling",
                 label: "Skill Selling",
                 description: "Let customers hire your services",
                 icon: "/images/skill_selling_icon.svg",
@@ -89,22 +125,23 @@ export const ProductForm = () => {
             type="number"
             placeholder="₦ 0.00 (optional)"
             className={`h-12 bg-low-grey-III`}
-            required
           />
         </section>
         <section>
           <RichTextEditor label="Description" name="description" placeholder="Enter description of your product" />
         </section>
-        <section className={cn(methods.watch("product_type") === "digital" ? "block" : "hidden")}>
-          <FileUpload
-            name="data"
-            label="Product Files"
-            required
-            maxFiles={4}
-            acceptedFormats="application/pdf, video/mp4"
-            maxFileSize={100 * 1024 * 1024}
-          />
-        </section>
+        {productType === "digital_product" && (
+          <section>
+            <FileUpload
+              name="data"
+              label="Product Files"
+              required
+              maxFiles={4}
+              acceptedFormats="application/pdf, video/mp4"
+              maxFileSize={100 * 1024 * 1024}
+            />
+          </section>
+        )}
         <section>
           <ImageUpload
             name="cover_photo"
@@ -115,17 +152,17 @@ export const ProductForm = () => {
             maxFileSize={2 * 1024 * 1024}
           />
         </section>
-        <section
-          className={cn(methods.watch("product_type") === "skill" ? "block" : "hidden", "grid gap-4 lg:grid-cols-2")}
-        >
-          <Highlights name="resource_link" label="Resource Link" addButtonText={`Add more resource link`} />
-          <FormField
-            label="Portfolio Link"
-            name="portfolio_link"
-            placeholder="Enter portfolio link"
-            className={`h-12 bg-low-grey-III`}
-          />
-        </section>
+        {productType === "skill_selling" && (
+          <section className="grid gap-4 lg:grid-cols-2">
+            <Highlights name="resource_link" label="Resource Link" addButtonText={`Add more resource link`} />
+            <FormField
+              label="Portfolio Link"
+              name="portfolio_link"
+              placeholder="Enter portfolio link"
+              className={`h-12 bg-low-grey-III`}
+            />
+          </section>
+        )}
         <section className="grid gap-4 lg:grid-cols-2">
           <Highlights name="highlights" label="Highlights" />
           <ThumbNailUpload

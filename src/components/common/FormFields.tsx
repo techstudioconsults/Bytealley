@@ -79,6 +79,24 @@ export function FormField({
             );
           }
 
+          if (type === "number") {
+            return (
+              <input
+                {...field}
+                type="number"
+                placeholder={placeholder}
+                disabled={disabled}
+                className={cn(
+                  "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+                  error && "border-destructive",
+                  className,
+                )}
+                value={field.value || ""}
+                onChange={(e) => field.onChange(e.target.valueAsNumber)}
+              />
+            );
+          }
+
           return (
             <Input
               {...field}
@@ -545,7 +563,11 @@ export function Highlights({
   maxFields = 10,
   className = "",
 }: HighlightsProperties) {
-  const { control } = useFormContext();
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+  const error = errors[name];
   const { fields, append, remove } = useFieldArray({
     control,
     name,
@@ -602,6 +624,8 @@ export function Highlights({
           {addButtonText}
         </CustomButton>
       )}
+
+      {error && <p className="text-sm text-destructive">{error.message?.toString()}</p>}
     </div>
   );
 }
