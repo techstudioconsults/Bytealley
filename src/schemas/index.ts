@@ -35,9 +35,9 @@ const BaseSchema = z.object({
   title: z.string().min(1, "Title is required"),
   category: z.string().min(1, "Category is required"),
   price: z.number().min(1, "Price must be a positive number"),
-  discount: z.number().min(0, "Discount must be a positive number"),
+  discount_price: z.number().min(0, "Discount must be a positive number"),
   description: z.string().min(1, "Description is required"),
-  cover_photo: z.array(z.any()).min(1, "Cover photo is required"),
+  cover_photos: z.array(z.any()).min(1, "Cover photo is required"),
   thumbnail: z.any().refine((file) => file !== null, "Thumbnail is required"),
   tags: z.array(z.string()).min(1, "At least one tag is required"),
   highlights: z.array(z.string()).min(1, "At least one highlight is required"),
@@ -46,7 +46,7 @@ const BaseSchema = z.object({
 // Digital product schema
 const DigitalProductSchema = BaseSchema.extend({
   product_type: z.literal("digital_product"),
-  data: z.array(z.any()).min(1, "Product files are required").max(4, "You can upload up to 4 files"),
+  assets: z.array(z.any()).min(1, "Product files are required").max(4, "You can upload up to 4 files"),
 });
 
 // Skill selling schema

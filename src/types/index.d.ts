@@ -102,15 +102,15 @@ declare global {
     title: string;
     category: string;
     price: number;
-    discount: number;
-    data: File[];
+    discount_price?: number;
+    assets?: File[];
     description: string;
-    cover_photo: File[];
+    cover_photos: File[];
     highlights: string[];
     thumbnail: File | null;
     tags: string[];
-    resource_link: string[];
-    portfolio_link: string;
+    resource_link?: string[];
+    portfolio_link?: string;
   };
 }
 

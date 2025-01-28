@@ -92,7 +92,7 @@ export function FormField({
                   className,
                 )}
                 value={field.value || ""}
-                onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                onChange={(event) => field.onChange(event.target.valueAsNumber)}
               />
             );
           }
@@ -281,8 +281,8 @@ export function ImageUpload({
   };
 
   const handleRemoveFile = (index: number, field: any) => {
-    const updatedPreviews = previews.filter((_, i) => i !== index);
-    const updatedFiles = field.value.filter((_: any, i: number) => i !== index);
+    const updatedPreviews = previews.filter((_, index_) => index_ !== index);
+    const updatedFiles = field.value.filter((_: any, index_: number) => index_ !== index);
     setPreviews(updatedPreviews);
     field.onChange(updatedFiles);
   };
@@ -437,8 +437,8 @@ export function FileUpload({
   };
 
   const handleRemoveFile = (index: number, field: any) => {
-    const updatedPreviews = previews.filter((_, i) => i !== index);
-    const updatedFiles = field.value.filter((_: any, i: number) => i !== index);
+    const updatedPreviews = previews.filter((_, index_) => index_ !== index);
+    const updatedFiles = field.value.filter((_: any, index_: number) => index_ !== index);
     setPreviews(updatedPreviews);
     field.onChange(updatedFiles);
   };
