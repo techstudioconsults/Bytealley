@@ -8,7 +8,7 @@ export class ProductService {
   }
 
   // Example: Sending a POST request with custom headers
-  createProduct = async (data: ProductFormValues) => {
+  async createProduct(data: ProductFormValues) {
     const headers = { "Content-Type": "multipart/form-data" };
 
     const response = await this.http.post<{ data: IProduct }>("/products", data, headers);
@@ -33,7 +33,8 @@ export class ProductService {
       };
       await this.http.post("/skillSellings", skillSellingData, headers);
     }
-  };
+    return response.data.data.id;
+  }
 
   async getAllProducts(filters: IProductFilters = Object.create({ page: 1 })) {
     const queryParameters = this.buildQueryParameters(filters);

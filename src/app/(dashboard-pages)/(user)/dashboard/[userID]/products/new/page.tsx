@@ -68,14 +68,14 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
 
     const productData = { ...commonFields, ...productSpecificFields };
 
-    await productService.createProduct(productData);
+    const productId = await productService.createProduct(productData);
 
     Toast.getInstance().showToast({
       title: "Success",
       description: `Product "${data.title}" created successfully!`,
       variant: "success",
     });
-    router.push(`/dashboard/${params.userID}/products/new?tab=preview`);
+    router.push(`/dashboard/${params.userID}/products/new?tab=preview&product_id=${productId}`);
   };
 
   const onCancel = () => {
