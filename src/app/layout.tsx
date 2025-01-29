@@ -24,8 +24,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={montserrat.className}>
-        <SessionProvider>
-          <ReduxProvider>
+        <ReduxProvider>
+          <SessionProvider>
             <ToastProvider>
               <GotoTop />
               <LenisProvider>
@@ -35,8 +35,8 @@ export default function RootLayout({
                 </main>
               </LenisProvider>
             </ToastProvider>
-          </ReduxProvider>
-        </SessionProvider>
+          </SessionProvider>
+        </ReduxProvider>
       </body>
     </html>
   );

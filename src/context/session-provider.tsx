@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { createContext, useEffect, useState, useTransition } from "react";
+import { createContext, useEffect, useState } from "react";
 
 import Loading from "~/app/Loading";
 import { withDependency } from "~/HOC/withDependencies";

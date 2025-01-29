@@ -5,6 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
 
 import CustomButton from "~/components/common/common-button/common-button";
+import { ViewProductLayout } from "~/components/common/view-product-layout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { withDependency } from "~/HOC/withDependencies";
 import { ProductFormSchema } from "~/schemas";
@@ -138,16 +139,42 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
             >
               Cancel
             </CustomButton>
-            <CustomButton
-              variant="primary"
-              size="lg"
-              className="w-full sm:w-auto"
-              onClick={handleSubmit(onSubmit)}
-              isDisabled={isSubmitting}
-              isLoading={isSubmitting}
-            >
-              Save & Continue
-            </CustomButton>
+            {currentTab === "product-details" && (
+              <CustomButton
+                variant="primary"
+                size="lg"
+                className="w-full sm:w-auto"
+                onClick={handleSubmit(onSubmit)}
+                isDisabled={isSubmitting}
+                isLoading={isSubmitting}
+              >
+                Save & Continue
+              </CustomButton>
+            )}
+            {currentTab === "preview" && (
+              <CustomButton
+                variant="primary"
+                size="lg"
+                className="w-full sm:w-auto"
+                onClick={handleSubmit(onSubmit)}
+                isDisabled={isSubmitting}
+                isLoading={isSubmitting}
+              >
+                Publish & Continue
+              </CustomButton>
+            )}
+            {currentTab === "share" && (
+              <CustomButton
+                variant="primary"
+                size="lg"
+                className="w-full sm:w-auto"
+                onClick={handleSubmit(onSubmit)}
+                isDisabled={isSubmitting}
+                isLoading={isSubmitting}
+              >
+                Close
+              </CustomButton>
+            )}
           </section>
         </TabsList>
 
@@ -156,7 +183,7 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
           <ProductForm methods={methods} />
         </TabsContent>
         <TabsContent value="preview">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem culpa ullam, fuga nobis, sequi eos maiores
+          <ViewProductLayout />
         </TabsContent>
         <TabsContent value="share">
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem culpa ullam, fuga nobis, sequi eos maiores

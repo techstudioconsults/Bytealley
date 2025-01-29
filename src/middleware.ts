@@ -1,13 +1,6 @@
 import { NextResponse } from "next/server";
 
-import {
-  adminRoutes,
-  authRoutes,
-  isUserSpecificRoute,
-  publicRoutes,
-  superAdminRoutes,
-  userRoutes,
-} from "./lib/session/routes";
+import { adminRoutes, authRoutes, publicRoutes, superAdminRoutes, userRoutes } from "./lib/session/routes";
 import { getSession } from "./lib/session/session";
 
 export async function middleware(request: Request) {
