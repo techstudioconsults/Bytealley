@@ -7,7 +7,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import CustomButton from "~/components/common/common-button/common-button";
 import { ViewProductLayout } from "~/components/common/view-product-layout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
-import { withDependency } from "~/HOC/withDependencies";
+import { WithDependency } from "~/HOC/withDependencies";
 import { ProductFormSchema } from "~/schemas";
 import { ProductService } from "~/services/product.service";
 import { dependencies } from "~/utils/dependencies";
@@ -195,7 +195,7 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
   );
 };
 
-const NewProductsPage = withDependency(Page, {
+const NewProductsPage = WithDependency(Page, {
   productService: dependencies.PRODUCT_SERVICE,
 });
 

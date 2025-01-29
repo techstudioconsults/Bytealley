@@ -1,11 +1,11 @@
 import { ProgressBar } from "../../_components/progress-bar";
 
-interface OnboardingHeaderProps {
+interface OnboardingHeaderProperties {
   completedSteps: number;
   totalSteps: number;
 }
 
-export const OnboardingHeader = ({ completedSteps, totalSteps }: OnboardingHeaderProps) => {
+export const OnboardingHeader = ({ completedSteps, totalSteps }: OnboardingHeaderProperties) => {
   return (
     <section className="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
       <div className="flex flex-col gap-2">

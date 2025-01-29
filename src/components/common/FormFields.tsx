@@ -1,5 +1,8 @@
 /* eslint-disable unicorn/prefer-spread */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
+"use client";
+
 import fileIcon from "@/icons/Property_2_Selected-file_ybygib.svg";
 import uploadIcon from "@/icons/Property_2_Uploaded-file_sxo5a6.svg";
 import Image from "next/image";
@@ -15,7 +18,7 @@ import { cn } from "~/utils/utils";
 import "react-quill/dist/quill.snow.css"; // Import Quill styles
 
 import { CameraIcon, InfoIcon, PlusIcon } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { MdCancel } from "react-icons/md";
 
 import { Badge } from "../ui/badge";
@@ -234,326 +237,6 @@ export function RichTextEditor({
   );
 }
 
-export function ImageUpload({
-  label = "Cover photo",
-  name,
-  required = false,
-  disabled = false,
-  className = "",
-  maxFiles = 4,
-  acceptedFormats = "image/jpeg, image/png",
-  maxFileSize = 2 * 1024 * 1024, // Default to 2MB
-}: ImageUploadProperties) {
-  const {
-    control,
-    formState: { errors },
-  } = useFormContext();
-  const error = errors[name];
-
-  const [previews, setPreviews] = useState<string[]>([]);
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, field: any) => {
-    const files = event.target.files;
-    if (files && files.length > 0) {
-      // Convert FileList to an array and slice to respect maxFiles
-      const newFiles = Array.from(files).slice(0, maxFiles - (field.value?.length || 0));
-      // Validate file size and type
-      const validFiles = newFiles.filter((file) => {
-        if (file.size > maxFileSize) {
-          alert(`File "${file.name}" exceeds the maximum size of ${maxFileSize / 1024 / 1024}MB.`);
-          return false;
-        }
-        if (!acceptedFormats.includes(file.type)) {
-          alert(`File "${file.name}" is not a supported format. Accepted formats: ${acceptedFormats}.`);
-          return false;
-        }
-        return true;
-      });
-
-      // Create new previews for the valid files
-      const newPreviews = validFiles.map((file) => URL.createObjectURL(file));
-      // Append new previews to the existing previews
-      setPreviews((previousPreviews) => [...previousPreviews, ...newPreviews].slice(0, maxFiles));
-      // Append new files to the existing files in the form state
-      const updatedFiles = field.value ? [...field.value, ...validFiles] : validFiles;
-      field.onChange(updatedFiles.slice(0, maxFiles)); // Ensure we don't exceed maxFiles
-    }
-  };
-
-  const handleRemoveFile = (index: number, field: any) => {
-    const updatedPreviews = previews.filter((_, index_) => index_ !== index);
-    const updatedFiles = field.value.filter((_: any, index_: number) => index_ !== index);
-    setPreviews(updatedPreviews);
-    field.onChange(updatedFiles);
-  };
-
-  return (
-    <div className={cn("space-y-2", className)}>
-      {label && (
-        <section className="flex flex-col justify-between lg:flex-row lg:items-center">
-          <div className="">
-            <Label className="text-sm font-medium">
-              {label}
-              {required && <span className="ml-1 text-destructive">*</span>}
-            </Label>
-            <p className="text-xs text-mid-grey-II">
-              Upload the photos to promote your product, a maximum of {maxFiles} photos. Images should be horizontal, at
-              least 1280x720px, and 72 DPI (dots per inch).
-            </p>
-          </div>
-          {previews.length > 0 && previews.length < maxFiles && (
-            <CustomButton
-              variant="outline"
-              className="border-primary text-primary"
-              isLeftIconVisible
-              icon={<Image src={uploadIcon} alt="upload" width={16} height={16} />}
-              type="button"
-              onClick={(event) => {
-                event.preventDefault();
-                (document.querySelector("#image-upload") as HTMLInputElement)?.click();
-              }}
-            >
-              Add Photos
-            </CustomButton>
-          )}
-        </section>
-      )}
-
-      <Controller
-        name={name}
-        control={control}
-        render={({ field }) => (
-          <div>
-            <div
-              className={cn(
-                "flex cursor-pointer flex-wrap gap-4",
-                error && "border-destructive",
-                disabled && "cursor-not-allowed opacity-50",
-              )}
-            >
-              <input
-                id="image-upload"
-                type="file"
-                multiple
-                accept={acceptedFormats}
-                disabled={disabled}
-                onChange={(event) => handleFileChange(event, field)}
-                className="hidden"
-              />
-
-              {previews.length === 0 && (
-                <div className="flex h-[200px] w-full flex-col items-center justify-center gap-2 rounded-md border bg-low-purple">
-                  <CustomButton
-                    variant="outline"
-                    className="border-primary text-primary"
-                    isLeftIconVisible
-                    icon={<Image src={uploadIcon} alt="upload" width={16} height={16} />}
-                    type="button"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      (document.querySelector("#image-upload") as HTMLInputElement)?.click();
-                    }}
-                  >
-                    Add Photos
-                  </CustomButton>
-                  <div className="flex items-center gap-1 text-mid-grey-II">
-                    <InfoIcon className="h-4 w-4" />
-                    <span className="text-xs font-semibold"> Upload images various formats (jpg, png)</span>
-                  </div>
-                </div>
-              )}
-
-              {previews.map((preview, index) => (
-                <div key={index} className="relative h-[200px] w-[368px]">
-                  <Image src={preview} alt={`Preview ${index + 1}`} fill className="rounded-lg object-cover" />
-                  <CustomButton
-                    isIconOnly
-                    icon={<MdCancel className="h-4 w-4" />}
-                    variant="ghost"
-                    type="button"
-                    size="icon"
-                    className="absolute right-2 top-2 bg-background/80 backdrop-blur-sm"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      handleRemoveFile(index, field);
-                    }}
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-      />
-
-      {error && <p className="text-sm text-destructive">{error.message?.toString()}</p>}
-    </div>
-  );
-}
-
-export function FileUpload({
-  label = "Product",
-  name,
-  required = false,
-  disabled = false,
-  className = "",
-  maxFiles = 4,
-  acceptedFormats = "application/pdf",
-  maxFileSize = 100 * 1024 * 1024, // Default to 100MB
-}: FileUploadProperties) {
-  const {
-    control,
-    formState: { errors },
-  } = useFormContext();
-  const error = errors[name];
-
-  const [previews, setPreviews] = useState<{ name: string; size: number; type: string }[]>([]);
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, field: any) => {
-    const files = event.target.files;
-    if (files && files.length > 0) {
-      // Convert FileList to an array and slice to respect maxFiles
-      const newFiles = Array.from(files).slice(0, maxFiles - (field.value?.length || 0));
-      // Validate file size and type
-      const validFiles = newFiles.filter((file) => {
-        if (file.size > maxFileSize) {
-          alert(`File "${file.name}" exceeds the maximum size of ${maxFileSize / 1024 / 1024}MB.`);
-          return false;
-        }
-        if (!acceptedFormats.includes(file.type)) {
-          alert(`File "${file.name}" is not a supported format. Accepted formats: ${acceptedFormats}.`);
-          return false;
-        }
-        return true;
-      });
-
-      // Create new previews for the valid files
-      const newPreviews = validFiles.map((file) => ({ name: file.name, size: file.size, type: file.type }));
-      // Append new previews to the existing previews
-      setPreviews((previousPreviews) => [...previousPreviews, ...newPreviews].slice(0, maxFiles));
-      // Append new files to the existing files in the form state
-      const updatedFiles = field.value ? [...field.value, ...validFiles] : validFiles;
-      field.onChange(updatedFiles.slice(0, maxFiles)); // Ensure we don't exceed maxFiles
-    }
-  };
-
-  const handleRemoveFile = (index: number, field: any) => {
-    const updatedPreviews = previews.filter((_, index_) => index_ !== index);
-    const updatedFiles = field.value.filter((_: any, index_: number) => index_ !== index);
-    setPreviews(updatedPreviews);
-    field.onChange(updatedFiles);
-  };
-
-  return (
-    <div className={cn("space-y-2", className)}>
-      {label && (
-        <section className="flex flex-col justify-between lg:flex-row lg:items-center">
-          <div className="">
-            <Label className="text-sm font-medium">
-              {label}
-              {required && <span className="ml-1 text-destructive">*</span>}
-            </Label>
-            <p className="text-xs text-mid-grey-II">
-              Upload the actual product you want to sell. Upload the product file.
-            </p>
-          </div>
-          {previews.length > 0 && previews.length < maxFiles && (
-            <CustomButton
-              variant="outline"
-              className="border-primary text-primary"
-              isLeftIconVisible
-              icon={<Image src={uploadIcon} alt="upload" width={16} height={16} />}
-              type="button"
-              onClick={(event) => {
-                event.preventDefault();
-                (document.querySelector("#file-upload") as HTMLInputElement)?.click();
-              }}
-            >
-              Upload Files
-            </CustomButton>
-          )}
-        </section>
-      )}
-
-      <Controller
-        name={name}
-        control={control}
-        render={({ field }) => (
-          <div>
-            <div
-              className={cn(
-                "flex cursor-pointer flex-wrap gap-4",
-                error && "border-destructive",
-                disabled && "cursor-not-allowed opacity-50",
-              )}
-            >
-              <input
-                id="file-upload"
-                type="file"
-                multiple
-                accept={acceptedFormats}
-                disabled={disabled}
-                onChange={(event) => handleFileChange(event, field)}
-                className="hidden"
-              />
-
-              {previews.length === 0 && (
-                <div className="flex h-[200px] w-full flex-col items-center justify-center gap-2 rounded-md border bg-low-purple">
-                  <CustomButton
-                    variant="outline"
-                    className="border-primary text-primary"
-                    isLeftIconVisible
-                    icon={<Image src={uploadIcon} alt="upload" width={16} height={16} />}
-                    type="button"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      (document.querySelector("#file-upload") as HTMLInputElement)?.click();
-                    }}
-                  >
-                    Upload Files
-                  </CustomButton>
-                  <div className="flex items-center gap-1 text-mid-grey-II">
-                    <InfoIcon className="h-4 w-4" />
-                    <span className="text-xs font-semibold">
-                      File can be an image, video, document in various formats (jpg, png, mp4, pdf etc). Min: 100MB
-                    </span>
-                  </div>
-                </div>
-              )}
-
-              {previews.map((preview, index) => (
-                <section
-                  key={index}
-                  className="relative flex min-h-[94px] max-w-[560px] items-center gap-4 rounded-md bg-low-purple p-6"
-                >
-                  <Image src={fileIcon} alt={`Preview ${index + 1}`} width={72} height={72} />
-                  <div className="flex flex-col gap-1">
-                    <span className="text-sm font-bold">{preview.name}</span>
-                    <span className="text-xs text-mid-grey-II">{(preview.size / 1024 / 1024).toFixed(2)}MB</span>
-                  </div>
-                  <CustomButton
-                    isIconOnly
-                    icon={<MdCancel className="h-4 w-4" />}
-                    variant="ghost"
-                    type="button"
-                    size="icon"
-                    className="absolute right-2 top-2 bg-background/80 backdrop-blur-sm"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      handleRemoveFile(index, field);
-                    }}
-                  />
-                </section>
-              ))}
-            </div>
-          </div>
-        )}
-      />
-
-      {error && <p className="text-sm text-destructive">{error.message?.toString()}</p>}
-    </div>
-  );
-}
-
 export function Highlights({
   name,
   label,
@@ -630,6 +313,323 @@ export function Highlights({
   );
 }
 
+export function ImageUpload({
+  label = "Cover photo",
+  name,
+  required = false,
+  disabled = false,
+  className = "",
+  maxFiles = 4,
+  acceptedFormats = "image/jpeg, image/png",
+  maxFileSize = 2 * 1024 * 1024, // Default to 2MB
+}: ImageUploadProperties) {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+  const error = errors[name];
+  const fileInputReference = useRef<HTMLInputElement>(null);
+  const [previews, setPreviews] = useState<string[]>([]);
+
+  const handleButtonClick = (event: React.MouseEvent) => {
+    event.preventDefault();
+    fileInputReference.current?.click();
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, field: any) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      // Convert FileList to an array and slice to respect maxFiles
+      const newFiles = Array.from(files).slice(0, maxFiles - (field.value?.length || 0));
+      // Validate file size and type
+      const validFiles = newFiles.filter((file) => {
+        if (file.size > maxFileSize) {
+          alert(`File "${file.name}" exceeds the maximum size of ${maxFileSize / 1024 / 1024}MB.`);
+          return false;
+        }
+        if (!acceptedFormats.includes(file.type)) {
+          alert(`File "${file.name}" is not a supported format. Accepted formats: ${acceptedFormats}.`);
+          return false;
+        }
+        return true;
+      });
+
+      // Create new previews for the valid files
+      const newPreviews = validFiles.map((file) => URL.createObjectURL(file));
+      // Append new previews to the existing previews
+      setPreviews((previousPreviews) => [...previousPreviews, ...newPreviews].slice(0, maxFiles));
+      // Append new files to the existing files in the form state
+      const updatedFiles = field.value ? [...field.value, ...validFiles] : validFiles;
+      field.onChange(updatedFiles.slice(0, maxFiles)); // Ensure we don't exceed maxFiles
+    }
+  };
+
+  const handleRemoveFile = (index: number, field: any) => {
+    const updatedPreviews = previews.filter((_, index_) => index_ !== index);
+    const updatedFiles = field.value.filter((_: any, index_: number) => index_ !== index);
+    setPreviews(updatedPreviews);
+    field.onChange(updatedFiles);
+  };
+
+  return (
+    <div className={cn("space-y-2", className)}>
+      {label && (
+        <section className="flex flex-col justify-between lg:flex-row lg:items-center">
+          <div className="">
+            <Label className="text-sm font-medium">
+              {label}
+              {required && <span className="ml-1 text-destructive">*</span>}
+            </Label>
+            <p className="text-xs text-mid-grey-II">
+              Upload the photos to promote your product, a maximum of {maxFiles} photos.
+            </p>
+          </div>
+          {previews.length > 0 && previews.length < maxFiles && (
+            <CustomButton
+              variant="outline"
+              className="border-primary text-primary"
+              isLeftIconVisible
+              icon={<Image src={uploadIcon} alt="upload" width={16} height={16} />}
+              type="button"
+              onClick={handleButtonClick}
+            >
+              Add Photos
+            </CustomButton>
+          )}
+        </section>
+      )}
+
+      <Controller
+        name={name}
+        control={control}
+        render={({ field }) => (
+          <div>
+            <div
+              className={cn(
+                "flex cursor-pointer flex-wrap gap-4",
+                error && "border-destructive",
+                disabled && "cursor-not-allowed opacity-50",
+              )}
+            >
+              <input
+                ref={fileInputReference}
+                type="file"
+                multiple
+                accept={acceptedFormats}
+                disabled={disabled}
+                onChange={(event) => handleFileChange(event, field)}
+                className="hidden"
+              />
+
+              {previews.length === 0 && (
+                <div className="flex h-[200px] w-full flex-col items-center justify-center gap-2 rounded-md border bg-low-purple">
+                  <CustomButton
+                    variant="outline"
+                    className="border-primary text-primary"
+                    isLeftIconVisible
+                    icon={<Image src={uploadIcon} alt="upload" width={16} height={16} />}
+                    type="button"
+                    onClick={handleButtonClick}
+                  >
+                    Add Photos
+                  </CustomButton>
+                  <div className="flex items-center gap-1 text-mid-grey-II">
+                    <InfoIcon className="h-4 w-4" />
+                    <span className="text-xs font-semibold">Upload images (jpg, png)</span>
+                  </div>
+                </div>
+              )}
+
+              {previews.map((preview, index) => (
+                <div key={index} className="relative h-[200px] w-[368px]">
+                  <Image src={preview} alt={`Preview ${index + 1}`} fill className="rounded-lg object-cover" />
+                  <CustomButton
+                    isIconOnly
+                    icon={<MdCancel className="h-4 w-4" />}
+                    variant="ghost"
+                    type="button"
+                    size="icon"
+                    className="absolute right-2 top-2 bg-background/80 backdrop-blur-sm"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      handleRemoveFile(index, field);
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      />
+
+      {error && <p className="text-sm text-destructive">{error.message?.toString()}</p>}
+    </div>
+  );
+}
+
+export function FileUpload({
+  label = "Product",
+  name,
+  required = false,
+  disabled = false,
+  className = "",
+  maxFiles = 4,
+  acceptedFormats = "application/pdf",
+  maxFileSize = 100 * 1024 * 1024, // Default to 100MB
+}: FileUploadProperties) {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+  const error = errors[name];
+  const fileUploadInputReference = useRef<HTMLInputElement>(null);
+  const [previews, setPreviews] = useState<{ name: string; size: number; type: string }[]>([]);
+
+  const handleButtonClick = (event: React.MouseEvent) => {
+    event.preventDefault();
+    fileUploadInputReference.current?.click();
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, field: any) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      // Convert FileList to an array and slice to respect maxFiles
+      const newFiles = Array.from(files).slice(0, maxFiles - (field.value?.length || 0));
+      // Validate file size and type
+      const validFiles = newFiles.filter((file) => {
+        if (file.size > maxFileSize) {
+          alert(`File "${file.name}" exceeds the maximum size of ${maxFileSize / 1024 / 1024}MB.`);
+          return false;
+        }
+        if (!acceptedFormats.includes(file.type)) {
+          alert(`File "${file.name}" is not a supported format. Accepted formats: ${acceptedFormats}.`);
+          return false;
+        }
+        return true;
+      });
+
+      // Create new previews for the valid files
+      const newPreviews = validFiles.map((file) => ({ name: file.name, size: file.size, type: file.type }));
+      // Append new previews to the existing previews
+      setPreviews((previousPreviews) => [...previousPreviews, ...newPreviews].slice(0, maxFiles));
+      // Append new files to the existing files in the form state
+      const updatedFiles = field.value ? [...field.value, ...validFiles] : validFiles;
+      field.onChange(updatedFiles.slice(0, maxFiles)); // Ensure we don't exceed maxFiles
+    }
+  };
+
+  const handleRemoveFile = (index: number, field: any) => {
+    const updatedPreviews = previews.filter((_, index_) => index_ !== index);
+    const updatedFiles = field.value.filter((_: any, index_: number) => index_ !== index);
+    setPreviews(updatedPreviews);
+    field.onChange(updatedFiles);
+  };
+
+  return (
+    <div className={cn("space-y-2", className)}>
+      {label && (
+        <section className="flex flex-col justify-between lg:flex-row lg:items-center">
+          <div className="">
+            <Label className="text-sm font-medium">
+              {label}
+              {required && <span className="ml-1 text-destructive">*</span>}
+            </Label>
+            <p className="text-xs text-mid-grey-II">
+              Upload the actual product you want to sell. Upload the product file.
+            </p>
+          </div>
+          {previews.length > 0 && previews.length < maxFiles && (
+            <CustomButton
+              variant="outline"
+              className="border-primary text-primary"
+              isLeftIconVisible
+              icon={<Image src={uploadIcon} alt="upload" width={16} height={16} />}
+              type="button"
+              onClick={handleButtonClick}
+            >
+              Upload Files
+            </CustomButton>
+          )}
+        </section>
+      )}
+
+      <Controller
+        name={name}
+        control={control}
+        render={({ field }) => (
+          <div>
+            <div
+              className={cn(
+                "flex cursor-pointer flex-wrap gap-4",
+                error && "border-destructive",
+                disabled && "cursor-not-allowed opacity-50",
+              )}
+            >
+              <input
+                ref={fileUploadInputReference}
+                type="file"
+                multiple
+                accept={acceptedFormats}
+                disabled={disabled}
+                onChange={(event) => handleFileChange(event, field)}
+                className="hidden"
+              />
+
+              {previews.length === 0 && (
+                <div className="flex h-[200px] w-full flex-col items-center justify-center gap-2 rounded-md border bg-low-purple">
+                  <CustomButton
+                    variant="outline"
+                    className="border-primary text-primary"
+                    isLeftIconVisible
+                    icon={<Image src={uploadIcon} alt="upload" width={16} height={16} />}
+                    type="button"
+                    onClick={handleButtonClick}
+                  >
+                    Upload Files
+                  </CustomButton>
+                  <div className="flex items-center gap-1 text-mid-grey-II">
+                    <InfoIcon className="h-4 w-4" />
+                    <span className="text-xs font-semibold">
+                      File can be an image, video, document in various formats (jpg, png, mp4, pdf etc). Min: 100MB
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {previews.map((preview, index) => (
+                <section
+                  key={index}
+                  className="relative flex min-h-[94px] max-w-[560px] items-center gap-4 rounded-md bg-low-purple p-6"
+                >
+                  <Image src={fileIcon} alt={`Preview ${index + 1}`} width={72} height={72} />
+                  <div className="flex flex-col gap-1">
+                    <span className="text-sm font-bold">{preview.name}</span>
+                    <span className="text-xs text-mid-grey-II">{(preview.size / 1024 / 1024).toFixed(2)}MB</span>
+                  </div>
+                  <CustomButton
+                    isIconOnly
+                    icon={<MdCancel className="h-4 w-4" />}
+                    variant="ghost"
+                    type="button"
+                    size="icon"
+                    className="absolute right-2 top-2 bg-background/80 backdrop-blur-sm"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      handleRemoveFile(index, field);
+                    }}
+                  />
+                </section>
+              ))}
+            </div>
+          </div>
+        )}
+      />
+
+      {error && <p className="text-sm text-destructive">{error.message?.toString()}</p>}
+    </div>
+  );
+}
+
 export function ThumbNailUpload({
   label = "Thumbnail",
   name,
@@ -644,8 +644,13 @@ export function ThumbNailUpload({
     formState: { errors },
   } = useFormContext();
   const error = errors[name];
-
+  const thumbnailUploadInputReference = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string | null>(null);
+
+  const handleButtonClick = (event: React.MouseEvent) => {
+    event.preventDefault();
+    thumbnailUploadInputReference.current?.click();
+  };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, field: any) => {
     const file = event.target.files?.[0];
@@ -694,10 +699,7 @@ export function ThumbNailUpload({
               isLeftIconVisible
               icon={<CameraIcon className="h-4 w-4" />}
               type="button"
-              onClick={(event) => {
-                event.preventDefault();
-                (document.querySelector("#thumbnail-upload") as HTMLInputElement)?.click();
-              }}
+              onClick={handleButtonClick}
             >
               Replace Image
             </CustomButton>
@@ -718,7 +720,7 @@ export function ThumbNailUpload({
               )}
             >
               <input
-                id="thumbnail-upload"
+                ref={thumbnailUploadInputReference}
                 type="file"
                 accept={acceptedFormats}
                 disabled={disabled}
@@ -734,10 +736,7 @@ export function ThumbNailUpload({
                     isLeftIconVisible
                     icon={<CameraIcon className="h-4 w-4" />}
                     type="button"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      (document.querySelector("#thumbnail-upload") as HTMLInputElement)?.click();
-                    }}
+                    onClick={handleButtonClick}
                   >
                     Upload Image
                   </CustomButton>

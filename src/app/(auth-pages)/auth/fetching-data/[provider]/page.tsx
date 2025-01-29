@@ -7,7 +7,7 @@ import Loading from "~/app/Loading";
 import { useSession } from "~/hooks/use-session";
 import { getSession } from "~/lib/session/session";
 
-function PreLoader() {
+export function PreLoader() {
   const router = useRouter();
   const { handleGoogleCallback } = useSession();
 
@@ -42,5 +42,3 @@ function PreLoader() {
 
   return <Loading text={`Getting credentials from Google...`} />;
 }
-
-export default PreLoader;

@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 
 import { Wrapper } from "~/components/layout/wrapper";
-import { withDependency } from "~/HOC/withDependencies";
+import { WithDependency } from "~/HOC/withDependencies";
 import { useSession } from "~/hooks/use-session";
 import { AuthService } from "~/services/auth.service";
 import { ProductService } from "~/services/product.service";
@@ -87,7 +87,7 @@ const UserHomePage = ({
   return <ActiveUser productService={productService} />;
 };
 
-const HomePage = withDependency(UserHomePage, {
+const HomePage = WithDependency(UserHomePage, {
   authService: dependencies.AUTH_SERVICE,
   productService: dependencies.PRODUCT_SERVICE,
 });

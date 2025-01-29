@@ -1,10 +1,11 @@
+/* eslint-disable unicorn/consistent-function-scoping */
 "use client";
 
 import { useRouter } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
 
 import Loading from "~/app/Loading";
-import { withDependency } from "~/HOC/withDependencies";
+import { WithDependency } from "~/HOC/withDependencies";
 import { getSession } from "~/lib/session/session";
 import { LoginFormData, RegisterFormData } from "~/schemas";
 import { AuthService } from "~/services/auth.service";
@@ -123,7 +124,7 @@ const BaseSessionProvider = ({ children, authService }: { children: React.ReactN
   );
 };
 
-const SessionProvider = withDependency(BaseSessionProvider, {
+const SessionProvider = WithDependency(BaseSessionProvider, {
   authService: dependencies.AUTH_SERVICE,
 });
 

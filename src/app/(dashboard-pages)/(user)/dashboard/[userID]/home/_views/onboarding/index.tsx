@@ -2,15 +2,15 @@
 
 import onboardingImage from "@/images/home_banner_illustration.svg";
 
+import { ActionBanner } from "../../_components/action-banner";
 import { DashboardBanner } from "../../_components/home-banner";
 import { OnboardingHeader } from "./onboarding-header";
-import { ActionBanner } from "../../_components/action-banner";
 
-interface OnboardingProps {
+interface OnboardingProperties {
   steps: OnboardingStep[];
 }
 
-export const Onboarding = ({ steps }: OnboardingProps) => {
+export const Onboarding = ({ steps }: OnboardingProperties) => {
   const completedSteps = steps.filter((step) => step.isCompleted).length;
 
   return (

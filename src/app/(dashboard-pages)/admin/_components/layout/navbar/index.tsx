@@ -1,3 +1,3 @@
-export const index = () => {
+export const Navbar = () => {
   return <div>index</div>;
 };

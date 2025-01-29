@@ -37,16 +37,11 @@ const ForgotPasswordPage = () => {
       <Card className="w-full max-w-[400px]">
         <CardHeader>
           <CardTitle className="text-[32px]">Forgot password</CardTitle>
-          <p className="text-muted-foreground">
-            Enter your email address to reset your password.
-          </p>
+          <p className="text-muted-foreground">Enter your email address to reset your password.</p>
         </CardHeader>
         <CardContent>
           <FormProvider {...methods}>
-            <form
-              onSubmit={methods.handleSubmit(onSubmit)}
-              className="space-y-6"
-            >
+            <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-6">
               <FormField
                 name="email"
                 type="email"
@@ -69,10 +64,7 @@ const ForgotPasswordPage = () => {
           </FormProvider>
 
           <div className="mt-4 text-center text-sm">
-            <Link
-              href="/auth/login"
-              className="inline-flex items-center text-primary hover:underline"
-            >
+            <Link href="/auth/login" className="inline-flex items-center text-primary hover:underline">
               <span className="mr-2">←</span>
               Back to Sign In
             </Link>

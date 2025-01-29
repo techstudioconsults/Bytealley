@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { useState } from "react";
 
@@ -5,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { cn } from "~/utils/utils";
 import { StarRating } from "../rating/star";
 
-export const ViewProductLayout = () => {
+export function ViewProductLayout() {
   const [isExpanded, setIsExpanded] = useState(false);
   const description = `Lorem ipsum eurolip: viva nyvir terast, beligi. Tinyng dena pros tetragisala, dar ultraska astrodadis. Ninca
     bizonnat sydovie och disejortad, reel och nektigt epogisk fagsik endotet ifall trernfaktisk dobektig.
@@ -131,4 +133,4 @@ export const ViewProductLayout = () => {
       </aside>
     </section>
   );
-};
+}

@@ -31,15 +31,10 @@ const ResetPasswordPage = () => {
         </div>
 
         <h1 className="mb-2 text-[32px] font-semibold">Reset password</h1>
-        <p className="mb-8 text-muted-foreground">
-          Enter your new password to reset your password.
-        </p>
+        <p className="mb-8 text-muted-foreground">Enter your new password to reset your password.</p>
 
         <FormProvider {...methods}>
-          <form
-            onSubmit={methods.handleSubmit(handleSubmit)}
-            className="space-y-4"
-          >
+          <form onSubmit={methods.handleSubmit(handleSubmit)} className="space-y-4">
             <FormField
               label="New Password"
               name="password"
@@ -59,12 +54,7 @@ const ResetPasswordPage = () => {
             />
 
             <div className={`pt-[32px]`}>
-              <CustomButton
-                size={`xl`}
-                variant={`primary`}
-                type="submit"
-                className="w-full"
-              >
+              <CustomButton size={`xl`} variant={`primary`} type="submit" className="w-full">
                 Reset password
               </CustomButton>
             </div>
@@ -72,10 +62,7 @@ const ResetPasswordPage = () => {
         </FormProvider>
 
         <div className="mt-4 text-center text-sm">
-          <Link
-            href="/auth/login"
-            className="inline-flex items-center text-primary hover:underline"
-          >
+          <Link href="/auth/login" className="inline-flex items-center text-primary hover:underline">
             <span className="mr-2">←</span>
             Back to Sign In
           </Link>

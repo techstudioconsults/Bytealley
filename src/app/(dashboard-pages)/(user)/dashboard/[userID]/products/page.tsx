@@ -5,7 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import CustomButton from "~/components/common/common-button/common-button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
-import { withDependency } from "~/HOC/withDependencies";
+import { WithDependency } from "~/HOC/withDependencies";
 import { ProductService } from "~/services/product.service";
 import { dependencies } from "~/utils/dependencies";
 import { AllProducts } from "./_views/all-products";
@@ -102,7 +102,7 @@ const Page = ({ productService, params }: { productService: ProductService; para
   );
 };
 
-const ProductsPage = withDependency(Page, {
+const ProductsPage = WithDependency(Page, {
   productService: dependencies.PRODUCT_SERVICE,
 });
 

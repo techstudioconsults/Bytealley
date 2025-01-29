@@ -7,7 +7,7 @@ import { DashboardTable } from "~/app/(dashboard-pages)/_components/dashboard-ta
 import { TableHeaderInfo } from "~/app/(dashboard-pages)/_components/table-header-info";
 import Loading from "~/app/Loading";
 import CustomButton from "~/components/common/common-button/common-button";
-import { withDependency } from "~/HOC/withDependencies";
+import { WithDependency } from "~/HOC/withDependencies";
 import { ProductService } from "~/services/product.service";
 import { singleProductCustomerColumns } from "~/utils/constants";
 import { dependencies } from "~/utils/dependencies";
@@ -81,7 +81,7 @@ const BasePreviewProductDetailsPage = ({
   );
 };
 
-const ProductDetailsPage = withDependency(BasePreviewProductDetailsPage, {
+const ProductDetailsPage = WithDependency(BasePreviewProductDetailsPage, {
   productService: dependencies.PRODUCT_SERVICE,
 });
 

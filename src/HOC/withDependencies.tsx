@@ -4,7 +4,7 @@ import { ComponentProps } from "react";
 
 import { container } from "~/utils/dependencies";
 
-export const withDependency: DependencyInjector = (Component, dependencies) => {
+export const WithDependency: DependencyInjector = (Component, dependencies) => {
   const resolvedDependencies: ResolveDependencies = {};
 
   for (const property of Object.keys(dependencies)) {
