@@ -1,50 +1,34 @@
+import { ProductService } from "~/services/product.service";
 import { HttpAdapter } from "../adapters/http-adapter";
 import { AuthService } from "../services/auth.service";
 
-// Dependency keys
-export const dependencies = {
+const dependencies = {
   HTTP_ADAPTER: Symbol("httpAdapter"),
-  AUTH_SERVICE: Symbol("authService"),
-} as const;
-
-class DependencyContainer implements IDependencyContainer {
-  private static instance: DependencyContainer;
-  private readonly dependencies = new Map<symbol, unknown>();
-  _dependencies: { [key: symbol]: object } = {};
-
-  private constructor() {}
-
-  static getInstance(): DependencyContainer {
-    if (!this.instance) {
-      this.instance = new DependencyContainer();
-    }
-    return this.instance;
-  }
-
-  add<T>(key: symbol, dependency: T): void {
-    if (this.dependencies.has(key)) {
-      throw new Error(`Dependency already registered: ${key.toString()}`);
-    }
-    this.dependencies.set(key, dependency);
-  }
-
-  get<T>(key: symbol): T {
-    const dependency = this.dependencies.get(key);
-    if (!dependency) {
-      throw new Error(`Dependency not found: ${key.toString()}`);
-    }
-    return dependency as T;
-  }
-}
-
-// Initialize container and dependencies
-const container = DependencyContainer.getInstance();
+  AUTH_SERVICE: Symbol("AuthService"),
+  PRODUCT_SERVICE: Symbol("ProductService"),
+};
 
 const httpAdapter = new HttpAdapter();
 const authService = new AuthService(httpAdapter);
+const productService = new ProductService(httpAdapter);
+class DependencyContainer implements IDependencyContainer {
+  _dependencies = {};
 
-// Register core dependencies
+  add<T>(key: symbol, dependency: T) {
+    Object.defineProperty(this._dependencies, key, {
+      value: dependency,
+    });
+  }
+
+  get<T>(key: symbol): T {
+    return Object.getOwnPropertyDescriptor(this._dependencies, key)?.value as T;
+  }
+}
+
+const container = new DependencyContainer();
+
 container.add(dependencies.HTTP_ADAPTER, httpAdapter);
 container.add(dependencies.AUTH_SERVICE, authService);
+container.add(dependencies.PRODUCT_SERVICE, productService);
 
-export { container };
+export { container, dependencies };

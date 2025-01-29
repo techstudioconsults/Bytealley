@@ -4,27 +4,30 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect } from "react";
 
 import Loading from "~/app/Loading";
-import { withDependency } from "~/HOC/withDependencies";
-import { AuthService } from "~/services/auth.service";
-import { dependencies } from "~/utils/dependencies";
+import { useSession } from "~/hooks/use-session";
+import { getSession } from "~/lib/session/session";
 
-interface PreLoaderProperties {
-  authService: AuthService;
-}
-
-function PreLoader({ authService }: PreLoaderProperties) {
+const PreLoader = () => {
   const router = useRouter();
+  const { handleGoogleCallback } = useSession();
 
   const googleRedirect = useCallback(
     async (code: string) => {
+      // Check if we already have a valid session
+      const session = await getSession();
+      if (session?.user) {
+        router.push(`/dashboard/${session.user.id}/home`);
+        return;
+      }
+
       const data = {
         provider: "google",
         code: code,
       };
 
-      await authService.handleGoogleCallback(data, router);
+      await handleGoogleCallback(data);
     },
-    [authService, router],
+    [handleGoogleCallback, router],
   );
 
   useEffect(() => {
@@ -37,12 +40,7 @@ function PreLoader({ authService }: PreLoaderProperties) {
     }
   }, [googleRedirect]);
 
-  return <Loading />;
-}
+  return <Loading text={`Getting credentials from Google...`} />;
+};
 
-// Assuming you have AUTH_SERVICE_TOKEN defined in your dependencies container
-const preloader = withDependency(PreLoader, {
-  authService: dependencies.AUTH_SERVICE,
-});
-
-export default preloader;
+export default PreLoader;

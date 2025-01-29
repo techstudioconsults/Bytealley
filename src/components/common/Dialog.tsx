@@ -8,11 +8,7 @@ interface DialogDemoProperties {
   children: React.ReactNode;
 }
 
-export function DialogDemo({
-  open,
-  onOpenChanged,
-  children,
-}: DialogDemoProperties) {
+export function DialogDemo({ open, onOpenChanged, children }: DialogDemoProperties) {
   return (
     <Dialog open={open} onOpenChange={onOpenChanged}>
       {children}

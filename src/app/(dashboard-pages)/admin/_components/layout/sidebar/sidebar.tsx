@@ -12,9 +12,7 @@ interface Iproperties {
   sideNavitems?: {
     route: string;
     link: string;
-    icon: ForwardRefExoticComponent<
-      Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
-    >;
+    icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>;
     id: string;
   }[];
 }
@@ -58,9 +56,7 @@ const Sidebar: FC<Iproperties> = ({ sideNavitems = sideItems }) => {
             data-testid={item.id}
             role="bottom-nav-link"
             className={`${
-              pathname.includes(item.id)
-                ? "text-primary"
-                : "text-neutral-dark-2 hover:text-primary"
+              pathname.includes(item.id) ? "text-primary" : "text-neutral-dark-2 hover:text-primary"
             } flex flex-col items-center justify-center transition-all duration-300 ease-in`}
           >
             <item.icon size="16px" role="bottom-nav-icon" />

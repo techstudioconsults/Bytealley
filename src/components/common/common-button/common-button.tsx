@@ -1,11 +1,5 @@
 import Link from "next/link";
-import {
-  cloneElement,
-  FC,
-  MouseEventHandler,
-  ReactElement,
-  ReactNode,
-} from "react";
+import { cloneElement, FC, MouseEventHandler, ReactElement, ReactNode } from "react";
 import { LuLoader, LuPlus } from "react-icons/lu";
 
 import { Button } from "~/components/ui/button";
@@ -86,12 +80,7 @@ const CustomButton: FC<ButtonProperties> = ({
   const buttonContent = (
     <>
       {isLeftIconVisible && !isLoading && modifiedIcon}
-      {isLoading && (
-        <LuLoader
-          className="h-[1rem] w-[1rem] animate-spin"
-          data-testid="loading-spinner"
-        />
-      )}
+      {isLoading && <LuLoader className="h-[1rem] w-[1rem] animate-spin" data-testid="loading-spinner" />}
       {isIconOnly && !isLoading && modifiedIcon}
       {!isIconOnly && children}
       {!isIconOnly && !children && isLoading && "Loading"}
@@ -108,12 +97,7 @@ const CustomButton: FC<ButtonProperties> = ({
 
     if (isExternal) {
       return (
-        <a
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={ariaLabel}
-        >
+        <a href={href} target="_blank" rel="noopener noreferrer" aria-label={ariaLabel}>
           <Button
             type={type}
             variant={variant}

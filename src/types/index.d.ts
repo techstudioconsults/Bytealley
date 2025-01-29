@@ -14,30 +14,103 @@ declare global {
     logo: string;
   };
 
-  type Session = {
-    user: {
-      id: string;
-      name: string;
-      email: string;
-      avatar: string | null;
-      role: string;
-      token: string;
-    };
-    expires: string;
-    iat: number;
-    exp: number;
-  };
-
   type RootState = ReturnType<typeof import("@/store").store.getState>;
   type AppDispatch = typeof import("@/store").store.dispatch;
 
-  type DependencyInjector = <T extends React.ComponentType<any>>(
-    Component: T,
-    dependencies: { [key: string]: symbol },
-  ) => (props: React.ComponentProps<T>) => React.ReactElement;
+  type DependencyInjector = (Component: React.ElementType, dependencies: { [key: string]: symbol }) => any;
 
   type ResolveDependencies = {
-    [key: string]: unknown;
+    [key: string]: object;
+  };
+
+  // Define strict types for table data and actions
+  type DataItem = Record<string, any>;
+
+  type FormFieldProperties = {
+    label?: string;
+    name: string;
+    type?: "text" | "email" | "password" | "number" | "tel" | "textarea" | "select";
+    placeholder?: string;
+    required?: boolean;
+    disabled?: boolean;
+    options?: { value: string; label: string }[];
+    className?: string;
+  };
+
+  type RadioCardGroupProperties = {
+    label?: string;
+    name: string;
+    options: { value: string; label: string; description?: string; icon?: string }[];
+    required?: boolean;
+    disabled?: boolean;
+    className?: string;
+  };
+
+  type RichTextEditorProperties = {
+    label?: string;
+    name: string;
+    placeholder?: string;
+    required?: boolean;
+    disabled?: boolean;
+    className?: string;
+  };
+
+  type ThumbNailUploadProperties = {
+    label?: string;
+    name: string;
+    required?: boolean;
+    disabled?: boolean;
+    className?: string;
+    acceptedFormats?: string;
+    maxFileSize?: number;
+  };
+
+  type HighlightsProperties = {
+    name: string;
+    label?: string;
+    placeholder?: string;
+    description?: string;
+    addButtonText?: string;
+    maxFields?: number;
+    className?: string;
+  };
+
+  type ImageUploadProperties = {
+    label?: string;
+    name: string;
+    required?: boolean;
+    disabled?: boolean;
+    className?: string;
+    maxFiles?: number;
+    acceptedFormats?: string;
+    maxFileSize?: number;
+  };
+
+  type FileUploadProperties = {
+    label?: string;
+    name: string;
+    required?: boolean;
+    disabled?: boolean;
+    className?: string;
+    maxFiles?: number;
+    acceptedFormats?: string;
+    maxFileSize?: number;
+  };
+
+  type ProductFormValues = {
+    product_type: string;
+    title: string;
+    category: string;
+    price: number;
+    discount_price?: number;
+    assets?: File[];
+    description: string;
+    cover_photos: File[];
+    highlights: string[];
+    thumbnail: File | null;
+    tags: string[];
+    resource_link?: string[];
+    portfolio_link?: string;
   };
 }
 

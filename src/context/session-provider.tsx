@@ -1,44 +1,131 @@
-/* eslint-disable no-console */
+/* eslint-disable unicorn/consistent-function-scoping */
 "use client";
 
-import { createContext, ReactNode, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { createContext, useEffect, useState } from "react";
 
-import { getSession } from "~/lib/session/session"; // Adjust the path to your getSession function
-import { Session, SessionContextType } from "~/types"; // Define the structure of your session in a types file if not done already
+import Loading from "~/app/Loading";
+import { WithDependency } from "~/HOC/withDependencies";
+import { getSession } from "~/lib/session/session";
+import { LoginFormData, RegisterFormData } from "~/schemas";
+import { AuthService } from "~/services/auth.service";
+import { dependencies } from "~/utils/dependencies";
+import { Toast } from "~/utils/notificationManager";
 
-const SessionContext = createContext<SessionContextType | undefined>(undefined);
+export const SessionContext = createContext<ISessionContextType | undefined>(undefined);
 
-const SessionProvider = ({ children }: { children: ReactNode }) => {
-  const [session, setSession] = useState<Session | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+const BaseSessionProvider = ({ children, authService }: { children: React.ReactNode; authService: AuthService }) => {
+  const [user, setUser] = useState<IUser | null>(null);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const router = useRouter();
 
-  const fetchSession = async () => {
-    setLoading(true);
+  useEffect(() => {
+    const initSession = async () => {
+      try {
+        const session = await getSession();
+        if (session?.user) {
+          setUser(session.user);
+        }
+      } finally {
+        setIsInitialLoading(false);
+      }
+    };
+
+    initSession();
+  }, []);
+
+  if (isInitialLoading) {
+    return <Loading />;
+  }
+
+  const handleAuthAction = async <T,>(action: () => Promise<T>): Promise<T | undefined> => {
     try {
-      const fetchedSession = await getSession();
-      setSession(fetchedSession);
-    } catch (error) {
-      console.error("Failed to fetch session:", error);
-      setSession(null); // Reset session on error
+      return await action();
     } finally {
-      setLoading(false);
+      // Transition will automatically complete when the action is done
     }
   };
 
-  useEffect(() => {
-    fetchSession();
-  }, []);
+  const login = async (data: LoginFormData) => {
+    const userData = await handleAuthAction(() => authService.login(data));
+    if (userData) {
+      setUser(userData);
+      Toast.getInstance().showToast({
+        title: "Success",
+        description: `Welcome, ${userData.name}!`,
+        variant: "success",
+      });
+      router.push(`/dashboard/${userData.id}/home`);
+    }
+  };
 
-  const refreshSession = async () => {
-    await fetchSession();
+  const register = async (data: RegisterFormData) => {
+    const success = await handleAuthAction(() => authService.register(data));
+
+    if (success) {
+      Toast.getInstance().showToast({
+        title: "Registration Successful",
+        description: "Your account has been created successfully. Please login.",
+        variant: "success",
+      });
+      router.push("/auth/login");
+    }
+  };
+
+  const logout = async () => {
+    await handleAuthAction(async () => {
+      await authService.logout();
+      setUser(null);
+      Toast.getInstance().showToast({
+        title: "Logged Out",
+        description: "You have been logged out successfully.",
+        variant: "warning",
+      });
+      router.push("/auth/login");
+    });
+  };
+
+  const googleSignIn = async () => {
+    const redirectUrl = await handleAuthAction(() => authService.googleSignIn());
+
+    if (redirectUrl) {
+      window.location.href = redirectUrl;
+    }
+  };
+
+  const handleGoogleCallback = async (credentials: { code: string; provider: string }) => {
+    const userData = await handleAuthAction(() => authService.handleGoogleCallback(credentials));
+    if (userData) {
+      setUser(userData);
+      Toast.getInstance().showToast({
+        title: "Success",
+        description: `Welcome, ${userData.name}!`,
+        variant: "success",
+      });
+      router.push(`/dashboard/${userData.id}/home`);
+    } else {
+      router.push("/auth/login");
+    }
   };
 
   return (
-    <SessionContext.Provider value={{ session, loading, refreshSession }}>
+    <SessionContext.Provider
+      value={{
+        user,
+        login,
+        register,
+        logout,
+        googleSignIn,
+        handleGoogleCallback,
+      }}
+    >
       {children}
     </SessionContext.Provider>
   );
 };
 
+const SessionProvider = WithDependency(BaseSessionProvider, {
+  authService: dependencies.AUTH_SERVICE,
+});
+
 export default SessionProvider;
-export { SessionContext };
