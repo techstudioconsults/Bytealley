@@ -29,7 +29,7 @@ export const DashboardNavbar = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-[1] border-b-[0.5px] border-border" role="navbar">
+    <nav className="sticky top-0 z-[5] border-b-[0.5px] border-border" role="navbar">
       <section className="flex w-full items-center justify-between gap-[20px] bg-white px-[16px] py-[20px] lg:px-[32px]">
         <h6 className="font-semibold">{title}</h6>
         <section className="flex items-center justify-between gap-1 md:gap-2 lg:gap-6">

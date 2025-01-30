@@ -73,10 +73,20 @@ export class ProductService {
       return response.data.data;
     }
   }
+
   async getProductOrderByProductId(productId: string) {
     const response = await this.http.get<{ data: IProductOrder[] }>(`/orders/products/${productId}`);
     if (response?.status === 200) {
       return response.data.data;
+    }
+  }
+
+  // New method to publish a product
+  async publishProduct(productId: string) {
+    const response = await this.http.patch(`/products/${productId}/publish`);
+
+    if (response?.status === 200) {
+      return response.data;
     }
   }
 

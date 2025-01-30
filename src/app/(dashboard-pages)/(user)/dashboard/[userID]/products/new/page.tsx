@@ -20,6 +20,7 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
   const searchParameters = useSearchParams();
 
   const currentTab = searchParameters.get("tab") || "product-details";
+  const productID = searchParameters.get("product_id");
 
   const methods = useForm<ProductFormValues>({
     resolver: zodResolver(ProductFormSchema),
@@ -156,8 +157,7 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
                 variant="primary"
                 size="lg"
                 className="w-full sm:w-auto"
-                onClick={handleSubmit(onSubmit)}
-                isDisabled={isSubmitting}
+                onClick={() => productService.publishProduct(productID || "")}
                 isLoading={isSubmitting}
               >
                 Publish & Continue
@@ -168,7 +168,6 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
                 variant="primary"
                 size="lg"
                 className="w-full sm:w-auto"
-                onClick={handleSubmit(onSubmit)}
                 isDisabled={isSubmitting}
                 isLoading={isSubmitting}
               >
@@ -183,7 +182,7 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
           <ProductForm methods={methods} />
         </TabsContent>
         <TabsContent value="preview">
-          <ViewProductLayout params={params} productService={productService} />
+          <ViewProductLayout productService={productService} />
         </TabsContent>
         <TabsContent value="share">
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem culpa ullam, fuga nobis, sequi eos maiores

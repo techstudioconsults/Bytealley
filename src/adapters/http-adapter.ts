@@ -43,7 +43,7 @@ export class HttpAdapter {
     return this.handleRequest<T>(() => http.post(url, data, { headers }));
   }
 
-  async patch<T>(url: string, data: unknown, headers?: Headers): Promise<HttpResponse<T> | undefined> {
+  async patch<T>(url: string, data?: unknown, headers?: Headers): Promise<HttpResponse<T> | undefined> {
     return this.handleRequest<T>(() => http.patch(url, data, { headers }));
   }
 

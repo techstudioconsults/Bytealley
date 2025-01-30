@@ -17,7 +17,7 @@ export const ProductImageCarousel = ({ images }: { images: string[] }) => {
 
   useEffect(() => {
     if (swiperReference.current) {
-      console.log("Swiper instance:", swiperReference.current);
+      //   console.log("Swiper instance:", swiperReference.current);
     }
   }, []);
 
