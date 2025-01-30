@@ -1,3 +1,5 @@
+"use client";
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import uploadIcon from "@/icons/Property_2_Upload_cm42yb.svg";
 import { format } from "date-fns";

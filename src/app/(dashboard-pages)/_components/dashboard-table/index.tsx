@@ -1,3 +1,5 @@
+"use client";
+
 import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontal } from "lucide-react";
 
 import CustomButton from "~/components/common/common-button/common-button";

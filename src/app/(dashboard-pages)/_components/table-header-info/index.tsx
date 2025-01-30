@@ -1,3 +1,5 @@
+"use client";
+
 import { Badge } from "~/components/ui/badge";
 import { cn, formatDate } from "~/utils/utils";
 import { CopyAction } from "../copy-action";

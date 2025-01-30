@@ -1,3 +1,5 @@
+"use client";
+
 interface ProgressBarProperties {
   current: number;
   total: number;

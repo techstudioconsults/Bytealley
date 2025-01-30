@@ -7,6 +7,7 @@ import { DateRange } from "react-day-picker";
 
 import { AnalyticsCard } from "~/app/(dashboard-pages)/_components/analytics-card";
 import { DashboardTable } from "~/app/(dashboard-pages)/_components/dashboard-table";
+import { productColumns, RowActions } from "~/app/(dashboard-pages)/_components/dashboard-table/table-data";
 import { DateRangePicker } from "~/app/(dashboard-pages)/_components/date-range-picker";
 import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import ExportAction from "~/app/(dashboard-pages)/_components/export-action";
@@ -15,7 +16,7 @@ import Loading from "~/app/Loading";
 import { LoadingSpinner } from "~/components/miscellaneous/loading-spinner";
 import { useDebounce } from "~/hooks/use-debounce";
 import { ProductService } from "~/services/product.service";
-import { productColumns, RowActions, statusOptions } from "~/utils/constants";
+import { statusOptions } from "~/utils/constants";
 
 export const AllProducts = ({ productService }: { productService: ProductService }) => {
   const router = useRouter();

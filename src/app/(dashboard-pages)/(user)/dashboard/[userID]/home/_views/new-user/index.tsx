@@ -1,3 +1,5 @@
+"use client";
+
 import productImage from "@/images/empty_product.svg";
 import onboardingImage from "@/images/home_banner_illustration.svg";
 

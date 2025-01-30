@@ -8,6 +8,7 @@ import { GotoTop } from "~/components/miscellaneous/goto-top";
 import { Progress_Bar } from "~/components/progress-bar";
 import SessionProvider from "~/context/session-provider";
 import ToastProvider from "~/context/toast-provider";
+import { getSession } from "~/lib/session/session";
 
 // import { ReduxProvider } from "~/store/provider";
 
@@ -17,17 +18,17 @@ export const metadata: Metadata = {
   description: "bytealley",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getSession();
   return (
     <html lang="en">
       <body className={montserrat.className}>
         {/* <ReduxProvider> */}
-
-        <SessionProvider>
+        <SessionProvider session={session}>
           <ToastProvider>
             <GotoTop />
             <LenisProvider>

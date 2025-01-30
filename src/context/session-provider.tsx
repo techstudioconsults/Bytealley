@@ -1,12 +1,11 @@
 /* eslint-disable unicorn/consistent-function-scoping */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useRouter } from "next/navigation";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 
-import Loading from "~/app/Loading";
 import { WithDependency } from "~/HOC/withDependencies";
-import { getSession } from "~/lib/session/session";
 import { LoginFormData, RegisterFormData } from "~/schemas";
 import { AuthService } from "~/services/auth.service";
 import { dependencies } from "~/utils/dependencies";
@@ -14,29 +13,18 @@ import { Toast } from "~/utils/notificationManager";
 
 export const SessionContext = createContext<ISessionContextType | undefined>(undefined);
 
-const BaseSessionProvider = ({ children, authService }: { children: React.ReactNode; authService: AuthService }) => {
-  const [user, setUser] = useState<IUser | null>(null);
-  const [isInitialLoading, setIsInitialLoading] = useState(true);
+const BaseSessionProvider = ({
+  children,
+  authService,
+  session,
+}: {
+  children: React.ReactNode;
+  authService: AuthService;
+  session: any;
+}) => {
+  const [user, setUser] = useState<IUser | null>(session?.user || null);
+
   const router = useRouter();
-
-  useEffect(() => {
-    const initSession = async () => {
-      try {
-        const session = await getSession();
-        if (session?.user) {
-          setUser(session.user);
-        }
-      } finally {
-        setIsInitialLoading(false);
-      }
-    };
-
-    initSession();
-  }, []);
-
-  if (isInitialLoading) {
-    return <Loading />;
-  }
 
   const handleAuthAction = async <T,>(action: () => Promise<T>): Promise<T | undefined> => {
     try {

@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { cn } from "~/utils/utils";
+import CustomButton from "../common-button/common-button";
 import { StarRating } from "../rating/star";
 
 export function ViewProductLayout() {
@@ -93,39 +94,69 @@ export function ViewProductLayout() {
               <p className="font-semibold">Sold</p>
               <p className="text-sm font-semibold">20</p>
             </div>
-            <p className="mb-7 mt-4 text-2xl font-bold">N200,000 - N500,000</p>
-            <div className="flex flex-col space-y-4 md:flex-row md:space-x-4 md:space-y-0">
-              <button className="w-full rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 md:w-auto">
-                Add to Car
-              </button>
-              <button className="w-full rounded-lg bg-green-500 px-4 py-2 text-white hover:bg-green-600 md:w-auto">
+            <div className="mb-7 mt-4 flex items-center gap-2">
+              <span className="text-2xl font-bold">N200,000</span>
+              <span className="text-destructive line-through">N500,000</span>
+            </div>
+            <div className="flex flex-col gap-2">
+              <CustomButton variant={`primary`} className="">
+                Add to Cart
+              </CustomButton>
+              <CustomButton variant={`outline`} className="border-primary text-primary">
                 Buy Now
-              </button>
+              </CustomButton>
             </div>
           </div>
 
           {/* Product Includes Section */}
-          <div className="mb-8">
-            <h2 className="mb-4 text-xl font-bold text-gray-900">The Product Includes</h2>
-            <ul className="list-inside list-disc space-y-2 text-gray-700">
-              <li>Responsive design</li>
-              <li>8 plugins</li>
-              <li>Hosting Setup</li>
-              <li>Functional website</li>
-            </ul>
+          <div className="">
+            <p className="mb-4 border-b py-4 font-bold">The Product Includes</p>
+            <div className="list-disc space-y-4">
+              <div className="flex items-center justify-between">
+                <span>Format</span>
+                <span>PDF</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span>File Type</span>
+                <span>MP4</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span>Articles</span>
+                <span>7</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span>Resources</span>
+                <span>4</span>
+              </div>
+            </div>
+            <div className="mt-4 flex items-center gap-4">
+              <p className="text-sm font-semibold">Share</p>
+              <p className="text-sm font-semibold">Give as Gift</p>
+            </div>
           </div>
         </section>
 
         {/* Product Reviews Section */}
-        <section>
-          <h2 className="mb-4 text-xl font-bold text-gray-900">Product Reviews</h2>
+        <section className="mt-4 rounded-md border p-4">
+          <div className="mb-4 flex items-center justify-between border-b pb-4">
+            <p className="font-bold">Product Reviews</p>
+            <p className="text-sm font-semibold text-mid-grey-II">24 reviews</p>
+          </div>
           <div className="space-y-4">
             {Array.from({ length: 6 }).map((_, index) => (
-              <div key={index} className="rounded-lg border p-4">
-                <p className="text-gray-700">
-                  Lorem ipsum dolor sit amet consectetur. Telius anest nulla nam elit vivem.
-                </p>
-                <p className="mt-2 text-sm text-gray-500">Tomlade Openly ★★★★ 2 nostrin 500</p>
+              <div key={index} className="">
+                <p className="text-sm">Lorem ipsum dolor sit amet consectetur. Telius anest nulla nam elit vivem.</p>
+                <div className="mt-2 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Avatar className="h-4 w-4">
+                      <AvatarImage src="https://github.com/shadcn.png" />
+                      <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                    <p className="text-[10px] font-semibold">Tomlade Openly</p>
+                  </div>
+                  <StarRating size={`text-xs`} rating={4} />
+                  <p className="text-[10px]">2 months ago</p>
+                </div>
               </div>
             ))}
           </div>

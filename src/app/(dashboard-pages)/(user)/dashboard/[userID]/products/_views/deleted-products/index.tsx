@@ -1,15 +1,19 @@
+"use client";
+
 import empty4 from "@/images/empty_img_4.svg";
 import { format } from "date-fns";
 import { useEffect, useState, useTransition } from "react";
 import { DateRange } from "react-day-picker";
 
 import { DashboardTable } from "~/app/(dashboard-pages)/_components/dashboard-table";
+import { productColumns, RowActions } from "~/app/(dashboard-pages)/_components/dashboard-table/table-data";
 import { DateRangePicker } from "~/app/(dashboard-pages)/_components/date-range-picker";
 import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import Loading from "~/app/Loading";
 import { useDebounce } from "~/hooks/use-debounce";
 import { ProductService } from "~/services/product.service";
-import { productColumns, RowActions } from "~/utils/constants";
+
+import "~/utils/constants";
 
 export const DeletedProducts = ({ productService }: { productService: ProductService }) => {
   const [isPendingDeletedProducts, startTransitionDeletedProducts] = useTransition();
