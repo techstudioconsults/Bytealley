@@ -183,7 +183,7 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
           <ProductForm methods={methods} />
         </TabsContent>
         <TabsContent value="preview">
-          <ViewProductLayout />
+          <ViewProductLayout params={params} productService={productService} />
         </TabsContent>
         <TabsContent value="share">
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem culpa ullam, fuga nobis, sequi eos maiores

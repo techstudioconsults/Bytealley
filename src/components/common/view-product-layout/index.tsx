@@ -1,15 +1,34 @@
 "use client";
 
-import Image from "next/image";
-import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
+import { useSession } from "~/hooks/use-session";
+import { ProductService } from "~/services/product.service";
 import { cn } from "~/utils/utils";
+import { ProductImageCarousel } from "../carousel";
 import CustomButton from "../common-button/common-button";
 import { StarRating } from "../rating/star";
 
-export function ViewProductLayout() {
+export function ViewProductLayout({ productService }: { productService: ProductService }) {
+  const searchParameters = useSearchParams();
+  const productID = searchParameters.get("product_id");
+  const [product, setProduct] = useState<IProduct>();
+  const { user } = useSession();
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      if (productID) {
+        const product = await productService.getProductById(productID);
+        setProduct(product);
+      }
+    };
+    fetchProduct();
+  }, [productID, productService]);
+
   const [isExpanded, setIsExpanded] = useState(false);
+
   const description = `Lorem ipsum eurolip: viva nyvir terast, beligi. Tinyng dena pros tetragisala, dar ultraska astrodadis. Ninca
     bizonnat sydovie och disejortad, reel och nektigt epogisk fagsik endotet ifall trernfaktisk dobektig.
     Jumbeat digital villing variet. Intravasse autongen nagon, nöselingbar egorad, innan vytöra datas som
@@ -28,24 +47,20 @@ export function ViewProductLayout() {
       <main className="md:col-span-8">
         {/* Product Image and Header */}
         <header className="mb-4">
-          <div className="relative mb-4 h-48 w-full rounded-md bg-gray-100 md:h-[263px]">
-            <Image src="/images/logo.svg" alt="Product Image" fill className="rounded-md object-cover" priority />
-          </div>
+          <ProductImageCarousel images={product?.cover_photos || []} />
           <div className={`rounded-md border p-4`}>
-            <h1 className="mb-2 text-2xl font-bold text-gray-900 md:text-3xl">
-              CREATIVE & PROFESSIONAL RESPONSIVE WORDPRESS WEBSITES
-            </h1>
+            <h1 className="mb-2 text-2xl font-bold text-gray-900 md:text-3xl">{product?.title}</h1>
             <div className="flex items-center gap-2">
               <p className="flex items-center gap-2">
                 <Avatar className="h-6 w-6">
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>CN</AvatarFallback>
+                  <AvatarImage src={user?.logo || ""} />
+                  <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
                 </Avatar>
-                <span className={`font-bold`}> Author Name</span>
+                <span className={`font-bold`}>{user?.name}</span>
               </p>
               <div className="flex items-center gap-2">
-                <StarRating rating={4} />
-                <span className="font-bold">24 ratings</span>
+                <StarRating rating={product?.avg_rating} />
+                <span className="font-bold">{product?.avg_rating} ratings</span>
               </div>
             </div>
           </div>
@@ -55,10 +70,7 @@ export function ViewProductLayout() {
         <section className={`mb-4 rounded-md border p-4`}>
           <h2 className="mb-4 border-b py-4 text-xl font-bold text-gray-900">Features</h2>
           <ul className="list-inside list-disc space-y-4 text-gray-700">
-            <p>✔️ 24 x 24px Pixel grid</p>
-            <p>✔️ Very organized library</p>
-            <p>✔️ Clean & smooth icons</p>
-            <p>✔️ Lifetime free updates</p>
+            {product?.highlights.map((highlight, index) => <p key={index}>✔️ {highlight}</p>)}
           </ul>
         </section>
 
@@ -71,7 +83,7 @@ export function ViewProductLayout() {
                 "line-clamp-3": !isExpanded,
               })}
             >
-              {description}
+              <span dangerouslySetInnerHTML={{ __html: product?.description || "" }} />
             </p>
             {isLongDescription && (
               <button
@@ -92,17 +104,25 @@ export function ViewProductLayout() {
           <div className="mb-8">
             <div className={`flex items-center justify-between rounded-md bg-low-purple p-2`}>
               <p className="font-semibold">Sold</p>
-              <p className="text-sm font-semibold">20</p>
+              <p className="text-sm font-semibold">{product?.total_order}</p>
             </div>
             <div className="mb-7 mt-4 flex items-center gap-2">
-              <span className="text-2xl font-bold">N200,000</span>
-              <span className="text-destructive line-through">N500,000</span>
+              <span className="text-2xl font-bold">N{product?.price.toLocaleString()}</span>
+              <span className="text-destructive line-through">₦{product?.discount_price.toLocaleString()}</span>
             </div>
             <div className="flex flex-col gap-2">
-              <CustomButton variant={`primary`} className="">
+              <CustomButton
+                isDisabled={user?.id === product?.user_id}
+                variant={`primary`}
+                className={cn({ "cursor-not-allowed": user?.id !== product?.user_id })}
+              >
                 Add to Cart
               </CustomButton>
-              <CustomButton variant={`outline`} className="border-primary text-primary">
+              <CustomButton
+                isDisabled={user?.id === product?.user_id}
+                variant={`outline`}
+                className={cn({ "cursor-not-allowed": user?.id === product?.user_id }, "border-primary text-primary")}
+              >
                 Buy Now
               </CustomButton>
             </div>
@@ -114,7 +134,7 @@ export function ViewProductLayout() {
             <div className="list-disc space-y-4">
               <div className="flex items-center justify-between">
                 <span>Format</span>
-                <span>PDF</span>
+                <span>{product?.product_type}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span>File Type</span>
