@@ -26,21 +26,21 @@ export const RowActions: (product: IProduct, service: any) => IRowAction<IProduc
         {
           label: "Delete",
           onClick: async () => {
-            const response = await productService.softDeleteProduct(product.id);
-            if (response) {
-              Toast.getInstance().showToast({
-                title: "Success",
-                description: `Product ${product.title} deleted successfully!`,
-                variant: "success",
-              });
-              router.push(`/dashboard/${product.user_id}/products?tab=deleted`);
-            }
+            await productService.softDeleteProduct(product.id);
+            Toast.getInstance().showToast({
+              title: "Success",
+              description: `Product ${product.title} deleted successfully!`,
+              variant: "warning",
+            });
+            router.push(`/dashboard/${product.user_id}/products?tab=deleted`);
           },
           icon: <Trash className={`text-high-danger`} />,
         },
         {
           label: "Preview",
-          onClick: () => {},
+          onClick: () => {
+            router.push(`/dashboard/${product.user_id}/products/new?product_id=${product.id}&tab=preview`);
+          },
           icon: <Eye className={`text-high-primary`} />,
         },
       );
@@ -50,32 +50,34 @@ export const RowActions: (product: IProduct, service: any) => IRowAction<IProduc
       actions.push(
         {
           label: "Unpublish to draft",
-          onClick: () => {},
+          onClick: async () => {
+            await productService.publishProduct(product.id);
+            Toast.getInstance().showToast({
+              title: "Success",
+              description: `Product ${product.title} status updated successfully!`,
+              variant: "success",
+            });
+            router.push(`/dashboard/${product.user_id}/products?tab=drafts`);
+          },
           icon: <MinusCircle className={`text-high-warning`} />,
         },
         {
           label: "Edit",
-          onClick: () => {},
+          onClick: async () => {},
           icon: <Edit className={`text-high-primary`} />,
         },
         {
           label: "Delete",
           onClick: async () => {
-            const response = await productService.softDeleteProduct(product.id);
-            if (response) {
-              Toast.getInstance().showToast({
-                title: "Success",
-                description: `Product ${product.title} deleted successfully!`,
-                variant: "success",
-              });
-            }
+            await productService.softDeleteProduct(product.id);
+            Toast.getInstance().showToast({
+              title: "Success",
+              description: `Product ${product.title} deleted successfully!`,
+              variant: "warning",
+            });
+            router.push(`/dashboard/${product.user_id}/products?tab=deleted`);
           },
           icon: <Trash className={`text-high-danger`} />,
-        },
-        {
-          label: "Preview",
-          onClick: () => {},
-          icon: <Eye className={`text-high-primary`} />,
         },
       );
       break;
@@ -150,7 +152,7 @@ export const productColumns: IColumnDefinition<IProduct>[] = [
     render: (_, product: IProduct) => (
       <Badge
         className={cn(
-          product.status === "draft" ? "bg-mid-warning text-high-warning" : "bg-mid-success text-high-success",
+          product.status === "draft" ? "bg-mid-warning text-high-warning" : "bg-mid-success text-white",
           "rounded-sm px-4 py-2",
         )}
       >

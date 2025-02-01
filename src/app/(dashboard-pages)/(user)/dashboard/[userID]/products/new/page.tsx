@@ -83,11 +83,6 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
     router.push(`/dashboard/${params.userID}/products/new?tab=preview&product_id=${productId}`);
   };
 
-  const onCancel = () => {
-    methods.reset();
-    // router.back(); // Redirect to the dashboard or previous page
-  };
-
   const onTabChange = (value: string) => {
     const parameters = new URLSearchParams(searchParameters);
     parameters.set("tab", value);
@@ -97,7 +92,6 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
   const handlePublish = () => {
     startTransition(async () => {
       const product = await productService.publishProduct(productID);
-      console.log(product);
       Toast.getInstance().showToast({
         title: "Success",
         description: `Product ${product?.title} published successfully!`,
@@ -110,7 +104,7 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
   return (
     <FormProvider {...methods}>
       <Tabs value={currentTab} onValueChange={onTabChange} className="w-full">
-        <TabsList className="mb-8 flex h-fit w-full flex-col-reverse gap-4 rounded-none border-b bg-transparent p-0 sm:flex-row sm:items-center sm:justify-between lg:h-[58px]">
+        <TabsList className="sticky top-[154px] mb-8 flex h-fit w-full flex-col-reverse gap-4 rounded-none border-b bg-white p-0 sm:flex-row sm:items-center sm:justify-between md:top-[80px] lg:h-[58px]">
           <section className="flex h-full w-full flex-wrap items-center gap-2 sm:w-auto sm:flex-nowrap sm:gap-0">
             <TabsTrigger
               disabled
@@ -151,7 +145,10 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
               variant="outline"
               size="lg"
               className="w-full border-destructive text-destructive sm:w-auto"
-              onClick={onCancel}
+              onClick={() => {
+                methods.reset();
+                router.push(`/dashboard/${params.userID}/products?tab=drafts`);
+              }}
               isDisabled={isSubmitting}
             >
               Cancel
@@ -187,6 +184,9 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
                 className="w-full sm:w-auto"
                 isDisabled={isSubmitting}
                 isLoading={isSubmitting}
+                onClick={() => {
+                  router.push(`/dashboard/${params.userID}/products?tab=all-products`);
+                }}
               >
                 Close
               </CustomButton>

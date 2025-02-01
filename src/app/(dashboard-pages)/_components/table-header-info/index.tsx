@@ -31,7 +31,7 @@ const renderCellContent = (header: string, product: IProduct) => {
       return (
         <Badge
           className={cn(
-            product.status === "draft" ? "bg-mid-warning text-high-warning" : "bg-mid-success text-high-success",
+            product.status === "draft" ? "bg-mid-warning text-high-warning" : "bg-mid-success text-white",
             "rounded-sm px-4 py-2",
           )}
         >

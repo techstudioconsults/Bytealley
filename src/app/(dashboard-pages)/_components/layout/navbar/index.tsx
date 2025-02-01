@@ -74,7 +74,7 @@ export const DashboardNavbar = () => {
           </div>
         </section>
       </section>
-      <section className="flex items-center justify-center p-4 lg:hidden">
+      <section className="relative z-[5] flex items-center justify-center bg-white p-4 lg:hidden">
         <SearchInput inputBackgroundColor="bg-low-grey-III" className="w-[100%]" />
       </section>
     </nav>
