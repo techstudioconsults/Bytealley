@@ -134,11 +134,11 @@ export function ViewProductLayout({ productService }: { productService: ProductS
             <div className="list-disc space-y-4">
               <div className="flex items-center justify-between">
                 <span>Format</span>
-                <span>{product?.product_type}</span>
+                <span>MP4</span>
               </div>
               <div className="flex items-center justify-between">
                 <span>File Type</span>
-                <span>MP4</span>
+                <span>{product?.product_type.replace("_", " ")}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span>Articles</span>

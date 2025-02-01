@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useTransition } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import CustomButton from "~/components/common/common-button/common-button";
@@ -13,14 +14,16 @@ import { ProductService } from "~/services/product.service";
 import { dependencies } from "~/utils/dependencies";
 import { Toast } from "~/utils/notificationManager";
 import { ProductForm } from "./_views/product-form";
+import { ShareProductView } from "./_views/share-product";
 
 const Page = ({ params, productService }: { params: { userID: string }; productService: ProductService }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParameters = useSearchParams();
+  const [isPublishing, startTransition] = useTransition();
 
   const currentTab = searchParameters.get("tab") || "product-details";
-  const productID = searchParameters.get("product_id");
+  const productID = searchParameters.get("product_id") || "";
 
   const methods = useForm<ProductFormValues>({
     resolver: zodResolver(ProductFormSchema),
@@ -91,6 +94,19 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
     router.replace(`${pathname}?${parameters.toString()}`, { scroll: false });
   };
 
+  const handlePublish = () => {
+    startTransition(async () => {
+      const product = await productService.publishProduct(productID);
+      console.log(product);
+      Toast.getInstance().showToast({
+        title: "Success",
+        description: `Product ${product?.title} published successfully!`,
+        variant: "success",
+      });
+      router.push(`/dashboard/${params.userID}/products/new?tab=share&product_id=${product?.id}`);
+    });
+  };
+
   return (
     <FormProvider {...methods}>
       <Tabs value={currentTab} onValueChange={onTabChange} className="w-full">
@@ -157,8 +173,9 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
                 variant="primary"
                 size="lg"
                 className="w-full sm:w-auto"
-                onClick={() => productService.publishProduct(productID || "")}
-                isLoading={isSubmitting}
+                onClick={handlePublish}
+                isDisabled={isPublishing}
+                isLoading={isPublishing}
               >
                 Publish & Continue
               </CustomButton>
@@ -185,9 +202,7 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
           <ViewProductLayout productService={productService} />
         </TabsContent>
         <TabsContent value="share">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem culpa ullam, fuga nobis, sequi eos maiores
-          blanditiis doloremque nihil aperiam ut repellat quidem possimus, vel voluptatibus ea laudantium molestias
-          repudiandae.
+          <ShareProductView productId={productID} productService={productService} />
         </TabsContent>
       </Tabs>
     </FormProvider>

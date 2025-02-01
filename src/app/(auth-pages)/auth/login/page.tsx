@@ -13,7 +13,6 @@ import { useSession } from "~/hooks/use-session";
 import { LoginFormData, loginSchema } from "~/schemas";
 
 const LoginPage = () => {
-  const [isPending, startTransition] = useTransition();
   const [isGooglePending, startGoogleTransition] = useTransition();
   const { login, googleSignIn } = useSession();
 
@@ -25,10 +24,13 @@ const LoginPage = () => {
     },
   });
 
-  const handleSubmit = async (data: LoginFormData) => {
-    startTransition(async () => {
-      await login(data);
-    });
+  const {
+    handleSubmit,
+    formState: { isSubmitting },
+  } = methods;
+
+  const handleSubmitForm = async (data: LoginFormData) => {
+    await login(data);
   };
 
   const handleGoogleSignIn = () => {
@@ -48,7 +50,7 @@ const LoginPage = () => {
         <p className="mb-8 text-muted-foreground">Enter your email and password to continue managing your ideas</p>
 
         <FormProvider {...methods}>
-          <form onSubmit={methods.handleSubmit(handleSubmit)} className="space-y-4">
+          <form onSubmit={handleSubmit(handleSubmitForm)} className="space-y-4">
             {methods.formState.errors.root && (
               <p className="text-sm text-red-500">{methods.formState.errors.root.message}</p>
             )}
@@ -84,8 +86,8 @@ const LoginPage = () => {
                 variant={`primary`}
                 type="submit"
                 className="w-full"
-                isDisabled={isPending}
-                isLoading={isPending}
+                isDisabled={isSubmitting}
+                isLoading={isSubmitting}
               >
                 Sign in
               </CustomButton>

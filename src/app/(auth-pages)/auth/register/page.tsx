@@ -13,7 +13,6 @@ import { useSession } from "~/hooks/use-session";
 import { RegisterFormData, registerSchema } from "~/schemas";
 
 const RegisterPage = () => {
-  const [isPending, startTransition] = useTransition();
   const [isGooglePending, startGoogleTransition] = useTransition();
   const { register, googleSignIn } = useSession();
 
@@ -27,10 +26,13 @@ const RegisterPage = () => {
     },
   });
 
-  const handleSubmit = async (data: RegisterFormData) => {
-    startTransition(async () => {
-      await register(data);
-    });
+  const {
+    handleSubmit,
+    formState: { isSubmitting },
+  } = methods;
+
+  const handleSubmitForm = async (data: RegisterFormData) => {
+    await register(data);
   };
 
   const handleGoogleSignIn = () => {
@@ -51,7 +53,7 @@ const RegisterPage = () => {
         </h1>
 
         <FormProvider {...methods}>
-          <form onSubmit={methods.handleSubmit(handleSubmit)} className="mt-[56px] space-y-4">
+          <form onSubmit={handleSubmit(handleSubmitForm)} className="mt-[56px] space-y-4">
             {methods.formState.errors.root && (
               <p className="text-sm text-red-500">{methods.formState.errors.root.message}</p>
             )}
@@ -109,8 +111,8 @@ const RegisterPage = () => {
               <CustomButton
                 type="submit"
                 variant="primary"
-                isDisabled={isPending}
-                isLoading={isPending}
+                isDisabled={isSubmitting}
+                isLoading={isSubmitting}
                 className="w-full"
                 size="xl"
               >

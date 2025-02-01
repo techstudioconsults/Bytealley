@@ -83,10 +83,9 @@ export class ProductService {
 
   // New method to publish a product
   async publishProduct(productId: string) {
-    const response = await this.http.patch(`/products/${productId}/publish`);
-
+    const response = await this.http.patch<{ data: IProduct }>(`/products/${productId}/publish`);
     if (response?.status === 200) {
-      return response.data;
+      return response.data.data;
     }
   }
 
