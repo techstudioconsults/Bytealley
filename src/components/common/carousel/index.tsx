@@ -30,7 +30,6 @@ export const ProductImageCarousel = ({ images }: { images: string[] }) => {
         navigation
         pagination={{ clickable: true }}
         autoplay={{ delay: 3000, disableOnInteraction: false }}
-        loop={true}
         onSwiper={(swiper) => (swiperReference.current = swiper)}
       >
         {images.map((image, index) => (

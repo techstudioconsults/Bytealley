@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import CustomButton from "~/components/common/common-button/common-button";
@@ -21,6 +21,7 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
   const pathname = usePathname();
   const searchParameters = useSearchParams();
   const [isPublishing, startTransition] = useTransition();
+  const [isPublished, setIsPublished] = useState(false);
 
   const currentTab = searchParameters.get("tab") || "product-details";
   const productID = searchParameters.get("product_id") || "";
@@ -77,7 +78,7 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
 
     Toast.getInstance().showToast({
       title: "Success",
-      description: `Product "${data.title}" created successfully!`,
+      description: `Product "${data.title}" created successfully! You can now preview and publish it.`,
       variant: "success",
     });
     router.push(`/dashboard/${params.userID}/products/new?tab=preview&product_id=${productId}`);
@@ -92,12 +93,25 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
   const handlePublish = () => {
     startTransition(async () => {
       const product = await productService.publishProduct(productID);
+      setIsPublished(true); // Set publish state to true
       Toast.getInstance().showToast({
         title: "Success",
-        description: `Product ${product?.title} published successfully!`,
+        description: `Product "${product?.title}" published successfully!`,
         variant: "success",
       });
       router.push(`/dashboard/${params.userID}/products/new?tab=share&product_id=${product?.id}`);
+    });
+  };
+
+  const handleUnpublish = () => {
+    startTransition(async () => {
+      const product = await productService.publishProduct(productID);
+      setIsPublished(false); // Set publish state to false
+      Toast.getInstance().showToast({
+        title: "Success",
+        description: `Product "${product?.title}" unpublished successfully!`,
+        variant: "success",
+      });
     });
   };
 
@@ -141,60 +155,87 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
             </TabsTrigger>
           </section>
           <section className="flex w-full items-center justify-end gap-4 sm:w-auto">
-            <CustomButton
-              variant="outline"
-              size="lg"
-              className="w-full border-destructive text-destructive sm:w-auto"
-              onClick={() => {
-                methods.reset();
-                router.push(`/dashboard/${params.userID}/products?tab=drafts`);
-              }}
-              isDisabled={isSubmitting}
-            >
-              Cancel
-            </CustomButton>
             {currentTab === "product-details" && (
-              <CustomButton
-                variant="primary"
-                size="lg"
-                className="w-full sm:w-auto"
-                onClick={handleSubmit(onSubmit)}
-                isDisabled={isSubmitting}
-                isLoading={isSubmitting}
-              >
-                Save & Continue
-              </CustomButton>
+              <>
+                <CustomButton
+                  variant="outline"
+                  size="lg"
+                  className="w-full border-destructive text-destructive sm:w-auto"
+                  onClick={() => {
+                    methods.reset();
+                    // router.push(`/dashboard/${params.userID}/products?tab=drafts`);
+                  }}
+                  isDisabled={isSubmitting}
+                >
+                  Cancel
+                </CustomButton>
+                <CustomButton
+                  variant="primary"
+                  size="lg"
+                  className="w-full sm:w-auto"
+                  onClick={handleSubmit(onSubmit)}
+                  isDisabled={isSubmitting}
+                  isLoading={isSubmitting}
+                >
+                  Save & Continue
+                </CustomButton>
+              </>
             )}
             {currentTab === "preview" && (
-              <CustomButton
-                variant="primary"
-                size="lg"
-                className="w-full sm:w-auto"
-                onClick={handlePublish}
-                isDisabled={isPublishing}
-                isLoading={isPublishing}
-              >
-                Publish & Continue
-              </CustomButton>
+              <>
+                <CustomButton
+                  variant="outline"
+                  size="lg"
+                  className="w-full border-destructive text-destructive sm:w-auto"
+                  onClick={() => {
+                    router.push(`/dashboard/${params.userID}/products?tab=drafts`);
+                  }}
+                  isDisabled={isSubmitting}
+                >
+                  Cancel
+                </CustomButton>
+                <CustomButton
+                  variant="primary"
+                  size="lg"
+                  className="w-full sm:w-auto"
+                  onClick={handlePublish}
+                  isDisabled={isPublishing}
+                  isLoading={isPublishing}
+                >
+                  Publish & Continue
+                </CustomButton>
+              </>
             )}
             {currentTab === "share" && (
-              <CustomButton
-                variant="primary"
-                size="lg"
-                className="w-full sm:w-auto"
-                isDisabled={isSubmitting}
-                isLoading={isSubmitting}
-                onClick={() => {
-                  router.push(`/dashboard/${params.userID}/products?tab=all-products`);
-                }}
-              >
-                Close
-              </CustomButton>
+              <>
+                <CustomButton
+                  variant="outline"
+                  size="lg"
+                  className="w-full border-primary text-primary sm:w-auto"
+                  onClick={isPublished ? handleUnpublish : handlePublish}
+                  isDisabled={isSubmitting}
+                  isLoading={isPublishing}
+                >
+                  {isPublished ? "Unpublish" : "Publish"}
+                </CustomButton>
+                <CustomButton
+                  variant="primary"
+                  size="lg"
+                  className="w-full sm:w-auto"
+                  isDisabled={isSubmitting}
+                  isLoading={isSubmitting}
+                  onClick={() => {
+                    router.push(`/dashboard/${params.userID}/products?tab=all-products`);
+                  }}
+                >
+                  Close
+                </CustomButton>
+              </>
             )}
           </section>
         </TabsList>
 
-        {/* tab content */}
+        {/* Tab Content */}
         <TabsContent value="product-details">
           <ProductForm methods={methods} />
         </TabsContent>
