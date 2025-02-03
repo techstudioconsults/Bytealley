@@ -1,5 +1,10 @@
+;
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { JWTPayload } from "jose";
+
+
+
+
 
 declare global {
   interface ISessionContextType {
@@ -267,6 +272,17 @@ declare global {
     reference_no: string;
     total_amount: number;
     created_at: string;
+  }
+
+  interface IPayout {
+    id: string;
+    bank_name: string;
+    account_number: string;
+    account_name: string;
+    amount: number;
+    status: "completed" | "pending" | "failed"; // Assuming status can only be one of these values
+    reference: string;
+    created_at: string; // ISO 8601 date string
   }
 }
 

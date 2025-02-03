@@ -64,7 +64,7 @@ const BaseCustomerDetailsPage = ({
 
       <section></section>
 
-      <p className="text-lg font-semibold">Customer Analytics</p>
+      <p className="text-lg font-semibold">{customer.name}</p>
       <section className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <section>
           <TableHeaderInfo
@@ -76,9 +76,9 @@ const BaseCustomerDetailsPage = ({
           />
           <section className="mt-2 grid h-fit grid-cols-1 gap-4 lg:grid-cols-2">
             <AnalyticsCard title="Total Orders" value={customer?.total_order} />
-            <AnalyticsCard title="Total Value" value={`₦${customer?.total_transactions}`} />
+            <AnalyticsCard title="Total Transactions" value={`₦${customer?.total_transactions.toLocaleString()}`} />
             <AnalyticsCard title="Total Sales" value={customer?.free_products} />
-            <AnalyticsCard title="Total Value" value={`₦${customer?.sale_products}`} />
+            <AnalyticsCard title="Total Value" value={`₦${customer?.sale_products.toLocaleString()}`} />
           </section>
         </section>
         <DashboardTable data={[...customer.latest_purchases]} columns={latestPurchaseColumns} />

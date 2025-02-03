@@ -277,3 +277,22 @@ export const latestPurchaseColumns: IColumnDefinition<ILatestPurchase>[] = [
     ),
   },
 ];
+
+export const payoutColumns: IColumnDefinition<IPayout>[] = [
+  {
+    header: "Price",
+    accessorKey: "amount",
+  },
+  {
+    header: "Bank Account",
+    accessorKey: "account_number",
+  },
+  {
+    header: "Period",
+    accessorKey: "created_at",
+  },
+  {
+    header: "Status",
+    accessorKey: "status",
+  },
+];
