@@ -15,6 +15,7 @@ import { SelectDropdown } from "~/app/(dashboard-pages)/_components/select-dropd
 import Loading from "~/app/Loading";
 import { LoadingSpinner } from "~/components/miscellaneous/loading-spinner";
 import { useDebounce } from "~/hooks/use-debounce";
+import { useSession } from "~/hooks/use-session";
 import { ProductService } from "~/services/product.service";
 import { statusOptions } from "~/utils/constants";
 
@@ -28,6 +29,7 @@ export const AllProducts = ({ productService }: { productService: ProductService
   const [paginationMeta, setPaginationMeta] = useState<IPaginationMeta | null>(null);
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const [status, setStatus] = useState<string>("all");
+  const { user } = useSession();
 
   const debouncedStatus = useDebounce(status);
   const debouncedDateRange = useDebounce(dateRange);
@@ -87,7 +89,7 @@ export const AllProducts = ({ productService }: { productService: ProductService
         />
         <AnalyticsCard
           title={"Total Revenue"}
-          value={isPendingAnalytics ? <LoadingSpinner /> : analytics?.total_revenues?.toLocaleString()}
+          value={isPendingAnalytics ? <LoadingSpinner /> : `₦${analytics?.total_revenues?.toLocaleString()}`}
         />
       </section>
       <section className={`space-y-4`}>
@@ -127,7 +129,7 @@ export const AllProducts = ({ productService }: { productService: ProductService
                   rowActions={(product) => RowActions(product, productService)}
                   showPagination
                   onRowClick={(product) => {
-                    router.push(`/dashboard/${product.user_id}/products/${product.id}`);
+                    router.push(`/dashboard/${user?.id}/products/${product.id}`);
                   }}
                 />
               </section>

@@ -161,3 +161,119 @@ export const productColumns: IColumnDefinition<IProduct>[] = [
     ),
   },
 ];
+
+export const singleProductCustomerColumns: IColumnDefinition<IProductOrderFlat>[] = [
+  {
+    header: "Customer Name",
+    accessorKey: "customer",
+    render: (_, product: IProductOrderFlat) => <span>{product?.customer?.name}</span>,
+  },
+  {
+    header: "Customer Email",
+    accessorKey: "customer",
+    render: (_, product: IProductOrderFlat) => <span>{product?.customer?.email}</span>,
+  },
+  {
+    header: "Quantity",
+    accessorKey: "quantity",
+  },
+  {
+    header: "Date",
+    accessorKey: "date",
+  },
+];
+
+export const orderColumns: IColumnDefinition<IProductOrderFlat>[] = [
+  {
+    header: "Product",
+    accessorKey: "product",
+    render: (_, product: IProductOrderFlat) => (
+      <div className={`flex w-fit items-center gap-2`}>
+        <Image
+          src={product?.product?.thumbnail || ""}
+          alt="product"
+          width={44}
+          height={44}
+          className={`h-[44px] w-[44px] rounded-md bg-low-grey-III object-cover`}
+        />
+        <span className="text-[16px] font-medium">{product?.product?.title}</span>
+      </div>
+    ),
+  },
+  {
+    header: "Price",
+    accessorKey: "product",
+    render: (_, product: IProductOrderFlat) => <span>₦{product?.product?.price?.toLocaleString()}</span>,
+  },
+  {
+    header: "Customer Email",
+    accessorKey: "customer",
+    render: (_, product: IProductOrderFlat) => <span>{product?.customer?.email}</span>,
+  },
+  {
+    header: "Date",
+    accessorKey: "date",
+  },
+];
+
+export const customerColumns: IColumnDefinition<ICustomer>[] = [
+  {
+    header: "Customer Name",
+    accessorKey: "name",
+  },
+  {
+    header: "Customer Email",
+    accessorKey: "email",
+  },
+  {
+    header: "Latest Purchase",
+    accessorKey: "latest_purchases",
+    render: (_, customer: ICustomer) => (
+      <div className={`space-y-2`}>
+        <p>{customer?.latest_purchases?.[0]?.product_title}</p>
+        <p className={`text-sm text-mid-grey-II underline`}>{customer?.id}</p>
+      </div>
+    ),
+  },
+  {
+    header: "Latest Purchase Price",
+    accessorKey: "latest_purchase_price",
+    render: (_, customer: ICustomer) => <span>₦{customer?.latest_purchase_price?.toLocaleString()}</span>,
+  },
+  {
+    header: "Date",
+    accessorKey: "latest_purchase_date",
+    render: (_, customer: ICustomer) => (
+      <span>
+        {formatDate(customer?.latest_purchase_date)} {formatTime(customer?.latest_purchase_date)}
+      </span>
+    ),
+  },
+];
+
+export const latestPurchaseColumns: IColumnDefinition<ILatestPurchase>[] = [
+  {
+    header: "Latest Purchase",
+    accessorKey: "product_thumbnail",
+    render: (_, customer: ILatestPurchase) => (
+      <div className={`flex w-fit items-center gap-2`}>
+        <Image src={customer?.product_thumbnail} alt="product" width={44} height={44} />
+        <span className="text-[16px] font-medium">{customer?.product_title}</span>
+      </div>
+    ),
+  },
+  {
+    header: "Price",
+    accessorKey: "product_price",
+    render: (_, customer: ILatestPurchase) => <span>₦{customer?.product_price?.toLocaleString()}</span>,
+  },
+  {
+    header: "Date",
+    accessorKey: "date",
+    render: (_, customer: ILatestPurchase) => (
+      <span>
+        {formatDate(customer?.date)} {formatTime(customer?.date)}
+      </span>
+    ),
+  },
+];

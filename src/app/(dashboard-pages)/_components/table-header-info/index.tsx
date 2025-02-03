@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { Badge } from "~/components/ui/badge";
@@ -6,10 +7,10 @@ import { CopyAction } from "../copy-action";
 
 interface TableHeaderInfoProperties {
   headers: string[];
-  product: IProduct;
+  product: any;
 }
 
-const renderCellContent = (header: string, product: IProduct) => {
+const renderCellContent = (header: string, product: any) => {
   switch (header.toLowerCase()) {
     case "publish date": {
       return formatDate(product.updated_at);
@@ -38,6 +39,12 @@ const renderCellContent = (header: string, product: IProduct) => {
           {product.status}
         </Badge>
       );
+    }
+    case "joined": {
+      return formatDate(product.joined);
+    }
+    case "email address": {
+      return product.email;
     }
     default: {
       return null;

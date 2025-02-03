@@ -213,8 +213,33 @@ declare global {
   }
 
   interface ICustomer {
+    id: string;
     name: string;
     email: string;
+    free_products: number;
+    sale_products: number;
+    total_order: number;
+    total_transactions: string;
+    latest_purchase_title: string;
+    latest_purchase_price: number;
+    latest_purchase_date: string;
+    joined: string;
+    latest_purchases: ILatestPurchase[];
+  }
+
+  interface ILatestPurchase {
+    id: string;
+    product_title: string;
+    product_price: number;
+    product_thumbnail: string;
+    quantity: number;
+    total_amount: number;
+    customer_name: string;
+    customer_email: string;
+    total_order: number;
+    total_sales: number;
+    total_views: number;
+    date: string;
   }
 
   interface IProductOrder {
@@ -227,10 +252,21 @@ declare global {
     created_at: string;
   }
   interface IProductOrderFlat {
-    name: string;
-    email: string;
-    quantity: number | string;
-    date: string;
+    id?: string;
+    quantity?: number | string;
+    date?: string;
+    product?: IProduct;
+    customer?: ICustomer;
+  }
+
+  interface IOrderDetails {
+    id: string;
+    product: IProduct;
+    customer: ICustomer;
+    quantity: number;
+    reference_no: string;
+    total_amount: number;
+    created_at: string;
   }
 }
 

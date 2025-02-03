@@ -5,13 +5,13 @@ import { useEffect, useState, useTransition } from "react";
 
 import { BackNavigator } from "~/app/(dashboard-pages)/_components/back-navigator";
 import { DashboardTable } from "~/app/(dashboard-pages)/_components/dashboard-table";
+import { singleProductCustomerColumns } from "~/app/(dashboard-pages)/_components/dashboard-table/table-data";
 import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import { TableHeaderInfo } from "~/app/(dashboard-pages)/_components/table-header-info";
 import Loading from "~/app/Loading";
 import CustomButton from "~/components/common/common-button/common-button";
 import { WithDependency } from "~/HOC/withDependencies";
 import { ProductService } from "~/services/product.service";
-import { singleProductCustomerColumns } from "~/utils/constants";
 import { dependencies } from "~/utils/dependencies";
 import { Toast } from "~/utils/notificationManager";
 import { formatDate, formatTime } from "~/utils/utils";
@@ -43,8 +43,7 @@ const BasePreviewProductDetailsPage = ({
           setProduct(product);
           setProductOrders(
             orders.flatMap((order) => ({
-              name: order.customer.name,
-              email: order.customer.email,
+              customer: order.customer,
               quantity: order.quantity,
               date: `${formatDate(order.created_at)} ${formatTime(order.created_at)}`,
             })),
