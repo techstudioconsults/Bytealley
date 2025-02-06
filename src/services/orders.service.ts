@@ -23,6 +23,14 @@ export class OrderService {
     }
   }
 
+  async downloadOrdersAsCSV(filters: IProductFilters) {
+    const queryParameters = this.buildQueryParameters(filters);
+    const response = await this.http.get(`/orders/download?${queryParameters}`);
+    if (response?.status === 200) {
+      return response.data;
+    }
+  }
+
   private buildQueryParameters(filters: IProductFilters): string {
     const queryParameters = new URLSearchParams();
     for (const [key, value] of Object.entries(filters)) {

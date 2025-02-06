@@ -1,7 +1,6 @@
 "use client";
 
 import refreshIcon from "@/icons/Property_2_Update_ojnsf7.svg";
-import uploadIcon from "@/icons/Property_2_Upload_cm42yb.svg";
 import emptyCart from "@/images/empty-cart.svg";
 import { format } from "date-fns";
 import Image from "next/image";
@@ -13,6 +12,7 @@ import { DashboardTable } from "~/app/(dashboard-pages)/_components/dashboard-ta
 import { customerColumns } from "~/app/(dashboard-pages)/_components/dashboard-table/table-data";
 import { DateRangePicker } from "~/app/(dashboard-pages)/_components/date-range-picker";
 import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
+import ExportAction from "~/app/(dashboard-pages)/_components/export-action";
 import Loading from "~/app/Loading";
 import CustomButton from "~/components/common/common-button/common-button";
 import { WithDependency } from "~/HOC/withDependencies";
@@ -75,15 +75,14 @@ const BaseCustomerPage = ({ customerService }: { customerService: CustomerServic
           <DateRangePicker onDateChange={handleDateRangeChange} />
         </div>
         <div className="flex w-full flex-row gap-2 sm:w-auto sm:justify-start">
-          <CustomButton
-            className="w-full border-primary text-[16px] text-primary sm:w-auto"
-            variant="outline"
-            size="xl"
-            isLeftIconVisible
-            icon={<Image src={uploadIcon} width={16} height={16} alt="export" />}
-          >
-            Export
-          </CustomButton>
+          <ExportAction
+            serviceMethod={(filters) => customerService.downloadCustomersAsCSV(filters)}
+            currentPage={1}
+            dateRange={dateRange}
+            buttonText="Export Customers"
+            fileName="customer"
+            size={`xl`}
+          />
           <CustomButton
             className="w-full border-primary text-[16px] text-primary sm:w-auto"
             variant="outline"

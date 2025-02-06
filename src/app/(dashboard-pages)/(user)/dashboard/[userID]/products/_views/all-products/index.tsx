@@ -108,13 +108,12 @@ export const AllProducts = ({ productService }: { productService: ProductService
                 />
               </div>
               <ExportAction
-                service={productService}
-                currentPage={currentPage}
+                serviceMethod={(filters) => productService.downloadProducts(filters)}
+                currentPage={1}
                 dateRange={dateRange}
                 status={status}
-                onDownloadComplete={() => {
-                  // Handle any additional logic after download if needed
-                }}
+                buttonText="Export"
+                fileName="Product"
               />
             </section>
             {products.length > 0 ? (

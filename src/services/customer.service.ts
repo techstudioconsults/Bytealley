@@ -10,7 +10,6 @@ export class CustomerService {
   async getAllCustomers(filters: IProductFilters) {
     const queryParameters = this.buildQueryParameters(filters);
     const response = await this.http.get<IPaginatedResponse<ICustomer>>(`/customers?${queryParameters}`);
-
     if (response?.status === 200) {
       return response.data;
     }
@@ -18,8 +17,14 @@ export class CustomerService {
 
   async getCustomerById(customerId: string) {
     const response = await this.http.get<{ data: ICustomer }>(`/customers/${customerId}`);
-    console.log(response.data);
+    if (response?.status === 200) {
+      return response.data;
+    }
+  }
 
+  async downloadCustomersAsCSV(filters: IProductFilters) {
+    const queryParameters = this.buildQueryParameters(filters);
+    const response = await this.http.get(`/customers/download?${queryParameters}`);
     if (response?.status === 200) {
       return response.data;
     }
