@@ -5,18 +5,17 @@ import { useEffect, useState, useTransition } from "react";
 import { AnalyticsCard } from "~/app/(dashboard-pages)/_components/analytics-card";
 import { BackNavigator } from "~/app/(dashboard-pages)/_components/back-navigator";
 import { DashboardTable } from "~/app/(dashboard-pages)/_components/dashboard-table";
-import { latestPurchaseColumns } from "~/app/(dashboard-pages)/_components/dashboard-table/table-data";
+import { customerColumns, latestPurchaseColumns } from "~/app/(dashboard-pages)/_components/dashboard-table/table-data";
 import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import { TableHeaderInfo } from "~/app/(dashboard-pages)/_components/table-header-info";
 import Loading from "~/app/Loading";
 import { WithDependency } from "~/HOC/withDependencies";
 import { CustomerService } from "~/services/customer.service";
-import { customersData } from "~/utils/constants";
 import { dependencies } from "~/utils/dependencies";
 
 const BaseCustomerDetailsPage = ({
   params,
-  //   customerService,
+  customerService,
 }: {
   params: { customerID: string };
   customerService: CustomerService;
@@ -24,22 +23,16 @@ const BaseCustomerDetailsPage = ({
   const [isPending, startTransition] = useTransition();
   const [customer, setCustomer] = useState<ICustomer | null>(null);
 
-  //   useEffect(() => {
-  //     const fetchProductData = async () => {
-  //       startTransition(async () => {
-  //         const customer = await customerService.getCustomerById(params.customerID);
-  //         setCustomer(customer?.data || null);
-  //       });
-  //     };
-
-  //     fetchProductData();
-  //   }, [params.customerID, customerService]);
-
   useEffect(() => {
-    startTransition(async () => {
-      setCustomer(customersData.data.find((customer) => customer.id === params.customerID) || null);
-    });
-  }, [params.customerID]);
+    const fetchProductData = async () => {
+      startTransition(async () => {
+        const customer = await customerService.getCustomerById(params.customerID);
+        setCustomer(customer?.data || null);
+      });
+    };
+
+    fetchProductData();
+  }, [customerService, params.customerID]);
 
   if (isPending) {
     return <Loading text={`Loading customer details...`} className={`w-fill h-fit p-20`} />;
@@ -77,11 +70,11 @@ const BaseCustomerDetailsPage = ({
           <section className="mt-2 grid h-fit grid-cols-1 gap-4 lg:grid-cols-2">
             <AnalyticsCard title="Total Orders" value={customer?.total_order} />
             <AnalyticsCard title="Total Transactions" value={`₦${customer?.total_transactions.toLocaleString()}`} />
-            <AnalyticsCard title="Total Sales" value={customer?.free_products} />
-            <AnalyticsCard title="Total Value" value={`₦${customer?.sale_products.toLocaleString()}`} />
+            {/* <AnalyticsCard title="Total Sales" value={customer?.free_products} />
+            <AnalyticsCard title="Total Value" value={`₦${customer?.sale_products.toLocaleString()}`} /> */}
           </section>
         </section>
-        <DashboardTable data={[...customer.latest_purchases]} columns={latestPurchaseColumns} />
+        <DashboardTable data={[customer]} columns={latestPurchaseColumns} />
       </section>
     </section>
   );

@@ -230,7 +230,7 @@ export const customerColumns: IColumnDefinition<ICustomer>[] = [
     accessorKey: "latest_purchases",
     render: (_, customer: ICustomer) => (
       <div className={`space-y-2`}>
-        <p>{customer?.latest_purchases?.[0]?.product_title}</p>
+        <p>{customer?.latest_purchase_title}</p>
         <p className={`text-sm text-mid-grey-II underline`}>{customer?.id}</p>
       </div>
     ),
@@ -251,28 +251,28 @@ export const customerColumns: IColumnDefinition<ICustomer>[] = [
   },
 ];
 
-export const latestPurchaseColumns: IColumnDefinition<ILatestPurchase>[] = [
+export const latestPurchaseColumns: IColumnDefinition<ICustomer>[] = [
   {
     header: "Latest Purchase",
-    accessorKey: "product_thumbnail",
-    render: (_, customer: ILatestPurchase) => (
+    accessorKey: "latest_purchase_title",
+    render: (_, customer: ICustomer) => (
       <div className={`flex w-fit items-center gap-2`}>
-        <Image src={customer?.product_thumbnail} alt="product" width={44} height={44} />
-        <span className="text-[16px] font-medium">{customer?.product_title}</span>
+        <Image src={"/images/question_mark.png"} alt="product" width={44} height={44} className={`bg-low-grey-II`} />
+        <span className="text-[16px] font-medium">{customer?.latest_purchase_title}</span>
       </div>
     ),
   },
   {
     header: "Price",
-    accessorKey: "product_price",
-    render: (_, customer: ILatestPurchase) => <span>₦{customer?.product_price?.toLocaleString()}</span>,
+    accessorKey: "latest_purchase_price",
+    render: (_, customer: ICustomer) => <span>₦{customer?.latest_purchase_price?.toLocaleString()}</span>,
   },
   {
     header: "Date",
-    accessorKey: "date",
-    render: (_, customer: ILatestPurchase) => (
+    accessorKey: "latest_purchase_date",
+    render: (_, customer: ICustomer) => (
       <span>
-        {formatDate(customer?.date)} {formatTime(customer?.date)}
+        {formatDate(customer?.latest_purchase_date)} {formatTime(customer?.latest_purchase_date)}
       </span>
     ),
   },

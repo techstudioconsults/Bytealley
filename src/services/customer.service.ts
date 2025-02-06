@@ -17,7 +17,9 @@ export class CustomerService {
   }
 
   async getCustomerById(customerId: string) {
-    const response = await this.http.get<{ data: IOrderDetails }>(`/customers/${customerId}`);
+    const response = await this.http.get<{ data: ICustomer }>(`/customers/${customerId}`);
+    console.log(response.data);
+
     if (response?.status === 200) {
       return response.data;
     }

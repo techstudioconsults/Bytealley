@@ -127,7 +127,7 @@ const BasePayoutsPage = ({ payoutService }: { payoutService: PayoutService }) =>
                     text: "Create Your First Product",
                     onClick: () => {
                       router.push(`/dashboard/${user?.id}/products/new`);
-					},
+                    },
                   }}
                 />
               )}

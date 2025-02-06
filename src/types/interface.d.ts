@@ -1,10 +1,5 @@
-;
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { JWTPayload } from "jose";
-
-
-
-
 
 declare global {
   interface ISessionContextType {

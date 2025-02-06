@@ -3,7 +3,7 @@
 import refreshIcon from "@/icons/Property_2_Update_ojnsf7.svg";
 import uploadIcon from "@/icons/Property_2_Upload_cm42yb.svg";
 import emptyCart from "@/images/empty-cart.svg";
-// import { format } from "date-fns";
+import { format } from "date-fns";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
@@ -19,10 +19,7 @@ import { WithDependency } from "~/HOC/withDependencies";
 import { useDebounce } from "~/hooks/use-debounce";
 import { useSession } from "~/hooks/use-session";
 import { CustomerService } from "~/services/customer.service";
-import { customersData } from "~/utils/constants";
 import { dependencies } from "~/utils/dependencies";
-
-// import { formatDate, formatTime } from "~/utils/utils";
 
 const BaseCustomerPage = ({ customerService }: { customerService: CustomerService }) => {
   const [isPendingCustomers, startTransitionCustomers] = useTransition();
@@ -39,43 +36,36 @@ const BaseCustomerPage = ({ customerService }: { customerService: CustomerServic
     setCurrentPage(1);
   };
 
+  // useEffect(() => {
+  //   // const parameters = {
+  //   //   page: currentPage,
+  //   //   ...(debouncedDateRange?.from && { start_date: format(debouncedDateRange.from, "yyyy-MM-dd") }),
+  //   //   ...(debouncedDateRange?.to && { end_date: format(debouncedDateRange.to, "yyyy-MM-dd") }),
+  //   // };
+
+  //   startTransitionCustomers(async () => {
+  //     setCustomers(customersData.data);
+  //     setPaginationMeta(customersData.meta);
+  //   });
+  // }, [debouncedDateRange, customerService, currentPage]);
+
   useEffect(() => {
-    // const parameters = {
-    //   page: currentPage,
-    //   ...(debouncedDateRange?.from && { start_date: format(debouncedDateRange.from, "yyyy-MM-dd") }),
-    //   ...(debouncedDateRange?.to && { end_date: format(debouncedDateRange.to, "yyyy-MM-dd") }),
-    // };
+    const parameters = {
+      page: currentPage,
+      ...(debouncedDateRange?.from && { start_date: format(debouncedDateRange.from, "yyyy-MM-dd") }),
+      ...(debouncedDateRange?.to && { end_date: format(debouncedDateRange.to, "yyyy-MM-dd") }),
+    };
 
     startTransitionCustomers(async () => {
-      setCustomers(customersData.data);
-      setPaginationMeta(customersData.meta);
+      const customersData = await customerService.getAllCustomers(parameters);
+      setCustomers(customersData?.data || []);
+      setPaginationMeta(customersData?.meta || null);
     });
   }, [debouncedDateRange, customerService, currentPage]);
 
-  //   useEffect(() => {
-  //     const parameters = {
-  //       page: currentPage,
-  //       ...(debouncedDateRange?.from && { start_date: format(debouncedDateRange.from, "yyyy-MM-dd") }),
-  //       ...(debouncedDateRange?.to && { end_date: format(debouncedDateRange.to, "yyyy-MM-dd") }),
-  //     };
-
-  //     startTransitionCustomers(async () => {
-  //       const customersData = await customerService.getAllCustomers(parameters);
-  //       //   setCustomers(
-  //       //     customersData?.data.flatMap((customer) => ({
-  //       //       customer: customer.customer,
-  //       //       date: `${formatDate(customer.created_at)} ${formatTime(customer.created_at)}`,
-  //       //       product: customer.product,
-  //       //       id: customer.id,
-  //       //     })) || [],
-  //       //   );
-  //       setPaginationMeta(customersData?.meta || null);
-  //     });
-  //   }, [debouncedDateRange, customerService, currentPage]);
-
-  //   const handlePageChange = (page: number) => {
-  //     setCurrentPage(page);
-  //   };
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   return (
     <section className={`space-y-10`}>
@@ -115,6 +105,7 @@ const BaseCustomerPage = ({ customerService }: { customerService: CustomerServic
                 data={customers}
                 columns={customerColumns}
                 showPagination
+                onPageChange={handlePageChange}
                 currentPage={paginationMeta?.current_page}
                 totalPages={paginationMeta?.last_page}
                 itemsPerPage={paginationMeta?.per_page}
