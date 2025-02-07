@@ -279,6 +279,15 @@ declare global {
     reference: string;
     created_at: string; // ISO 8601 date string
   }
+
+  interface IEarnings {
+    id: string;
+    user_id: string;
+    total_earnings: number;
+    withdrawn_earnings: number;
+    available_earnings: number;
+    pending: number;
+  }
 }
 
 export {};

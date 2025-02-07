@@ -109,7 +109,7 @@ export const AllProducts = ({ productService }: { productService: ProductService
               </div>
               <ExportAction
                 serviceMethod={(filters) => productService.downloadProducts(filters)}
-                currentPage={1}
+                currentPage={currentPage}
                 dateRange={dateRange}
                 status={status}
                 buttonText="Export"

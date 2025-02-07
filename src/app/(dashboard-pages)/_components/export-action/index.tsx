@@ -57,7 +57,7 @@ const ExportAction = <T extends object>({
   return (
     <CustomButton
       variant="outline"
-      className={cn("w-full border-primary lg:w-auto", className)}
+      className={cn("w-full border-primary text-primary lg:w-auto", className)}
       size={size as "lg" | "xl"}
       isLeftIconVisible={true}
       icon={<Image src={uploadIcon} width={16} height={16} alt="export" />}

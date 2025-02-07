@@ -36,19 +36,6 @@ const BaseCustomerPage = ({ customerService }: { customerService: CustomerServic
     setCurrentPage(1);
   };
 
-  // useEffect(() => {
-  //   // const parameters = {
-  //   //   page: currentPage,
-  //   //   ...(debouncedDateRange?.from && { start_date: format(debouncedDateRange.from, "yyyy-MM-dd") }),
-  //   //   ...(debouncedDateRange?.to && { end_date: format(debouncedDateRange.to, "yyyy-MM-dd") }),
-  //   // };
-
-  //   startTransitionCustomers(async () => {
-  //     setCustomers(customersData.data);
-  //     setPaginationMeta(customersData.meta);
-  //   });
-  // }, [debouncedDateRange, customerService, currentPage]);
-
   useEffect(() => {
     const parameters = {
       page: currentPage,

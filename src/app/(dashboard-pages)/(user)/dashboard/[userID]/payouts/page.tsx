@@ -1,9 +1,7 @@
 "use client";
 
-import uploadIcon from "@/icons/Property_2_Upload_cm42yb.svg";
 import { format } from "date-fns";
 import { PlusCircle } from "lucide-react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import { DateRange } from "react-day-picker";
@@ -13,19 +11,28 @@ import { DashboardTable } from "~/app/(dashboard-pages)/_components/dashboard-ta
 import { payoutColumns } from "~/app/(dashboard-pages)/_components/dashboard-table/table-data";
 import { DateRangePicker } from "~/app/(dashboard-pages)/_components/date-range-picker";
 import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
+import ExportAction from "~/app/(dashboard-pages)/_components/export-action";
 import Loading from "~/app/Loading";
 import CustomButton from "~/components/common/common-button/common-button";
+import { LoadingSpinner } from "~/components/miscellaneous/loading-spinner";
 import { WithDependency } from "~/HOC/withDependencies";
 import { useDebounce } from "~/hooks/use-debounce";
 import { useSession } from "~/hooks/use-session";
+import { EarningService } from "~/services/earnings.service";
 import { PayoutService } from "~/services/payout.service";
 import { dependencies } from "~/utils/dependencies";
-import { formatDate } from "~/utils/utils";
 import { PayoutBanner } from "./_components/payout-banner";
 
-const BasePayoutsPage = ({ payoutService }: { payoutService: PayoutService }) => {
-  const [isPendingPayouts, startTransitionPayouts] = useTransition();
+const BasePayoutsPage = ({
+  payoutService,
+  earningService,
+}: {
+  payoutService: PayoutService;
+  earningService: EarningService;
+}) => {
+  const [isPending, startTransition] = useTransition();
   const [payouts, setPayouts] = useState<IPayout[]>([]);
+  const [earnings, setEarnings] = useState<IEarnings>();
   const [currentPage, setCurrentPage] = useState(1);
   const [paginationMeta, setPaginationMeta] = useState<IPaginationMeta | null>(null);
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
@@ -45,12 +52,17 @@ const BasePayoutsPage = ({ payoutService }: { payoutService: PayoutService }) =>
       ...(debouncedDateRange?.to && { end_date: format(debouncedDateRange.to, "yyyy-MM-dd") }),
     };
 
-    startTransitionPayouts(async () => {
-      const payoutsData = await payoutService.getAllPayouts(parameters);
+    startTransition(async () => {
+      const [payoutsData, earningsData] = await Promise.all([
+        payoutService.getAllPayouts(parameters),
+        earningService.getUserEarnings(),
+      ]);
       setPayouts(payoutsData?.data || []);
       setPaginationMeta(payoutsData?.meta || null);
+      setEarnings(earningsData);
+      // You can handle earningsData here if needed
     });
-  }, [debouncedDateRange, currentPage]);
+  }, [debouncedDateRange, currentPage, payoutService, earningService]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -63,16 +75,15 @@ const BasePayoutsPage = ({ payoutService }: { payoutService: PayoutService }) =>
       <section className="space-y-4">
         <section className="flex w-full flex-col gap-4 sm:items-center md:flex-row md:justify-between">
           <div className="flex w-full flex-col gap-2 sm:flex-row md:w-auto">
-            <DateRangePicker onDateChange={() => {}} />
-            <CustomButton
-              className="w-full border-primary text-[16px] text-primary sm:w-auto"
-              variant="outline"
-              size="xl"
-              isLeftIconVisible
-              icon={<Image src={uploadIcon} width={16} height={16} alt="export" />}
-            >
-              Export
-            </CustomButton>
+            <DateRangePicker onDateChange={handleDateRangeChange} />
+            <ExportAction
+              serviceMethod={() => {}}
+              currentPage={currentPage}
+              dateRange={dateRange}
+              buttonText="Export"
+              fileName="payout"
+              size={`xl`}
+            />
           </div>
           <div className="flex w-full flex-row gap-2 sm:w-auto sm:justify-start">
             <CustomButton
@@ -81,20 +92,34 @@ const BasePayoutsPage = ({ payoutService }: { payoutService: PayoutService }) =>
               size="xl"
               isLeftIconVisible
               icon={<PlusCircle />}
+              isDisabled={earnings?.available_earnings === 0}
             >
               Withdraw Earnings
             </CustomButton>
           </div>
         </section>
         <section className="grid grid-cols-1 gap-4 lg:grid-cols-4">
-          <AnalyticsCard title="Total Earnings" value={`₦${0}`} />
-          <AnalyticsCard title="Withdrawals Earnings" value={`₦${0}`} />
-          <AnalyticsCard title="Pending" value={`₦${0}`} />
-          <AnalyticsCard className="text-mid-success" title="Available Earnings" value={`₦${0}`} />
+          <AnalyticsCard
+            title="Total Earnings"
+            value={isPending ? <LoadingSpinner /> : `₦${earnings?.total_earnings?.toLocaleString()}`}
+          />
+          <AnalyticsCard
+            title="Withdrawals Earnings"
+            value={isPending ? <LoadingSpinner /> : `₦${earnings?.withdrawn_earnings?.toLocaleString()}`}
+          />
+          <AnalyticsCard
+            title="Pending"
+            value={isPending ? <LoadingSpinner /> : `₦${earnings?.pending?.toLocaleString()}`}
+          />
+          <AnalyticsCard
+            className="text-mid-success"
+            title="Available Earnings"
+            value={isPending ? <LoadingSpinner /> : `₦${earnings?.available_earnings?.toLocaleString()}`}
+          />
         </section>
         <section className="space-y-4">
           <h4 className="mt-10 text-[24px] font-semibold">Payout History</h4>
-          {isPendingPayouts ? (
+          {isPending ? (
             <Loading text={`Loading payout table...`} className={`w-fill h-fit p-20`} />
           ) : (
             <>
@@ -141,6 +166,7 @@ const BasePayoutsPage = ({ payoutService }: { payoutService: PayoutService }) =>
 
 const PayoutsPage = WithDependency(BasePayoutsPage, {
   payoutService: dependencies.PAYOUT_SERVICE,
+  earningService: dependencies.EARNINGS_SERVICES,
 });
 
 export default PayoutsPage;
