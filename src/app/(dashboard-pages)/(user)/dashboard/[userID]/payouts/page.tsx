@@ -21,6 +21,7 @@ import { useSession } from "~/hooks/use-session";
 import { EarningService } from "~/services/earnings.service";
 import { PayoutService } from "~/services/payout.service";
 import { dependencies } from "~/utils/dependencies";
+import { cn } from "~/utils/utils";
 import { PayoutBanner } from "./_components/payout-banner";
 
 const BasePayoutsPage = ({
@@ -92,7 +93,8 @@ const BasePayoutsPage = ({
               size="xl"
               isLeftIconVisible
               icon={<PlusCircle />}
-              isDisabled={earnings?.available_earnings === 0}
+              isDisabled={!earnings?.available_earnings}
+              href={`/dashboard/${user?.id}/payouts/withdraw-earnings`}
             >
               Withdraw Earnings
             </CustomButton>
@@ -101,20 +103,20 @@ const BasePayoutsPage = ({
         <section className="grid grid-cols-1 gap-4 lg:grid-cols-4">
           <AnalyticsCard
             title="Total Earnings"
-            value={isPending ? <LoadingSpinner /> : `₦${earnings?.total_earnings?.toLocaleString()}`}
+            value={isPending ? <LoadingSpinner /> : `₦${earnings?.total_earnings?.toLocaleString() || 0}`}
           />
           <AnalyticsCard
             title="Withdrawals Earnings"
-            value={isPending ? <LoadingSpinner /> : `₦${earnings?.withdrawn_earnings?.toLocaleString()}`}
+            value={isPending ? <LoadingSpinner /> : `₦${earnings?.withdrawn_earnings?.toLocaleString() || 0}`}
           />
           <AnalyticsCard
             title="Pending"
-            value={isPending ? <LoadingSpinner /> : `₦${earnings?.pending?.toLocaleString()}`}
+            value={isPending ? <LoadingSpinner /> : `₦${earnings?.pending?.toLocaleString() || 0}`}
           />
           <AnalyticsCard
-            className="text-mid-success"
+            className={cn(earnings?.available_earnings ? `text-mid-success` : `text-mid-danger`)}
             title="Available Earnings"
-            value={isPending ? <LoadingSpinner /> : `₦${earnings?.available_earnings?.toLocaleString()}`}
+            value={isPending ? <LoadingSpinner /> : `₦${earnings?.available_earnings?.toLocaleString() || 0}`}
           />
         </section>
         <section className="space-y-4">

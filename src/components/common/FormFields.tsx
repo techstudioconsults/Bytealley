@@ -25,6 +25,20 @@ import { Badge } from "../ui/badge";
 import { Checkbox } from "../ui/checkbox";
 import CustomButton from "./common-button/common-button";
 
+interface FormFieldProperties {
+  label?: string;
+  name: string;
+  type?: "text" | "textarea" | "select" | "number" | "password" | "email";
+  placeholder?: string;
+  required?: boolean;
+  disabled?: boolean;
+  options?: { value: string; label: string }[];
+  className?: string;
+  containerClassName?: string;
+  leftAddon?: React.ReactNode; // Add left icon or button
+  rightAddon?: React.ReactNode; // Add right icon or button
+}
+
 export function FormField({
   label,
   name,
@@ -34,6 +48,9 @@ export function FormField({
   disabled = false,
   options = [],
   className = "",
+  containerClassName,
+  leftAddon,
+  rightAddon,
 }: FormFieldProperties) {
   const {
     control,
@@ -54,61 +71,59 @@ export function FormField({
         name={name}
         control={control}
         render={({ field }) => {
-          if (type === "textarea") {
-            return (
-              <Textarea
-                {...field}
-                placeholder={placeholder}
-                disabled={disabled}
-                className={cn(error && "border-destructive", className)}
-              />
-            );
-          }
-
-          if (type === "select") {
-            return (
-              <Select onValueChange={field.onChange} value={field.value} disabled={disabled}>
-                <SelectTrigger className={cn(error && "border-destructive", className)}>
-                  <SelectValue placeholder={placeholder} />
-                </SelectTrigger>
-                <SelectContent>
-                  {options.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            );
-          }
-
-          if (type === "number") {
-            return (
-              <input
-                {...field}
-                type="number"
-                placeholder={placeholder}
-                disabled={disabled}
-                className={cn(
-                  "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-                  error && "border-destructive",
-                  className,
-                )}
-                value={field.value || ""}
-                onChange={(event) => field.onChange(event.target.valueAsNumber)}
-              />
-            );
-          }
-
-          return (
-            <Input
-              {...field}
-              type={type}
-              placeholder={placeholder}
-              disabled={disabled}
-              className={cn(error && "border-destructive", className)}
-            />
+          const inputClassName = cn(
+            "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+            error && "border-destructive",
+            className,
           );
+
+          const inputWithAddons = (
+            <div className={cn(`flex items-center gap-2`, containerClassName)}>
+              {leftAddon && <div className="flex items-center">{leftAddon}</div>}
+              {type === "textarea" ? (
+                <Textarea
+                  {...field}
+                  placeholder={placeholder}
+                  disabled={disabled}
+                  className={cn(inputClassName, "resize-y")}
+                />
+              ) : type === "select" ? (
+                <Select onValueChange={field.onChange} value={field.value} disabled={disabled}>
+                  <SelectTrigger className={cn(inputClassName, "w-full")}>
+                    <SelectValue placeholder={placeholder} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {options.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              ) : type === "number" ? (
+                <input
+                  {...field}
+                  type="number"
+                  placeholder={placeholder}
+                  disabled={disabled}
+                  className={inputClassName}
+                  value={field.value || ""}
+                  onChange={(event) => field.onChange(event.target.valueAsNumber)}
+                />
+              ) : (
+                <Input
+                  {...field}
+                  type={type}
+                  placeholder={placeholder}
+                  disabled={disabled}
+                  className={inputClassName}
+                />
+              )}
+              {rightAddon && <div className="flex items-center">{rightAddon}</div>}
+            </div>
+          );
+
+          return inputWithAddons;
         }}
       />
 

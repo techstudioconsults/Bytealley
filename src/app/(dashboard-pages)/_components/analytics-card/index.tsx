@@ -33,7 +33,7 @@ export const AnalyticsCard: React.FC<AnalyticsCardProperties> = ({
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-md border p-4 transition-shadow duration-200 hover:shadow-md",
+        "relative overflow-hidden rounded-md border p-4 text-black transition-shadow duration-200 hover:shadow-md",
         !backgroundImage && "bg-white dark:bg-gray-800",
         "w-full min-w-[200px]",
         onClick && "cursor-pointer",

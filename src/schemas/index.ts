@@ -59,8 +59,20 @@ const SkillSellingSchema = BaseSchema.extend({
 // Combined schema using Zod's union
 export const ProductFormSchema = z.discriminatedUnion("product_type", [DigitalProductSchema, SkillSellingSchema]);
 
+export const withdrawalSchema = z.object({
+  amount: z.number().min(1, "Price must be a positive number"),
+});
+
+export const bankFormSchema = z.object({
+  account_name: z.string().min(1, "Account name is required"),
+  bank: z.string().min(1, "Bank name is required"),
+  account_number: z.number().min(10, "Account number is required"),
+});
+
 export type RegisterFormData = z.infer<typeof registerSchema>;
 export type LoginFormData = z.infer<typeof loginSchema>;
 export type ForgotPasswordData = z.infer<typeof forgotPasswordSchema>;
 export type ResetPasswordData = z.infer<typeof resetPasswordSchema>;
+export type WithdrawalData = z.infer<typeof withdrawalSchema>;
+export type BankFormData = z.infer<typeof bankFormSchema>;
 // export type ProductFormData = z.infer<typeof ProductFormSchema>;
