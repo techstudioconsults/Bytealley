@@ -7,8 +7,11 @@ export class OrderService {
     this.http = httpAdapter;
   }
 
-  async getAllOrders(filters: IProductFilters) {
-    const queryParameters = this.buildQueryParameters(filters);
+  async getAllOrders(filters?: IFilters) {
+    let queryParameters = null;
+    if (filters) {
+      queryParameters = this.buildQueryParameters(filters);
+    }
     const response = await this.http.get<IPaginatedResponse<IProductOrder>>(`/orders/user?${queryParameters}`);
 
     if (response?.status === 200) {
@@ -23,7 +26,7 @@ export class OrderService {
     }
   }
 
-  async downloadOrdersAsCSV(filters: IProductFilters) {
+  async downloadOrdersAsCSV(filters: IFilters) {
     const queryParameters = this.buildQueryParameters(filters);
     const response = await this.http.get(`/orders/download?${queryParameters}`);
     if (response?.status === 200) {
@@ -31,7 +34,7 @@ export class OrderService {
     }
   }
 
-  private buildQueryParameters(filters: IProductFilters): string {
+  private buildQueryParameters(filters: IFilters): string {
     const queryParameters = new URLSearchParams();
     for (const [key, value] of Object.entries(filters)) {
       if (value !== undefined) {

@@ -14,6 +14,14 @@ export class EarningService {
     }
   }
 
+  async getListOfPaystackApproveBanks() {
+    const response = await this.http.get<IBank[]>(`/accounts/bank-list`);
+    console.log(response);
+    if (response?.status === 200) {
+      return response.data;
+    }
+  }
+
   async initiateWithdrawal(orderId: string) {
     const response = await this.http.get<{ data: IOrderDetails }>(`/orders/${orderId}`);
     if (response?.status === 200) {

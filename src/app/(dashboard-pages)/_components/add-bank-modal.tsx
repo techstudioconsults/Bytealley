@@ -1,16 +1,16 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusCircle } from "lucide-react";
+import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-
-
 
 import CustomButton from "~/components/common/common-button/common-button";
 import { ReusableDialog } from "~/components/common/Dialog";
 import { FormField } from "~/components/common/FormFields";
 import { BankFormData, bankFormSchema } from "~/schemas";
+import { EarningService } from "~/services/earnings.service";
 
-
-export const AddBankModal = () => {
+export const AddBankModal = ({ service }: { service: EarningService }) => {
+  const [banks, setBanks] = useState([]);
   const methods = useForm<BankFormData>({
     resolver: zodResolver(bankFormSchema),
     defaultValues: {
@@ -28,6 +28,17 @@ export const AddBankModal = () => {
   const handleSubmitForm = async (data: BankFormData) => {
     console.log(data);
   };
+
+  useEffect(() => {
+    const getBankList = async () => {
+      const response = await service.getListOfPaystackApproveBanks();
+      const bankList = response?.map((bank: IBank) => {
+        return { value: bank.code, label: bank.name };
+      });
+      setBanks(bankList || []);
+    };
+    getBankList();
+  }, []);
 
   return (
     <ReusableDialog
@@ -57,10 +68,7 @@ export const AddBankModal = () => {
             name="bank"
             type="select"
             placeholder="Select a bank"
-            options={[
-              { value: "Product", label: "Product" },
-              { value: "skill", label: "Skill" },
-            ]}
+            options={banks}
             className={`h-12 bg-low-grey-III`}
             required
           />
@@ -72,7 +80,7 @@ export const AddBankModal = () => {
             required
           />
 
-          <div className={`flex items-center gap-4 pt-[32px] border-t`}>
+          <div className={`flex items-center gap-4 border-t pt-[32px]`}>
             <CustomButton variant="outline" size={`xl`} className="w-full border-destructive text-destructive">
               Cancel
             </CustomButton>

@@ -1,8 +1,9 @@
 import empty1 from "@/images/empty_img_1.svg";
 import empty2 from "@/images/empty_img_2.svg";
 import { format } from "date-fns";
+import debounce from "lodash.debounce";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { DateRange } from "react-day-picker";
 
 import { AnalyticsCard } from "~/app/(dashboard-pages)/_components/analytics-card";
@@ -14,7 +15,6 @@ import ExportAction from "~/app/(dashboard-pages)/_components/export-action";
 import { SelectDropdown } from "~/app/(dashboard-pages)/_components/select-dropdown";
 import Loading from "~/app/Loading";
 import { LoadingSpinner } from "~/components/miscellaneous/loading-spinner";
-import { useDebounce } from "~/hooks/use-debounce";
 import { useSession } from "~/hooks/use-session";
 import { ProductService } from "~/services/product.service";
 import { statusOptions } from "~/utils/constants";
@@ -31,26 +31,35 @@ export const AllProducts = ({ productService }: { productService: ProductService
   const [status, setStatus] = useState<string>("all");
   const { user } = useSession();
 
-  const debouncedStatus = useDebounce(status);
-  const debouncedDateRange = useDebounce(dateRange);
+  const debouncedStatusReference = useRef(
+    debounce((value: string) => {
+      setStatus(value);
+    }, 300),
+  );
 
-  const handleDateRangeChange = (range: DateRange | undefined) => {
-    setDateRange(range);
-    setCurrentPage(1);
-  };
+  const debounceDateRangeReference = useRef(
+    debounce((value: DateRange) => {
+      setDateRange(value);
+    }, 300),
+  );
 
-  const handleStatusChange = (value: string) => {
-    setStatus(value);
+  const handleStatusChange = useCallback((value: string) => {
+    debouncedStatusReference.current(value);
     setCurrentPage(1);
-  };
+  }, []);
+
+  const handleDateRangeChange = useCallback((value: DateRange) => {
+    debounceDateRangeReference.current(value);
+    setCurrentPage(1);
+  }, []);
 
   useEffect(() => {
-    const parameters: IProductFilters = {
+    const parameters: IFilters = {
       page: currentPage,
-      ...(debouncedDateRange?.from && { start_date: format(debouncedDateRange.from, "yyyy-MM-dd") }),
-      ...(debouncedDateRange?.to && { end_date: format(debouncedDateRange.to, "yyyy-MM-dd") }),
-      ...(debouncedStatus !== "all" && {
-        status: debouncedStatus as "draft" | "deleted" | "published",
+      ...(dateRange?.from && { start_date: format(dateRange.from, "yyyy-MM-dd") }),
+      ...(dateRange?.to && { end_date: format(dateRange.to, "yyyy-MM-dd") }),
+      ...(status !== "all" && {
+        status: status as "published" | "draft",
       }),
     };
 
@@ -59,7 +68,7 @@ export const AllProducts = ({ productService }: { productService: ProductService
       setProducts(productsData?.data || []);
       setPaginationMeta(productsData?.meta || null);
     });
-  }, [currentPage, debouncedDateRange, debouncedStatus, productService]);
+  }, [currentPage, dateRange?.from, dateRange?.to, productService, status]);
 
   useEffect(() => {
     startTransitionAnalytics(async () => {
@@ -93,59 +102,61 @@ export const AllProducts = ({ productService }: { productService: ProductService
         />
       </section>
       <section className={`space-y-4`}>
-        {isPendingProducts ? (
-          <Loading text={`Loading product table...`} className={`w-fill h-fit p-20`} />
-        ) : (
-          <>
-            <section className={`flex flex-col justify-between lg:flex-row lg:items-center`}>
-              <div className={`flex flex-col gap-4 lg:flex-row lg:items-center`}>
-                <DateRangePicker className={`w-full lg:w-auto`} onDateChange={handleDateRangeChange} />
-                <SelectDropdown
-                  options={statusOptions}
-                  value={status}
-                  onValueChange={handleStatusChange}
-                  placeholder="Filter by status"
-                />
-              </div>
-              <ExportAction
-                serviceMethod={(filters) => productService.downloadProducts(filters)}
-                currentPage={currentPage}
-                dateRange={dateRange}
-                status={status}
-                buttonText="Export"
-                fileName="Product"
+        <>
+          <section className={`flex flex-col justify-between lg:flex-row lg:items-center`}>
+            <div className={`flex flex-col gap-4 lg:flex-row lg:items-center`}>
+              <DateRangePicker className={`w-full lg:w-auto`} onDateChange={handleDateRangeChange} />
+              <SelectDropdown
+                options={statusOptions}
+                value={status}
+                onValueChange={handleStatusChange}
+                placeholder="Filter by status"
               />
+            </div>
+            <ExportAction
+              serviceMethod={(filters) => productService.downloadProducts(filters)}
+              currentPage={currentPage}
+              dateRange={dateRange}
+              status={status}
+              buttonText="Export"
+              fileName="Product"
+            />
+          </section>
+          {isPendingProducts ? (
+            <Loading text={`Loading product table...`} className={`w-fill h-fit p-20`} />
+          ) : (
+            <section>
+              {products.length > 0 ? (
+                <section>
+                  <DashboardTable
+                    data={products}
+                    columns={productColumns}
+                    currentPage={paginationMeta?.current_page}
+                    totalPages={paginationMeta?.last_page}
+                    itemsPerPage={paginationMeta?.per_page}
+                    onPageChange={handlePageChange}
+                    rowActions={(product) => RowActions(product, productService)}
+                    showPagination
+                    onRowClick={(product) => {
+                      router.push(`/dashboard/${user?.id}/products/${product.id}`);
+                    }}
+                  />
+                </section>
+              ) : (
+                <EmptyState
+                  images={[
+                    { src: empty1.src, alt: "Empty product", width: 322, height: 220 },
+                    { src: empty2.src, alt: "Empty product", width: 322, height: 220 },
+                    { src: empty1.src, alt: "Empty product", width: 322, height: 220 },
+                  ]}
+                  title="Create your first product."
+                  description="Unlock your creative potential and take the first step towards success on our platform. Create your first product today and join our vibrant community of digital creators. Your masterpiece is just a click away!"
+                  button={{ text: "Add New Product", onClick: () => {} }}
+                />
+              )}
             </section>
-            {products.length > 0 ? (
-              <section>
-                <DashboardTable
-                  data={products}
-                  columns={productColumns}
-                  currentPage={paginationMeta?.current_page}
-                  totalPages={paginationMeta?.last_page}
-                  itemsPerPage={paginationMeta?.per_page}
-                  onPageChange={handlePageChange}
-                  rowActions={(product) => RowActions(product, productService)}
-                  showPagination
-                  onRowClick={(product) => {
-                    router.push(`/dashboard/${user?.id}/products/${product.id}`);
-                  }}
-                />
-              </section>
-            ) : (
-              <EmptyState
-                images={[
-                  { src: empty1.src, alt: "Empty product", width: 322, height: 220 },
-                  { src: empty2.src, alt: "Empty product", width: 322, height: 220 },
-                  { src: empty1.src, alt: "Empty product", width: 322, height: 220 },
-                ]}
-                title="Create your first product."
-                description="Unlock your creative potential and take the first step towards success on our platform. Create your first product today and join our vibrant community of digital creators. Your masterpiece is just a click away!"
-                button={{ text: "Add New Product", onClick: () => {} }}
-              />
-            )}
-          </>
-        )}
+          )}
+        </>
       </section>
     </section>
   );

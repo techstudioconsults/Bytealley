@@ -4,7 +4,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  // DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -28,9 +27,6 @@ export function ReusableDialog({ trigger, title, description, children, classNam
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
         {children}
-        {/* <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter> */}
       </DialogContent>
     </Dialog>
   );

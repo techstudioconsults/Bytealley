@@ -181,9 +181,9 @@ declare global {
     views: number;
   }
 
-  interface IProductFilters {
+  interface IFilters {
     page?: number;
-    status?: "draft" | "deleted" | "published";
+    status?: string;
     start_date?: string;
     end_date?: string;
   }
@@ -287,6 +287,11 @@ declare global {
     withdrawn_earnings: number;
     available_earnings: number;
     pending: number;
+  }
+
+  interface IBank {
+    name: string;
+    code: string;
   }
 }
 

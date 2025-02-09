@@ -1,11 +1,12 @@
 "use client";
 
-import refreshIcon from "@/icons/Property_2_Update_ojnsf7.svg";
+// import refreshIcon from "@/icons/Property_2_Update_ojnsf7.svg";
 import emptyCart from "@/images/empty-cart.svg";
 import { format } from "date-fns";
-import Image from "next/image";
+import debounce from "lodash.debounce";
+// import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { DateRange } from "react-day-picker";
 
 import { DashboardTable } from "~/app/(dashboard-pages)/_components/dashboard-table";
@@ -14,9 +15,8 @@ import { DateRangePicker } from "~/app/(dashboard-pages)/_components/date-range-
 import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import ExportAction from "~/app/(dashboard-pages)/_components/export-action";
 import Loading from "~/app/Loading";
-import CustomButton from "~/components/common/common-button/common-button";
+// import CustomButton from "~/components/common/common-button/common-button";
 import { WithDependency } from "~/HOC/withDependencies";
-import { useDebounce } from "~/hooks/use-debounce";
 import { useSession } from "~/hooks/use-session";
 import { CustomerService } from "~/services/customer.service";
 import { dependencies } from "~/utils/dependencies";
@@ -29,18 +29,22 @@ const BaseCustomerPage = ({ customerService }: { customerService: CustomerServic
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const { user } = useSession();
   const router = useRouter();
-  const debouncedDateRange = useDebounce(dateRange);
+  const debounceDateRangeReference = useRef(
+    debounce((value: DateRange) => {
+      setDateRange(value);
+    }, 300),
+  );
 
-  const handleDateRangeChange = (range: DateRange | undefined) => {
-    setDateRange(range);
+  const handleDateRangeChange = useCallback((value: DateRange) => {
+    debounceDateRangeReference.current(value);
     setCurrentPage(1);
-  };
+  }, []);
 
   useEffect(() => {
-    const parameters = {
+    const parameters: IFilters = {
       page: currentPage,
-      ...(debouncedDateRange?.from && { start_date: format(debouncedDateRange.from, "yyyy-MM-dd") }),
-      ...(debouncedDateRange?.to && { end_date: format(debouncedDateRange.to, "yyyy-MM-dd") }),
+      ...(dateRange?.from && { start_date: format(dateRange.from, "yyyy-MM-dd") }),
+      ...(dateRange?.to && { end_date: format(dateRange.to, "yyyy-MM-dd") }),
     };
 
     startTransitionCustomers(async () => {
@@ -48,7 +52,7 @@ const BaseCustomerPage = ({ customerService }: { customerService: CustomerServic
       setCustomers(customersData?.data || []);
       setPaginationMeta(customersData?.meta || null);
     });
-  }, [debouncedDateRange, customerService, currentPage]);
+  }, [customerService, currentPage, dateRange?.from, dateRange?.to]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -70,7 +74,7 @@ const BaseCustomerPage = ({ customerService }: { customerService: CustomerServic
             fileName="customer"
             size={`xl`}
           />
-          <CustomButton
+          {/* <CustomButton
             className="w-full border-primary text-[16px] text-primary sm:w-auto"
             variant="outline"
             size="xl"
@@ -78,7 +82,7 @@ const BaseCustomerPage = ({ customerService }: { customerService: CustomerServic
             icon={<Image src={refreshIcon} width={16} height={16} alt="export" />}
           >
             Refresh
-          </CustomButton>
+          </CustomButton> */}
         </div>
       </section>
       <section>

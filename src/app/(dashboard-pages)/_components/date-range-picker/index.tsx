@@ -14,7 +14,7 @@ export const DateRangePicker = ({
   className,
   onDateChange,
 }: React.HTMLAttributes<HTMLDivElement> & {
-  onDateChange: (range: DateRange | undefined) => void;
+  onDateChange: (range: DateRange) => void;
 }) => {
   const [date, setDate] = React.useState<DateRange | undefined>({
     from: undefined,
@@ -23,7 +23,9 @@ export const DateRangePicker = ({
 
   const handleSelect = (range: DateRange | undefined) => {
     setDate(range);
-    onDateChange(range);
+    if (range) {
+      onDateChange(range);
+    }
   };
 
   return (

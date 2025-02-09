@@ -49,9 +49,6 @@ const BaseWithdrawEarnings = ({ earningService }: { earningService: EarningServi
     <section className={`space-y-12`}>
       <section className="flex flex-col justify-between space-y-4 md:flex-row md:space-y-0 lg:items-center">
         <BackNavigator text="Withdrawal Earnings" />
-        <CustomButton variant="outline" size="lg" className="w-full border-destructive text-destructive lg:w-auto">
-          Cancel
-        </CustomButton>
       </section>
       <section>
         <AnalyticsCard
@@ -67,7 +64,7 @@ const BaseWithdrawEarnings = ({ earningService }: { earningService: EarningServi
         <section className={`grid grid-cols-1 gap-4 lg:grid-cols-3`}>
           <BankCard bankName={"First Bank"} accountNumber={"3091907375"} accountName={"Ifijeh Kingsley Solomon"} />
           <BankCard bankName={"Skye Bank"} accountNumber={"0123456789"} accountName={"Ifijeh Kingsley"} />
-          <AddBankModal />
+          <AddBankModal service={earningService} />
         </section>
       </section>
       <section className={`space-y-2`}>

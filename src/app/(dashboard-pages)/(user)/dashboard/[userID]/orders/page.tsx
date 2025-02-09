@@ -1,11 +1,12 @@
 "use client";
 
-import refreshIcon from "@/icons/Property_2_Update_ojnsf7.svg";
+// import refreshIcon from "@/icons/Property_2_Update_ojnsf7.svg";
 import emptyCart from "@/images/empty-cart.svg";
 import { format } from "date-fns";
-import Image from "next/image";
+import debounce from "lodash.debounce";
+// import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { DateRange } from "react-day-picker";
 
 import { DashboardTable } from "~/app/(dashboard-pages)/_components/dashboard-table";
@@ -14,7 +15,7 @@ import { DateRangePicker } from "~/app/(dashboard-pages)/_components/date-range-
 import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import ExportAction from "~/app/(dashboard-pages)/_components/export-action";
 import Loading from "~/app/Loading";
-import CustomButton from "~/components/common/common-button/common-button";
+// import CustomButton from "~/components/common/common-button/common-button";
 import { WithDependency } from "~/HOC/withDependencies";
 import { useDebounce } from "~/hooks/use-debounce";
 import { useSession } from "~/hooks/use-session";
@@ -24,6 +25,7 @@ import { formatDate, formatTime } from "~/utils/utils";
 
 const BaseOrderPage = ({ orderService }: { orderService: OrderService }) => {
   const [isPendingOrders, startTransitionOrders] = useTransition();
+  // const [isPendingRefresh, startTransitionRefresh] = useTransition();
   const [orders, setOrders] = useState<IProductOrderFlat[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [paginationMeta, setPaginationMeta] = useState<IPaginationMeta | null>(null);
@@ -32,16 +34,22 @@ const BaseOrderPage = ({ orderService }: { orderService: OrderService }) => {
   const router = useRouter();
   const debouncedDateRange = useDebounce(dateRange);
 
-  const handleDateRangeChange = (range: DateRange | undefined) => {
-    setDateRange(range);
+  const debounceDateRangeReference = useRef(
+    debounce((value: DateRange) => {
+      setDateRange(value);
+    }, 300),
+  );
+
+  const handleDateRangeChange = useCallback((value: DateRange) => {
+    debounceDateRangeReference.current(value);
     setCurrentPage(1);
-  };
+  }, []);
 
   useEffect(() => {
-    const parameters = {
+    const parameters: IFilters = {
       page: currentPage,
-      ...(debouncedDateRange?.from && { start_date: format(debouncedDateRange.from, "yyyy-MM-dd") }),
-      ...(debouncedDateRange?.to && { end_date: format(debouncedDateRange.to, "yyyy-MM-dd") }),
+      ...(dateRange?.from && { start_date: format(dateRange.from, "yyyy-MM-dd") }),
+      ...(dateRange?.to && { end_date: format(dateRange.to, "yyyy-MM-dd") }),
     };
 
     startTransitionOrders(async () => {
@@ -56,19 +64,31 @@ const BaseOrderPage = ({ orderService }: { orderService: OrderService }) => {
       );
       setPaginationMeta(ordersData?.meta || null);
     });
-  }, [debouncedDateRange, orderService, currentPage]);
+  }, [debouncedDateRange, orderService, currentPage, dateRange?.from, dateRange?.to]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
-  // Handle Export
-  // const handleExport = async () => {
-  //   const parameters = {
-  //     ...(debouncedDateRange?.from && { start_date: format(debouncedDateRange.from, "yyyy-MM-dd") }),
-  //     ...(debouncedDateRange?.to && { end_date: format(debouncedDateRange.to, "yyyy-MM-dd") }),
+  // const handleRefresh = () => {
+  //   const parameters: IFilters = {
+  //     page: currentPage,
+  //     ...(dateRange?.from && { start_date: format(dateRange.from, "yyyy-MM-dd") }),
+  //     ...(dateRange?.to && { end_date: format(dateRange.to, "yyyy-MM-dd") }),
   //   };
-  //   await orderService.downloadOrdersAsCSV(parameters);
+
+  //   startTransitionOrders(async () => {
+  //     const ordersData = await orderService.getAllOrders(parameters);
+  //     setOrders(
+  //       ordersData?.data.flatMap((order) => ({
+  //         customer: order.customer,
+  //         date: `${formatDate(order.created_at)} ${formatTime(order.created_at)}`,
+  //         product: order.product,
+  //         id: order.id,
+  //       })) || [],
+  //     );
+  //     setPaginationMeta(ordersData?.meta || null);
+  //   });
   // };
 
   return (
@@ -86,15 +106,18 @@ const BaseOrderPage = ({ orderService }: { orderService: OrderService }) => {
             fileName="orders"
             size={`xl`}
           />
-          <CustomButton
+          {/* <CustomButton
             className="w-full border-primary text-[16px] text-primary sm:w-auto"
             variant="outline"
             size="xl"
             isLeftIconVisible
             icon={<Image src={refreshIcon} width={16} height={16} alt="export" />}
+            // onClick={handleRefresh}
+            isLoading={isPendingRefresh}
+            isDisabled={isPendingRefresh}
           >
             Refresh
-          </CustomButton>
+          </CustomButton> */}
         </div>
       </section>
       <section>
