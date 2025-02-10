@@ -1,4 +1,5 @@
 import { HttpAdapter } from "~/adapters/http-adapter";
+import { BankFormData, WithdrawalData } from "~/schemas";
 
 export class EarningService {
   private readonly http: HttpAdapter;
@@ -16,20 +17,39 @@ export class EarningService {
 
   async getListOfPaystackApproveBanks() {
     const response = await this.http.get<IBank[]>(`/accounts/bank-list`);
-    console.log(response);
     if (response?.status === 200) {
       return response.data;
     }
   }
 
-  async initiateWithdrawal(orderId: string) {
-    const response = await this.http.get<{ data: IOrderDetails }>(`/orders/${orderId}`);
+  async registerPaymentAccount(data: BankFormData) {
+    const parseBankData = JSON.parse(data.bank_code);
+    const formData = {
+      ...data,
+      bank_code: parseBankData.bank_code,
+      bank_name: parseBankData.bank_name,
+    };
+    const response = await this.http.post<{ data: IPaymentAccount }>(`/accounts`, formData);
     if (response?.status === 200) {
-      return response.data.data;
+      return response.data;
     }
   }
 
-  private buildQueryParameters(filters: IProductFilters): string {
+  async getAllRegisteredPaymentAccount() {
+    const response = await this.http.get<{ data: IPaymentAccount[] }>(`/accounts`);
+    if (response?.status === 200) {
+      return response.data;
+    }
+  }
+
+  async initiateWithdrawal(data: WithdrawalData) {
+    const response = await this.http.post<{ data: string }>(`/earnings/withdraw`, data);
+    if (response?.status === 200) {
+      return response.data;
+    }
+  }
+
+  private buildQueryParameters(filters: IFilters): string {
     const queryParameters = new URLSearchParams();
     for (const [key, value] of Object.entries(filters)) {
       if (value !== undefined) {

@@ -36,7 +36,7 @@ export class ProductService {
     return response.data.data.id;
   }
 
-  async getAllProducts(filters: IProductFilters = Object.create({ page: 1 })) {
+  async getAllProducts(filters: IFilters = Object.create({ page: 1 })) {
     const queryParameters = this.buildQueryParameters(filters);
     const response = await this.http.get<IPaginatedResponse<IProduct>>(`/products/users?${queryParameters}`);
     if (response?.status === 200) {
@@ -51,7 +51,16 @@ export class ProductService {
     }
   }
 
-  async downloadProducts(filters: IProductFilters = Object.create({ page: 1 })) {
+  // async getTopProducts() {
+  //   const response = await this.http.get<IPaginatedResponse<IProduct>>("/products/top-products");
+  //   console.log(response);
+
+  //   if (response?.status === 200) {
+  //     return response.data;
+  //   }
+  // }
+
+  async downloadProducts(filters: IFilters = Object.create({ page: 1 })) {
     const queryParameters = this.buildQueryParameters(filters);
     const response = await this.http.get(`/products/download?${queryParameters}`);
     if (response?.status === 200) {
@@ -89,7 +98,7 @@ export class ProductService {
     }
   }
 
-  private buildQueryParameters(filters: IProductFilters): string {
+  private buildQueryParameters(filters: IFilters): string {
     const queryParameters = new URLSearchParams();
     for (const [key, value] of Object.entries(filters)) {
       if (value !== undefined) {

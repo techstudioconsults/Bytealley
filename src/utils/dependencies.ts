@@ -4,6 +4,8 @@ import { PayoutService } from "~/services/payout.service";
 import { ProductService } from "~/services/product.service";
 import { HttpAdapter } from "../adapters/http-adapter";
 import { AuthService } from "../services/auth.service";
+import { AnalyticsService } from "./../services/analytics.service";
+import { DownloadService } from "./../services/download.service";
 import { OrderService } from "./../services/orders.service";
 
 const dependencies = {
@@ -13,7 +15,9 @@ const dependencies = {
   ORDER_SERVICE: Symbol("OrderService"),
   CUSTOMER_SERVICE: Symbol("CustomerService"),
   PAYOUT_SERVICE: Symbol("PayoutService"),
-  EARNINGS_SERVICES: Symbol("EarningService"),
+  EARNINGS_SERVICE: Symbol("EarningService"),
+  DOWNLOAD_SERVICE: Symbol("DownloadService"),
+  ANALYTICS_SERVICE: Symbol("AnalyticsService"),
 };
 
 const httpAdapter = new HttpAdapter();
@@ -23,6 +27,8 @@ const orderService = new OrderService(httpAdapter);
 const customerService = new CustomerService(httpAdapter);
 const payoutService = new PayoutService(httpAdapter);
 const earningService = new EarningService(httpAdapter);
+const downloadService = new DownloadService(httpAdapter);
+const analyticsService = new AnalyticsService(httpAdapter);
 class DependencyContainer implements IDependencyContainer {
   _dependencies = {};
 
@@ -45,5 +51,8 @@ container.add(dependencies.PRODUCT_SERVICE, productService);
 container.add(dependencies.ORDER_SERVICE, orderService);
 container.add(dependencies.CUSTOMER_SERVICE, customerService);
 container.add(dependencies.PAYOUT_SERVICE, payoutService);
-container.add(dependencies.EARNINGS_SERVICES, earningService);
+container.add(dependencies.EARNINGS_SERVICE, earningService);
+container.add(dependencies.EARNINGS_SERVICE, earningService);
+container.add(dependencies.DOWNLOAD_SERVICE, downloadService);
+container.add(dependencies.ANALYTICS_SERVICE, analyticsService);
 export { container, dependencies };

@@ -1,22 +1,22 @@
 import { HttpAdapter } from "~/adapters/http-adapter";
 
-export class PayoutService {
+export class DownloadService {
   private readonly http: HttpAdapter;
 
   constructor(httpAdapter: HttpAdapter) {
     this.http = httpAdapter;
   }
 
-  async getAllPayouts(filters: IFilters) {
+  async getAllDownload(filters: IFilters) {
     const queryParameters = this.buildQueryParameters(filters);
-    const response = await this.http.get<IPaginatedResponse<IPayout>>(`/payouts/user?${queryParameters}`);
+    const response = await this.http.get<IPaginatedResponse<IPayout>>(`/downloads${queryParameters}`);
     if (response?.status === 200) {
       return response.data;
     }
   }
 
-  async getPayoutById(payoutId: string) {
-    const response = await this.http.get<{ data: IPayout }>(`/payouts/${payoutId}`);
+  async getDownloadById(downloadId: string) {
+    const response = await this.http.get<{ data: IPayout }>(`/downloads/${downloadId}`);
     if (response?.status === 200) {
       return response.data;
     }

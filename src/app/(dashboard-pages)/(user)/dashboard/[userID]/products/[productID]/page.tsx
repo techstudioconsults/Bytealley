@@ -5,7 +5,7 @@ import { useEffect, useState, useTransition } from "react";
 
 import { BackNavigator } from "~/app/(dashboard-pages)/_components/back-navigator";
 import { DashboardTable } from "~/app/(dashboard-pages)/_components/dashboard-table";
-import { singleProductCustomerColumns } from "~/app/(dashboard-pages)/_components/dashboard-table/table-data";
+import { singleProductOrderColumns } from "~/app/(dashboard-pages)/_components/dashboard-table/table-data";
 import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import { TableHeaderInfo } from "~/app/(dashboard-pages)/_components/table-header-info";
 import Loading from "~/app/Loading";
@@ -14,7 +14,6 @@ import { WithDependency } from "~/HOC/withDependencies";
 import { ProductService } from "~/services/product.service";
 import { dependencies } from "~/utils/dependencies";
 import { Toast } from "~/utils/notificationManager";
-import { formatDate, formatTime } from "~/utils/utils";
 
 const BasePreviewProductDetailsPage = ({
   params,
@@ -27,7 +26,7 @@ const BasePreviewProductDetailsPage = ({
   const [isPublishPending, startPublishTransition] = useTransition();
   const [isDeletePending, startDeleteTransition] = useTransition();
   const [product, setProduct] = useState<IProduct | null>(null);
-  const [productOrders, setProductOrders] = useState<IProductOrderFlat[]>([]);
+  const [productOrders, setProductOrders] = useState<IOrder[]>([]);
   const router = useRouter();
 
   // Fetch product and orders data
@@ -41,13 +40,7 @@ const BasePreviewProductDetailsPage = ({
 
         if (product && orders) {
           setProduct(product);
-          setProductOrders(
-            orders.flatMap((order) => ({
-              customer: order.customer,
-              quantity: order.quantity,
-              date: `${formatDate(order.created_at)} ${formatTime(order.created_at)}`,
-            })),
-          );
+          setProductOrders(orders);
         }
       });
     };
@@ -152,7 +145,7 @@ const BasePreviewProductDetailsPage = ({
 
       {/* Orders Table Section */}
       <section>
-        <DashboardTable data={productOrders} columns={singleProductCustomerColumns} />
+        <DashboardTable data={productOrders} columns={singleProductOrderColumns} />
       </section>
     </section>
   );

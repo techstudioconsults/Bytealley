@@ -17,10 +17,12 @@ import { WithDependency } from "~/HOC/withDependencies";
 import { WithdrawalData, withdrawalSchema } from "~/schemas";
 import { EarningService } from "~/services/earnings.service";
 import { dependencies } from "~/utils/dependencies";
+import { Toast } from "~/utils/notificationManager";
 
 const BaseWithdrawEarnings = ({ earningService }: { earningService: EarningService }) => {
   const [isPending, startTransition] = useTransition();
   const [availableEarnings, setAvailableEarnings] = useState<number>(0);
+  const [listOfRegisteredAccounts, setListOfRegisteredAccounts] = useState<IPaymentAccount[]>([]);
 
   const methods = useForm<WithdrawalData>({
     resolver: zodResolver(withdrawalSchema),
@@ -35,13 +37,24 @@ const BaseWithdrawEarnings = ({ earningService }: { earningService: EarningServi
   } = methods;
 
   const handleSubmitForm = async (data: WithdrawalData) => {
-    console.log(data);
+    const response = await earningService.initiateWithdrawal(data);
+    if (response) {
+      Toast.getInstance().showToast({
+        title: response.data,
+        description: `A ${data.amount} naira withdrawal was successful`,
+        variant: "success",
+      });
+    }
   };
 
   useEffect(() => {
     startTransition(async () => {
-      const earningsData = await earningService.getUserEarnings();
+      const [earningsData, registeredAccounts] = await Promise.all([
+        earningService.getUserEarnings(),
+        earningService.getAllRegisteredPaymentAccount(),
+      ]);
       setAvailableEarnings(earningsData?.available_earnings || 0);
+      setListOfRegisteredAccounts(registeredAccounts?.data || []);
     });
   }, [earningService]);
 
@@ -62,8 +75,26 @@ const BaseWithdrawEarnings = ({ earningService }: { earningService: EarningServi
       <section className={`space-y-2`}>
         <h5 className={`text-lg font-semibold`}>Bank Accounts</h5>
         <section className={`grid grid-cols-1 gap-4 lg:grid-cols-3`}>
-          <BankCard bankName={"First Bank"} accountNumber={"3091907375"} accountName={"Ifijeh Kingsley Solomon"} />
-          <BankCard bankName={"Skye Bank"} accountNumber={"0123456789"} accountName={"Ifijeh Kingsley"} />
+          {isPending ? (
+            <div className={`flex min-h-[120px] max-w-[357px] items-center justify-center rounded-lg bg-low-grey-III`}>
+              <LoadingSpinner />
+            </div>
+          ) : (
+            <>
+              {listOfRegisteredAccounts.map((account) => {
+                return (
+                  <BankCard
+                    key={account.id}
+                    active={account.active}
+                    bankName={account.bank_name}
+                    accountNumber={account.account_number}
+                    accountName={account.name}
+                  />
+                );
+              })}
+            </>
+          )}
+
           <AddBankModal service={earningService} />
         </section>
       </section>
@@ -79,7 +110,16 @@ const BaseWithdrawEarnings = ({ earningService }: { earningService: EarningServi
               className={`h-[60px] border-none bg-transparent`}
               containerClassName={`bg-low-grey-III border rounded-md pr-3`}
               required
-              rightAddon={<p className={`text-mid-purple`}>Max</p>}
+              rightAddon={
+                <p
+                  onClick={() => {
+                    methods.setValue("amount", availableEarnings);
+                  }}
+                  className={`text-mid-purple`}
+                >
+                  Max
+                </p>
+              }
             />
             <CustomButton
               size={`xl`}
@@ -99,7 +139,7 @@ const BaseWithdrawEarnings = ({ earningService }: { earningService: EarningServi
 };
 
 const WithdrawEarnings = WithDependency(BaseWithdrawEarnings, {
-  earningService: dependencies.EARNINGS_SERVICES,
+  earningService: dependencies.EARNINGS_SERVICE,
 });
 
 export default WithdrawEarnings;

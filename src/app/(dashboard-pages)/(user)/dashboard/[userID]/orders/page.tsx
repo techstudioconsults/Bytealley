@@ -17,22 +17,19 @@ import ExportAction from "~/app/(dashboard-pages)/_components/export-action";
 import Loading from "~/app/Loading";
 // import CustomButton from "~/components/common/common-button/common-button";
 import { WithDependency } from "~/HOC/withDependencies";
-import { useDebounce } from "~/hooks/use-debounce";
 import { useSession } from "~/hooks/use-session";
 import { OrderService } from "~/services/orders.service";
 import { dependencies } from "~/utils/dependencies";
-import { formatDate, formatTime } from "~/utils/utils";
 
 const BaseOrderPage = ({ orderService }: { orderService: OrderService }) => {
   const [isPendingOrders, startTransitionOrders] = useTransition();
   // const [isPendingRefresh, startTransitionRefresh] = useTransition();
-  const [orders, setOrders] = useState<IProductOrderFlat[]>([]);
+  const [orders, setOrders] = useState<IOrder[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [paginationMeta, setPaginationMeta] = useState<IPaginationMeta | null>(null);
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const { user } = useSession();
   const router = useRouter();
-  const debouncedDateRange = useDebounce(dateRange);
 
   const debounceDateRangeReference = useRef(
     debounce((value: DateRange) => {
@@ -54,42 +51,14 @@ const BaseOrderPage = ({ orderService }: { orderService: OrderService }) => {
 
     startTransitionOrders(async () => {
       const ordersData = await orderService.getAllOrders(parameters);
-      setOrders(
-        ordersData?.data.flatMap((order) => ({
-          customer: order.customer,
-          date: `${formatDate(order.created_at)} ${formatTime(order.created_at)}`,
-          product: order.product,
-          id: order.id,
-        })) || [],
-      );
+      setOrders(ordersData?.data || []);
       setPaginationMeta(ordersData?.meta || null);
     });
-  }, [debouncedDateRange, orderService, currentPage, dateRange?.from, dateRange?.to]);
+  }, [orderService, currentPage, dateRange?.from, dateRange?.to]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
-
-  // const handleRefresh = () => {
-  //   const parameters: IFilters = {
-  //     page: currentPage,
-  //     ...(dateRange?.from && { start_date: format(dateRange.from, "yyyy-MM-dd") }),
-  //     ...(dateRange?.to && { end_date: format(dateRange.to, "yyyy-MM-dd") }),
-  //   };
-
-  //   startTransitionOrders(async () => {
-  //     const ordersData = await orderService.getAllOrders(parameters);
-  //     setOrders(
-  //       ordersData?.data.flatMap((order) => ({
-  //         customer: order.customer,
-  //         date: `${formatDate(order.created_at)} ${formatTime(order.created_at)}`,
-  //         product: order.product,
-  //         id: order.id,
-  //       })) || [],
-  //     );
-  //     setPaginationMeta(ordersData?.meta || null);
-  //   });
-  // };
 
   return (
     <section className={`space-y-10`}>
@@ -140,7 +109,14 @@ const BaseOrderPage = ({ orderService }: { orderService: OrderService }) => {
               />
             ) : (
               <EmptyState
-                images={[emptyCart]}
+                images={[
+                  {
+                    src: emptyCart,
+                    alt: "Empty cart",
+                    width: 100,
+                    height: 100,
+                  },
+                ]}
                 title="No orders found."
                 description="You do not have any active orders yet."
                 button={{ text: "Create New Order", onClick: () => {} }}

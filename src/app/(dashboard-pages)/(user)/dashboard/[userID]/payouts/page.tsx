@@ -1,9 +1,10 @@
 "use client";
 
 import { format } from "date-fns";
+import debounce from "lodash.debounce";
 import { PlusCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { DateRange } from "react-day-picker";
 
 import { AnalyticsCard } from "~/app/(dashboard-pages)/_components/analytics-card";
@@ -16,7 +17,6 @@ import Loading from "~/app/Loading";
 import CustomButton from "~/components/common/common-button/common-button";
 import { LoadingSpinner } from "~/components/miscellaneous/loading-spinner";
 import { WithDependency } from "~/HOC/withDependencies";
-import { useDebounce } from "~/hooks/use-debounce";
 import { useSession } from "~/hooks/use-session";
 import { EarningService } from "~/services/earnings.service";
 import { PayoutService } from "~/services/payout.service";
@@ -39,18 +39,23 @@ const BasePayoutsPage = ({
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const { user } = useSession();
   const router = useRouter();
-  const debouncedDateRange = useDebounce(dateRange);
 
-  const handleDateRangeChange = (range: DateRange | undefined) => {
-    setDateRange(range);
+  const debounceDateRangeReference = useRef(
+    debounce((value: DateRange) => {
+      setDateRange(value);
+    }, 300),
+  );
+
+  const handleDateRangeChange = useCallback((value: DateRange) => {
+    debounceDateRangeReference.current(value);
     setCurrentPage(1);
-  };
+  }, []);
 
   useEffect(() => {
-    const parameters = {
+    const parameters: IFilters = {
       page: currentPage,
-      ...(debouncedDateRange?.from && { start_date: format(debouncedDateRange.from, "yyyy-MM-dd") }),
-      ...(debouncedDateRange?.to && { end_date: format(debouncedDateRange.to, "yyyy-MM-dd") }),
+      ...(dateRange?.from && { start_date: format(dateRange.from, "yyyy-MM-dd") }),
+      ...(dateRange?.to && { end_date: format(dateRange.to, "yyyy-MM-dd") }),
     };
 
     startTransition(async () => {
@@ -63,7 +68,7 @@ const BasePayoutsPage = ({
       setEarnings(earningsData);
       // You can handle earningsData here if needed
     });
-  }, [debouncedDateRange, currentPage, payoutService, earningService]);
+  }, [currentPage, payoutService, earningService, dateRange?.from, dateRange?.to]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -168,7 +173,7 @@ const BasePayoutsPage = ({
 
 const PayoutsPage = WithDependency(BasePayoutsPage, {
   payoutService: dependencies.PAYOUT_SERVICE,
-  earningService: dependencies.EARNINGS_SERVICES,
+  earningService: dependencies.EARNINGS_SERVICE,
 });
 
 export default PayoutsPage;

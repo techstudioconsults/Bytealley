@@ -6,6 +6,7 @@ import { Wrapper } from "~/components/layout/wrapper";
 import { WithDependency } from "~/HOC/withDependencies";
 import { useSession } from "~/hooks/use-session";
 import { AuthService } from "~/services/auth.service";
+import { OrderService } from "~/services/orders.service";
 import { ProductService } from "~/services/product.service";
 import { dependencies } from "~/utils/dependencies";
 import { ActiveUser } from "./_views/active-user";
@@ -15,10 +16,12 @@ import { Onboarding } from "./_views/onboarding";
 const UserHomePage = ({
   productService,
   authService,
+  orderService,
   params,
 }: {
   productService: ProductService;
   authService: AuthService;
+  orderService: OrderService;
   params: { userID: string };
 }) => {
   const router = useRouter();
@@ -70,26 +73,27 @@ const UserHomePage = ({
   const completedSteps = ONBOARDING_STEPS.filter((step) => step.isCompleted).length;
 
   // Less than 4 steps completed -> Onboarding
-  if (completedSteps < 3) {
-    return (
-      <Wrapper className="max-w-[751px]">
-        <Onboarding steps={ONBOARDING_STEPS} />
-      </Wrapper>
-    );
-  }
+  // if (completedSteps < 3) {
+  //   return (
+  //     <Wrapper className="max-w-[751px]">
+  //       <Onboarding steps={ONBOARDING_STEPS} />
+  //     </Wrapper>
+  //   );
+  // }
 
-  // Exactly 4 steps completed -> NewUser
-  if (completedSteps > 3 || completedSteps < 5) {
-    return <NewUser steps={ONBOARDING_STEPS} completedSteps={completedSteps} />;
-  }
+  // // Exactly 4 steps completed -> NewUser
+  // if (completedSteps > 3 || completedSteps < 5) {
+  //   return <NewUser steps={ONBOARDING_STEPS} completedSteps={completedSteps} orderService={orderService} />;
+  // }
 
   // All 5 steps completed -> ActiveUser
-  return <ActiveUser productService={productService} />;
+  return <ActiveUser productService={productService} orderService={orderService} />;
 };
 
 const HomePage = WithDependency(UserHomePage, {
   authService: dependencies.AUTH_SERVICE,
   productService: dependencies.PRODUCT_SERVICE,
+  orderService: dependencies.ORDER_SERVICE,
 });
 
 export default HomePage;

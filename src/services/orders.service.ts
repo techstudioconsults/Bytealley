@@ -12,7 +12,7 @@ export class OrderService {
     if (filters) {
       queryParameters = this.buildQueryParameters(filters);
     }
-    const response = await this.http.get<IPaginatedResponse<IProductOrder>>(`/orders/user?${queryParameters}`);
+    const response = await this.http.get<IPaginatedResponse<IOrder>>(`/orders/user?${queryParameters}`);
 
     if (response?.status === 200) {
       return response.data;
@@ -20,7 +20,7 @@ export class OrderService {
   }
 
   async getOrderById(orderId: string) {
-    const response = await this.http.get<{ data: IOrderDetails }>(`/orders/${orderId}`);
+    const response = await this.http.get<{ data: IOrder }>(`/orders/${orderId}`);
     if (response?.status === 200) {
       return response.data;
     }

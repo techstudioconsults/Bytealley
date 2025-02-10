@@ -1,3 +1,5 @@
+/* eslint-disable unicorn/prefer-spread */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusCircle } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -8,44 +10,60 @@ import { ReusableDialog } from "~/components/common/Dialog";
 import { FormField } from "~/components/common/FormFields";
 import { BankFormData, bankFormSchema } from "~/schemas";
 import { EarningService } from "~/services/earnings.service";
+import { Toast } from "~/utils/notificationManager";
 
 export const AddBankModal = ({ service }: { service: EarningService }) => {
-  const [banks, setBanks] = useState([]);
+  const [banks, setBanks] = useState<any>([]);
   const methods = useForm<BankFormData>({
     resolver: zodResolver(bankFormSchema),
     defaultValues: {
-      account_name: "",
-      bank: "",
-      account_number: 0,
+      name: "",
+      bank_code: "",
+      account_number: "",
     },
   });
 
   const {
     handleSubmit,
+    reset,
     formState: { isSubmitting },
   } = methods;
 
   const handleSubmitForm = async (data: BankFormData) => {
-    console.log(data);
+    const response = await service.registerPaymentAccount(data);
+    if (response) {
+      Toast.getInstance().showToast({
+        title: "Success",
+        description: `Account ${response.data.bank_name} was registerd successfully`,
+        variant: "success",
+      });
+    }
   };
 
   useEffect(() => {
     const getBankList = async () => {
       const response = await service.getListOfPaystackApproveBanks();
-      const bankList = response?.map((bank: IBank) => {
-        return { value: bank.code, label: bank.name };
-      });
-      setBanks(bankList || []);
+      if (response) {
+        const bankList = Array.from(
+          new Map(
+            response?.map((bank: IBank) => [
+              bank.code,
+              { value: JSON.stringify({ bank_code: bank.code, bank_name: bank.name }), label: bank.name },
+            ]),
+          ).values(),
+        );
+        setBanks(bankList);
+      }
     };
     getBankList();
-  }, []);
+  }, [service]);
 
   return (
     <ReusableDialog
       className={`sm:max-w-[499px]`}
       trigger={
         <div
-          className={`flex items-center justify-center gap-4 rounded-md border p-6 text-mid-purple lg:max-w-[357px]`}
+          className={`flex min-h-[120px] items-center justify-center gap-4 rounded-md border p-6 text-mid-purple lg:max-w-[357px]`}
         >
           <PlusCircle />
           <p>Add Bank</p>
@@ -58,14 +76,14 @@ export const AddBankModal = ({ service }: { service: EarningService }) => {
         <form onSubmit={handleSubmit(handleSubmitForm)} className="space-y-4">
           <FormField
             label="Account Name"
-            name="account_name"
+            name="name"
             placeholder="Enter bank account name"
             className={`h-12 bg-low-grey-III`}
             required
           />
           <FormField
             label="Bank"
-            name="bank"
+            name="bank_code"
             type="select"
             placeholder="Select a bank"
             options={banks}
@@ -81,7 +99,15 @@ export const AddBankModal = ({ service }: { service: EarningService }) => {
           />
 
           <div className={`flex items-center gap-4 border-t pt-[32px]`}>
-            <CustomButton variant="outline" size={`xl`} className="w-full border-destructive text-destructive">
+            <CustomButton
+              onClick={(event) => {
+                event.preventDefault();
+                reset();
+              }}
+              variant="outline"
+              size={`xl`}
+              className="w-full border-destructive text-destructive"
+            >
               Cancel
             </CustomButton>
             <CustomButton

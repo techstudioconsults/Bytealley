@@ -64,9 +64,9 @@ export const withdrawalSchema = z.object({
 });
 
 export const bankFormSchema = z.object({
-  account_name: z.string().min(1, "Account name is required"),
-  bank: z.string().min(1, "Bank name is required"),
-  account_number: z.number().min(10, "Account number is required"),
+  name: z.string().min(1, "Account name is required"),
+  bank_code: z.string().min(1, "Bank name is required"),
+  account_number: z.string().min(10, "Account number is required"),
 });
 
 export type RegisterFormData = z.infer<typeof registerSchema>;

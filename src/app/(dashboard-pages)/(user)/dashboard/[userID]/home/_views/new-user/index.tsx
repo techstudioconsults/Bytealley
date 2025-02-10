@@ -1,9 +1,14 @@
 "use client";
 
-import productImage from "@/images/empty_product.svg";
+import emptyCart from "@/images/empty-cart.svg";
 import onboardingImage from "@/images/home_banner_illustration.svg";
+import { useEffect, useState, useTransition } from "react";
 
+import { DashboardTable } from "~/app/(dashboard-pages)/_components/dashboard-table";
+import { orderColumns } from "~/app/(dashboard-pages)/_components/dashboard-table/table-data";
 import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
+import Loading from "~/app/Loading";
+import { OrderService } from "~/services/orders.service";
 import { ActionBanner } from "../../_components/action-banner";
 import { DashboardBanner } from "../../_components/home-banner";
 import { OnboardingHeader } from "../onboarding/onboarding-header";
@@ -11,11 +16,32 @@ import { OnboardingHeader } from "../onboarding/onboarding-header";
 interface NewUserProperties {
   steps: OnboardingStep[];
   completedSteps: number;
+  orderService: OrderService;
 }
 
-export const NewUser = ({ steps, completedSteps }: NewUserProperties) => {
+export const NewUser = ({ steps, completedSteps, orderService }: NewUserProperties) => {
   // Find the first incomplete step
   const nextStep = steps.find((step) => !step.isCompleted);
+  const [isPendingOrders, startTransitionOrders] = useTransition();
+  // const [isPendingRefresh, startTransitionRefresh] = useTransition();
+  const [orders, setOrders] = useState<IOrder[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [paginationMeta, setPaginationMeta] = useState<IPaginationMeta | null>(null);
+
+  useEffect(() => {
+    const parameters: IFilters = {
+      page: currentPage,
+    };
+    startTransitionOrders(async () => {
+      const ordersData = await orderService.getAllOrders(parameters);
+      setOrders(ordersData?.data.slice(0, 5) || []);
+      setPaginationMeta(ordersData?.meta || null);
+    });
+  }, [orderService, currentPage]);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   return (
     <section className="space-y-10">
@@ -42,20 +68,40 @@ export const NewUser = ({ steps, completedSteps }: NewUserProperties) => {
         </div>
       </div>
       <div className="space-y-4">
-        <h6 className="text-lg font-semibold">Activity</h6>
-        <EmptyState
-          images={[
-            {
-              src: productImage.src,
-              alt: "Empty state illustration",
-            },
-          ]}
-          description="You do not have any sales activities yet."
-          button={{
-            text: "Create your first product",
-            onClick: () => {},
-          }}
-        />
+        <h6 className="text-lg font-semibold">Sales</h6>
+        <section>
+          {isPendingOrders ? (
+            <Loading text={`Loading sales table...`} className={`w-fill h-fit p-20`} />
+          ) : (
+            <>
+              {orders.length > 0 ? (
+                <DashboardTable
+                  data={orders}
+                  columns={orderColumns}
+                  showPagination
+                  onPageChange={handlePageChange}
+                  currentPage={paginationMeta?.current_page}
+                  totalPages={paginationMeta?.last_page}
+                  itemsPerPage={paginationMeta?.per_page}
+                />
+              ) : (
+                <EmptyState
+                  images={[
+                    {
+                      src: emptyCart,
+                      alt: "Empty Cart",
+                      width: 100,
+                      height: 100,
+                    },
+                  ]}
+                  title="No sales found."
+                  description="You do not have any sales yet."
+                  button={{ text: "Create New Order", onClick: () => {} }}
+                />
+              )}
+            </>
+          )}
+        </section>
       </div>
     </section>
   );

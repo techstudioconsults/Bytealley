@@ -105,7 +105,14 @@ const BaseCustomerPage = ({ customerService }: { customerService: CustomerServic
               />
             ) : (
               <EmptyState
-                images={[emptyCart]}
+                images={[
+                  {
+                    src: emptyCart,
+                    alt: "Empty cart",
+                    width: 100,
+                    height: 100,
+                  },
+                ]}
                 title="No Customers found."
                 description="You do not have any active customers yet."
                 button={{ text: "Create Your First Product", onClick: () => {} }}

@@ -6,10 +6,11 @@ interface BankCardProperties {
   bankName: string;
   accountNumber: string;
   accountName: string;
+  active: boolean;
   className?: string;
 }
 
-export const BankCard = ({ bankName, accountNumber, accountName, className }: BankCardProperties) => {
+export const BankCard = ({ bankName, accountNumber, accountName, active, className }: BankCardProperties) => {
   return (
     <section
       className={cn(`flex items-start justify-between rounded-lg bg-low-purple p-6 lg:max-w-[357px]`, className)}
@@ -29,11 +30,8 @@ export const BankCard = ({ bankName, accountNumber, accountName, className }: Ba
       </section>
       <section>
         <Checkbox
-          checked
-          className={cn(
-            "h-6 w-6 rounded-full border-2",
-            //  isCompleted ? "border-black bg-primary" : "border-primary"
-          )}
+          checked={active}
+          className={cn("h-6 w-6 rounded-full border-2", active ? "border-black bg-primary" : "border-primary")}
         />
       </section>
     </section>

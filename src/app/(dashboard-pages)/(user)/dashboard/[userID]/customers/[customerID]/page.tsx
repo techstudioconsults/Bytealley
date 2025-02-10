@@ -5,7 +5,7 @@ import { useEffect, useState, useTransition } from "react";
 import { AnalyticsCard } from "~/app/(dashboard-pages)/_components/analytics-card";
 import { BackNavigator } from "~/app/(dashboard-pages)/_components/back-navigator";
 import { DashboardTable } from "~/app/(dashboard-pages)/_components/dashboard-table";
-import { customerColumns, latestPurchaseColumns } from "~/app/(dashboard-pages)/_components/dashboard-table/table-data";
+import { latestPurchaseColumns } from "~/app/(dashboard-pages)/_components/dashboard-table/table-data";
 import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import { TableHeaderInfo } from "~/app/(dashboard-pages)/_components/table-header-info";
 import Loading from "~/app/Loading";
@@ -22,12 +22,15 @@ const BaseCustomerDetailsPage = ({
 }) => {
   const [isPending, startTransition] = useTransition();
   const [customer, setCustomer] = useState<ICustomer | null>(null);
+  const [customerOrders, setCustomerOrders] = useState<IOrder[]>([]);
 
   useEffect(() => {
     const fetchProductData = async () => {
       startTransition(async () => {
         const customer = await customerService.getCustomerById(params.customerID);
+        const customerOrders = await customerService.getOrdersByCustomerId(params.customerID);
         setCustomer(customer?.data || null);
+        setCustomerOrders(customerOrders?.data || []);
       });
     };
 
@@ -74,7 +77,7 @@ const BaseCustomerDetailsPage = ({
             <AnalyticsCard title="Total Value" value={`₦${customer?.sale_products.toLocaleString()}`} /> */}
           </section>
         </section>
-        <DashboardTable data={[customer]} columns={latestPurchaseColumns} />
+        <DashboardTable data={customerOrders} columns={latestPurchaseColumns} />
       </section>
     </section>
   );

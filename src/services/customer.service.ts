@@ -7,7 +7,7 @@ export class CustomerService {
     this.http = httpAdapter;
   }
 
-  async getAllCustomers(filters: IProductFilters) {
+  async getAllCustomers(filters: IFilters) {
     const queryParameters = this.buildQueryParameters(filters);
     const response = await this.http.get<IPaginatedResponse<ICustomer>>(`/customers?${queryParameters}`);
     if (response?.status === 200) {
@@ -22,7 +22,14 @@ export class CustomerService {
     }
   }
 
-  async downloadCustomersAsCSV(filters: IProductFilters) {
+  async getOrdersByCustomerId(customerId: string) {
+    const response = await this.http.get<IPaginatedResponse<IOrder>>(`/orders/customers/${customerId}`);
+    if (response?.status === 200) {
+      return response.data;
+    }
+  }
+
+  async downloadCustomersAsCSV(filters: IFilters) {
     const queryParameters = this.buildQueryParameters(filters);
     const response = await this.http.get(`/customers/download?${queryParameters}`);
     if (response?.status === 200) {
@@ -30,7 +37,7 @@ export class CustomerService {
     }
   }
 
-  private buildQueryParameters(filters: IProductFilters): string {
+  private buildQueryParameters(filters: IFilters): string {
     const queryParameters = new URLSearchParams();
     for (const [key, value] of Object.entries(filters)) {
       if (value !== undefined) {

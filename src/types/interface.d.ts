@@ -242,24 +242,7 @@ declare global {
     date: string;
   }
 
-  interface IProductOrder {
-    id: string;
-    reference_no: string;
-    quantity: number;
-    total_amount: number;
-    product: IProduct;
-    customer: ICustomer;
-    created_at: string;
-  }
-  interface IProductOrderFlat {
-    id?: string;
-    quantity?: number | string;
-    date?: string;
-    product?: IProduct;
-    customer?: ICustomer;
-  }
-
-  interface IOrderDetails {
+  interface IOrder {
     id: string;
     product: IProduct;
     customer: ICustomer;
@@ -292,6 +275,14 @@ declare global {
   interface IBank {
     name: string;
     code: string;
+  }
+
+  interface IPaymentAccount {
+    id: string;
+    bank_name: string;
+    name: string;
+    account_number: string;
+    active: boolean;
   }
 }
 

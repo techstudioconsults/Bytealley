@@ -162,16 +162,16 @@ export const productColumns: IColumnDefinition<IProduct>[] = [
   },
 ];
 
-export const singleProductCustomerColumns: IColumnDefinition<IProductOrderFlat>[] = [
+export const singleProductOrderColumns: IColumnDefinition<IOrder>[] = [
   {
     header: "Customer Name",
     accessorKey: "customer",
-    render: (_, product: IProductOrderFlat) => <span>{product?.customer?.name}</span>,
+    render: (_, product: IOrder) => <span>{product?.customer?.name}</span>,
   },
   {
     header: "Customer Email",
     accessorKey: "customer",
-    render: (_, product: IProductOrderFlat) => <span>{product?.customer?.email}</span>,
+    render: (_, product: IOrder) => <span>{product?.customer?.email}</span>,
   },
   {
     header: "Quantity",
@@ -179,40 +179,50 @@ export const singleProductCustomerColumns: IColumnDefinition<IProductOrderFlat>[
   },
   {
     header: "Date",
-    accessorKey: "date",
+    accessorKey: "created_at",
+    render: (_, order: IOrder) => (
+      <span>
+        {formatDate(order?.created_at)} {formatTime(order?.created_at)}
+      </span>
+    ),
   },
 ];
 
-export const orderColumns: IColumnDefinition<IProductOrderFlat>[] = [
+export const orderColumns: IColumnDefinition<IOrder>[] = [
   {
     header: "Product",
     accessorKey: "product",
-    render: (_, product: IProductOrderFlat) => (
+    render: (_, order: IOrder) => (
       <div className={`flex w-fit items-center gap-2`}>
         <Image
-          src={product?.product?.thumbnail || ""}
+          src={order?.product?.thumbnail || ""}
           alt="product"
           width={44}
           height={44}
           className={`h-[44px] w-[44px] rounded-md bg-low-grey-III object-cover`}
         />
-        <span className="text-[16px] font-medium">{product?.product?.title}</span>
+        <span className="text-[16px] font-medium">{order?.product?.title}</span>
       </div>
     ),
   },
   {
     header: "Price",
     accessorKey: "product",
-    render: (_, product: IProductOrderFlat) => <span>₦{product?.product?.price?.toLocaleString()}</span>,
+    render: (_, order: IOrder) => <span>₦{order?.product?.price?.toLocaleString()}</span>,
   },
   {
     header: "Customer Email",
     accessorKey: "customer",
-    render: (_, product: IProductOrderFlat) => <span>{product?.customer?.email}</span>,
+    render: (_, order: IOrder) => <span>{order?.customer?.email}</span>,
   },
   {
     header: "Date",
-    accessorKey: "date",
+    accessorKey: "created_at",
+    render: (_, order: IOrder) => (
+      <span>
+        {formatDate(order?.created_at)} {formatTime(order?.created_at)}
+      </span>
+    ),
   },
 ];
 
@@ -251,28 +261,28 @@ export const customerColumns: IColumnDefinition<ICustomer>[] = [
   },
 ];
 
-export const latestPurchaseColumns: IColumnDefinition<ICustomer>[] = [
+export const latestPurchaseColumns: IColumnDefinition<IOrder>[] = [
   {
     header: "Latest Purchase",
-    accessorKey: "latest_purchase_title",
-    render: (_, customer: ICustomer) => (
+    accessorKey: "product",
+    render: (_, order: IOrder) => (
       <div className={`flex w-fit items-center gap-2`}>
-        <Image src={"/images/question_mark.png"} alt="product" width={44} height={44} className={`bg-low-grey-II`} />
-        <span className="text-[16px] font-medium">{customer?.latest_purchase_title}</span>
+        <Image src={order?.product.thumbnail} alt="product" width={44} height={44} className={`bg-low-grey-II`} />
+        <span className="text-[16px] font-medium">{order?.product.title}</span>
       </div>
     ),
   },
   {
     header: "Price",
-    accessorKey: "latest_purchase_price",
-    render: (_, customer: ICustomer) => <span>₦{customer?.latest_purchase_price?.toLocaleString()}</span>,
+    accessorKey: "product",
+    render: (_, order: IOrder) => <span>₦{order?.product.price?.toLocaleString()}</span>,
   },
   {
     header: "Date",
-    accessorKey: "latest_purchase_date",
-    render: (_, customer: ICustomer) => (
+    accessorKey: "created_at",
+    render: (_, order: IOrder) => (
       <span>
-        {formatDate(customer?.latest_purchase_date)} {formatTime(customer?.latest_purchase_date)}
+        {formatDate(order?.created_at)} {formatTime(order?.created_at)}
       </span>
     ),
   },
