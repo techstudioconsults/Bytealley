@@ -19,7 +19,7 @@ const BaseOrderDetailsPage = ({
   orderService: OrderService;
 }) => {
   const [isPending, startTransition] = useTransition();
-  const [order, setOrder] = useState<IOrderDetails | null>(null);
+  const [order, setOrder] = useState<IOrder | null>(null);
 
   useEffect(() => {
     const fetchProductData = async () => {

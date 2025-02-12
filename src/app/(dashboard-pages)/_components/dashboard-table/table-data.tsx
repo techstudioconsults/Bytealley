@@ -152,7 +152,7 @@ export const productColumns: IColumnDefinition<IProduct>[] = [
     render: (_, product: IProduct) => (
       <Badge
         className={cn(
-          product.status === "draft" ? "bg-mid-warning text-high-warning" : "bg-mid-success text-white",
+          product.status === "draft" ? "bg-low-warning text-high-warning" : "bg-low-success text-mid-success",
           "rounded-sm px-4 py-2",
         )}
       >
@@ -295,14 +295,38 @@ export const payoutColumns: IColumnDefinition<IPayout>[] = [
   },
   {
     header: "Bank Account",
-    accessorKey: "account_number",
+    accessorKey: "account",
+    render: (_, payout: IPayout) => {
+      const accountNumber = payout?.account.number;
+      const maskedAccountNumber = `${accountNumber.slice(0, 3)}****${accountNumber.slice(-3)}`;
+      return <span>{maskedAccountNumber}</span>;
+    },
   },
   {
     header: "Period",
     accessorKey: "created_at",
+    render: (_, payout: IPayout) => (
+      <span>
+        {formatDate(payout?.created_at)} {formatTime(payout?.created_at)}
+      </span>
+    ),
   },
   {
     header: "Status",
     accessorKey: "status",
+    render: (_, payout: IPayout) => (
+      <Badge
+        className={cn(
+          payout.status === "completed"
+            ? "bg-low-success text-mid-success"
+            : payout.status === "pending"
+              ? "bg-low-warning text-high-warning"
+              : "bg-low-danger text-mid-danger",
+          "rounded-sm px-4 py-2",
+        )}
+      >
+        {payout.status}
+      </Badge>
+    ),
   },
 ];

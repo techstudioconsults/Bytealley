@@ -16,7 +16,15 @@ export class PayoutService {
   }
 
   async getPayoutById(payoutId: string) {
-    const response = await this.http.get<{ data: IPayout }>(`/payouts/${payoutId}`);
+    const response = await this.getAllPayouts({});
+    if (response?.data) {
+      return response.data.find((payout: IPayout) => payout.id === payoutId);
+    }
+  }
+
+  async downloadPayoutAsCSV(filters: IFilters) {
+    const queryParameters = this.buildQueryParameters(filters);
+    const response = await this.http.get(`/payouts/download?${queryParameters}`);
     if (response?.status === 200) {
       return response.data;
     }

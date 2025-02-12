@@ -255,12 +255,14 @@ declare global {
   interface IPayout {
     id: string;
     bank_name: string;
-    account_number: string;
-    account_name: string;
+    account: {
+      name: string;
+      number: string;
+    };
     amount: number;
-    status: "completed" | "pending" | "failed"; // Assuming status can only be one of these values
+    status: "completed" | "pending" | "failed";
     reference: string;
-    created_at: string; // ISO 8601 date string
+    created_at: string;
   }
 
   interface IEarnings {
@@ -283,6 +285,16 @@ declare global {
     name: string;
     account_number: string;
     active: boolean;
+  }
+
+  interface IDownload {
+    id: string;
+    price: number;
+    product_type: string;
+    publisher: string;
+    sluge: string;
+    thumbnail: string;
+    title: string;
   }
 }
 

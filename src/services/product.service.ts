@@ -51,14 +51,15 @@ export class ProductService {
     }
   }
 
-  // async getTopProducts() {
-  //   const response = await this.http.get<IPaginatedResponse<IProduct>>("/products/top-products");
-  //   console.log(response);
+  async getPurchasedProducts(filters: IFilters) {
+    const queryParameters = this.buildQueryParameters(filters);
+    const response = await this.http.get<IDownload[]>(`/products/purchased${queryParameters}`);
+    console.log(response);
 
-  //   if (response?.status === 200) {
-  //     return response.data;
-  //   }
-  // }
+    // if (response?.status === 200) {
+    //   return response.data;
+    // }
+  }
 
   async downloadProducts(filters: IFilters = Object.create({ page: 1 })) {
     const queryParameters = this.buildQueryParameters(filters);
@@ -84,7 +85,7 @@ export class ProductService {
   }
 
   async getProductOrderByProductId(productId: string) {
-    const response = await this.http.get<{ data: IProductOrder[] }>(`/orders/products/${productId}`);
+    const response = await this.http.get<{ data: IOrder[] }>(`/orders/products/${productId}`);
     if (response?.status === 200) {
       return response.data.data;
     }

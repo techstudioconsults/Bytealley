@@ -1,5 +1,6 @@
 "use client";
 
+import payoutImg from "@/images/payout_tree.svg";
 import { format } from "date-fns";
 import debounce from "lodash.debounce";
 import { PlusCircle } from "lucide-react";
@@ -8,6 +9,7 @@ import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { DateRange } from "react-day-picker";
 
 import { AnalyticsCard } from "~/app/(dashboard-pages)/_components/analytics-card";
+import { PDBanner } from "~/app/(dashboard-pages)/_components/banner/pd-banner";
 import { DashboardTable } from "~/app/(dashboard-pages)/_components/dashboard-table";
 import { payoutColumns } from "~/app/(dashboard-pages)/_components/dashboard-table/table-data";
 import { DateRangePicker } from "~/app/(dashboard-pages)/_components/date-range-picker";
@@ -22,7 +24,6 @@ import { EarningService } from "~/services/earnings.service";
 import { PayoutService } from "~/services/payout.service";
 import { dependencies } from "~/utils/dependencies";
 import { cn } from "~/utils/utils";
-import { PayoutBanner } from "./_components/payout-banner";
 
 const BasePayoutsPage = ({
   payoutService,
@@ -31,7 +32,8 @@ const BasePayoutsPage = ({
   payoutService: PayoutService;
   earningService: EarningService;
 }) => {
-  const [isPending, startTransition] = useTransition();
+  const [isEarningsPending, startEarningsTransition] = useTransition();
+  const [isPayoutPending, startPayoutTransition] = useTransition();
   const [payouts, setPayouts] = useState<IPayout[]>([]);
   const [earnings, setEarnings] = useState<IEarnings>();
   const [currentPage, setCurrentPage] = useState(1);
@@ -52,23 +54,25 @@ const BasePayoutsPage = ({
   }, []);
 
   useEffect(() => {
+    startEarningsTransition(async () => {
+      const earningsData = await earningService.getUserEarnings();
+      setEarnings(earningsData);
+    });
+  }, [earningService]);
+
+  useEffect(() => {
     const parameters: IFilters = {
       page: currentPage,
       ...(dateRange?.from && { start_date: format(dateRange.from, "yyyy-MM-dd") }),
       ...(dateRange?.to && { end_date: format(dateRange.to, "yyyy-MM-dd") }),
     };
 
-    startTransition(async () => {
-      const [payoutsData, earningsData] = await Promise.all([
-        payoutService.getAllPayouts(parameters),
-        earningService.getUserEarnings(),
-      ]);
+    startPayoutTransition(async () => {
+      const payoutsData = await payoutService.getAllPayouts(parameters);
       setPayouts(payoutsData?.data || []);
       setPaginationMeta(payoutsData?.meta || null);
-      setEarnings(earningsData);
-      // You can handle earningsData here if needed
     });
-  }, [currentPage, payoutService, earningService, dateRange?.from, dateRange?.to]);
+  }, [payoutService, currentPage, dateRange]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -76,14 +80,19 @@ const BasePayoutsPage = ({
 
   return (
     <section className="space-y-10">
-      <PayoutBanner />
+      <PDBanner
+        title={"Grow communities and get paid."}
+        description={"Make as much as ₦10,000 sale for your first withdraw"}
+        imageSrc={payoutImg}
+        imageAlt={"Payout Tree"}
+      />
       {/* views */}
       <section className="space-y-4">
         <section className="flex w-full flex-col gap-4 sm:items-center md:flex-row md:justify-between">
           <div className="flex w-full flex-col gap-2 sm:flex-row md:w-auto">
             <DateRangePicker onDateChange={handleDateRangeChange} />
             <ExportAction
-              serviceMethod={() => {}}
+              serviceMethod={(filters) => payoutService.downloadPayoutAsCSV(filters)}
               currentPage={currentPage}
               dateRange={dateRange}
               buttonText="Export"
@@ -108,25 +117,25 @@ const BasePayoutsPage = ({
         <section className="grid grid-cols-1 gap-4 lg:grid-cols-4">
           <AnalyticsCard
             title="Total Earnings"
-            value={isPending ? <LoadingSpinner /> : `₦${earnings?.total_earnings?.toLocaleString() || 0}`}
+            value={isEarningsPending ? <LoadingSpinner /> : `₦${earnings?.total_earnings?.toLocaleString() || 0}`}
           />
           <AnalyticsCard
             title="Withdrawals Earnings"
-            value={isPending ? <LoadingSpinner /> : `₦${earnings?.withdrawn_earnings?.toLocaleString() || 0}`}
+            value={isEarningsPending ? <LoadingSpinner /> : `₦${earnings?.withdrawn_earnings?.toLocaleString() || 0}`}
           />
           <AnalyticsCard
             title="Pending"
-            value={isPending ? <LoadingSpinner /> : `₦${earnings?.pending?.toLocaleString() || 0}`}
+            value={isEarningsPending ? <LoadingSpinner /> : `₦${earnings?.pending?.toLocaleString() || 0}`}
           />
           <AnalyticsCard
             className={cn(earnings?.available_earnings ? `text-mid-success` : `text-mid-danger`)}
             title="Available Earnings"
-            value={isPending ? <LoadingSpinner /> : `₦${earnings?.available_earnings?.toLocaleString() || 0}`}
+            value={isEarningsPending ? <LoadingSpinner /> : `₦${earnings?.available_earnings?.toLocaleString() || 0}`}
           />
         </section>
         <section className="space-y-4">
           <h4 className="mt-10 text-[24px] font-semibold">Payout History</h4>
-          {isPending ? (
+          {isPayoutPending ? (
             <Loading text={`Loading payout table...`} className={`w-fill h-fit p-20`} />
           ) : (
             <>

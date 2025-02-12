@@ -3,6 +3,7 @@
 import nairaIcon from "@/icons/naira.svg";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -14,6 +15,7 @@ import CustomButton from "~/components/common/common-button/common-button";
 import { FormField } from "~/components/common/FormFields";
 import { LoadingSpinner } from "~/components/miscellaneous/loading-spinner";
 import { WithDependency } from "~/HOC/withDependencies";
+import { useSession } from "~/hooks/use-session";
 import { WithdrawalData, withdrawalSchema } from "~/schemas";
 import { EarningService } from "~/services/earnings.service";
 import { dependencies } from "~/utils/dependencies";
@@ -23,6 +25,8 @@ const BaseWithdrawEarnings = ({ earningService }: { earningService: EarningServi
   const [isPending, startTransition] = useTransition();
   const [availableEarnings, setAvailableEarnings] = useState<number>(0);
   const [listOfRegisteredAccounts, setListOfRegisteredAccounts] = useState<IPaymentAccount[]>([]);
+  const { user } = useSession();
+  const router = useRouter();
 
   const methods = useForm<WithdrawalData>({
     resolver: zodResolver(withdrawalSchema),
@@ -44,6 +48,7 @@ const BaseWithdrawEarnings = ({ earningService }: { earningService: EarningServi
         description: `A ${data.amount} naira withdrawal was successful`,
         variant: "success",
       });
+      router.push(`/dashboard/${user?.id}/payouts`);
     }
   };
 

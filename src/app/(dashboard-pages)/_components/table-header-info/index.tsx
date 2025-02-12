@@ -2,7 +2,7 @@
 "use client";
 
 import { Badge } from "~/components/ui/badge";
-import { cn, formatDate } from "~/utils/utils";
+import { cn, formatDate, formatTime } from "~/utils/utils";
 import { CopyAction } from "../copy-action";
 
 interface TableHeaderInfoProperties {
@@ -32,7 +32,7 @@ const renderCellContent = (header: string, product: any) => {
       return (
         <Badge
           className={cn(
-            product.status === "draft" ? "bg-mid-warning text-high-warning" : "bg-mid-success text-white",
+            product.status === "draft" ? "bg-low-warning text-high-warning" : "bg-low-success text-mid-success",
             "rounded-sm px-4 py-2",
           )}
         >
@@ -45,6 +45,27 @@ const renderCellContent = (header: string, product: any) => {
     }
     case "email address": {
       return product.email;
+    }
+    case "withdrawal amount": {
+      return <span className={`text-xl font-semibold`}>{`₦${product.amount?.toLocaleString()}`}</span>;
+    }
+    case "time": {
+      return formatTime(product.created_at);
+    }
+    case "paid on": {
+      return formatDate(product.created_at);
+    }
+    case "account name": {
+      return product.account.name;
+    }
+    case "reference": {
+      return product.id;
+    }
+    case "bank name": {
+      return product.bank_name;
+    }
+    case "bank account": {
+      return product.account.number;
     }
     default: {
       return null;
