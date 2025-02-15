@@ -295,6 +295,35 @@ declare global {
     sluge: string;
     thumbnail: string;
     title: string;
+    extension?: string;
+    mime_type?: string;
+    size?: string;
+    url?: string;
+    publisher?: string;
+    name?: string;
+  }
+
+  interface ICategory {
+    name: string;
+    categories: string[];
+  }
+
+  interface IReview {
+    rating: number;
+    comment?: string | undefined;
+  }
+
+  interface ISkillSellingDownload {
+    id: string;
+    category: string;
+    link: string;
+    resource_link: string[];
+    product: {
+      id: string;
+      thumbnail: string;
+      cover_photos: string[];
+    };
+    created_at: string;
   }
 }
 

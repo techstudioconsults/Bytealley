@@ -15,15 +15,23 @@ interface ReusableDialogProperties extends HTMLAttributes<HTMLDivElement> {
   title: string;
   description: string;
   children?: ReactNode;
+  headerClassName?: string;
 }
 
-export function ReusableDialog({ trigger, title, description, children, className }: ReusableDialogProperties) {
+export function ReusableDialog({
+  trigger,
+  title,
+  description,
+  children,
+  headerClassName,
+  className,
+}: ReusableDialogProperties) {
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className={cn(`sm:max-w-[425px]`, className)}>
         <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
+          <DialogTitle className={headerClassName}>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
         {children}

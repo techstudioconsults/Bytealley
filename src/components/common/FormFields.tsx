@@ -24,6 +24,7 @@ import { MdCancel } from "react-icons/md";
 import { Badge } from "../ui/badge";
 import { Checkbox } from "../ui/checkbox";
 import CustomButton from "./common-button/common-button";
+import { StarRating } from "./rating/star";
 
 interface FormFieldProperties {
   label?: string;
@@ -868,6 +869,49 @@ export function MultiSelect({
             </>
           );
         }}
+      />
+
+      {error && <p className="text-sm text-destructive">{error.message?.toString()}</p>}
+    </div>
+  );
+}
+
+interface StarRatingFieldProperties {
+  label?: string;
+  name: string;
+  required?: boolean;
+  disabled?: boolean;
+  className?: string;
+  size?: string;
+}
+
+export function StarRatingField({ label, size, name, required = false, className = "" }: StarRatingFieldProperties) {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+  const error = errors[name];
+
+  return (
+    <div className="space-y-2">
+      {label && (
+        <Label className="text-sm font-medium">
+          {label}
+          {required && <span className="ml-1 text-destructive">*</span>}
+        </Label>
+      )}
+
+      <Controller
+        name={name}
+        control={control}
+        render={({ field }) => (
+          <StarRating
+            rating={field.value}
+            onRatingChange={field.onChange}
+            size={size}
+            className={cn(error && "border-destructive", className)}
+          />
+        )}
       />
 
       {error && <p className="text-sm text-destructive">{error.message?.toString()}</p>}

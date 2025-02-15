@@ -23,7 +23,6 @@ export const forgotPasswordSchema = z.object({
     message: "Please enter a valid email address",
   }),
 });
-
 export const resetPasswordSchema = z.object({
   password: z.string().min(1, "Password is required").min(8, "Password must be at least 8 characters"),
   password_confirmation: z.string().min(1, "Confirm password is required"),
@@ -69,10 +68,16 @@ export const bankFormSchema = z.object({
   account_number: z.string().min(10, "Account number is required"),
 });
 
+export const reviewSchema = z.object({
+  rating: z.number().min(1, "Rating is required"),
+  comment: z.string().optional(),
+});
+
 export type RegisterFormData = z.infer<typeof registerSchema>;
 export type LoginFormData = z.infer<typeof loginSchema>;
 export type ForgotPasswordData = z.infer<typeof forgotPasswordSchema>;
 export type ResetPasswordData = z.infer<typeof resetPasswordSchema>;
 export type WithdrawalData = z.infer<typeof withdrawalSchema>;
 export type BankFormData = z.infer<typeof bankFormSchema>;
+export type ReviewFormData = z.infer<typeof reviewSchema>;
 // export type ProductFormData = z.infer<typeof ProductFormSchema>;

@@ -120,6 +120,7 @@ const BaseOrderPage = ({ orderService }: { orderService: OrderService }) => {
                 title="No orders found."
                 description="You do not have any active orders yet."
                 button={{ text: "Create New Order", onClick: () => {} }}
+                className={`rounded-lg bg-low-grey-III`}
               />
             )}
           </>

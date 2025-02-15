@@ -53,12 +53,17 @@ export class ProductService {
 
   async getPurchasedProducts(filters: IFilters) {
     const queryParameters = this.buildQueryParameters(filters);
-    const response = await this.http.get<IDownload[]>(`/products/purchased${queryParameters}`);
-    console.log(response);
+    const response = await this.http.get<IDownload[]>(`/products/purchased?${queryParameters}`);
+    if (response?.status === 200) {
+      return response.data;
+    }
+  }
 
-    // if (response?.status === 200) {
-    //   return response.data;
-    // }
+  async getProductTypesAndCategories() {
+    const response = await this.http.get<{ data: ICategory[] }>(`/products/types`);
+    if (response?.status === 200) {
+      return response.data;
+    }
   }
 
   async downloadProducts(filters: IFilters = Object.create({ page: 1 })) {

@@ -1,7 +1,9 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState, useTransition } from "react";
 
+import Loading from "~/app/Loading";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { WithDependency } from "~/HOC/withDependencies";
 import { ProductService } from "~/services/product.service";
@@ -14,6 +16,8 @@ const Page = ({ productService }: { productService: ProductService }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParameters = useSearchParams();
+  const [isPending, startTransition] = useTransition();
+  const [productTypes, setProductTypes] = useState<ICategory[]>([]);
 
   const currentTab = searchParameters.get("tab") || "all-downloads";
 
@@ -22,6 +26,17 @@ const Page = ({ productService }: { productService: ProductService }) => {
     parameters.set("tab", value);
     router.replace(`${pathname}?${parameters.toString()}`, { scroll: false });
   };
+
+  useEffect(() => {
+    startTransition(async () => {
+      const productTypes = await productService.getProductTypesAndCategories();
+      setProductTypes(productTypes?.data || []);
+    });
+  }, [productService]);
+
+  if (isPending) {
+    return <Loading />;
+  }
 
   return (
     <Tabs value={currentTab} onValueChange={onTabChange} className="w-full">
@@ -37,26 +52,19 @@ const Page = ({ productService }: { productService: ProductService }) => {
               data-state={currentTab === "all-downloads" ? "active" : "inactive"}
             />
           </TabsTrigger>
-          <TabsTrigger
-            value="digital-products"
-            className="relative h-full min-w-[80px] shrink-0 rounded-none border-transparent px-3 text-sm data-[state=active]:bg-transparent data-[state=active]:shadow-none sm:px-4"
-          >
-            Digital Products
-            <span
-              className="absolute bottom-0 left-0 right-0 h-[2px] scale-x-0 bg-primary transition-transform duration-200 data-[state=active]:scale-x-100"
-              data-state={currentTab === "digital-products" ? "active" : "inactive"}
-            />
-          </TabsTrigger>
-          <TabsTrigger
-            value="skill-selling"
-            className="relative h-full min-w-[80px] shrink-0 rounded-none border-transparent px-3 text-sm data-[state=active]:bg-transparent data-[state=active]:shadow-none sm:px-4"
-          >
-            Skill Selling
-            <span
-              className="absolute bottom-0 left-0 right-0 h-[2px] scale-x-0 bg-primary transition-transform duration-200 data-[state=active]:scale-x-100"
-              data-state={currentTab === "skill-selling" ? "active" : "inactive"}
-            />
-          </TabsTrigger>
+          {productTypes.map((productType) => (
+            <TabsTrigger
+              key={productType.name}
+              value={productType.name}
+              className="relative h-full min-w-[100px] shrink-0 rounded-none border-transparent px-3 text-sm data-[state=active]:bg-transparent data-[state=active]:shadow-none sm:px-4"
+            >
+              {productType.name.replace("_", " ")}
+              <span
+                className="absolute bottom-0 left-0 right-0 h-[2px] scale-x-0 bg-primary transition-transform duration-200 data-[state=active]:scale-x-100"
+                data-state={currentTab === productType.name ? "active" : "inactive"}
+              />
+            </TabsTrigger>
+          ))}
         </section>
       </TabsList>
 
@@ -64,12 +72,12 @@ const Page = ({ productService }: { productService: ProductService }) => {
       <TabsContent value="all-downloads">
         <AllDownloads service={productService} />
       </TabsContent>
-      <TabsContent value="digital-products">
-        <DigitalProducts service={productService} />
-      </TabsContent>
-      <TabsContent value="skill-selling">
-        <SkillSelling service={productService} />
-      </TabsContent>
+      {productTypes.map((productType) => (
+        <TabsContent key={productType.name} value={productType.name}>
+          {productType.name === "digital_product" && <DigitalProducts service={productService} />}
+          {productType.name === "skill_selling" && <SkillSelling service={productService} />}
+        </TabsContent>
+      ))}
     </Tabs>
   );
 };

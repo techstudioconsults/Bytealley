@@ -1,0 +1,100 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FormProvider, useForm } from "react-hook-form";
+
+import CustomButton from "~/components/common/common-button/common-button";
+import { ReusableDialog } from "~/components/common/Dialog";
+import { FormField, StarRatingField } from "~/components/common/FormFields";
+import { WithDependency } from "~/HOC/withDependencies";
+import { ReviewFormData, reviewSchema } from "~/schemas";
+import { DownloadService } from "~/services/download.service";
+import { dependencies } from "~/utils/dependencies";
+import { Toast } from "~/utils/notificationManager";
+
+const BaseReviewModal = ({
+  downloadService,
+  downloadedProductID,
+}: {
+  downloadService: DownloadService;
+  downloadedProductID: string;
+}) => {
+  const methods = useForm<ReviewFormData>({
+    resolver: zodResolver(reviewSchema),
+    defaultValues: {
+      rating: 0,
+      comment: "",
+    },
+  });
+
+  const {
+    handleSubmit,
+    reset,
+    formState: { isSubmitting },
+  } = methods;
+
+  const handleSubmitForm = async (data: ReviewFormData) => {
+    const response = await downloadService.reviewDownloadedProduct(downloadedProductID, data);
+    if (response) {
+      Toast.getInstance().showToast({
+        title: "Thanks for reviewing product!",
+        description: "Review has been submitted successfully.",
+        variant: "success",
+      });
+    }
+  };
+
+  return (
+    <ReusableDialog
+      trigger={
+        <CustomButton variant={`outline`} size={`lg`} className={`border-mid-purple text-mid-purple`}>
+          Rate Product
+        </CustomButton>
+      }
+      title={"How was the product ?"}
+      description={""}
+      className={`min-w-[817px] p-10`}
+      headerClassName={`text-2xl text-center`}
+    >
+      <FormProvider {...methods}>
+        <form onSubmit={handleSubmit(handleSubmitForm)} className="space-y-4">
+          <section className={`flex flex-col items-center space-y-4`}>
+            <StarRatingField name={"rating"} size={`text-[4rem]`} className={`h-fit`} />
+            <p>Whats your opinion about this product (optional)</p>
+          </section>
+          <FormField
+            name="comment"
+            type="textarea"
+            className={`h-[20rem] bg-low-grey-III`}
+            placeholder={`Leave a review fot the creator`}
+          />
+          <section className={`flex items-center gap-4`}>
+            <CustomButton
+              onClick={(event) => {
+                event?.preventDefault();
+                reset();
+              }}
+              variant={`outline`}
+              size={`lg`}
+              className={`w-full border-mid-danger text-mid-danger`}
+            >
+              Cancel
+            </CustomButton>
+            <CustomButton
+              type="submit"
+              variant={`primary`}
+              size={`lg`}
+              className={`w-full`}
+              isLoading={isSubmitting}
+              isDisabled={isSubmitting}
+            >
+              Submit Review
+            </CustomButton>
+          </section>
+        </form>
+      </FormProvider>
+    </ReusableDialog>
+  );
+};
+
+export const ReviewModal = WithDependency(BaseReviewModal, {
+  downloadService: dependencies.DOWNLOAD_SERVICE,
+});
