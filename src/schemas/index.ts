@@ -73,6 +73,12 @@ export const reviewSchema = z.object({
   comment: z.string().optional(),
 });
 
+export const contactSchema = z.object({
+  email: z.string().min(1, "Email is required").email("Please enter a valid email address"),
+  subject: z.string().min(1, "Subject is required"),
+  message: z.string().min(1, "Message is required"),
+});
+
 export type RegisterFormData = z.infer<typeof registerSchema>;
 export type LoginFormData = z.infer<typeof loginSchema>;
 export type ForgotPasswordData = z.infer<typeof forgotPasswordSchema>;
@@ -80,4 +86,5 @@ export type ResetPasswordData = z.infer<typeof resetPasswordSchema>;
 export type WithdrawalData = z.infer<typeof withdrawalSchema>;
 export type BankFormData = z.infer<typeof bankFormSchema>;
 export type ReviewFormData = z.infer<typeof reviewSchema>;
+export type ContactFormData = z.infer<typeof contactSchema>;
 // export type ProductFormData = z.infer<typeof ProductFormSchema>;

@@ -312,6 +312,12 @@ declare global {
     rating: number;
     comment?: string | undefined;
   }
+  interface IFAQ {
+    id: string;
+    title: string;
+    question: string;
+    answer: string;
+  }
 
   interface ISkillSellingDownload {
     id: string;

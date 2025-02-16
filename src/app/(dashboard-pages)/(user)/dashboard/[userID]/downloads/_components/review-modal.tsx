@@ -35,7 +35,7 @@ const BaseReviewModal = ({
     const response = await downloadService.reviewDownloadedProduct(downloadedProductID, data);
     if (response) {
       Toast.getInstance().showToast({
-        title: "Thanks for reviewing product!",
+        title: "Thanks for reviewing this product!",
         description: "Review has been submitted successfully.",
         variant: "success",
       });
