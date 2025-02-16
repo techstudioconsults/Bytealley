@@ -5,6 +5,7 @@ declare global {
   interface ISessionContextType {
     user: IUser | null;
     login: (data: LoginFormData) => Promise<void>;
+    updateUserInfo: (data: ProfileFormData) => Promise<void>;
     register: (data: RegisterFormData) => Promise<void>;
     logout: () => Promise<void>;
     googleSignIn: () => Promise<void>;
@@ -31,17 +32,17 @@ declare global {
   interface IUser {
     id: string;
     name: string;
-    username: string | null;
+    username: string | undefined;
     email: string;
-    phone_number: string | null;
-    bio: string | null;
+    phone_number: string | undefined;
+    bio: string | undefined;
     account_type: string;
     logo: string | null;
     role: string;
     status: string | null;
-    twitter_account: string | null;
-    facebook_account: string | null;
-    youtube_account: string | null;
+    twitter_account: string | undefined;
+    facebook_account: string | undefined;
+    youtube_account: string | undefined;
     alt_email: string | null;
     email_verified: boolean;
     profile_completed: boolean;

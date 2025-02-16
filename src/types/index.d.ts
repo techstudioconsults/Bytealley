@@ -63,6 +63,7 @@ declare global {
     className?: string;
     acceptedFormats?: string;
     maxFileSize?: number;
+    defaultSrc?: string;
   };
 
   type HighlightsProperties = {

@@ -6,7 +6,8 @@ import { useRouter } from "next/navigation";
 import { createContext, useState } from "react";
 
 import { WithDependency } from "~/HOC/withDependencies";
-import { LoginFormData, RegisterFormData } from "~/schemas";
+import { LoginFormData, ProfileFormData, RegisterFormData } from "~/schemas";
+import { AppService } from "~/services/app.service";
 import { AuthService } from "~/services/auth.service";
 import { dependencies } from "~/utils/dependencies";
 import { Toast } from "~/utils/notificationManager";
@@ -16,10 +17,12 @@ export const SessionContext = createContext<ISessionContextType | undefined>(und
 const BaseSessionProvider = ({
   children,
   authService,
+  appService,
   session,
 }: {
   children: React.ReactNode;
   authService: AuthService;
+  appService: AppService;
   session: any;
 }) => {
   const [user, setUser] = useState<IUser | null>(session?.user || null);
@@ -96,6 +99,18 @@ const BaseSessionProvider = ({
     }
   };
 
+  const updateUserInfo = async (data: ProfileFormData) => {
+    const userData = await handleAuthAction(() => appService.updateUser(data));
+    if (userData) {
+      setUser(userData);
+      Toast.getInstance().showToast({
+        title: "Profle updated successfully",
+        description: "Your profile information has been updated.",
+        variant: "default",
+      });
+    }
+  };
+
   return (
     <SessionContext.Provider
       value={{
@@ -105,6 +120,7 @@ const BaseSessionProvider = ({
         logout,
         googleSignIn,
         handleGoogleCallback,
+        updateUserInfo,
       }}
     >
       {children}
@@ -114,6 +130,7 @@ const BaseSessionProvider = ({
 
 const SessionProvider = WithDependency(BaseSessionProvider, {
   authService: dependencies.AUTH_SERVICE,
+  appService: dependencies.APP_SERVICE,
 });
 
 export default SessionProvider;

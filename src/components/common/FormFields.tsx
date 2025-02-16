@@ -18,7 +18,7 @@ import { cn } from "~/utils/utils";
 import "react-quill/dist/quill.snow.css"; // Import Quill styles
 
 import { CameraIcon, InfoIcon, PlusIcon } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MdCancel } from "react-icons/md";
 
 import { Badge } from "../ui/badge";
@@ -28,6 +28,7 @@ import { StarRating } from "./rating/star";
 
 interface FormFieldProperties {
   label?: string;
+  labelDetailedNode?: React.ReactNode;
   name: string;
   type?: "text" | "textarea" | "select" | "number" | "password" | "email";
   placeholder?: string;
@@ -52,6 +53,7 @@ export function FormField({
   containerClassName,
   leftAddon,
   rightAddon,
+  labelDetailedNode,
 }: FormFieldProperties) {
   const {
     control,
@@ -62,10 +64,13 @@ export function FormField({
   return (
     <div className="space-y-2">
       {label && (
-        <Label className="text-sm font-medium">
-          {label}
-          {required && <span className="ml-1 text-destructive">*</span>}
-        </Label>
+        <div>
+          <Label className="text-sm font-medium">
+            {label}
+            {required && <span className="ml-1 text-destructive">*</span>}
+          </Label>
+          {labelDetailedNode && <div className="text-xs text-mid-grey-II">{labelDetailedNode}</div>}
+        </div>
       )}
 
       <Controller
@@ -652,11 +657,13 @@ export function ThumbNailUpload({
   required = false,
   disabled = false,
   className = "",
+  // defaultSrc = "",
   acceptedFormats = "image/jpeg, image/png",
   maxFileSize = 2 * 1024 * 1024,
 }: ThumbNailUploadProperties) {
   const {
     control,
+    getValues,
     formState: { errors },
   } = useFormContext();
   const error = errors[name];
@@ -667,6 +674,12 @@ export function ThumbNailUpload({
     event.preventDefault();
     thumbnailUploadInputReference.current?.click();
   };
+
+  useEffect(() => {
+    if (getValues("logo")) {
+      setPreview(getValues("logo"));
+    }
+  }, []);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, field: any) => {
     const file = event.target.files?.[0];
@@ -685,6 +698,7 @@ export function ThumbNailUpload({
 
       // Create a preview URL for the file
       setPreview(URL.createObjectURL(file));
+
       // Update the form state with the file
       field.onChange(file);
     }

@@ -79,6 +79,18 @@ export const contactSchema = z.object({
   message: z.string().min(1, "Message is required"),
 });
 
+export const profileSchema = z.object({
+  full_name: z.string().min(2, "Full name must be at least 2 characters"),
+  username: z.string().min(2, "Username must be at least 2 characters"),
+  email: z.string().optional(),
+  phone_number: z.string().min(10, "Phone number is required").max(11, "Phone number is required"),
+  bio: z.string().min(1, "Message is required"),
+  logo: z.any().optional(),
+  twitter_account: z.string().optional(),
+  facebook_account: z.string().optional(),
+  youtube_account: z.string().optional(),
+});
+
 export type RegisterFormData = z.infer<typeof registerSchema>;
 export type LoginFormData = z.infer<typeof loginSchema>;
 export type ForgotPasswordData = z.infer<typeof forgotPasswordSchema>;
@@ -87,4 +99,5 @@ export type WithdrawalData = z.infer<typeof withdrawalSchema>;
 export type BankFormData = z.infer<typeof bankFormSchema>;
 export type ReviewFormData = z.infer<typeof reviewSchema>;
 export type ContactFormData = z.infer<typeof contactSchema>;
+export type ProfileFormData = z.infer<typeof profileSchema>;
 // export type ProductFormData = z.infer<typeof ProductFormSchema>;

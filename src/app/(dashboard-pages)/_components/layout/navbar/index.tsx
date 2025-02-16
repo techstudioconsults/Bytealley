@@ -59,7 +59,7 @@ export const DashboardNavbar = () => {
                   <AvatarImage src={user?.logo || "https://github.com/shadcn.png"} />
                   <AvatarFallback>{user?.name[0]?.toUpperCase() || "U"}</AvatarFallback>
                 </Avatar>
-                <p className="hidden lg:block">{user?.name || "Skicom Admin"}</p>
+                <p className="hidden lg:block">{user?.username || user?.name || "Byte alley User"}</p>
                 <LuChevronDown className="hidden lg:block" size="20px" />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="relative z-[999999]">
