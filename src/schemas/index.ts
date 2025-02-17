@@ -91,6 +91,24 @@ export const profileSchema = z.object({
   youtube_account: z.string().optional(),
 });
 
+export const emailNotificationSettingSchema = z.object({
+  purchase: z.boolean().optional(),
+  news_updates: z.boolean().optional(),
+  product_creation: z.boolean().optional(),
+  payout: z.boolean().optional(),
+});
+
+export const changePasswordSchema = z
+  .object({
+    current_password: z.string().min(8, "Your current Password is Required"),
+    new_password: z.string().min(8, "Password must be at least 8 characters"),
+    new_password_confirmation: z.string(),
+  })
+  .refine((data) => data.new_password === data.new_password_confirmation, {
+    message: "Passwords don't match",
+    path: ["new_password_confirmation"],
+  });
+
 export type RegisterFormData = z.infer<typeof registerSchema>;
 export type LoginFormData = z.infer<typeof loginSchema>;
 export type ForgotPasswordData = z.infer<typeof forgotPasswordSchema>;
@@ -100,4 +118,7 @@ export type BankFormData = z.infer<typeof bankFormSchema>;
 export type ReviewFormData = z.infer<typeof reviewSchema>;
 export type ContactFormData = z.infer<typeof contactSchema>;
 export type ProfileFormData = z.infer<typeof profileSchema>;
+export type EmailNotificationSettingFormData = z.infer<typeof emailNotificationSettingSchema>;
+export type ChangePasswordFormData = z.infer<typeof changePasswordSchema>;
+
 // export type ProductFormData = z.infer<typeof ProductFormSchema>;

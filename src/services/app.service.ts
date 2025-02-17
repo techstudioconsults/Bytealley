@@ -8,10 +8,10 @@ export class AppService {
     this.http = httpAdapter;
   }
 
-  async getUser() {
-    const response = await this.http.get<{ data: IFAQ }>(`/faqs`);
+  async getCurrentUser() {
+    const response = await this.http.get<{ data: IUser }>("/users/me");
     if (response?.status === 200) {
-      return response.data;
+      return response.data.data;
     }
   }
 

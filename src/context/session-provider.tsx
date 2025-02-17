@@ -3,8 +3,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
+import Loading from "~/app/Loading";
 import { WithDependency } from "~/HOC/withDependencies";
 import { LoginFormData, ProfileFormData, RegisterFormData } from "~/schemas";
 import { AppService } from "~/services/app.service";
@@ -25,9 +26,31 @@ const BaseSessionProvider = ({
   appService: AppService;
   session: any;
 }) => {
-  const [user, setUser] = useState<IUser | null>(session?.user || null);
-
+  const [user, setUser] = useState<IUser | undefined>(session?.user);
+  const [isLoading, setLoading] = useState(true);
   const router = useRouter();
+
+  // this doent feel like a good way to do things here. ther has to be a beter way
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        setLoading(true);
+        if (session?.user) {
+          const userData = await appService.getCurrentUser();
+          setUser(userData);
+        } else {
+          setUser(session?.user);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCurrentUser();
+  }, [appService, session?.user]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   const handleAuthAction = async <T,>(action: () => Promise<T>): Promise<T | undefined> => {
     try {
@@ -66,13 +89,13 @@ const BaseSessionProvider = ({
   const logout = async () => {
     await handleAuthAction(async () => {
       await authService.logout();
-      setUser(null);
+      router.push("/auth/login");
       Toast.getInstance().showToast({
         title: "Logged Out",
         description: "You have been logged out successfully.",
         variant: "warning",
       });
-      router.push("/auth/login");
+      setUser(undefined);
     });
   };
 
@@ -104,7 +127,7 @@ const BaseSessionProvider = ({
     if (userData) {
       setUser(userData);
       Toast.getInstance().showToast({
-        title: "Profle updated successfully",
+        title: "Profile updated successfully",
         description: "Your profile information has been updated.",
         variant: "default",
       });

@@ -55,21 +55,14 @@ export class AuthService {
     }
   }
 
-  async getCurrentUser() {
-    const response = await this.http.get<IUser>("/users/me");
-    if (response?.status === 200) {
-      return response.data;
-    }
-  }
-
-  private mapUserResponse(data: ILoginResponse): IUser {
+  mapUserResponse(data: ILoginResponse): IUser {
     return {
       ...data.user,
       token: data.token,
     };
   }
 
-  private async createUserSession(user: IUser): Promise<void> {
+  async createUserSession(user: IUser): Promise<void> {
     await createSession({
       user,
       expires: new Date(Date.now() + 60 * 60 * 1000).toISOString(),

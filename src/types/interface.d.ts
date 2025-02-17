@@ -3,7 +3,7 @@ import { JWTPayload } from "jose";
 
 declare global {
   interface ISessionContextType {
-    user: IUser | null;
+    user: IUser | undefined;
     login: (data: LoginFormData) => Promise<void>;
     updateUserInfo: (data: ProfileFormData) => Promise<void>;
     register: (data: RegisterFormData) => Promise<void>;
@@ -56,7 +56,7 @@ declare global {
     kyc_complete: boolean;
     created_at: string;
     updated_at: string;
-    token: string;
+    token: string | undefined | null;
   }
 
   interface ISessionData extends JWTPayload {

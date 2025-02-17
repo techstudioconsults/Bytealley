@@ -100,11 +100,7 @@
 }
 
 #nprogress .bar {
-  background: linear-gradient(
-    90deg,
-    hsl(44, 100%, 87%),
-    hsl(203, 100%, 38%)
-  ) !important;
+  background: linear-gradient(90deg, hsl(44, 100%, 87%), hsl(203, 100%, 38%)) !important;
   box-shadow: 10px 0px 20px hsla(44, 100%, 87%, 0.641) !important;
   position: fixed;
   z-index: 99999999 !important;
@@ -124,7 +120,8 @@
   h4,
   h5,
   h6 {
-    color: hsl(var(--secondary));
+    // color: hsl(var(--secondary));
+    color: hsl(var(--high-purple));
   }
 
   h1 {
@@ -195,12 +192,7 @@
 }
 
 [data-placeholder="true"] {
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 0.129) 50%,
-    rgba(7, 7, 7, 0) 100%
-  );
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.129) 50%, rgba(7, 7, 7, 0) 100%);
   background-size: cover;
   transform: translateX(-120%);
 

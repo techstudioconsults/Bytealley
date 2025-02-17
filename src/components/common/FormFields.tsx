@@ -23,6 +23,7 @@ import { MdCancel } from "react-icons/md";
 
 import { Badge } from "../ui/badge";
 import { Checkbox } from "../ui/checkbox";
+import { Switch } from "../ui/switch";
 import CustomButton from "./common-button/common-button";
 import { StarRating } from "./rating/star";
 
@@ -927,6 +928,109 @@ export function StarRatingField({ label, size, name, required = false, className
           />
         )}
       />
+
+      {error && <p className="text-sm text-destructive">{error.message?.toString()}</p>}
+    </div>
+  );
+}
+
+// export function SwitchField({
+//   label,
+//   name,
+//   required = false,
+//   disabled = false,
+//   className = "",
+// }: {
+//   label?: string | ReactNode;
+//   name: string;
+//   required?: boolean;
+//   disabled?: boolean;
+//   className?: string;
+// }) {
+//   const {
+//     control,
+//     formState: { errors },
+//   } = useFormContext();
+//   const error = errors[name];
+
+//   return (
+//     <div>
+//       <div className={cn(className)}>
+//         {label && (
+//           <Label className="h-fit text-sm font-medium">
+//             {label}
+//             {required && <span className="ml-1 text-destructive">*</span>}
+//           </Label>
+//         )}
+
+//         <Controller
+//           name={name}
+//           control={control}
+//           render={({ field }) => (
+//             <Switch
+//               checked={field.value}
+//               onCheckedChange={field.onChange}
+//               disabled={disabled}
+//               className={cn(error && "border-destructive", "mt-0")}
+//             />
+//           )}
+//         />
+//       </div>
+
+//       {error && <p className="text-sm text-destructive">{error.message?.toString()}</p>}
+//     </div>
+//   );
+// }
+
+export function SwitchField({
+  label,
+  name,
+  required = false,
+  disabled = false,
+  className = "",
+  onChange, // Add an onChange prop
+}: {
+  label?: string | React.ReactNode;
+  name: string;
+  required?: boolean;
+  disabled?: boolean;
+  className?: string;
+  onChange?: (checked: boolean) => void; // Callback function to handle switch toggle
+}) {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+  const error = errors[name];
+
+  return (
+    <div>
+      <div className={cn(className)}>
+        {label && (
+          <Label className="h-fit text-sm font-medium">
+            {label}
+            {required && <span className="ml-1 text-destructive">*</span>}
+          </Label>
+        )}
+
+        <Controller
+          name={name}
+          control={control}
+          render={({ field }) => (
+            <Switch
+              checked={field.value}
+              onCheckedChange={(checked) => {
+                field.onChange(checked); // Update the form state
+                if (onChange) {
+                  onChange(checked); // Trigger the onChange callback
+                }
+              }}
+              disabled={disabled}
+              className={cn(error && "border-destructive", "mt-0")}
+            />
+          )}
+        />
+      </div>
 
       {error && <p className="text-sm text-destructive">{error.message?.toString()}</p>}
     </div>

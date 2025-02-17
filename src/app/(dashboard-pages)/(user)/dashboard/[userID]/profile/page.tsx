@@ -4,17 +4,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 
 import CustomButton from "~/components/common/common-button/common-button";
-import { WithDependency } from "~/HOC/withDependencies";
 import { useSession } from "~/hooks/use-session";
 import { ProfileFormData, profileSchema } from "~/schemas";
-import { AppService } from "~/services/app.service";
-import { dependencies } from "~/utils/dependencies";
-import { Toast } from "~/utils/notificationManager";
 import { ProfileInformation } from "./_views/profile-infomation";
 import { ProfilePicture } from "./_views/profile-picture";
 import { SocialLink } from "./_views/social-link";
 
-const Profile = ({ appService }: { appService: AppService }) => {
+const Profile = () => {
   const { user, updateUserInfo } = useSession();
   const methods = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
@@ -38,15 +34,15 @@ const Profile = ({ appService }: { appService: AppService }) => {
   } = methods;
 
   const handleSubmitForm = async (data: ProfileFormData) => {
-	if (data.logo instanceof File) {
-	  await updateUserInfo(data);
-	} else {
-	  const formData = {
-		...data,
-		logo: null,
-	  };
-	  await updateUserInfo(formData);
-	}
+    if (data.logo instanceof File) {
+      await updateUserInfo(data);
+    } else {
+      const formData = {
+        ...data,
+        logo: null,
+      };
+      await updateUserInfo(formData);
+    }
   };
   return (
     <FormProvider {...methods}>
@@ -115,8 +111,4 @@ const Profile = ({ appService }: { appService: AppService }) => {
   );
 };
 
-const ProfilePage = WithDependency(Profile, {
-  appService: dependencies.APP_SERVICE,
-});
-
-export default ProfilePage;
+export default Profile;
