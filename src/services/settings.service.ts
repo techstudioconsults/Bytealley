@@ -1,4 +1,5 @@
 import { HttpAdapter } from "~/adapters/http-adapter";
+import { ChangePasswordFormData } from "~/schemas";
 
 export class SettingsService {
   private readonly http: HttpAdapter;
@@ -7,8 +8,8 @@ export class SettingsService {
     this.http = httpAdapter;
   }
 
-  async getOrderById(orderId: string) {
-    const response = await this.http.get<{ data: IOrder }>(`/orders/${orderId}`);
+  async changePassword(data: ChangePasswordFormData) {
+    const response = await this.http.post(`/users/change-password`, data);
     if (response?.status === 200) {
       return response.data;
     }

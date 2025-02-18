@@ -100,7 +100,7 @@ export const emailNotificationSettingSchema = z.object({
 
 export const changePasswordSchema = z
   .object({
-    current_password: z.string().min(8, "Your current Password is Required"),
+    password: z.string().min(8, "Your current Password is Required"),
     new_password: z.string().min(8, "Password must be at least 8 characters"),
     new_password_confirmation: z.string(),
   })
@@ -108,6 +108,11 @@ export const changePasswordSchema = z
     message: "Passwords don't match",
     path: ["new_password_confirmation"],
   });
+
+export const changeEmailSchema = z.object({
+  email: z.string().optional(),
+  alt_email: z.string().email("Please enter a valid email address").optional(),
+});
 
 export type RegisterFormData = z.infer<typeof registerSchema>;
 export type LoginFormData = z.infer<typeof loginSchema>;
@@ -120,5 +125,6 @@ export type ContactFormData = z.infer<typeof contactSchema>;
 export type ProfileFormData = z.infer<typeof profileSchema>;
 export type EmailNotificationSettingFormData = z.infer<typeof emailNotificationSettingSchema>;
 export type ChangePasswordFormData = z.infer<typeof changePasswordSchema>;
+export type ChangeEmailFormData = z.infer<typeof changeEmailSchema>;
 
 // export type ProductFormData = z.infer<typeof ProductFormSchema>;

@@ -6,16 +6,26 @@ import { FormProvider, useForm } from "react-hook-form";
 
 import CustomButton from "~/components/common/common-button/common-button";
 import { FormField } from "~/components/common/FormFields";
+import { WithDependency } from "~/HOC/withDependencies";
 import { ChangePasswordFormData, changePasswordSchema } from "~/schemas";
+import { AppService } from "~/services/app.service";
 import { SettingsService } from "~/services/settings.service";
+import { dependencies } from "~/utils/dependencies";
+import { Toast } from "~/utils/notificationManager";
 import { cn } from "~/utils/utils";
 
-export const ChangePasswordForm = ({ service }: { service: SettingsService }) => {
+const BaseChangePasswordForm = ({
+  service,
+  settingsService,
+}: {
+  service: AppService;
+  settingsService: SettingsService;
+}) => {
   const [showForm, setShowForm] = useState(false);
   const methods = useForm<ChangePasswordFormData>({
     resolver: zodResolver(changePasswordSchema),
     defaultValues: {
-      current_password: "",
+      password: "",
       new_password: "",
       new_password_confirmation: "",
     },
@@ -28,14 +38,22 @@ export const ChangePasswordForm = ({ service }: { service: SettingsService }) =>
   } = methods;
 
   const handleSubmitForm = async (data: ChangePasswordFormData) => {
-    console.log(data);
+    const response = await settingsService.changePassword(data);
+    if (response) {
+      Toast.getInstance().showToast({
+        title: "Password Changed",
+        description: `Password changed successfully!`,
+        variant: "success",
+      });
+      reset();
+    }
   };
 
   return (
     <>
       <div className={cn(showForm ? `hidden` : `flex items-start justify-between`)}>
         <div className={`space-y-2`}>
-          <p className={`text-high-purple`}>Password</p>
+          <p className={`font-semibold text-high-purple`}>Password</p>
           <p className={`text-xs text-mid-grey-II`}>********************</p>
           <p className={`text-sm text-mid-grey-II`}>Last changed</p>
         </div>
@@ -55,7 +73,7 @@ export const ChangePasswordForm = ({ service }: { service: SettingsService }) =>
           <form onSubmit={handleSubmit(handleSubmitForm)} className="space-y-6">
             <FormField
               label="Current Password"
-              name="current_password"
+              name="password"
               type="password"
               placeholder="Enter current password"
               className={`h-12 bg-low-grey-III`}
@@ -110,3 +128,7 @@ export const ChangePasswordForm = ({ service }: { service: SettingsService }) =>
     </>
   );
 };
+
+export const ChangePasswordForm = WithDependency(BaseChangePasswordForm, {
+  settingsService: dependencies.SETTINGS_SERVICE,
+});

@@ -22,4 +22,11 @@ export class AppService {
       return response.data.data;
     }
   }
+
+  async updateUserNotifications(data: any) {
+    const response = await this.http.post<{ data: IUser }>(`/users/me`, data);
+    if (response?.status === 200) {
+      return response.data.data;
+    }
+  }
 }

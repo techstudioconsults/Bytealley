@@ -4,6 +4,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { WithDependency } from "~/HOC/withDependencies";
+import { AppService } from "~/services/app.service";
 import { SettingsService } from "~/services/settings.service";
 import { dependencies } from "~/utils/dependencies";
 import { Account } from "./_views/account";
@@ -11,7 +12,7 @@ import { KYC } from "./_views/kyc";
 import { Payment } from "./_views/payment";
 import { Plans } from "./_views/plans";
 
-const Settings = ({ settingsService, params }: { settingsService: SettingsService; params: { userID: string } }) => {
+const Settings = ({ appService, params }: { appService: AppService; params: { userID: string } }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParameters = useSearchParams();
@@ -73,7 +74,7 @@ const Settings = ({ settingsService, params }: { settingsService: SettingsServic
 
       {/* tab content */}
       <TabsContent value="account">
-        <Account service={settingsService} userID={params.userID} />
+        <Account service={appService} userID={params.userID} />
       </TabsContent>
       <TabsContent value="payment">
         <Payment />
@@ -89,7 +90,7 @@ const Settings = ({ settingsService, params }: { settingsService: SettingsServic
 };
 
 const SettingsPage = WithDependency(Settings, {
-  settingsService: dependencies.SETTINGS_SERVICE,
+  appService: dependencies.APP_SERVICE,
 });
 
 export default SettingsPage;

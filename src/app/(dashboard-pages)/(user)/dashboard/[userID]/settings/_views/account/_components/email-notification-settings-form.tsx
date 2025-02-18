@@ -1,24 +1,48 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 
-import { SwitchField } from "~/components/common/FormFields";
-import { EmailNotificationSettingFormData, emailNotificationSettingSchema } from "~/schemas";
-import { SettingsService } from "~/services/settings.service";
 
-export const EmailNotificationSettingsForm = ({ service }: { service: SettingsService }) => {
+
+import { SwitchField } from "~/components/common/FormFields";
+import { useSession } from "~/hooks/use-session";
+import { EmailNotificationSettingFormData, emailNotificationSettingSchema } from "~/schemas";
+import { AppService } from "~/services/app.service";
+
+
+export const EmailNotificationSettingsForm = ({ service }: { service: AppService }) => {
+  const { user } = useSession();
   const methods = useForm<EmailNotificationSettingFormData>({
     resolver: zodResolver(emailNotificationSettingSchema),
     defaultValues: {
-      purchase: false,
-      news_updates: false,
-      product_creation: false,
-      payout: false,
+      purchase: user?.purchase_notification,
+      news_updates: user?.news_and_update_notification,
+      product_creation: user?.product_creation_notification,
+      payout: user?.payout_notification,
     },
   });
 
-  const handleSwitchChange = async (checked: boolean) => {
-    // Perform your API call or action here
-    console.log("Switch toggled:", checked);
+  const handlePurchasedChange = async (checked: boolean) => {
+    await service.updateUserNotifications({
+      purchase_notification: checked,
+    });
+  };
+
+  const handleNewsAndUpdatesChange = async (checked: boolean) => {
+    await service.updateUserNotifications({
+      news_and_update_notification: checked,
+    });
+  };
+
+  const handleProductCreationChange = async (checked: boolean) => {
+    await service.updateUserNotifications({
+      product_creation_notification: checked,
+    });
+  };
+
+  const handlePayoutChange = async (checked: boolean) => {
+    await service.updateUserNotifications({
+      payout_notification: checked,
+    });
   };
 
   return (
@@ -33,7 +57,7 @@ export const EmailNotificationSettingsForm = ({ service }: { service: SettingsSe
             </div>
           }
           className={`flex items-center justify-between`}
-          onChange={handleSwitchChange} // Pass the onChange callback
+          onChange={handlePurchasedChange}
         />
         <hr />
         <SwitchField
@@ -45,7 +69,7 @@ export const EmailNotificationSettingsForm = ({ service }: { service: SettingsSe
             </div>
           }
           className={`flex items-center justify-between`}
-          onChange={handleSwitchChange} // Pass the onChange callback
+          onChange={handleNewsAndUpdatesChange}
         />
         <hr />
         <SwitchField
@@ -57,7 +81,7 @@ export const EmailNotificationSettingsForm = ({ service }: { service: SettingsSe
             </div>
           }
           className={`flex items-center justify-between`}
-          onChange={handleSwitchChange} // Pass the onChange callback
+          onChange={handleProductCreationChange}
         />
         <hr />
         <SwitchField
@@ -69,7 +93,7 @@ export const EmailNotificationSettingsForm = ({ service }: { service: SettingsSe
             </div>
           }
           className={`flex items-center justify-between`}
-          onChange={handleSwitchChange} // Pass the onChange callback
+          onChange={handlePayoutChange}
         />
         <hr />
       </form>
