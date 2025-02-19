@@ -94,6 +94,7 @@ const BaseWithdrawEarnings = ({ earningService }: { earningService: EarningServi
                     bankName={account.bank_name}
                     accountNumber={account.account_number}
                     accountName={account.name}
+                    accountID={account.id}
                   />
                 );
               })}

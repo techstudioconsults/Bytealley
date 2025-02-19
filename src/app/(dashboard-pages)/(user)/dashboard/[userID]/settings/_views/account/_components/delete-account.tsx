@@ -14,10 +14,10 @@ export const DeleteAccount = ({ service }: { service: AppService }) => {
         </p>
       </div>
       <div className={`space-x-4`}>
-        <CustomButton size={`lg`} variant={`destructive`}>
+        <CustomButton isDisabled size={`lg`} variant={`destructive`}>
           Disable Account
         </CustomButton>
-        <CustomButton size={`lg`} className={`border-destructive text-destructive`} variant={`outline`}>
+        <CustomButton isDisabled size={`lg`} className={`border-destructive text-destructive`} variant={`outline`}>
           Delete Account
         </CustomButton>
       </div>

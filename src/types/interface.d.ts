@@ -10,6 +10,7 @@ declare global {
     logout: () => Promise<void>;
     googleSignIn: () => Promise<void>;
     handleGoogleCallback: (credentials: { code: string; provider: string }) => Promise<void>;
+    fetchCurrentUser: () => Promise<void>;
   }
 
   interface IAuthState {
@@ -331,6 +332,13 @@ declare global {
       cover_photos: string[];
     };
     created_at: string;
+  }
+
+  interface IBillingCycle {
+    renewal_date: string;
+    plan: string;
+    billing_total: number | null;
+    plans: null | Array;
   }
 }
 

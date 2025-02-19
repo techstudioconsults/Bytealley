@@ -12,8 +12,8 @@ import { cn } from "~/utils/utils";
 
 interface ReusableDialogProperties extends HTMLAttributes<HTMLDivElement> {
   trigger: ReactNode;
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
   children?: ReactNode;
   headerClassName?: string;
 }

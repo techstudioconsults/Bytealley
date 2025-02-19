@@ -6,7 +6,7 @@ import { ChangePasswordForm } from "./_components/change-password-form";
 import { DeleteAccount } from "./_components/delete-account";
 import { EmailNotificationSettingsForm } from "./_components/email-notification-settings-form";
 
-export const Account = ({ service, userID }: { service: AppService; userID: string }) => {
+export const Account = ({ service }: { service: AppService }) => {
   return (
     <section className={`space-y-10`}>
       <section className={`grid grid-cols-1 gap-4 lg:grid-cols-5 lg:gap-16`}>

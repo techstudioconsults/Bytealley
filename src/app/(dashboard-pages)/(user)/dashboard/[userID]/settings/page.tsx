@@ -5,12 +5,12 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { WithDependency } from "~/HOC/withDependencies";
 import { AppService } from "~/services/app.service";
-import { SettingsService } from "~/services/settings.service";
 import { dependencies } from "~/utils/dependencies";
 import { Account } from "./_views/account";
 import { KYC } from "./_views/kyc";
 import { Payment } from "./_views/payment";
 import { Plans } from "./_views/plans";
+import Billing from "./_views/plans/billing";
 
 const Settings = ({ appService, params }: { appService: AppService; params: { userID: string } }) => {
   const router = useRouter();
@@ -60,13 +60,13 @@ const Settings = ({ appService, params }: { appService: AppService; params: { us
             />
           </TabsTrigger>
           <TabsTrigger
-            value="plans"
+            value={currentTab === "plans" ? "plans" : "billing"}
             className="relative h-full min-w-[80px] shrink-0 rounded-none border-transparent px-3 text-sm data-[state=active]:bg-transparent data-[state=active]:shadow-none sm:px-4"
           >
             Plans
             <span
               className="absolute bottom-0 left-0 right-0 h-[2px] scale-x-0 bg-primary transition-transform duration-200 data-[state=active]:scale-x-100"
-              data-state={currentTab === "plans" ? "active" : "inactive"}
+              data-state={currentTab === "plans" || currentTab === "billing" ? "active" : "inactive"}
             />
           </TabsTrigger>
         </section>
@@ -74,7 +74,7 @@ const Settings = ({ appService, params }: { appService: AppService; params: { us
 
       {/* tab content */}
       <TabsContent value="account">
-        <Account service={appService} userID={params.userID} />
+        <Account service={appService} />
       </TabsContent>
       <TabsContent value="payment">
         <Payment />
@@ -82,8 +82,8 @@ const Settings = ({ appService, params }: { appService: AppService; params: { us
       <TabsContent value="kyc">
         <KYC />
       </TabsContent>
-      <TabsContent value="plans">
-        <Plans />
+      <TabsContent value={currentTab === "plans" ? "plans" : "billing"}>
+        {currentTab === `plans` ? <Plans userID={params.userID} /> : <Billing />}
       </TabsContent>
     </Tabs>
   );

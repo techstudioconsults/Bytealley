@@ -114,6 +114,12 @@ export const changeEmailSchema = z.object({
   alt_email: z.string().email("Please enter a valid email address").optional(),
 });
 
+export const kycSchema = z.object({
+  country: z.string().min(1, "Select a country"),
+  document_type: z.string().min(1, "Document type is required"),
+  document_image: z.any().refine((file) => file !== null, "document image is required"),
+});
+
 export type RegisterFormData = z.infer<typeof registerSchema>;
 export type LoginFormData = z.infer<typeof loginSchema>;
 export type ForgotPasswordData = z.infer<typeof forgotPasswordSchema>;
@@ -126,5 +132,6 @@ export type ProfileFormData = z.infer<typeof profileSchema>;
 export type EmailNotificationSettingFormData = z.infer<typeof emailNotificationSettingSchema>;
 export type ChangePasswordFormData = z.infer<typeof changePasswordSchema>;
 export type ChangeEmailFormData = z.infer<typeof changeEmailSchema>;
+export type KycFormData = z.infer<typeof kycSchema>;
 
 // export type ProductFormData = z.infer<typeof ProductFormSchema>;

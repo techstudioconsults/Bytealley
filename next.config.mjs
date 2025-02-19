@@ -3,6 +3,7 @@
 const nextConfig = {
   output: "standalone",
   transpilePackages: ["lucide-react"],
+  reactStrictMode: false,
   images: {
     remotePatterns: [
       {

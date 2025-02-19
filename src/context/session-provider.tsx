@@ -1,12 +1,15 @@
+/* eslint-disable no-console */
 /* eslint-disable unicorn/consistent-function-scoping */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useRouter } from "next/navigation";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useCallback, useEffect, useState } from "react";
 
 import Loading from "~/app/Loading";
+// import Loading from "~/app/Loading";
 import { WithDependency } from "~/HOC/withDependencies";
+import { useLoading } from "~/hooks/use-loading";
 import { LoginFormData, ProfileFormData, RegisterFormData } from "~/schemas";
 import { AppService } from "~/services/app.service";
 import { AuthService } from "~/services/auth.service";
@@ -27,26 +30,28 @@ const BaseSessionProvider = ({
   session: any;
 }) => {
   const [user, setUser] = useState<IUser | undefined>(session?.user);
-  const [isLoading, setLoading] = useState(true);
+  const { setLoading, isLoading } = useLoading();
   const router = useRouter();
 
-  // this doent feel like a good way to do things here. ther has to be a beter way
-  useEffect(() => {
-    const fetchCurrentUser = async () => {
-      try {
-        setLoading(true);
-        if (session?.user) {
-          const userData = await appService.getCurrentUser();
-          setUser(userData);
-        } else {
-          setUser(session?.user);
-        }
-      } finally {
-        setLoading(false);
+  const fetchCurrentUser = useCallback(async () => {
+    setLoading(true);
+    try {
+      if (session?.user) {
+        const userData = await appService.getCurrentUser();
+        setUser(userData);
+      } else {
+        setUser(undefined);
       }
-    };
+    } catch (error) {
+      console.error("Failed to fetch current user:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [appService, session?.user, setLoading]);
+
+  useEffect(() => {
     fetchCurrentUser();
-  }, [appService, session?.user]);
+  }, [fetchCurrentUser]);
 
   if (isLoading) {
     return <Loading />;
@@ -101,7 +106,6 @@ const BaseSessionProvider = ({
 
   const googleSignIn = async () => {
     const redirectUrl = await handleAuthAction(() => authService.googleSignIn());
-
     if (redirectUrl) {
       window.location.href = redirectUrl;
     }
@@ -144,6 +148,7 @@ const BaseSessionProvider = ({
         googleSignIn,
         handleGoogleCallback,
         updateUserInfo,
+        fetchCurrentUser,
       }}
     >
       {children}

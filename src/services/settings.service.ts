@@ -1,5 +1,5 @@
 import { HttpAdapter } from "~/adapters/http-adapter";
-import { ChangePasswordFormData } from "~/schemas";
+import { ChangePasswordFormData, KycFormData } from "~/schemas";
 
 export class SettingsService {
   private readonly http: HttpAdapter;
@@ -10,6 +10,28 @@ export class SettingsService {
 
   async changePassword(data: ChangePasswordFormData) {
     const response = await this.http.post(`/users/change-password`, data);
+    if (response?.status === 200) {
+      return response.data;
+    }
+  }
+
+  async submitKYCDocument(data: KycFormData) {
+    const headers = { "Content-Type": "multipart/form-data" };
+    const response = await this.http.post(`/users/kyc`, data, headers);
+    if (response?.status === 200) {
+      return response.data;
+    }
+  }
+
+  async getSubscriptionBillingCycle() {
+    const response = await this.http.get<IBillingCycle>(`/subscriptions/billing`);
+    if (response?.status === 200) {
+      return response.data;
+    }
+  }
+
+  async changeAccountStatus(data: object, accountID: string) {
+    const response = await this.http.patch<{ data: IPaymentAccount[] }>(`/accounts/${accountID}`, data);
     if (response?.status === 200) {
       return response.data;
     }

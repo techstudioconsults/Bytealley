@@ -654,6 +654,7 @@ export function FileUpload({
 
 export function ThumbNailUpload({
   label = "Thumbnail",
+  labelText = "This image will appear in the explore page. Upload a square image of 2MB or less.",
   name,
   required = false,
   disabled = false,
@@ -680,7 +681,7 @@ export function ThumbNailUpload({
     if (getValues("logo")) {
       setPreview(getValues("logo"));
     }
-  }, []);
+  }, [getValues]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, field: any) => {
     const file = event.target.files?.[0];
@@ -719,9 +720,7 @@ export function ThumbNailUpload({
               {label}
               {required && <span className="ml-1 text-destructive">*</span>}
             </Label>
-            <p className="text-xs text-mid-grey-II">
-              This image will appear in the explore page. Upload a square image of 2MB or less.
-            </p>
+            <p className="text-xs text-mid-grey-II">{labelText}</p>
           </div>
           {preview && (
             <CustomButton

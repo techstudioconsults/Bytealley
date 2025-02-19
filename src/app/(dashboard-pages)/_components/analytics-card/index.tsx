@@ -17,6 +17,7 @@ interface AnalyticsCardProperties {
   valueSuffix?: string;
   onClick?: () => void;
   backgroundImage?: string;
+  action?: React.ReactNode;
 }
 
 export const AnalyticsCard: React.FC<AnalyticsCardProperties> = ({
@@ -29,6 +30,7 @@ export const AnalyticsCard: React.FC<AnalyticsCardProperties> = ({
   valueSuffix = "",
   onClick,
   backgroundImage,
+  action,
 }) => {
   return (
     <div
@@ -70,11 +72,14 @@ export const AnalyticsCard: React.FC<AnalyticsCardProperties> = ({
       )}
       <div className="relative">
         <p className="font-medium">{title}</p>
-        <p className="mt-2 text-2xl font-semibold">
-          {valuePrefix}
-          {value}
-          {valueSuffix}
-        </p>
+        <div className={`flex items-end justify-between`}>
+          <p className="mt-2 text-2xl font-semibold">
+            {valuePrefix}
+            {value}
+            {valueSuffix}
+          </p>
+          {action}
+        </div>
       </div>
     </div>
   );

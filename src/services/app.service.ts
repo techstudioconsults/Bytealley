@@ -23,7 +23,7 @@ export class AppService {
     }
   }
 
-  async updateUserNotifications(data: any) {
+  async updateUserNotifications(data: object) {
     const response = await this.http.post<{ data: IUser }>(`/users/me`, data);
     if (response?.status === 200) {
       return response.data.data;

@@ -57,6 +57,7 @@ declare global {
 
   type ThumbNailUploadProperties = {
     label?: string;
+    labelText?: string;
     name: string;
     required?: boolean;
     disabled?: boolean;

@@ -70,7 +70,6 @@ const BaseOrderDetailsPage = ({
   );
 };
 
-// Wrap the component with dependencies
 const OrderDetailsPage = WithDependency(BaseOrderDetailsPage, {
   orderService: dependencies.ORDER_SERVICE,
 });

@@ -35,7 +35,7 @@ export const AddBankModal = ({ service }: { service: EarningService }) => {
       Toast.getInstance().showToast({
         title: "Success",
         description: `Account ${response.data.bank_name} was registerd successfully`,
-        variant: "success",
+        variant: "default",
       });
     }
   };
