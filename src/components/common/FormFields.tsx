@@ -7,7 +7,6 @@ import fileIcon from "@/icons/Property_2_Selected-file_ybygib.svg";
 import uploadIcon from "@/icons/Property_2_Uploaded-file_sxo5a6.svg";
 import Image from "next/image";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
-import ReactQuill from "react-quill";
 
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
@@ -18,6 +17,7 @@ import { cn } from "~/utils/utils";
 import "react-quill/dist/quill.snow.css"; // Import Quill styles
 
 import { CameraIcon, InfoIcon, PlusIcon } from "lucide-react";
+import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import { MdCancel } from "react-icons/md";
 
@@ -26,6 +26,10 @@ import { Checkbox } from "../ui/checkbox";
 import { Switch } from "../ui/switch";
 import CustomButton from "./common-button/common-button";
 import { StarRating } from "./rating/star";
+
+const ReactQuill = dynamic(() => import("react-quill"), {
+  ssr: false, // Disable server-side rendering
+});
 
 interface FormFieldProperties {
   label?: string;
