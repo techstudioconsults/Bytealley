@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-
 export class Toast {
   private static instance: Toast;
   private toastFunction: ((properties: ExtendedToastProps) => void) | undefined;
@@ -14,15 +12,15 @@ export class Toast {
   }
 
   public initialize(toast: (properties: ExtendedToastProps) => void) {
-    console.log("Toast function initialized");
     this.toastFunction = toast;
   }
 
   public showToast(properties: ExtendedToastProps) {
     if (this.toastFunction) {
       this.toastFunction(properties);
-    } else {
-      console.warn("Toast function is not set up yet");
     }
+    // else {
+    //   console.warn("Toast function is not set up yet");
+    // }
   }
 }

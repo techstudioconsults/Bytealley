@@ -115,7 +115,7 @@ const CustomButton: FC<ButtonProperties> = ({
     }
 
     return (
-      <Link href={href} passHref aria-label={ariaLabel}>
+      <Link href={isDisabled ? "" : href} passHref aria-label={ariaLabel}>
         <Button
           variant={variant}
           size={size}

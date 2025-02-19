@@ -34,7 +34,7 @@ const Page = ({ productService, params }: { productService: ProductService; para
             value="all-products"
             className="relative h-full min-w-[100px] shrink-0 rounded-none border-transparent px-3 text-sm data-[state=active]:bg-transparent data-[state=active]:shadow-none sm:px-4"
           >
-            All Products
+            All Product
             <span
               className="absolute bottom-0 left-0 right-0 h-[2px] scale-x-0 bg-primary transition-transform duration-200 data-[state=active]:scale-x-100"
               data-state={currentTab === "all-products" ? "active" : "inactive"}

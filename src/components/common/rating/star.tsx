@@ -1,32 +1,55 @@
-import { HTMLAttributes } from "react";
+import { HTMLAttributes, useState } from "react";
 
 import { cn } from "~/utils/utils";
 
 interface IStarRatingProperties extends HTMLAttributes<HTMLDivElement> {
-  rating: number | undefined;
+  rating?: number;
   size?: string; // Added size prop for star size customization
+  onRatingChange?: (rating: number) => void; // Added callback for rating change
 }
 
 interface IStarProperties {
   filled: boolean;
   size: string; // Added size prop for star size customization
+  onClick: () => void; // Added onClick handler
 }
 
-const Star = ({ filled, size }: IStarProperties) => {
+const Star = ({ filled, size, onClick }: IStarProperties) => {
   return filled ? (
-    <span className={`px-0.5 text-mid-warning ${size}`}>★</span>
+    <span className={`h-fit px-0.5 text-mid-warning ${size}`} onClick={onClick}>
+      ★
+    </span>
   ) : (
-    <span className={`px-0.5 text-gray-400 ${size}`}>☆</span>
+    <span className={`h-fit px-0.5 text-gray-400 ${size}`} onClick={onClick}>
+      ☆
+    </span>
   );
 };
 
-export const StarRating = ({ rating = 0, className, size = "xl:text-2xl" }: IStarRatingProperties) => {
+export const StarRating = ({ rating = 0, className, size = "xl:text-2xl", onRatingChange }: IStarRatingProperties) => {
+  const [currentRating, setCurrentRating] = useState(rating);
   const totalStars = 5;
   const stars = [];
 
+  const handleClick = (index: number) => {
+    // If clicking the same star that's currently selected, clear the rating
+    const newRating = currentRating === index ? 0 : index;
+    setCurrentRating(newRating);
+    if (onRatingChange) {
+      onRatingChange(newRating);
+    }
+  };
+
   for (let index = 1; index <= totalStars; index++) {
-    stars.push(<Star key={index} filled={index <= rating} size={size} />);
+    stars.push(
+      <Star
+        key={index}
+        filled={currentRating !== 0 && index <= currentRating}
+        size={size}
+        onClick={() => handleClick(index)}
+      />,
+    );
   }
 
-  return <div className={cn("flex", className)}>{stars}</div>; // Added className for additional styling
+  return <div className={cn("flex", className)}>{stars}</div>;
 };

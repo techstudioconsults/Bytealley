@@ -57,12 +57,14 @@ declare global {
 
   type ThumbNailUploadProperties = {
     label?: string;
+    labelText?: string;
     name: string;
     required?: boolean;
     disabled?: boolean;
     className?: string;
     acceptedFormats?: string;
     maxFileSize?: number;
+    defaultSrc?: string;
   };
 
   type HighlightsProperties = {

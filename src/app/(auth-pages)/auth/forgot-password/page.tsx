@@ -20,16 +20,8 @@ const ForgotPasswordPage = () => {
     },
   });
 
-  const onSubmit = async (values: ForgotPasswordData) => {
+  const onSubmit = async () => {
     setIsLoading(true);
-    try {
-      // TODO: Implement password reset logic
-      console.log(values);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
   };
 
   return (

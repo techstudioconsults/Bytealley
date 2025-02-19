@@ -29,7 +29,7 @@ export const DashboardNavbar = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-[1] border-b-[0.5px] border-border" role="navbar">
+    <nav className="sticky top-0 z-[5] border-b-[0.5px] border-border" role="navbar">
       <section className="flex w-full items-center justify-between gap-[20px] bg-white px-[16px] py-[20px] lg:px-[32px]">
         <h6 className="font-semibold">{title}</h6>
         <section className="flex items-center justify-between gap-1 md:gap-2 lg:gap-6">
@@ -59,7 +59,7 @@ export const DashboardNavbar = () => {
                   <AvatarImage src={user?.logo || "https://github.com/shadcn.png"} />
                   <AvatarFallback>{user?.name[0]?.toUpperCase() || "U"}</AvatarFallback>
                 </Avatar>
-                <p className="hidden lg:block">{user?.name || "Skicom Admin"}</p>
+                <p className="hidden lg:block">{user?.username || user?.name || "Byte alley User"}</p>
                 <LuChevronDown className="hidden lg:block" size="20px" />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="relative z-[999999]">
@@ -74,7 +74,7 @@ export const DashboardNavbar = () => {
           </div>
         </section>
       </section>
-      <section className="flex items-center justify-center p-4 lg:hidden">
+      <section className="relative z-[5] flex items-center justify-center bg-white p-4 lg:hidden">
         <SearchInput inputBackgroundColor="bg-low-grey-III" className="w-[100%]" />
       </section>
     </nav>

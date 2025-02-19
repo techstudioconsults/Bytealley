@@ -3,12 +3,14 @@ import { JWTPayload } from "jose";
 
 declare global {
   interface ISessionContextType {
-    user: IUser | null;
+    user: IUser | undefined;
     login: (data: LoginFormData) => Promise<void>;
+    updateUserInfo: (data: ProfileFormData) => Promise<void>;
     register: (data: RegisterFormData) => Promise<void>;
     logout: () => Promise<void>;
     googleSignIn: () => Promise<void>;
     handleGoogleCallback: (credentials: { code: string; provider: string }) => Promise<void>;
+    fetchCurrentUser: () => Promise<void>;
   }
 
   interface IAuthState {
@@ -31,17 +33,17 @@ declare global {
   interface IUser {
     id: string;
     name: string;
-    username: string | null;
+    username: string | undefined;
     email: string;
-    phone_number: string | null;
-    bio: string | null;
+    phone_number: string | undefined;
+    bio: string | undefined;
     account_type: string;
     logo: string | null;
     role: string;
     status: string | null;
-    twitter_account: string | null;
-    facebook_account: string | null;
-    youtube_account: string | null;
+    twitter_account: string | undefined;
+    facebook_account: string | undefined;
+    youtube_account: string | undefined;
     alt_email: string | null;
     email_verified: boolean;
     profile_completed: boolean;
@@ -55,7 +57,7 @@ declare global {
     kyc_complete: boolean;
     created_at: string;
     updated_at: string;
-    token: string;
+    token: string | undefined | null;
   }
 
   interface ISessionData extends JWTPayload {
@@ -181,9 +183,9 @@ declare global {
     views: number;
   }
 
-  interface IProductFilters {
+  interface IFilters {
     page?: number;
-    status?: "draft" | "deleted" | "published";
+    status?: string;
     start_date?: string;
     end_date?: string;
   }
@@ -213,24 +215,130 @@ declare global {
   }
 
   interface ICustomer {
+    id: string;
     name: string;
     email: string;
+    free_products: number;
+    sale_products: number;
+    total_order: number;
+    total_transactions: string;
+    latest_purchase_title: string;
+    latest_purchase_price: number;
+    latest_purchase_date: string;
+    joined: string;
+    latest_purchases: ILatestPurchase[];
   }
 
-  interface IProductOrder {
+  interface ILatestPurchase {
     id: string;
-    reference_no: string;
+    product_title: string;
+    product_price: number;
+    product_thumbnail: string;
     quantity: number;
     total_amount: number;
+    customer_name: string;
+    customer_email: string;
+    total_order: number;
+    total_sales: number;
+    total_views: number;
+    date: string;
+  }
+
+  interface IOrder {
+    id: string;
     product: IProduct;
     customer: ICustomer;
+    quantity: number;
+    reference_no: string;
+    total_amount: number;
     created_at: string;
   }
-  interface IProductOrderFlat {
+
+  interface IPayout {
+    id: string;
+    bank_name: string;
+    account: {
+      name: string;
+      number: string;
+    };
+    amount: number;
+    status: "completed" | "pending" | "failed";
+    reference: string;
+    created_at: string;
+  }
+
+  interface IEarnings {
+    id: string;
+    user_id: string;
+    total_earnings: number;
+    withdrawn_earnings: number;
+    available_earnings: number;
+    pending: number;
+  }
+
+  interface IBank {
     name: string;
-    email: string;
-    quantity: number | string;
-    date: string;
+    code: string;
+  }
+
+  interface IPaymentAccount {
+    id: string;
+    bank_name: string;
+    name: string;
+    account_number: string;
+    active: boolean;
+  }
+
+  interface IDownload {
+    id: string;
+    price: number;
+    product_type: string;
+    publisher: string;
+    sluge: string;
+    thumbnail: string;
+    title: string;
+    extension?: string;
+    mime_type?: string;
+    size?: string;
+    url?: string;
+    publisher?: string;
+    name?: string;
+  }
+
+  interface ICategory {
+    name: string;
+    categories: string[];
+  }
+
+  interface IReview {
+    rating: number;
+    comment?: string | undefined;
+  }
+  interface IFAQ {
+    id: string;
+    title: string;
+    question: string;
+    answer: string;
+  }
+
+  interface ISkillSellingDownload {
+    id: string;
+    category: string;
+    link: string;
+    resource_link: string[];
+    product: {
+      id: string;
+      thumbnail: string;
+      cover_photos: string[];
+    };
+    created_at: string;
+  }
+
+  interface IBillingCycle {
+    renewal_date: string;
+    plan: string;
+    billing_total: number | null;
+    plans: null | Array;
   }
 }
 

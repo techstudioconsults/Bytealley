@@ -1,3 +1,5 @@
+"use client";
+
 import { ProgressBar } from "../../_components/progress-bar";
 
 interface OnboardingHeaderProperties {

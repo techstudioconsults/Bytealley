@@ -1,3 +1,5 @@
+"use client";
+
 import React, { ReactNode } from "react";
 
 import { cn } from "~/utils/utils";
@@ -15,6 +17,7 @@ interface AnalyticsCardProperties {
   valueSuffix?: string;
   onClick?: () => void;
   backgroundImage?: string;
+  action?: React.ReactNode;
 }
 
 export const AnalyticsCard: React.FC<AnalyticsCardProperties> = ({
@@ -27,11 +30,12 @@ export const AnalyticsCard: React.FC<AnalyticsCardProperties> = ({
   valueSuffix = "",
   onClick,
   backgroundImage,
+  action,
 }) => {
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-md border p-4 transition-shadow duration-200 hover:shadow-md",
+        "relative overflow-hidden rounded-md border p-4 text-black transition-shadow duration-200 hover:shadow-md",
         !backgroundImage && "bg-white dark:bg-gray-800",
         "w-full min-w-[200px]",
         onClick && "cursor-pointer",
@@ -68,11 +72,14 @@ export const AnalyticsCard: React.FC<AnalyticsCardProperties> = ({
       )}
       <div className="relative">
         <p className="font-medium">{title}</p>
-        <p className="mt-2 text-2xl font-semibold">
-          {valuePrefix}
-          {value}
-          {valueSuffix}
-        </p>
+        <div className={`flex items-end justify-between`}>
+          <p className="mt-2 text-2xl font-semibold">
+            {valuePrefix}
+            {value}
+            {valueSuffix}
+          </p>
+          {action}
+        </div>
       </div>
     </div>
   );

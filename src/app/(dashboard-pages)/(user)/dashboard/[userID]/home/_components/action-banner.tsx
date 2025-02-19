@@ -1,8 +1,7 @@
 "use client";
 
-import { isPending } from "@reduxjs/toolkit";
 import Image from "next/image";
-import { ButtonHTMLAttributes, useState, useTransition } from "react";
+import { ButtonHTMLAttributes, useTransition } from "react";
 
 import CustomButton from "~/components/common/common-button/common-button";
 import { Checkbox } from "~/components/ui/checkbox";

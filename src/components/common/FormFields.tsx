@@ -7,7 +7,6 @@ import fileIcon from "@/icons/Property_2_Selected-file_ybygib.svg";
 import uploadIcon from "@/icons/Property_2_Uploaded-file_sxo5a6.svg";
 import Image from "next/image";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
-import ReactQuill from "react-quill";
 
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
@@ -18,12 +17,34 @@ import { cn } from "~/utils/utils";
 import "react-quill/dist/quill.snow.css"; // Import Quill styles
 
 import { CameraIcon, InfoIcon, PlusIcon } from "lucide-react";
-import { useRef, useState } from "react";
+import dynamic from "next/dynamic";
+import { useEffect, useRef, useState } from "react";
 import { MdCancel } from "react-icons/md";
 
 import { Badge } from "../ui/badge";
 import { Checkbox } from "../ui/checkbox";
+import { Switch } from "../ui/switch";
 import CustomButton from "./common-button/common-button";
+import { StarRating } from "./rating/star";
+
+const ReactQuill = dynamic(() => import("react-quill"), {
+  ssr: false, // Disable server-side rendering
+});
+
+interface FormFieldProperties {
+  label?: string;
+  labelDetailedNode?: React.ReactNode;
+  name: string;
+  type?: "text" | "textarea" | "select" | "number" | "password" | "email";
+  placeholder?: string;
+  required?: boolean;
+  disabled?: boolean;
+  options?: { value: string; label: string }[];
+  className?: string;
+  containerClassName?: string;
+  leftAddon?: React.ReactNode; // Add left icon or button
+  rightAddon?: React.ReactNode; // Add right icon or button
+}
 
 export function FormField({
   label,
@@ -34,6 +55,10 @@ export function FormField({
   disabled = false,
   options = [],
   className = "",
+  containerClassName,
+  leftAddon,
+  rightAddon,
+  labelDetailedNode,
 }: FormFieldProperties) {
   const {
     control,
@@ -44,71 +69,72 @@ export function FormField({
   return (
     <div className="space-y-2">
       {label && (
-        <Label className="text-sm font-medium">
-          {label}
-          {required && <span className="ml-1 text-destructive">*</span>}
-        </Label>
+        <div>
+          <Label className="text-sm font-medium">
+            {label}
+            {required && <span className="ml-1 text-destructive">*</span>}
+          </Label>
+          {labelDetailedNode && <div className="text-xs text-mid-grey-II">{labelDetailedNode}</div>}
+        </div>
       )}
 
       <Controller
         name={name}
         control={control}
         render={({ field }) => {
-          if (type === "textarea") {
-            return (
-              <Textarea
-                {...field}
-                placeholder={placeholder}
-                disabled={disabled}
-                className={cn(error && "border-destructive", className)}
-              />
-            );
-          }
-
-          if (type === "select") {
-            return (
-              <Select onValueChange={field.onChange} value={field.value} disabled={disabled}>
-                <SelectTrigger className={cn(error && "border-destructive", className)}>
-                  <SelectValue placeholder={placeholder} />
-                </SelectTrigger>
-                <SelectContent>
-                  {options.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            );
-          }
-
-          if (type === "number") {
-            return (
-              <input
-                {...field}
-                type="number"
-                placeholder={placeholder}
-                disabled={disabled}
-                className={cn(
-                  "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-                  error && "border-destructive",
-                  className,
-                )}
-                value={field.value || ""}
-                onChange={(event) => field.onChange(event.target.valueAsNumber)}
-              />
-            );
-          }
-
-          return (
-            <Input
-              {...field}
-              type={type}
-              placeholder={placeholder}
-              disabled={disabled}
-              className={cn(error && "border-destructive", className)}
-            />
+          const inputClassName = cn(
+            "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+            error && "border-destructive",
+            className,
           );
+
+          const inputWithAddons = (
+            <div className={cn(`flex items-center gap-2`, containerClassName)}>
+              {leftAddon && <div className="flex items-center">{leftAddon}</div>}
+              {type === "textarea" ? (
+                <Textarea
+                  {...field}
+                  placeholder={placeholder}
+                  disabled={disabled}
+                  className={cn(inputClassName, "resize-y")}
+                />
+              ) : type === "select" ? (
+                <Select onValueChange={field.onChange} value={field.value} disabled={disabled}>
+                  <SelectTrigger className={cn(inputClassName, "w-full")}>
+                    <SelectValue placeholder={placeholder} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {options.map((option, index) => (
+                      <SelectItem key={index} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              ) : type === "number" ? (
+                <input
+                  {...field}
+                  type="number"
+                  placeholder={placeholder}
+                  disabled={disabled}
+                  className={inputClassName}
+                  value={field.value || ""}
+                  onChange={(event) => field.onChange(event.target.valueAsNumber)}
+                />
+              ) : (
+                <Input
+                  {...field}
+                  type={type}
+                  placeholder={placeholder}
+                  disabled={disabled}
+                  className={inputClassName}
+                />
+              )}
+              {rightAddon && <div className="flex items-center">{rightAddon}</div>}
+            </div>
+          );
+
+          return inputWithAddons;
         }}
       />
 
@@ -632,15 +658,18 @@ export function FileUpload({
 
 export function ThumbNailUpload({
   label = "Thumbnail",
+  labelText = "This image will appear in the explore page. Upload a square image of 2MB or less.",
   name,
   required = false,
   disabled = false,
   className = "",
+  // defaultSrc = "",
   acceptedFormats = "image/jpeg, image/png",
   maxFileSize = 2 * 1024 * 1024,
 }: ThumbNailUploadProperties) {
   const {
     control,
+    getValues,
     formState: { errors },
   } = useFormContext();
   const error = errors[name];
@@ -651,6 +680,12 @@ export function ThumbNailUpload({
     event.preventDefault();
     thumbnailUploadInputReference.current?.click();
   };
+
+  useEffect(() => {
+    if (getValues("logo")) {
+      setPreview(getValues("logo"));
+    }
+  }, [getValues]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, field: any) => {
     const file = event.target.files?.[0];
@@ -669,6 +704,7 @@ export function ThumbNailUpload({
 
       // Create a preview URL for the file
       setPreview(URL.createObjectURL(file));
+
       // Update the form state with the file
       field.onChange(file);
     }
@@ -688,9 +724,7 @@ export function ThumbNailUpload({
               {label}
               {required && <span className="ml-1 text-destructive">*</span>}
             </Label>
-            <p className="text-xs text-mid-grey-II">
-              This image will appear in the explore page. Upload a square image of 2MB or less.
-            </p>
+            <p className="text-xs text-mid-grey-II">{labelText}</p>
           </div>
           {preview && (
             <CustomButton
@@ -854,6 +888,152 @@ export function MultiSelect({
           );
         }}
       />
+
+      {error && <p className="text-sm text-destructive">{error.message?.toString()}</p>}
+    </div>
+  );
+}
+
+interface StarRatingFieldProperties {
+  label?: string;
+  name: string;
+  required?: boolean;
+  disabled?: boolean;
+  className?: string;
+  size?: string;
+}
+
+export function StarRatingField({ label, size, name, required = false, className = "" }: StarRatingFieldProperties) {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+  const error = errors[name];
+
+  return (
+    <div className="space-y-2">
+      {label && (
+        <Label className="text-sm font-medium">
+          {label}
+          {required && <span className="ml-1 text-destructive">*</span>}
+        </Label>
+      )}
+
+      <Controller
+        name={name}
+        control={control}
+        render={({ field }) => (
+          <StarRating
+            rating={field.value}
+            onRatingChange={field.onChange}
+            size={size}
+            className={cn(error && "border-destructive", className)}
+          />
+        )}
+      />
+
+      {error && <p className="text-sm text-destructive">{error.message?.toString()}</p>}
+    </div>
+  );
+}
+
+// export function SwitchField({
+//   label,
+//   name,
+//   required = false,
+//   disabled = false,
+//   className = "",
+// }: {
+//   label?: string | ReactNode;
+//   name: string;
+//   required?: boolean;
+//   disabled?: boolean;
+//   className?: string;
+// }) {
+//   const {
+//     control,
+//     formState: { errors },
+//   } = useFormContext();
+//   const error = errors[name];
+
+//   return (
+//     <div>
+//       <div className={cn(className)}>
+//         {label && (
+//           <Label className="h-fit text-sm font-medium">
+//             {label}
+//             {required && <span className="ml-1 text-destructive">*</span>}
+//           </Label>
+//         )}
+
+//         <Controller
+//           name={name}
+//           control={control}
+//           render={({ field }) => (
+//             <Switch
+//               checked={field.value}
+//               onCheckedChange={field.onChange}
+//               disabled={disabled}
+//               className={cn(error && "border-destructive", "mt-0")}
+//             />
+//           )}
+//         />
+//       </div>
+
+//       {error && <p className="text-sm text-destructive">{error.message?.toString()}</p>}
+//     </div>
+//   );
+// }
+
+export function SwitchField({
+  label,
+  name,
+  required = false,
+  disabled = false,
+  className = "",
+  onChange, // Add an onChange prop
+}: {
+  label?: string | React.ReactNode;
+  name: string;
+  required?: boolean;
+  disabled?: boolean;
+  className?: string;
+  onChange?: (checked: boolean) => void; // Callback function to handle switch toggle
+}) {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext();
+  const error = errors[name];
+
+  return (
+    <div>
+      <div className={cn(className)}>
+        {label && (
+          <Label className="h-fit text-sm font-medium">
+            {label}
+            {required && <span className="ml-1 text-destructive">*</span>}
+          </Label>
+        )}
+
+        <Controller
+          name={name}
+          control={control}
+          render={({ field }) => (
+            <Switch
+              checked={field.value}
+              onCheckedChange={(checked) => {
+                field.onChange(checked); // Update the form state
+                if (onChange) {
+                  onChange(checked); // Trigger the onChange callback
+                }
+              }}
+              disabled={disabled}
+              className={cn(error && "border-destructive", "mt-0")}
+            />
+          )}
+        />
+      </div>
 
       {error && <p className="text-sm text-destructive">{error.message?.toString()}</p>}
     </div>

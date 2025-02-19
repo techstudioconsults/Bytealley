@@ -1,40 +1,59 @@
+/* eslint-disable no-console */
 /* eslint-disable unicorn/consistent-function-scoping */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useRouter } from "next/navigation";
-import { createContext, useEffect, useState } from "react";
+import { createContext, useCallback, useEffect, useState } from "react";
 
 import Loading from "~/app/Loading";
+// import Loading from "~/app/Loading";
 import { WithDependency } from "~/HOC/withDependencies";
-import { getSession } from "~/lib/session/session";
-import { LoginFormData, RegisterFormData } from "~/schemas";
+import { useLoading } from "~/hooks/use-loading";
+import { LoginFormData, ProfileFormData, RegisterFormData } from "~/schemas";
+import { AppService } from "~/services/app.service";
 import { AuthService } from "~/services/auth.service";
 import { dependencies } from "~/utils/dependencies";
 import { Toast } from "~/utils/notificationManager";
 
 export const SessionContext = createContext<ISessionContextType | undefined>(undefined);
 
-const BaseSessionProvider = ({ children, authService }: { children: React.ReactNode; authService: AuthService }) => {
-  const [user, setUser] = useState<IUser | null>(null);
-  const [isInitialLoading, setIsInitialLoading] = useState(true);
+const BaseSessionProvider = ({
+  children,
+  authService,
+  appService,
+  session,
+}: {
+  children: React.ReactNode;
+  authService: AuthService;
+  appService: AppService;
+  session: any;
+}) => {
+  const [user, setUser] = useState<IUser | undefined>(session?.user);
+  const { setLoading, isLoading } = useLoading();
   const router = useRouter();
 
-  useEffect(() => {
-    const initSession = async () => {
-      try {
-        const session = await getSession();
-        if (session?.user) {
-          setUser(session.user);
-        }
-      } finally {
-        setIsInitialLoading(false);
+  const fetchCurrentUser = useCallback(async () => {
+    setLoading(true);
+    try {
+      if (session?.user) {
+        const userData = await appService.getCurrentUser();
+        setUser(userData);
+      } else {
+        setUser(undefined);
       }
-    };
+    } catch (error) {
+      console.error("Failed to fetch current user:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [appService, session?.user, setLoading]);
 
-    initSession();
-  }, []);
+  useEffect(() => {
+    fetchCurrentUser();
+  }, [fetchCurrentUser]);
 
-  if (isInitialLoading) {
+  if (isLoading) {
     return <Loading />;
   }
 
@@ -75,19 +94,18 @@ const BaseSessionProvider = ({ children, authService }: { children: React.ReactN
   const logout = async () => {
     await handleAuthAction(async () => {
       await authService.logout();
-      setUser(null);
+      router.push("/auth/login");
       Toast.getInstance().showToast({
         title: "Logged Out",
         description: "You have been logged out successfully.",
         variant: "warning",
       });
-      router.push("/auth/login");
+      setUser(undefined);
     });
   };
 
   const googleSignIn = async () => {
     const redirectUrl = await handleAuthAction(() => authService.googleSignIn());
-
     if (redirectUrl) {
       window.location.href = redirectUrl;
     }
@@ -108,6 +126,18 @@ const BaseSessionProvider = ({ children, authService }: { children: React.ReactN
     }
   };
 
+  const updateUserInfo = async (data: ProfileFormData) => {
+    const userData = await handleAuthAction(() => appService.updateUser(data));
+    if (userData) {
+      setUser(userData);
+      Toast.getInstance().showToast({
+        title: "Profile updated successfully",
+        description: "Your profile information has been updated.",
+        variant: "default",
+      });
+    }
+  };
+
   return (
     <SessionContext.Provider
       value={{
@@ -117,6 +147,8 @@ const BaseSessionProvider = ({ children, authService }: { children: React.ReactN
         logout,
         googleSignIn,
         handleGoogleCallback,
+        updateUserInfo,
+        fetchCurrentUser,
       }}
     >
       {children}
@@ -126,6 +158,7 @@ const BaseSessionProvider = ({ children, authService }: { children: React.ReactN
 
 const SessionProvider = WithDependency(BaseSessionProvider, {
   authService: dependencies.AUTH_SERVICE,
+  appService: dependencies.APP_SERVICE,
 });
 
 export default SessionProvider;

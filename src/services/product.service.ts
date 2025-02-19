@@ -36,7 +36,7 @@ export class ProductService {
     return response.data.data.id;
   }
 
-  async getAllProducts(filters: IProductFilters = Object.create({ page: 1 })) {
+  async getAllProducts(filters: IFilters = Object.create({ page: 1 })) {
     const queryParameters = this.buildQueryParameters(filters);
     const response = await this.http.get<IPaginatedResponse<IProduct>>(`/products/users?${queryParameters}`);
     if (response?.status === 200) {
@@ -51,7 +51,22 @@ export class ProductService {
     }
   }
 
-  async downloadProducts(filters: IProductFilters = Object.create({ page: 1 })) {
+  async getPurchasedProducts(filters: IFilters) {
+    const queryParameters = this.buildQueryParameters(filters);
+    const response = await this.http.get<IDownload[]>(`/products/purchased?${queryParameters}`);
+    if (response?.status === 200) {
+      return response.data;
+    }
+  }
+
+  async getProductTypesAndCategories() {
+    const response = await this.http.get<{ data: ICategory[] }>(`/products/types`);
+    if (response?.status === 200) {
+      return response.data;
+    }
+  }
+
+  async downloadProducts(filters: IFilters = Object.create({ page: 1 })) {
     const queryParameters = this.buildQueryParameters(filters);
     const response = await this.http.get(`/products/download?${queryParameters}`);
     if (response?.status === 200) {
@@ -73,14 +88,23 @@ export class ProductService {
       return response.data.data;
     }
   }
+
   async getProductOrderByProductId(productId: string) {
-    const response = await this.http.get<{ data: IProductOrder[] }>(`/orders/products/${productId}`);
+    const response = await this.http.get<{ data: IOrder[] }>(`/orders/products/${productId}`);
     if (response?.status === 200) {
       return response.data.data;
     }
   }
 
-  private buildQueryParameters(filters: IProductFilters): string {
+  // New method to publish a product
+  async publishProduct(productId: string) {
+    const response = await this.http.patch<{ data: IProduct }>(`/products/${productId}/publish`);
+    if (response?.status === 200) {
+      return response.data.data;
+    }
+  }
+
+  private buildQueryParameters(filters: IFilters): string {
     const queryParameters = new URLSearchParams();
     for (const [key, value] of Object.entries(filters)) {
       if (value !== undefined) {

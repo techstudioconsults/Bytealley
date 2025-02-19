@@ -1,16 +1,44 @@
+import { CustomerService } from "~/services/customer.service";
+import { EarningService } from "~/services/earnings.service";
+import { PayoutService } from "~/services/payout.service";
 import { ProductService } from "~/services/product.service";
 import { HttpAdapter } from "../adapters/http-adapter";
 import { AuthService } from "../services/auth.service";
+import { AnalyticsService } from "./../services/analytics.service";
+import { AppService } from "./../services/app.service";
+import { DownloadService } from "./../services/download.service";
+import { HelpService } from "./../services/help.service";
+import { OrderService } from "./../services/orders.service";
+import { SettingsService } from "./../services/settings.service";
 
 const dependencies = {
   HTTP_ADAPTER: Symbol("httpAdapter"),
   AUTH_SERVICE: Symbol("AuthService"),
   PRODUCT_SERVICE: Symbol("ProductService"),
+  ORDER_SERVICE: Symbol("OrderService"),
+  CUSTOMER_SERVICE: Symbol("CustomerService"),
+  PAYOUT_SERVICE: Symbol("PayoutService"),
+  EARNINGS_SERVICE: Symbol("EarningService"),
+  DOWNLOAD_SERVICE: Symbol("DownloadService"),
+  ANALYTICS_SERVICE: Symbol("AnalyticsService"),
+  HELP_SERVICE: Symbol("HelpService"),
+  APP_SERVICE: Symbol("AppService"),
+  SETTINGS_SERVICE: Symbol("SettingsService"),
 };
 
 const httpAdapter = new HttpAdapter();
 const authService = new AuthService(httpAdapter);
 const productService = new ProductService(httpAdapter);
+const orderService = new OrderService(httpAdapter);
+const customerService = new CustomerService(httpAdapter);
+const payoutService = new PayoutService(httpAdapter);
+const earningService = new EarningService(httpAdapter);
+const downloadService = new DownloadService(httpAdapter);
+const analyticsService = new AnalyticsService(httpAdapter);
+const helpService = new HelpService(httpAdapter);
+const appService = new AppService(httpAdapter);
+const settingsService = new SettingsService(httpAdapter);
+
 class DependencyContainer implements IDependencyContainer {
   _dependencies = {};
 
@@ -30,5 +58,15 @@ const container = new DependencyContainer();
 container.add(dependencies.HTTP_ADAPTER, httpAdapter);
 container.add(dependencies.AUTH_SERVICE, authService);
 container.add(dependencies.PRODUCT_SERVICE, productService);
+container.add(dependencies.ORDER_SERVICE, orderService);
+container.add(dependencies.CUSTOMER_SERVICE, customerService);
+container.add(dependencies.PAYOUT_SERVICE, payoutService);
+container.add(dependencies.EARNINGS_SERVICE, earningService);
+container.add(dependencies.EARNINGS_SERVICE, earningService);
+container.add(dependencies.DOWNLOAD_SERVICE, downloadService);
+container.add(dependencies.ANALYTICS_SERVICE, analyticsService);
+container.add(dependencies.HELP_SERVICE, helpService);
+container.add(dependencies.APP_SERVICE, appService);
+container.add(dependencies.SETTINGS_SERVICE, settingsService);
 
 export { container, dependencies };

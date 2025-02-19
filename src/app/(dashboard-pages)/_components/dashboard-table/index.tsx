@@ -1,3 +1,5 @@
+"use client";
+
 import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontal } from "lucide-react";
 
 import CustomButton from "~/components/common/common-button/common-button";
@@ -21,6 +23,13 @@ export const DashboardTable = <T extends DataItem>({
   onRowClick,
   showPagination = false,
 }: IDashboardTableProperties<T>) => {
+  const renderColumn = (column: IColumnDefinition<T>, item: T) => {
+    if (!column) return "N/A"; // Handle undefined column
+    return column.render
+      ? column.render(item[column.accessorKey ?? ""], item)
+      : (item[column.accessorKey ?? ""] ?? "N/A");
+  };
+
   return (
     <div className="w-full space-y-4">
       {/* Desktop Table View */}
@@ -92,19 +101,11 @@ export const DashboardTable = <T extends DataItem>({
             }}
             aria-label={`View details for item ${item.id || index}`}
           >
-            {/* Card Header - Can show primary info like ID, status, etc */}
+            {/* Card Header */}
             <div className="mb-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="text-sm font-medium text-muted-foreground">
-                  {columns[0]?.render
-                    ? columns[0].render(item[columns[0]?.accessorKey ?? ""], item)
-                    : (item[columns[0]?.accessorKey ?? ""] ?? "N/A")}
-                </div>
-                {columns.at(-1)?.render ? (
-                  columns.at(-1)?.render(item[columns.at(-1)?.accessorKey ?? ""], item)
-                ) : (
-                  <span>{item[columns.at(-1)?.accessorKey ?? ""] ?? "N/A"}</span>
-                )}
+                <div className="text-sm font-medium text-muted-foreground">{renderColumn(columns[0], item)}</div>
+                <span>{columns.at(-1) ? renderColumn(columns.at(-1)!, item) : "N/A"}</span>
               </div>
               {rowActions && (
                 <DropdownMenu>
@@ -135,13 +136,7 @@ export const DashboardTable = <T extends DataItem>({
               {columns.slice(1, -1).map((column, colIndex) => (
                 <div key={colIndex} className="space-y-1">
                   <p className="text-xs font-medium uppercase text-muted-foreground/60">{column.header}</p>
-                  <div className="text-sm font-medium">
-                    {column.render ? (
-                      column.render(item[column.accessorKey ?? ""], item)
-                    ) : (
-                      <span>{item[column.accessorKey ?? ""] ?? "N/A"}</span>
-                    )}
-                  </div>
+                  <div className="text-sm font-medium">{renderColumn(column, item)}</div>
                 </div>
               ))}
             </div>

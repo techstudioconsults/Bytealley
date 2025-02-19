@@ -1,53 +1,67 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
+
 import uploadIcon from "@/icons/Property_2_Upload_cm42yb.svg";
 import { format } from "date-fns";
+import { saveAs } from "file-saver";
 import Image from "next/image";
-import React, { useTransition } from "react";
+import { HtmlHTMLAttributes, useTransition } from "react";
 
 import CustomButton from "~/components/common/common-button/common-button";
+import { cn } from "~/utils/utils";
 
-interface ExportActionProperties {
-  service: any;
-  currentPage: number;
-  dateRange: { from?: Date; to?: Date } | undefined;
-  status: string;
-  onDownloadComplete: () => void;
+interface ExportActionProperties<T> extends HtmlHTMLAttributes<HTMLButtonElement> {
+  serviceMethod: (parameters: T) => any;
+  currentPage?: number;
+  dateRange?: { from?: Date; to?: Date };
+  status?: string;
+  onDownloadComplete?: () => void;
   buttonText?: string;
+  additionalParameters?: Omit<T, "page" | "start_date" | "end_date" | "status">;
+  fileName?: string;
+  size?: "xs" | "lg" | "xl";
 }
 
-const ExportAction: React.FC<ExportActionProperties> = ({
-  service,
-  currentPage,
+const ExportAction = <T extends object>({
+  serviceMethod,
+  currentPage = 1,
   dateRange,
   status,
   onDownloadComplete,
   buttonText = "Export",
-}) => {
+  additionalParameters,
+  fileName = "download",
+  size = "lg",
+  className,
+}: ExportActionProperties<T>) => {
   const [isPending, startTransition] = useTransition();
-  const handleDownloadProducts = async () => {
+
+  const handleDownload = async () => {
     startTransition(async () => {
-      const parameters: IProductFilters = {
+      const parameters: any = {
         page: currentPage,
         ...(dateRange?.from && { start_date: format(dateRange.from, "yyyy-MM-dd") }),
         ...(dateRange?.to && { end_date: format(dateRange.to, "yyyy-MM-dd") }),
-        ...(status !== "all" && {
-          status: status as "draft" | "deleted" | "published",
-        }),
+        ...(status && status !== "all" && { status }),
+        ...additionalParameters,
       };
 
-      await service.downloadProducts(parameters);
-      onDownloadComplete();
+      const file = await serviceMethod(parameters);
+      const blob = new Blob([file], { type: "text/csv" });
+      saveAs(blob, `${fileName}.csv`);
+
+      onDownloadComplete?.();
     });
   };
 
   return (
     <CustomButton
-      variant={`outline`}
-      className={`w-full border-primary lg:w-auto`}
-      size={`lg`}
-      isLeftIconVisible
+      variant="outline"
+      className={cn("w-full border-primary text-primary lg:w-auto", className)}
+      size={size as "lg" | "xl"}
+      isLeftIconVisible={true}
       icon={<Image src={uploadIcon} width={16} height={16} alt="export" />}
-      onClick={handleDownloadProducts}
+      onClick={handleDownload}
       isLoading={isPending}
     >
       {buttonText}

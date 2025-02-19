@@ -5,18 +5,15 @@ import { useCallback, useEffect } from "react";
 
 import Loading from "~/app/Loading";
 import { useSession } from "~/hooks/use-session";
-import { getSession } from "~/lib/session/session";
 
 const PreLoader = () => {
   const router = useRouter();
-  const { handleGoogleCallback } = useSession();
+  const { handleGoogleCallback, user } = useSession();
 
   const googleRedirect = useCallback(
     async (code: string) => {
-      // Check if we already have a valid session
-      const session = await getSession();
-      if (session?.user) {
-        router.push(`/dashboard/${session.user.id}/home`);
+      if (user) {
+        router.push(`/dashboard/${user.id}/home`);
         return;
       }
 
@@ -27,7 +24,7 @@ const PreLoader = () => {
 
       await handleGoogleCallback(data);
     },
-    [handleGoogleCallback, router],
+    [handleGoogleCallback, router, user],
   );
 
   useEffect(() => {

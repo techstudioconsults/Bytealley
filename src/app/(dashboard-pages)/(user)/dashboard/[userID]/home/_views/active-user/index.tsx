@@ -3,24 +3,68 @@
 import nairaIcon from "@/icons/naira.svg";
 import refreshIcon from "@/icons/Property_2_Update_ojnsf7.svg";
 import uploadIcon from "@/icons/Property_2_Upload_cm42yb.svg";
-import productImage from "@/images/empty_product.svg";
+import emptyCart from "@/images/empty-cart.svg";
+import { format } from "date-fns";
+import debounce from "lodash.debounce";
 import Image from "next/image";
-import { useEffect, useState, useTransition } from "react";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
+import { DateRange } from "react-day-picker";
 
 import { AnalyticsCard } from "~/app/(dashboard-pages)/_components/analytics-card/index";
 import { DashboardTable } from "~/app/(dashboard-pages)/_components/dashboard-table";
+import { orderColumns } from "~/app/(dashboard-pages)/_components/dashboard-table/table-data";
 import { DateRangePicker } from "~/app/(dashboard-pages)/_components/date-range-picker";
 import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
-import { SelectDropdown } from "~/app/(dashboard-pages)/_components/select-dropdown";
+// import { SelectDropdown } from "~/app/(dashboard-pages)/_components/select-dropdown";
+import Loading from "~/app/Loading";
 import CustomButton from "~/components/common/common-button/common-button";
 import { LoadingSpinner } from "~/components/miscellaneous/loading-spinner";
+import { OrderService } from "~/services/orders.service";
 import { ProductService } from "~/services/product.service";
 
-export const ActiveUser = ({ productService }: { productService: ProductService }) => {
-  const [currentPage, setCurrentPage] = useState(1);
+export const ActiveUser = ({
+  productService,
+  orderService,
+}: {
+  productService: ProductService;
+  orderService: OrderService;
+}) => {
   const [isPendingAnalytics, startTransitionAnalytics] = useTransition();
   const [analytics, setAnalytics] = useState<IDashboardAnalytics | null>(null);
-  const [soldProducts] = useState<IProduct[]>([]);
+  const [isPendingOrders, startTransitionOrders] = useTransition();
+  const [orders, setOrders] = useState<IOrder[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [paginationMeta, setPaginationMeta] = useState<IPaginationMeta | null>(null);
+  const [dateRange, setDateRange] = useState<DateRange | undefined>();
+
+  const debounceDateRangeReference = useRef(
+    debounce((value: DateRange) => {
+      setDateRange(value);
+    }, 300),
+  );
+
+  const handleDateRangeChange = useCallback((value: DateRange) => {
+    debounceDateRangeReference.current(value);
+    setCurrentPage(1);
+  }, []);
+
+  useEffect(() => {
+    const parameters: IFilters = {
+      page: currentPage,
+      ...(dateRange?.from && { start_date: format(dateRange.from, "yyyy-MM-dd") }),
+      ...(dateRange?.to && { end_date: format(dateRange.to, "yyyy-MM-dd") }),
+    };
+
+    startTransitionOrders(async () => {
+      const ordersData = await orderService.getAllOrders(parameters);
+      setOrders(ordersData?.data.slice(0, 5) || []);
+      setPaginationMeta(ordersData?.meta || null);
+    });
+  }, [orderService, currentPage, dateRange?.from, dateRange?.to]);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   useEffect(() => {
     startTransitionAnalytics(async () => {
@@ -34,8 +78,8 @@ export const ActiveUser = ({ productService }: { productService: ProductService 
       <section className={`space-y-4`}>
         <section className="flex w-full flex-col gap-4 sm:items-center md:flex-row md:justify-between">
           <div className="flex w-full flex-col gap-2 sm:flex-row md:w-auto">
-            <DateRangePicker onDateChange={() => {}} />
-            <SelectDropdown options={[]} />
+            <DateRangePicker onDateChange={handleDateRangeChange} />
+            {/* <SelectDropdown options={[]} /> */}
           </div>
           <div className="flex w-full flex-row gap-2 sm:w-auto sm:justify-start">
             <CustomButton
@@ -92,29 +136,41 @@ export const ActiveUser = ({ productService }: { productService: ProductService 
           />
         </section>
       </section>
-      <section className={`mt-10`}>
-        {soldProducts.length > 0 ? (
-          <>
-            <h6 className="mb-4 text-lg font-semibold">Sales</h6>
-            <DashboardTable
-              data={soldProducts}
-              columns={[]}
-              currentPage={currentPage}
-              onPageChange={setCurrentPage}
-              totalPages={2}
-              itemsPerPage={10}
-              // eslint-disable-next-line no-console
-              onRowClick={(row) => console.log("Row clicked:", row)}
-            />
-          </>
-        ) : (
-          <EmptyState
-            images={[{ src: productImage.src, alt: "Empty product", width: 102, height: 60 }]}
-            description="You do not have any sales activities yet."
-            button={{ text: "Create your first product", onClick: () => {} }}
-            className={"min-h-[236px] rounded-md bg-low-grey-III p-6 text-black"}
-          />
-        )}
+      <section className={`mt-10 space-y-4`}>
+        <h6 className="text-lg font-semibold">Sales</h6>
+        <section>
+          {isPendingOrders ? (
+            <Loading text={`Loading sales table...`} className={`w-fill h-fit p-20`} />
+          ) : (
+            <>
+              {orders.length > 0 ? (
+                <DashboardTable
+                  data={orders}
+                  columns={orderColumns}
+                  showPagination
+                  onPageChange={handlePageChange}
+                  currentPage={paginationMeta?.current_page}
+                  totalPages={paginationMeta?.last_page}
+                  itemsPerPage={paginationMeta?.per_page}
+                />
+              ) : (
+                <EmptyState
+                  images={[
+                    {
+                      src: emptyCart,
+                      alt: "Empty Cart",
+                      width: 100,
+                      height: 100,
+                    },
+                  ]}
+                  title="No sales found."
+                  description="You do not have any sales yet."
+                  button={{ text: "Create New Order", onClick: () => {} }}
+                />
+              )}
+            </>
+          )}
+        </section>
       </section>
     </>
   );

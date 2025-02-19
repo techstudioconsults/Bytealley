@@ -43,12 +43,7 @@ export const userRoutes: string[] = [
  * These routes allow management of users and app features
  * @type {string[]}
  */
-export const adminRoutes: string[] = [
-  "/admin/home",
-  "/admin/users",
-  "/admin/settings",
-  "/admin/reports",
-];
+export const adminRoutes: string[] = ["/admin/home", "/admin/users", "/admin/settings", "/admin/reports"];
 
 /**
  * An array of routes accessible only to super-super admins
