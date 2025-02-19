@@ -1,5 +1,5 @@
 import * as React from "react";
-import { LuChevronRight, LuChevronsLeft, LuMoreHorizontal } from "react-icons/lu";
+import { LuChevronRight, LuChevronsLeft, LuMoveHorizontal } from "react-icons/lu";
 
 import { cn } from "~/utils/utils";
 import { ButtonProperties, buttonVariants } from "./button";
@@ -69,7 +69,7 @@ PaginationNext.displayName = "PaginationNext";
 
 const PaginationEllipsis = ({ className, ...properties }: React.ComponentProps<"span">) => (
   <span aria-hidden className={cn("flex h-9 w-9 items-center justify-center", className)} {...properties}>
-    <LuMoreHorizontal className="h-4 w-4" />
+    <LuMoveHorizontal className="h-4 w-4" />
     <span className="sr-only">More pages</span>
   </span>
 );
