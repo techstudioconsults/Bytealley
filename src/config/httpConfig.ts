@@ -21,8 +21,8 @@ http.interceptors.request.use(
   async (config) => {
     const session = await getSession();
 
-    if (session?.token) {
-      config.headers.Authorization = `Bearer ${session.token}`;
+    if (session?.user.token) {
+      config.headers.Authorization = `Bearer ${session.user.token}`;
     }
 
     return config;

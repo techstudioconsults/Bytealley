@@ -1,15 +1,26 @@
+import logo from "@/images/logo.svg";
 import Image from "next/image";
 import Link from "next/link";
+import { HTMLAttributes } from "react";
 
-export const Logo = () => {
+import { cn } from "~/utils/utils";
+
+interface LogoProperties extends HTMLAttributes<HTMLImageElement> {
+  width?: number;
+  height?: number;
+  className?: string;
+}
+
+export const Logo = ({ width, height, className }: LogoProperties) => {
   return (
     <Link href="/" className="" data-testid="logo">
       <Image
-        src="/images/logo.svg"
-        alt="skicom"
-        height={52}
-        width={283}
-        className="h-full w-full object-contain"
+        priority
+        src={logo}
+        alt="bytealley"
+        width={width}
+        height={height}
+        className={cn("object-contain", className)}
       />
     </Link>
   );

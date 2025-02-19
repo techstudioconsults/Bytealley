@@ -31,13 +31,13 @@ const StyleGuide: FC = () => {
       </div>
       <h2 className="text-2xl font-semibold">Skicom Design system</h2>
       <div className="grid w-full grid-cols-3 items-start gap-4">
-        <div className="flex w-full items-center justify-center whitespace-nowrap rounded-lg bg-high-blue px-4 py-4 text-white">
+        <div className="bg-high-blue flex w-full items-center justify-center whitespace-nowrap rounded-lg px-4 py-4 text-white">
           bg-high-blue
         </div>
-        <div className="flex w-full items-center justify-center whitespace-nowrap rounded-lg bg-mid-blue px-4 py-4 text-white">
+        <div className="bg-mid-blue flex w-full items-center justify-center whitespace-nowrap rounded-lg px-4 py-4 text-white">
           bg-mid-blue
         </div>
-        <div className="flex w-full items-center justify-center whitespace-nowrap rounded-lg bg-low-blue px-4 py-4 text-black">
+        <div className="bg-low-blue flex w-full items-center justify-center whitespace-nowrap rounded-lg px-4 py-4 text-black">
           bg-low-blue
         </div>
         <div className="flex w-full items-center justify-center whitespace-nowrap rounded-lg bg-high-danger px-4 py-4 text-white">
@@ -125,9 +125,7 @@ const StyleGuide: FC = () => {
           </div>
         </div>
         <div className="group flex h-full flex-col items-start justify-between rounded-lg border px-5 py-5">
-          <h2 className="mb-3 text-2xl font-semibold">
-            With Icon Default Button
-          </h2>
+          <h2 className="mb-3 text-2xl font-semibold">With Icon Default Button</h2>
           <div className="flex items-center gap-4">
             <CustomButton isLeftIconVisible={true} icon={<LuOrbit />}>
               Button CTA
@@ -135,15 +133,9 @@ const StyleGuide: FC = () => {
           </div>
         </div>
         <div className="group flex h-full flex-col items-start justify-between rounded-lg border px-5 py-5">
-          <h2 className="mb-3 text-2xl font-semibold">
-            With Icon Primary Button
-          </h2>
+          <h2 className="mb-3 text-2xl font-semibold">With Icon Primary Button</h2>
           <div className="flex items-center gap-4">
-            <CustomButton
-              variant="primary"
-              isLeftIconVisible={true}
-              icon={<LuOrbit />}
-            >
+            <CustomButton variant="primary" isLeftIconVisible={true} icon={<LuOrbit />}>
               Button CTA
             </CustomButton>
           </div>
@@ -161,31 +153,17 @@ const StyleGuide: FC = () => {
           </div>
         </div>
         <div className="group flex h-full flex-col items-start justify-between rounded-lg border px-5 py-5">
-          <h2 className="mb-3 text-2xl font-semibold">
-            Link With Left Icon Button
-          </h2>
+          <h2 className="mb-3 text-2xl font-semibold">Link With Left Icon Button</h2>
           <div className="flex items-center gap-4">
-            <CustomButton
-              variant="link"
-              size="link"
-              isLeftIconVisible={true}
-              icon={<LuOrbit />}
-            >
+            <CustomButton variant="link" size="link" isLeftIconVisible={true} icon={<LuOrbit />}>
               Button CTA
             </CustomButton>
           </div>
         </div>
         <div className="group flex h-full flex-col items-start justify-between rounded-lg border px-5 py-5">
-          <h2 className="mb-3 text-2xl font-semibold">
-            Link With Right Icon Button
-          </h2>
+          <h2 className="mb-3 text-2xl font-semibold">Link With Right Icon Button</h2>
           <div className="flex items-center gap-4">
-            <CustomButton
-              variant="link"
-              size="link"
-              isRightIconVisible={true}
-              icon={<LuOrbit />}
-            >
+            <CustomButton variant="link" size="link" isRightIconVisible={true} icon={<LuOrbit />}>
               Button CTA
             </CustomButton>
           </div>
@@ -201,25 +179,13 @@ const StyleGuide: FC = () => {
         <div className="group flex h-full flex-col items-start justify-between rounded-lg border px-5 py-5">
           <h2 className="mb-3 text-2xl font-semibold">Icon Only Button</h2>
           <div className="flex items-center gap-4">
-            <CustomButton
-              variant="outline"
-              size="icon"
-              isIconOnly={true}
-              icon={<LuPlus />}
-            />
+            <CustomButton variant="outline" size="icon" isIconOnly={true} icon={<LuPlus />} />
           </div>
         </div>
         <div className="group flex h-full flex-col items-start justify-between rounded-lg border px-5 py-5">
-          <h2 className="mb-3 text-2xl font-semibold">
-            Icon Only Circle Button
-          </h2>
+          <h2 className="mb-3 text-2xl font-semibold">Icon Only Circle Button</h2>
           <div className="flex items-center gap-4">
-            <CustomButton
-              variant="outline"
-              size="circle"
-              isIconOnly={true}
-              icon={<LuPlus />}
-            />
+            <CustomButton variant="outline" size="circle" isIconOnly={true} icon={<LuPlus />} />
           </div>
         </div>
       </div>
@@ -230,10 +196,7 @@ const StyleGuide: FC = () => {
           <div className="rounded-lg bg-zinc-950 p-4">
             <span className="block font-mono text-sm text-white">
               import <span className="text-blue-400">CustomButton</span> from{" "}
-              <span className="text-yellow-400">
-                &quot;~/components/common/Button/button&quot;
-              </span>
-              ;
+              <span className="text-yellow-400">&quot;~/components/common/Button/button&quot;</span>;
             </span>
           </div>
         </div>
@@ -310,38 +273,31 @@ const StyleGuide: FC = () => {
         <div className="flex flex-col gap-2">
           <span>Example</span>
           <div className="rounded-lg bg-zinc-950 p-4">
-            <span className="block font-mono text-sm text-gray-100">
-              return (
-            </span>
+            <span className="block font-mono text-sm text-gray-100">return (</span>
             <span className="ml-4 block font-mono text-sm text-gray-100">
               <span className="text-green-400">{"<"}</span>
               <span className="text-blue-400">CustomButton</span>
               <br />
               <span className="ml-4">
                 variant=
-                <span className="text-yellow-400">&quot;subtle&quot;</span>{" "}
-                <br />
+                <span className="text-yellow-400">&quot;subtle&quot;</span> <br />
               </span>
               <span className="ml-4">
-                icon=<span className="text-yellow-400">{"{<Plus />}"}</span>{" "}
-                <br />
+                icon=<span className="text-yellow-400">{"{<Plus />}"}</span> <br />
               </span>
               <span className="ml-4">
                 isLeftIconVisible=
                 <span className="text-yellow-400">{"{true}"}</span> <br />
               </span>
               <span className="ml-4">
-                isLoading={<span className="text-yellow-400">false</span>}{" "}
-                <br />
+                isLoading={<span className="text-yellow-400">false</span>} <br />
               </span>
               <span className="ml-4">
-                isDisabled={<span className="text-yellow-400">false</span>}{" "}
-                <br />
+                isDisabled={<span className="text-yellow-400">false</span>} <br />
               </span>
               <span className="text-green-400">{">"}</span> <br />
               <span className="ml-4">Click Me</span> <br />
-              <span className="text-green-400">{"<"}</span>/
-              <span className="text-blue-400">CustomButton</span>
+              <span className="text-green-400">{"<"}</span>/<span className="text-blue-400">CustomButton</span>
               <span className="text-green-400">{">"}</span>
             </span>
             <span className="block font-mono text-sm text-gray-100">);</span>
@@ -351,9 +307,7 @@ const StyleGuide: FC = () => {
         <div className="flex flex-col gap-2">
           <span>Example</span>
           <div className="rounded-lg bg-zinc-950 p-4">
-            <span className="block font-mono text-sm text-gray-100">
-              return (
-            </span>
+            <span className="block font-mono text-sm text-gray-100">return (</span>
             <span className="ml-4 block font-mono text-sm text-gray-100">
               <span className="text-green-400">{"<"}</span>
               <span className="text-blue-400">DataCard</span>
@@ -368,10 +322,7 @@ const StyleGuide: FC = () => {
               </span>
               <span className="ml-4">
                 plan=
-                {
-                  <span className="text-yellow-400">{"{2-Days Plan}"}</span>
-                }{" "}
-                <br />
+                {<span className="text-yellow-400">{"{2-Days Plan}"}</span>} <br />
               </span>
               <span className="ml-4">
                 packages=
@@ -386,33 +337,22 @@ const StyleGuide: FC = () => {
         <div className="flex flex-col gap-2">
           <span>Example</span>
           <div className="rounded-lg bg-zinc-950 p-4">
-            <span className="block font-mono text-sm text-gray-100">
-              return (
-            </span>
+            <span className="block font-mono text-sm text-gray-100">return (</span>
             <span className="ml-4 block font-mono text-sm text-gray-100">
               <span className="text-green-400">{"<"}</span>
               <span className="text-blue-400">JobCard</span>
               <br />
               <span className="ml-4">
                 position=
-                <span className="text-yellow-400">
-                  {"{position name}"}
-                </span>{" "}
-                <br />
+                <span className="text-yellow-400">{"{position name}"}</span> <br />
               </span>
               <span className="ml-4">
                 Description=
-                <span className="text-yellow-400">
-                  {"{Job description}"}
-                </span>{" "}
-                <br />
+                <span className="text-yellow-400">{"{Job description}"}</span> <br />
               </span>
               <span className="ml-4">
                 jobDescription=
-                {
-                  <span className="text-yellow-400">{"{jobDescriptions}"}</span>
-                }{" "}
-                <br />
+                {<span className="text-yellow-400">{"{jobDescriptions}"}</span>} <br />
               </span>
               <span className="text-green-400">{"/>"}</span> <br />
             </span>
@@ -423,17 +363,14 @@ const StyleGuide: FC = () => {
         <div className="flex flex-col gap-2">
           <span>Example</span>
           <div className="rounded-lg bg-zinc-950 p-4">
-            <span className="block font-mono text-sm text-gray-100">
-              return (
-            </span>
+            <span className="block font-mono text-sm text-gray-100">return (</span>
             <span className="ml-4 block font-mono text-sm text-gray-100">
               <span className="text-green-400">{"<"}</span>
               <span className="text-blue-400">ArticlesCard</span>
               <br />
               <span className="ml-4">
                 articleImage=
-                <span className="text-yellow-400">{"{articleImage}"}</span>{" "}
-                <br />
+                <span className="text-yellow-400">{"{articleImage}"}</span> <br />
               </span>
               <span className="ml-4">
                 heading=
@@ -445,8 +382,7 @@ const StyleGuide: FC = () => {
               </span>
               <span className="ml-4">
                 subHeading
-                {<span className="text-yellow-400">{"{subHeading}"}</span>}{" "}
-                <br />
+                {<span className="text-yellow-400">{"{subHeading}"}</span>} <br />
               </span>
               <span className="text-green-400">{"/>"}</span> <br />
             </span>

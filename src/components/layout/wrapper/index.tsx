@@ -16,10 +16,7 @@ export const Wrapper: FC<WrapperProperties> = ({
   ...rest
 }) => {
   return (
-    <section
-      {...rest}
-      className={cn(`mx-auto ${width} ${height} px-[1rem] xl:px-0`, className)}
-    >
+    <section {...rest} className={cn(`mx-auto ${width} ${height} px-[1rem] xl:px-0`, className)}>
       {children}
     </section>
   );

@@ -1,26 +1,24 @@
-import { Suspense } from "react";
+"use client";
 
-import SessionProvider from "~/context/session-provider";
+import { useSession } from "~/hooks/use-session";
+import Loading from "../Loading";
+import { DashboardNavbar } from "./_components/layout/navbar";
+import { Sidebar } from "./_components/layout/sidebar/sidebar";
 
-// import DashboardNavbar from "./_components/layout/navbar";
-// import Sidebar from "./_components/layout/sidebar/sidebar";
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const { user } = useSession();
 
-export default function AdminLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+  if (!user) {
+    return <Loading />;
+  }
+
   return (
     <main className="flex">
-      <SessionProvider>
-        {/* <Sidebar /> */}
-        <section className="w-full">
-          {/* <DashboardNavbar /> */}
-          <div className="bg-high-grey-I p-[16px] lg:p-[32px]">
-            <Suspense>{children}</Suspense>
-          </div>
-        </section>
-      </SessionProvider>
+      <Sidebar />
+      <section className="w-full">
+        <DashboardNavbar />
+        <div className="p-[16px] lg:p-[32px]">{children}</div>
+      </section>
     </main>
   );
 }

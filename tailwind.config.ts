@@ -3,12 +3,7 @@ import type { Config } from "tailwindcss";
 
 const config = {
   darkMode: ["class"],
-  content: [
-    "./pages/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
-    "./app/**/*.{ts,tsx}",
-    "./src/**/*.{ts,tsx}",
-  ],
+  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
   prefix: "",
   theme: {
     container: {
@@ -19,6 +14,10 @@ const config = {
       },
     },
     extend: {
+      boxShadow: {
+        active: "0px 0px 0px 2px #6D5DD380",
+        spread: "0px 1px 18px 0px #0A39B01F",
+      },
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
@@ -93,9 +92,6 @@ const config = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
-      boxShadow: {
-        spread: "0px 1px 18px 0px #0A39B01F",
-      },
       keyframes: {
         "accordion-down": {
           from: {
@@ -131,10 +127,7 @@ const config = {
     },
   },
 
-  plugins: [
-    require("tailwindcss-animate"),
-    require("@mertasan/tailwindcss-variables"),
-  ],
+  plugins: [require("tailwindcss-animate"), require("@mertasan/tailwindcss-variables")],
 } satisfies Config;
 
 export default config;

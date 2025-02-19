@@ -1,8 +1,6 @@
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-
 import { HttpAdapter } from "~/adapters/http-adapter";
 import { createSession, deleteSession } from "~/lib/session/session";
-import { RegisterFormData } from "~/schemas";
+import { LoginFormData, RegisterFormData } from "~/schemas";
 import { Toast } from "~/utils/notificationManager";
 
 export class AuthService {
@@ -12,97 +10,62 @@ export class AuthService {
     this.http = httpAdapter;
   }
 
-  async register(data: RegisterFormData, router: AppRouterInstance) {
+  async register(data: RegisterFormData): Promise<boolean> {
     const response = await this.http.post(`/auth/register`, data);
-
-    if (response?.status === 201) {
-      Toast.getInstance().showToast({
-        title: "Registration Successful",
-        description:
-          "Your account has been created successfully. Please login.",
-        variant: "success",
-      });
-      router.push("/auth/login");
-    }
+    return response?.status === 201;
   }
 
-  async login(data: object, router: AppRouterInstance) {
+  async login(data: LoginFormData) {
     const response = await this.http.post<ILoginResponse>(`/auth/login`, data);
-
     if (response?.status === 200) {
-      const user = {
-        id: response.data.user.id,
-        email: response.data.user.email,
-        name: response.data.user.name,
-        role: response.data.user.role,
-        token: response.data.token,
-      };
-
-      await createSession({
-        user,
-        expires: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
-      });
-
-      Toast.getInstance().showToast({
-        title: `Success`,
-        description: `Welcome, ${response.data.user.name}!`,
-        variant: `success`,
-      });
-      router.push(`/dashboard/${response.data.user.id}/home`);
+      const user: IUser = this.mapUserResponse(response.data);
+      await this.createUserSession(user);
+      return user;
     }
   }
 
-  async logout(router: AppRouterInstance) {
-    await deleteSession(); // Remove session cookie
-
-    Toast.getInstance().showToast({
-      title: "Logged Out",
-      description: "You have been logged out successfully.",
-      variant: "warning",
-    });
-
-    router.push("/auth/login"); // Redirect to login
+  async logout(): Promise<void> {
+    await deleteSession();
   }
 
   async googleSignIn() {
-    const response = await this.http.get<{ redirect_url: string }>(
-      "/auth/oauth/redirect?provider=google",
-    );
-
-    if (response?.status === 200 && response.data.redirect_url) {
-      window.location.href = response.data.redirect_url;
+    const response = await this.http.get<{ redirect_url: string }>("/auth/oauth/redirect?provider=google");
+    if (response?.status === 200) {
+      return response.data.redirect_url;
     }
   }
 
-  async handleGoogleCallback(
-    credentials: { code: string; provider: string },
-    router: AppRouterInstance,
-  ) {
-    const response = await this.http.post<ILoginResponse>(
-      "/auth/oauth/callback",
-      credentials,
-    );
-
+  async verifyEmail() {
+    const response = await this.http.get<IEmailVerificationResponse>(`/auth/email/resend`);
     if (response?.status === 200) {
-      const user = {
-        id: response.data.user.id,
-        email: response.data.user.email,
-        name: response.data.user.name,
-        role: response.data.user.role,
-        token: response.data.token,
-      };
-
-      await createSession({
-        user,
-        expires: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
-      });
-
       Toast.getInstance().showToast({
-        title: `Success`,
-        description: `Welcome, ${response.data.user.name}!`,
-        variant: `success`,
+        title: "Verification Email",
+        description: response.data.message,
+        variant: "success",
       });
-      router.push(`/dashboard/${response.data.user.id}/home`);
     }
+  }
+
+  async handleGoogleCallback(credentials: { code: string; provider: string }) {
+    const response = await this.http.post<ILoginResponse>("/auth/oauth/callback", credentials);
+    if (response?.status === 200) {
+      const user = this.mapUserResponse(response.data);
+      await this.createUserSession(user);
+      return user;
+    }
+  }
+
+  mapUserResponse(data: ILoginResponse): IUser {
+    return {
+      ...data.user,
+      token: data.token,
+    };
+  }
+
+  async createUserSession(user: IUser): Promise<void> {
+    await createSession({
+      user,
+      expires: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
+    });
   }
 }

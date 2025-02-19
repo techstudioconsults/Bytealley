@@ -2,7 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
@@ -10,19 +9,12 @@ import { FcGoogle } from "react-icons/fc";
 import CustomButton from "~/components/common/common-button/common-button";
 import { FormField } from "~/components/common/FormFields";
 import { Logo } from "~/components/common/logo";
-import { withDependency } from "~/HOC/withDependencies";
+import { useSession } from "~/hooks/use-session";
 import { RegisterFormData, registerSchema } from "~/schemas";
-import type { AuthService } from "~/services/auth.service";
-import { dependencies } from "~/utils/dependencies";
 
-interface RegisterPageProperties {
-  authService: AuthService;
-}
-
-const BaseRegisterPage = ({ authService }: RegisterPageProperties) => {
-  const router = useRouter();
-  const [isPending, startTransition] = useTransition();
+const RegisterPage = () => {
   const [isGooglePending, startGoogleTransition] = useTransition();
+  const { register, googleSignIn } = useSession();
 
   const methods = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
@@ -34,15 +26,18 @@ const BaseRegisterPage = ({ authService }: RegisterPageProperties) => {
     },
   });
 
-  const handleSubmit = async (data: RegisterFormData) => {
-    startTransition(async () => {
-      await authService.register(data, router);
-    });
+  const {
+    handleSubmit,
+    formState: { isSubmitting },
+  } = methods;
+
+  const handleSubmitForm = async (data: RegisterFormData) => {
+    await register(data);
   };
 
   const handleGoogleSignIn = () => {
     startGoogleTransition(async () => {
-      await authService.googleSignIn();
+      await googleSignIn();
     });
   };
 
@@ -58,14 +53,9 @@ const BaseRegisterPage = ({ authService }: RegisterPageProperties) => {
         </h1>
 
         <FormProvider {...methods}>
-          <form
-            onSubmit={methods.handleSubmit(handleSubmit)}
-            className="mt-[56px] space-y-4"
-          >
+          <form onSubmit={handleSubmit(handleSubmitForm)} className="mt-[56px] space-y-4">
             {methods.formState.errors.root && (
-              <p className="text-sm text-red-500">
-                {methods.formState.errors.root.message}
-              </p>
+              <p className="text-sm text-red-500">{methods.formState.errors.root.message}</p>
             )}
 
             <FormField
@@ -112,10 +102,7 @@ const BaseRegisterPage = ({ authService }: RegisterPageProperties) => {
                     Terms Of Use
                   </Link>{" "}
                   and{" "}
-                  <Link
-                    href="/privacy"
-                    className="text-primary hover:underline"
-                  >
+                  <Link href="/privacy" className="text-primary hover:underline">
                     Privacy Policy
                   </Link>
                 </p>
@@ -124,8 +111,8 @@ const BaseRegisterPage = ({ authService }: RegisterPageProperties) => {
               <CustomButton
                 type="submit"
                 variant="primary"
-                isDisabled={isPending}
-                isLoading={isPending}
+                isDisabled={isSubmitting}
+                isLoading={isSubmitting}
                 className="w-full"
                 size="xl"
               >
@@ -139,9 +126,7 @@ const BaseRegisterPage = ({ authService }: RegisterPageProperties) => {
               <div className="w-full border-t"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="bg-white px-2 text-muted-foreground">
-                or continue with
-              </span>
+              <span className="bg-white px-2 text-muted-foreground">or continue with</span>
             </div>
           </div>
 
@@ -170,9 +155,5 @@ const BaseRegisterPage = ({ authService }: RegisterPageProperties) => {
     </div>
   );
 };
-
-const RegisterPage = withDependency(BaseRegisterPage, {
-  authService: dependencies.AUTH_SERVICE,
-});
 
 export default RegisterPage;

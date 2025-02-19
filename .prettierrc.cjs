@@ -5,7 +5,7 @@
 /** @type {import('prettier').Config & PluginConfigs} */
 module.exports = {
   tabWidth: 2,
-  printWidth: 80,
+  printWidth: 120,
   jsxSingleQuote: false,
   singleQuote: false,
   semi: true,
