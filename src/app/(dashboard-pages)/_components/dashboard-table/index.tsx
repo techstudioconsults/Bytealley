@@ -105,7 +105,7 @@ export const DashboardTable = <T extends DataItem>({
             <div className="mb-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="text-sm font-medium text-muted-foreground">{renderColumn(columns[0], item)}</div>
-                <span>{renderColumn(columns.at(-1), item)}</span>
+                <span>{columns.at(-1) ? renderColumn(columns.at(-1)!, item) : "N/A"}</span>
               </div>
               {rowActions && (
                 <DropdownMenu>
