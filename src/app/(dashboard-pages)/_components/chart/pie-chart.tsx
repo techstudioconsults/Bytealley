@@ -4,11 +4,7 @@ import { IoEllipsisVerticalSharp } from "react-icons/io5";
 import { LuDot } from "react-icons/lu";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltipContent,
-} from "~/components/ui/chart";
+import { ChartConfig, ChartContainer, ChartTooltipContent } from "~/components/ui/chart";
 
 // Data for Pie Chart
 const pieData = [
@@ -33,11 +29,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const COLORS = [
-  chartConfig.desktop.color,
-  chartConfig.mobile.color,
-  chartConfig.tablet.color,
-];
+const COLORS = [chartConfig.desktop.color, chartConfig.mobile.color, chartConfig.tablet.color];
 
 // To display the center text inside the Pie chart
 const renderCustomLabel = () => {
@@ -61,9 +53,7 @@ export function PieChartComponent() {
   return (
     <section className="h-full rounded-[8px] border bg-white p-[24px]">
       <div className="mb-[36px] flex items-center justify-between">
-        <h6 className="text-[14px] font-[700] text-high-grey-III lg:text-[18px]">
-          Revenue Breakdown
-        </h6>
+        <h6 className="text-[14px] font-[700] text-high-grey-III lg:text-[18px]">Revenue Breakdown</h6>
         <div>
           <IoEllipsisVerticalSharp />
         </div>
@@ -85,10 +75,7 @@ export function PieChartComponent() {
               // Rendering central text inside pie
             >
               {pieData.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
               ))}
               {renderCustomLabel()}
             </Pie>

@@ -14,13 +14,7 @@ import { dependencies } from "~/utils/dependencies";
 import { Toast } from "~/utils/notificationManager";
 import { cn } from "~/utils/utils";
 
-const BaseChangePasswordForm = ({
-  service,
-  settingsService,
-}: {
-  service: AppService;
-  settingsService: SettingsService;
-}) => {
+const BaseChangePasswordForm = ({ settingsService }: { service: AppService; settingsService: SettingsService }) => {
   const [showForm, setShowForm] = useState(false);
   const methods = useForm<ChangePasswordFormData>({
     resolver: zodResolver(changePasswordSchema),

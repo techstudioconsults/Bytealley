@@ -1,9 +1,6 @@
-import React from "react";
-
 import CustomButton from "~/components/common/common-button/common-button";
-import { AppService } from "~/services/app.service";
 
-export const DeleteAccount = ({ service }: { service: AppService }) => {
+export const DeleteAccount = () => {
   return (
     <section className={`space-y-4`}>
       <div>

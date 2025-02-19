@@ -18,7 +18,6 @@ const Billing = ({ settingsService }: { settingsService: SettingsService }) => {
     const fetchProductData = async () => {
       startTransition(async () => {
         const billingData = await settingsService.getSubscriptionBillingCycle();
-        console.log(billingData);
         setBillingCycle(billingData || null);
       });
     };
@@ -49,7 +48,7 @@ const Billing = ({ settingsService }: { settingsService: SettingsService }) => {
           title="Currently"
           value={billingCycle?.plan.replace("_", " ")}
         />
-        <AnalyticsCard title="Billing Total" value={`₦${billingCycle?.billing_total?.toLocaleString() || 0.0}`} />
+        <AnalyticsCard title="Billing Total" value={`₦${billingCycle?.billing_total?.toLocaleString() || 0}`} />
       </section>
     </section>
   );

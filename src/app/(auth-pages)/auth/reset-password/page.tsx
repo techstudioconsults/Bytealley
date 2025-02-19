@@ -18,10 +18,9 @@ const ResetPasswordPage = () => {
     },
   });
 
-  const handleSubmit = async (data: ResetPasswordData) => {
-    // TODO: Implement login logic
-    console.log(data);
-  };
+  // const handleSubmit = async () => {
+  //   // TODO: Implement login logic
+  // };
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4">
@@ -34,7 +33,7 @@ const ResetPasswordPage = () => {
         <p className="mb-8 text-muted-foreground">Enter your new password to reset your password.</p>
 
         <FormProvider {...methods}>
-          <form onSubmit={methods.handleSubmit(handleSubmit)} className="space-y-4">
+          <form className="space-y-4">
             <FormField
               label="New Password"
               name="password"

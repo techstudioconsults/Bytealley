@@ -3,10 +3,9 @@ import Link from "next/link";
 
 import { SubscriptionModal } from "~/components/common/subscription-modal";
 import { WithDependency } from "~/HOC/withDependencies";
-import { SettingsService } from "~/services/settings.service";
 import { dependencies } from "~/utils/dependencies";
 
-const BasePlans = ({ settingsService, userID }: { settingsService: SettingsService; userID: string }) => {
+const BasePlans = ({ userID }: { userID: string }) => {
   return (
     <section className={`space-y-10`}>
       <section className={`grid grid-cols-1 gap-4 lg:grid-cols-5 lg:gap-16`}>
