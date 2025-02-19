@@ -42,7 +42,7 @@ export const Account = ({ service }: { service: AppService }) => {
           <p className={`text-sm text-mid-grey-II`}>This is an ireversible process</p>
         </div>
         <div className={`col-span-3`}>
-          <DeleteAccount service={service} />
+          <DeleteAccount />
         </div>
       </section>
     </section>
