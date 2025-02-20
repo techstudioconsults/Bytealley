@@ -23,6 +23,13 @@ export class AppService {
     }
   }
 
+  async subscribeToPlan() {
+    const response = await this.http.post<{ data: ISubscriptionPlan }>(`/subscriptions`, null);
+    if (response?.status === 200) {
+      return response.data.data;
+    }
+  }
+
   async updateUserNotifications(data: object) {
     const response = await this.http.post<{ data: IUser }>(`/users/me`, data);
     if (response?.status === 200) {

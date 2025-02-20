@@ -1,7 +1,25 @@
+"use client";
+
+import { useTransition } from "react";
+
+import { WithDependency } from "~/HOC/withDependencies";
+import { AppService } from "~/services/app.service";
+import { dependencies } from "~/utils/dependencies";
 import CustomButton from "../common-button/common-button";
 import { ReusableDialog } from "../Dialog";
 
-export const SubscriptionModal = ({ triggerStyle }: { triggerStyle?: string }) => {
+export const Subscription = ({ triggerStyle, appService }: { triggerStyle?: string; appService: AppService }) => {
+  const [isPending, starttransition] = useTransition();
+  const handleSubscription = () => {
+    starttransition(async () => {
+      const response = await appService.subscribeToPlan();
+      console.log(response);
+      if (response) {
+        window.location.href = response.authorization_url;
+      }
+    });
+  };
+
   return (
     <ReusableDialog
       trigger={
@@ -31,10 +49,21 @@ export const SubscriptionModal = ({ triggerStyle }: { triggerStyle?: string }) =
           <p>✔ When can I withdraw from my wallet</p>
           <p>✔ When can I withdraw from my wallet</p>
         </div>
-        <CustomButton className={`h-[56px] w-full text-xl`} variant={`primary`} size={`xl`}>
+        <CustomButton
+          onClick={handleSubscription}
+          className={`h-[56px] w-full text-xl`}
+          variant={`primary`}
+          size={`xl`}
+          isDisabled={isPending}
+          isLoading={isPending}
+        >
           Start Creating
         </CustomButton>
       </section>
     </ReusableDialog>
   );
 };
+
+export const SubscriptionModal = WithDependency(Subscription, {
+  appService: dependencies.APP_SERVICE,
+});

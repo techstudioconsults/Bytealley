@@ -330,3 +330,43 @@ export const payoutColumns: IColumnDefinition<IPayout>[] = [
     ),
   },
 ];
+
+export const plansColumns: IColumnDefinition<IPlan>[] = [
+  {
+    header: "Plan",
+    accessorKey: "plan",
+  },
+  {
+    header: "Price",
+    accessorKey: "price",
+    render: (_, plan: IPlan) => <span>₦{plan.price?.toLocaleString()}</span>,
+  },
+  {
+    header: "Date",
+    accessorKey: "date",
+    render: (_, plan: IPlan) => (
+      <span>
+        {formatDate(plan?.date)} {formatTime(plan?.date)}
+      </span>
+    ),
+  },
+
+  {
+    header: "Status",
+    accessorKey: "status",
+    render: (_, plan: IPlan) => (
+      <Badge
+        className={cn(
+          plan.status === "success"
+            ? "bg-low-success text-mid-success"
+            : plan.status === "pending"
+              ? "bg-low-warning text-high-warning"
+              : "bg-low-danger text-mid-danger",
+          "rounded-sm px-4 py-2",
+        )}
+      >
+        {plan.status}
+      </Badge>
+    ),
+  },
+];

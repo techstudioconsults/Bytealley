@@ -334,11 +334,26 @@ declare global {
     created_at: string;
   }
 
+  interface IPlan {
+    date: string;
+    description: string;
+    plan: string;
+    price: number;
+    reference: string;
+    status: string;
+  }
+
   interface IBillingCycle {
-    renewal_date: string;
+    renewal_date: string | "";
     plan: string;
     billing_total: number | null;
-    plans: null | Array;
+    plans: IPlan[] | [];
+  }
+
+  interface ISubscriptionPlan {
+    authorization_url: string;
+    access_code: string;
+    reference: string;
   }
 }
 

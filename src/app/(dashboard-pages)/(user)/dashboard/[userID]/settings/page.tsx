@@ -25,6 +25,11 @@ const Settings = ({ appService, params }: { appService: AppService; params: { us
     router.replace(`${pathname}?${parameters.toString()}`, { scroll: false });
   };
 
+  const handlePlanClick = () => {
+    const parameters = new URLSearchParams(searchParameters);
+    parameters.set("tab", "plans");
+  };
+
   return (
     <Tabs value={currentTab} onValueChange={onTabChange} className="w-full">
       <TabsList className="mb-8 flex h-fit w-full flex-col-reverse gap-4 rounded-none border-b bg-transparent p-0 sm:h-[58px] sm:flex-row sm:items-center sm:justify-between lg:h-[58px]">
@@ -60,6 +65,7 @@ const Settings = ({ appService, params }: { appService: AppService; params: { us
             />
           </TabsTrigger>
           <TabsTrigger
+            onClick={handlePlanClick}
             value={currentTab === "plans" ? "plans" : "billing"}
             className="relative h-full min-w-[80px] shrink-0 rounded-none border-transparent px-3 text-sm data-[state=active]:bg-transparent data-[state=active]:shadow-none sm:px-4"
           >
