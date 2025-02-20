@@ -17,6 +17,7 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
 import { useSession } from "~/hooks/use-session";
+import { Drawer } from "../drawer/drawer";
 import { UnreadNotificationCard } from "./notification";
 
 export const DashboardNavbar = () => {
@@ -31,7 +32,10 @@ export const DashboardNavbar = () => {
   return (
     <nav className="sticky top-0 z-[5] border-b-[0.5px] border-border" role="navbar">
       <section className="flex w-full items-center justify-between gap-[20px] bg-white px-[16px] py-[20px] lg:px-[32px]">
-        <h6 className="font-semibold">{title}</h6>
+        <div className={`flex items-center gap-4`}>
+          <Drawer />
+          <h6 className="font-semibold">{title}</h6>
+        </div>
         <section className="flex items-center justify-between gap-1 md:gap-2 lg:gap-6">
           <SearchInput inputBackgroundColor="bg-low-grey-III" className="hidden w-[100%] lg:flex lg:w-[270px]" />
           <div className="relative flex items-center justify-center">

@@ -1,15 +1,18 @@
 "use client";
 
+import { MenuIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FC } from "react";
 
 import { Logo } from "~/components/common/logo";
+import { DialogTitle } from "~/components/ui/dialog";
+import { Sheet, SheetContent, SheetTrigger } from "~/components/ui/sheet";
 import { sideItems } from "~/utils/constants";
 import { cn } from "~/utils/utils";
 
-export const Sidebar: FC<ISidebarProperties> = ({ sideNavitems = sideItems, logoComponent, className = "" }) => {
+export const Drawer: FC<ISidebarProperties> = ({ sideNavitems = sideItems, logoComponent }) => {
   const pathname = usePathname();
   const userID = pathname.split("/")[2];
 
@@ -64,15 +67,20 @@ export const Sidebar: FC<ISidebarProperties> = ({ sideNavitems = sideItems, logo
       </Link>
     );
   };
-
   return (
-    <div className={cn("sticky top-0 hidden h-screen w-[283px] flex-col border-r bg-white xl:flex", className)}>
-      <div className="flex items-center justify-center py-8">{logoComponent || <Logo width={140} height={47} />}</div>
-      <nav className="flex-1 space-y-2 overflow-y-auto p-4">
-        {sideNavitems.map((item) => (
-          <div key={item.id}>{renderSidebarItem(item)}</div>
-        ))}
-      </nav>
-    </div>
+    <Sheet>
+      <SheetTrigger className={`xl:hidden`}>
+        <MenuIcon />
+      </SheetTrigger>
+      <SheetContent side={`left`}>
+        <DialogTitle hidden>Navigation Menu</DialogTitle>
+        <div className="flex items-center justify-center py-8">{logoComponent || <Logo width={140} height={47} />}</div>
+        <nav className="flex-1 space-y-2 overflow-y-auto p-4">
+          {sideNavitems.map((item) => (
+            <div key={item.id}>{renderSidebarItem(item)}</div>
+          ))}
+        </nav>
+      </SheetContent>
+    </Sheet>
   );
 };
