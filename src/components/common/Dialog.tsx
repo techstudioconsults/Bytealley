@@ -1,4 +1,4 @@
-import { HTMLAttributes, ReactNode } from "react";
+import { FC, HTMLAttributes, ReactNode } from "react";
 
 import {
   Dialog,

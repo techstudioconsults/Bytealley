@@ -6,6 +6,7 @@ import help from "@/icons/Property_2_Chat_6_qlrj4q.svg";
 import explore from "@/icons/Property_2_Compass_jfe95t.svg";
 import downloads from "@/icons/Property_2_Downloads-folder_zb8tdq.svg";
 import home from "@/icons/Property_2_Layout-4-blocks_gs8r2r.svg";
+import funnel from "@/icons/Property_2_Layout-top-panel-2_xbc11g.svg";
 import integration from "@/icons/Property_2_Outlet_gqk6rs.svg";
 import products from "@/icons/Property_2_Price_2_ugwdhq.svg";
 import settings from "@/icons/Property_2_Settings_4_tm54pe.svg";
@@ -25,6 +26,12 @@ export const sideItems: SidebarItem[] = [
     link: "/dashboard/:userID/products",
     iconUrl: products,
     id: "products",
+  },
+  {
+    route: "Funnels",
+    link: "/dashboard/:userID/funnels",
+    iconUrl: funnel,
+    id: "funnels",
   },
   {
     route: "Orders",

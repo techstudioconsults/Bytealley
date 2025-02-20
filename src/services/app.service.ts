@@ -1,5 +1,5 @@
 import { HttpAdapter } from "~/adapters/http-adapter";
-import { ProfileFormData } from "~/schemas";
+import { EmailIntegrationFormData, ProfileFormData } from "~/schemas";
 
 export class AppService {
   private readonly http: HttpAdapter;
@@ -25,6 +25,13 @@ export class AppService {
 
   async subscribeToPlan() {
     const response = await this.http.post<{ data: ISubscriptionPlan }>(`/subscriptions`, null);
+    if (response?.status === 200) {
+      return response.data.data;
+    }
+  }
+
+  async integrateEmail(data: EmailIntegrationFormData) {
+    const response = await this.http.post<{ data: { message: string } }>(`/emailMarketing/token`, data);
     if (response?.status === 200) {
       return response.data.data;
     }

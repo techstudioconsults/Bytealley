@@ -120,6 +120,11 @@ export const kycSchema = z.object({
   document_image: z.any().refine((file) => file !== null, "document image is required"),
 });
 
+export const emailIntegrationSchema = z.object({
+  provider: z.string().optional(),
+  token: z.string().min(1, "API key is required"),
+});
+
 export type RegisterFormData = z.infer<typeof registerSchema>;
 export type LoginFormData = z.infer<typeof loginSchema>;
 export type ForgotPasswordData = z.infer<typeof forgotPasswordSchema>;
@@ -133,5 +138,6 @@ export type EmailNotificationSettingFormData = z.infer<typeof emailNotificationS
 export type ChangePasswordFormData = z.infer<typeof changePasswordSchema>;
 export type ChangeEmailFormData = z.infer<typeof changeEmailSchema>;
 export type KycFormData = z.infer<typeof kycSchema>;
+export type EmailIntegrationFormData = z.infer<typeof emailIntegrationSchema>;
 
 // export type ProductFormData = z.infer<typeof ProductFormSchema>;
