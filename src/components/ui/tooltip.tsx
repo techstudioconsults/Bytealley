@@ -59,4 +59,4 @@ const Tooltip = ({
   );
 };
 
-export { Tooltip, TooltipProvider };
+export { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent };
