@@ -10,7 +10,7 @@ import Loading from "~/app/Loading";
 // import Loading from "~/app/Loading";
 import { WithDependency } from "~/HOC/withDependencies";
 import { useLoading } from "~/hooks/use-loading";
-import { LoginFormData, ProfileFormData, RegisterFormData } from "~/schemas";
+import { ForgotPasswordData, LoginFormData, ProfileFormData, RegisterFormData, ResetPasswordData } from "~/schemas";
 import { AppService } from "~/services/app.service";
 import { AuthService } from "~/services/auth.service";
 import { dependencies } from "~/utils/dependencies";
@@ -138,6 +138,31 @@ const BaseSessionProvider = ({
     }
   };
 
+  const forgotPassword = async (data: ForgotPasswordData) => {
+    const response = await handleAuthAction(() => authService.forgotPassword(data));
+    console.log(response);
+
+    if (response) {
+      Toast.getInstance().showToast({
+        title: "Success",
+        description: response.message,
+        variant: "success",
+      });
+    }
+  };
+
+  const resetPassword = async (data: ResetPasswordData) => {
+    const response = await handleAuthAction(() => authService.resetPassword(data));
+    if (response) {
+      Toast.getInstance().showToast({
+        title: "Success",
+        description: response.message,
+        variant: "success",
+      });
+      router.push(`/auth/login`);
+    }
+  };
+
   return (
     <SessionContext.Provider
       value={{
@@ -149,6 +174,8 @@ const BaseSessionProvider = ({
         handleGoogleCallback,
         updateUserInfo,
         fetchCurrentUser,
+        forgotPassword,
+        resetPassword,
       }}
     >
       {children}

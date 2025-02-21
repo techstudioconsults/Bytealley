@@ -13,7 +13,6 @@ export const Subscription = ({ triggerStyle, appService }: { triggerStyle?: stri
   const handleSubscription = () => {
     starttransition(async () => {
       const response = await appService.subscribeToPlan();
-      console.log(response);
       if (response) {
         window.location.href = response.authorization_url;
       }

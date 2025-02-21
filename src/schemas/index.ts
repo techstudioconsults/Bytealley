@@ -24,6 +24,8 @@ export const forgotPasswordSchema = z.object({
   }),
 });
 export const resetPasswordSchema = z.object({
+  token: z.string().min(1, "Title is required").optional(),
+  email: z.string().min(1, "Email is required").email("Please enter a valid email address").optional(),
   password: z.string().min(1, "Password is required").min(8, "Password must be at least 8 characters"),
   password_confirmation: z.string().min(1, "Confirm password is required"),
 });

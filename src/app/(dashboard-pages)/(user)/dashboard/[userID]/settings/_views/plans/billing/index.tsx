@@ -48,7 +48,7 @@ const Billing = ({ settingsService }: { settingsService: SettingsService }) => {
         />
         <AnalyticsCard title="Billing Total" value={`₦${billingCycle?.billing_total?.toLocaleString() || 0}`} />
       </section>
-      {billingCycle?.plans?.length ?? 0 > 0 ? (
+      {(billingCycle?.plans?.length ?? 0 > 0) ? (
         <DashboardTable data={billingCycle?.plans || []} columns={plansColumns} />
       ) : (
         <EmptyState title="Billing cycle Not Found" description="" images={[]} className="h-full" />

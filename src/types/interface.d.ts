@@ -8,6 +8,8 @@ declare global {
     updateUserInfo: (data: ProfileFormData) => Promise<void>;
     register: (data: RegisterFormData) => Promise<void>;
     logout: () => Promise<void>;
+    forgotPassword: (data: ForgotPasswordData) => Promise<void>;
+    resetPassword: (data: ResetPasswordData) => Promise<void>;
     googleSignIn: () => Promise<void>;
     handleGoogleCallback: (credentials: { code: string; provider: string }) => Promise<void>;
     fetchCurrentUser: () => Promise<void>;

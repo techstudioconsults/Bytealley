@@ -14,9 +14,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~
 import { Textarea } from "~/components/ui/textarea";
 import { cn } from "~/utils/utils";
 
-import "react-quill/dist/quill.snow.css"; // Import Quill styles
+import "react-quill/dist/quill.snow.css";
 
-import { CameraIcon, InfoIcon, PlusIcon } from "lucide-react";
+import { CameraIcon, Eye, EyeOff, InfoIcon, PlusIcon } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import { MdCancel } from "react-icons/md";
@@ -28,7 +28,7 @@ import CustomButton from "./common-button/common-button";
 import { StarRating } from "./rating/star";
 
 const ReactQuill = dynamic(() => import("react-quill"), {
-  ssr: false, // Disable server-side rendering
+  ssr: false,
 });
 
 interface FormFieldProperties {
@@ -44,6 +44,7 @@ interface FormFieldProperties {
   containerClassName?: string;
   leftAddon?: React.ReactNode; // Add left icon or button
   rightAddon?: React.ReactNode; // Add right icon or button
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export function FormField({
@@ -59,12 +60,18 @@ export function FormField({
   leftAddon,
   rightAddon,
   labelDetailedNode,
+  onChange,
 }: FormFieldProperties) {
   const {
     control,
     formState: { errors },
   } = useFormContext();
   const error = errors[name];
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((previous) => !previous);
+  };
 
   return (
     <div className="space-y-2">
@@ -121,6 +128,27 @@ export function FormField({
                   value={field.value || ""}
                   onChange={(event) => field.onChange(event.target.valueAsNumber)}
                 />
+              ) : type === "password" ? (
+                <div className="relative w-full">
+                  <Input
+                    {...field}
+                    type={showPassword ? "text" : "password"}
+                    placeholder={placeholder}
+                    disabled={disabled}
+                    className={inputClassName}
+                    onChange={(event) => {
+                      field.onChange(event);
+                      onChange?.(event);
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
               ) : (
                 <Input
                   {...field}
@@ -1039,3 +1067,33 @@ export function SwitchField({
     </div>
   );
 }
+
+export const PasswordValidation = ({ password }: { password: string }) => {
+  const hasMinLength = password.length >= 8;
+  const hasUppercase = /[A-Z]/.test(password);
+  const hasNumber = /\d/.test(password);
+  const hasSpecialChar = /[#$%&@^]/.test(password);
+
+  return (
+    <div className="mt-2 space-y-2">
+      <div className="flex items-center space-x-2">
+        <Checkbox className={`rounded-full border-black px-[1px]`} checked={hasMinLength} />
+        <span className="text-[10px] text-mid-grey-II">Password should be at least 8 characters long</span>
+      </div>
+      <div className="flex items-center space-x-2">
+        <Checkbox className={`rounded-full border-black px-[1px]`} checked={hasUppercase} />
+        <span className="text-[10px] text-mid-grey-II">Password should contain at least one uppercase letter</span>
+      </div>
+      <div className="flex items-center space-x-2">
+        <Checkbox className={`rounded-full border-black px-[1px]`} checked={hasNumber} />
+        <span className="text-[10px] text-mid-grey-II">Password should contain at least one number</span>
+      </div>
+      <div className="flex items-center space-x-2">
+        <Checkbox className={`rounded-full border-black px-[1px]`} checked={hasSpecialChar} />
+        <span className="text-[10px] text-mid-grey-II">
+          Password should contain at least one special character (@#$%^&)
+        </span>
+      </div>
+    </div>
+  );
+};

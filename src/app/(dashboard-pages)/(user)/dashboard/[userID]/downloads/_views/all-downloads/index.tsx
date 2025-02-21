@@ -54,16 +54,16 @@ export const AllDownloads = ({ service }: { service: ProductService }) => {
         <>
           {downloads.length > 0 ? (
             <section className={`grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4`}>
-              {downloads.map((download) => (
+              {downloads?.map((download) => (
                 <DownloadCard
-                  key={download.id}
+                  key={download?.id}
                   title={download.title}
                   author={download.publisher}
                   image={download.thumbnail}
                   price={download.price}
                   onClick={() => {
                     router.push(
-                      `/dashboard/${user?.id}/downloads/${download.id}?product_type=${download.product_type}`,
+                      `/dashboard/${user?.id}/downloads/${download?.id}?product_type=${download.product_type}`,
                     );
                   }}
                 />

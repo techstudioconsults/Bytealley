@@ -2,19 +2,20 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 
 import CustomButton from "~/components/common/common-button/common-button";
-import { FormField } from "~/components/common/FormFields";
+import { FormField, PasswordValidation } from "~/components/common/FormFields";
 import { Logo } from "~/components/common/logo";
 import { useSession } from "~/hooks/use-session";
 import { RegisterFormData, registerSchema } from "~/schemas";
 
 const RegisterPage = () => {
   const [isGooglePending, startGoogleTransition] = useTransition();
-  const { register, googleSignIn } = useSession();
+  const { register: registerUser, googleSignIn } = useSession();
+  const [, setPassword] = useState("");
 
   const methods = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
@@ -29,10 +30,11 @@ const RegisterPage = () => {
   const {
     handleSubmit,
     formState: { isSubmitting },
+    watch,
   } = methods;
 
   const handleSubmitForm = async (data: RegisterFormData) => {
-    await register(data);
+    await registerUser(data);
   };
 
   const handleGoogleSignIn = () => {
@@ -41,9 +43,11 @@ const RegisterPage = () => {
     });
   };
 
+  const passwordValue = watch("password");
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4">
-      <div className="w-full max-w-[547px] rounded-xl bg-white p-12 shadow-lg">
+      <div className="w-full max-w-[547px] rounded-xl bg-white p-6 shadow-lg lg:p-12">
         <div className="mb-8 flex justify-center">
           <Logo />
         </div>
@@ -83,7 +87,9 @@ const RegisterPage = () => {
               placeholder="Enter Password"
               className={`h-12 bg-low-grey-III`}
               required
+              onChange={(event) => setPassword(event.target.value)}
             />
+            <PasswordValidation password={passwordValue} />
 
             <FormField
               label="Confirm Password"
