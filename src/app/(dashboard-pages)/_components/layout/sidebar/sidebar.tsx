@@ -9,7 +9,7 @@ import { Logo } from "~/components/common/logo";
 import { sideItems } from "~/utils/constants";
 import { cn } from "~/utils/utils";
 
-export const Sidebar: FC<ISidebarProperties> = ({ sideNavitems = sideItems, logoComponent, className = "" }) => {
+export const Sidebar: FC<ISidebarProperties> = ({ sideNavitems = sideItems, logoComponent }) => {
   const pathname = usePathname();
   const userID = pathname.split("/")[2];
 
@@ -66,7 +66,8 @@ export const Sidebar: FC<ISidebarProperties> = ({ sideNavitems = sideItems, logo
   };
 
   return (
-    <div className={cn("sticky top-0 hidden h-screen w-[283px] flex-col border-r bg-white xl:flex", className)}>
+    <div>
+      {/* <div className={cn("hidden h-screen w-[283px] flex-col border-r bg-white xl:flex", className)}> */}
       <div className="flex items-center justify-center py-8">{logoComponent || <Logo width={140} height={47} />}</div>
       <nav className="flex-1 space-y-2 overflow-y-auto p-4">
         {sideNavitems.map((item) => (
