@@ -66,6 +66,14 @@ export class ProductService {
     }
   }
 
+  async getProductTags() {
+    const response = await this.http.get<{ data: [] }>(`/products/tags`);
+
+    if (response?.status === 200) {
+      return response.data.data;
+    }
+  }
+
   async downloadProducts(filters: IFilters = Object.create({ page: 1 })) {
     const queryParameters = this.buildQueryParameters(filters);
     const response = await this.http.get(`/products/download?${queryParameters}`);
@@ -77,6 +85,20 @@ export class ProductService {
 
   async softDeleteProduct(productId: string) {
     const response = await this.http.delete<IProduct>(`/products/${productId}`);
+    if (response?.status === 200) {
+      return response.data;
+    }
+  }
+
+  async restoreDeleteProduct(productId: string) {
+    const response = await this.http.get<IProduct>(`/products/${productId}/restore`);
+    if (response?.status === 200) {
+      return response.data;
+    }
+  }
+
+  async deleteProductPermanently(productId: string) {
+    const response = await this.http.delete<IProduct>(`/products/${productId}/force`);
     if (response?.status === 200) {
       return response.data;
     }

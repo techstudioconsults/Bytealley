@@ -22,7 +22,7 @@ export const ProductImageCarousel = ({ images }: { images: string[] }) => {
   }, []);
 
   return (
-    <div className="relative mb-4 h-48 w-full rounded-md bg-gray-100 md:h-[263px]">
+    <div className="relative z-[-1] mb-4 h-48 w-full rounded-md bg-gray-100 md:h-[263px]">
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         spaceBetween={10}

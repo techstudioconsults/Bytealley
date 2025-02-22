@@ -2,6 +2,7 @@
 
 import bell from "@/icons/Property_2_Notifications_1_w4v7g4.svg";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LuChevronDown } from "react-icons/lu";
 
@@ -69,7 +70,9 @@ export const DashboardNavbar = () => {
               <DropdownMenuContent className="relative z-[999999]">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Profile</DropdownMenuItem>
+                <Link href={`/dashboard/${user?.id}/profile`}>
+                  <DropdownMenuItem>Profile</DropdownMenuItem>
+                </Link>
                 <DropdownMenuItem onClick={handleLogOut} className="text-mid-danger">
                   Log out
                 </DropdownMenuItem>

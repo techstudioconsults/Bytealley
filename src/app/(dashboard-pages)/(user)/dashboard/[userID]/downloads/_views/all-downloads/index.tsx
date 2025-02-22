@@ -82,8 +82,13 @@ export const AllDownloads = ({ service }: { service: ProductService }) => {
               <EmptyState
                 images={[{ src: emptyCart.src, alt: "Empty download", width: 100, height: 50 }]}
                 description="You do not have any download yet"
-                button={{ text: "Add New Product", onClick: () => {} }}
                 className={`min-h-[273px] rounded-lg bg-low-grey-III`}
+                button={{
+                  text: "Add New Product",
+                  onClick: () => {
+                    router.push(`/dashboard/${user?.id}/products/new`);
+                  },
+                }}
               />
             </section>
           )}

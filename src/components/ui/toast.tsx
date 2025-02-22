@@ -20,7 +20,7 @@ const ToastViewport = React.forwardRef<
   <ToastPrimitives.Viewport
     ref={reference}
     className={cn(
-      "fixed left-1/2 top-0 z-[100] flex max-h-screen -translate-x-1/2 flex-col items-center p-4 sm:flex-col",
+      "fixed left-1/2 top-0 z-[100] flex max-h-screen w-full max-w-[100vw] -translate-x-1/2 flex-col items-center p-4 sm:flex-col",
       className,
     )}
     {...properties}
@@ -29,7 +29,7 @@ const ToastViewport = React.forwardRef<
 ToastViewport.displayName = ToastPrimitives.Viewport.displayName;
 
 const toastVariants = cva(
-  "group pointer-events-auto relative flex w-[702px] h-[88px] items-center justify-between space-x-4 overflow-hidden rounded-md border p-4 pr-8 shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-top-full data-[state=open]:slide-in-from-top-full bg-white text-foreground",
+  "group pointer-events-auto relative flex w-full max-w-[702px] h-auto min-h-[88px] items-center justify-between space-x-4 overflow-hidden rounded-md border p-4 pr-8 shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-top-full data-[state=open]:slide-in-from-top-full bg-white text-foreground",
   {
     variants: {
       variant: {
@@ -58,14 +58,14 @@ const Toast = React.forwardRef<
 >(({ className, variant, ...properties }, reference) => {
   return (
     <ToastPrimitives.Root ref={reference} className={cn(toastVariants({ variant }), className)} {...properties}>
-      <div className="flex flex-col">
+      <div className="flex w-full flex-col">
         <div className="flex items-center gap-4">
           <Image
             src={variantIcons[variant ?? "default"]}
             alt=""
             className="h-[50px] w-[50px] border-r border-r-black object-contain"
           />
-          {properties.children}
+          <div className="flex flex-1 flex-col">{properties.children}</div>
         </div>
       </div>
     </ToastPrimitives.Root>

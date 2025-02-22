@@ -6,6 +6,7 @@ import productImage from "@/images/empty_product.svg";
 import { format } from "date-fns";
 import debounce from "lodash.debounce";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { DateRange } from "react-day-picker";
 
@@ -19,6 +20,7 @@ import { SelectDropdown } from "~/app/(dashboard-pages)/_components/select-dropd
 import CustomButton from "~/components/common/common-button/common-button";
 import { LoadingSpinner } from "~/components/miscellaneous/loading-spinner";
 import { WithDependency } from "~/HOC/withDependencies";
+import { useSession } from "~/hooks/use-session";
 import { OrderService } from "~/services/orders.service";
 import { ProductService } from "~/services/product.service";
 import { statusOptions } from "~/utils/constants";
@@ -38,6 +40,8 @@ const Analytics = ({
   const [status, setStatus] = useState<string>("all");
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const [topProducts, setTopProducts] = useState<IOrder[]>([]);
+  const router = useRouter();
+  const { user } = useSession();
 
   const debouncedStatusReference = useRef(
     debounce((value: string) => {
@@ -174,7 +178,12 @@ const Analytics = ({
           <EmptyState
             images={[{ src: productImage.src, alt: "Empty product", width: 102, height: 60 }]}
             description="You do not have any sales activities yet."
-            button={{ text: "Create your first product", onClick: () => {} }}
+            button={{
+              text: "Create your first product",
+              onClick: () => {
+                router.push(`/dashboard/${user?.id}/products/new`);
+              },
+            }}
             className={"min-h-[236px] rounded-md bg-low-grey-III p-6 text-black"}
           />
         )}

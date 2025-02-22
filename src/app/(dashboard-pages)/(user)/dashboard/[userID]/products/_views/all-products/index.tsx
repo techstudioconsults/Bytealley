@@ -151,7 +151,12 @@ export const AllProducts = ({ productService }: { productService: ProductService
                   ]}
                   title="Create your first product."
                   description="Unlock your creative potential and take the first step towards success on our platform. Create your first product today and join our vibrant community of digital creators. Your masterpiece is just a click away!"
-                  button={{ text: "Add New Product", onClick: () => {} }}
+                  button={{
+                    text: "Add New Product",
+                    onClick: () => {
+                      router.push(`/dashboard/${user?.id}/products/new`);
+                    },
+                  }}
                 />
               )}
             </section>

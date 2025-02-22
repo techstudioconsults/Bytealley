@@ -6,6 +6,7 @@ import emptyCart from "@/images/empty-cart.svg";
 import { format } from "date-fns";
 import debounce from "lodash.debounce";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { DateRange } from "react-day-picker";
 
@@ -18,6 +19,7 @@ import ExportAction from "~/app/(dashboard-pages)/_components/export-action";
 // import { SelectDropdown } from "~/app/(dashboard-pages)/_components/select-dropdown";
 import Loading from "~/app/Loading";
 import { LoadingSpinner } from "~/components/miscellaneous/loading-spinner";
+import { useSession } from "~/hooks/use-session";
 import { OrderService } from "~/services/orders.service";
 import { ProductService } from "~/services/product.service";
 
@@ -35,6 +37,8 @@ export const ActiveUser = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [paginationMeta, setPaginationMeta] = useState<IPaginationMeta | null>(null);
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
+  const router = useRouter();
+  const { user } = useSession();
 
   const debounceDateRangeReference = useRef(
     debounce((value: DateRange) => {
@@ -163,7 +167,12 @@ export const ActiveUser = ({
                   ]}
                   title="No sales found."
                   description="You do not have any sales yet."
-                  button={{ text: "Create New Order", onClick: () => {} }}
+                  button={{
+                    text: "Create New product",
+                    onClick: () => {
+                      router.push(`/dashboard/${user?.id}/products/new`);
+                    },
+                  }}
                 />
               )}
             </>

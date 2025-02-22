@@ -13,7 +13,7 @@ import {
   ThumbNailUpload,
 } from "~/components/common/FormFields";
 
-export const ProductForm = ({ methods }: { methods: UseFormReturn<ProductFormValues> }) => {
+export const ProductForm = ({ methods, tags }: { methods: UseFormReturn<ProductFormValues>; tags: [] }) => {
   const productType = methods.watch("product_type");
 
   return (
@@ -127,11 +127,7 @@ export const ProductForm = ({ methods }: { methods: UseFormReturn<ProductFormVal
           className={`h-12 bg-low-grey-III`}
           label="Tags"
           name="tags"
-          options={[
-            { value: "option1", label: "Option 1" },
-            { value: "option2", label: "Option 2" },
-            { value: "option3", label: "Option 3" },
-          ]}
+          options={tags}
           placeholder="Choose options"
           required
         />

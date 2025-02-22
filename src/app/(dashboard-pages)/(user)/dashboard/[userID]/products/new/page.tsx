@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useCallback, useEffect, useState, useTransition } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import CustomButton from "~/components/common/common-button/common-button";
@@ -22,6 +22,7 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
   const searchParameters = useSearchParams();
   const [isPublishing, startTransition] = useTransition();
   const [isPublished, setIsPublished] = useState(false);
+  const [tags, setTags] = useState<[]>([]);
 
   const currentTab = searchParameters.get("tab") || "product-details";
   const productID = searchParameters.get("product_id") || "";
@@ -30,7 +31,7 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
     resolver: zodResolver(ProductFormSchema),
     defaultValues: {
       product_type: "",
-      title: "",
+      title: "kingsley",
       category: "",
       price: 0,
       discount_price: 0,
@@ -114,6 +115,19 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
       });
     });
   };
+
+  const getProductTags = useCallback(async () => {
+    const response = await productService.getProductTags();
+    console.log(response);
+    
+    if (response) {
+      setTags(response);
+    }
+  }, [productService]);
+
+  useEffect(() => {
+    getProductTags();
+  }, [getProductTags]);
 
   return (
     <FormProvider {...methods}>
@@ -237,7 +251,7 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
 
         {/* Tab Content */}
         <TabsContent value="product-details">
-          <ProductForm methods={methods} />
+          <ProductForm methods={methods} tags={tags} />
         </TabsContent>
         <TabsContent value="preview">
           <ViewProductLayout productService={productService} />

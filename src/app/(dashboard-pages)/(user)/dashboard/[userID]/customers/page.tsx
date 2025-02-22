@@ -115,7 +115,12 @@ const BaseCustomerPage = ({ customerService }: { customerService: CustomerServic
                 ]}
                 title="No Customers found."
                 description="You do not have any active customers yet."
-                button={{ text: "Create Your First Product", onClick: () => {} }}
+                button={{
+                  text: "Create Your First Product",
+                  onClick: () => {
+                    router.push(`/dashboard/${user?.id}/products/new`);
+                  },
+                }}
               />
             )}
           </>

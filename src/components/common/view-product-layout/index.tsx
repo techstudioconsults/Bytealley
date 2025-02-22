@@ -52,15 +52,15 @@ export function ViewProductLayout({ productService }: { productService: ProductS
             <h1 className="mb-2 text-2xl font-bold text-gray-900 md:text-3xl">{product?.title}</h1>
             <div className="flex items-center gap-2">
               <p className="flex items-center gap-2">
-                <Avatar className="h-6 w-6">
+                <Avatar className="relative z-[-1] h-6 w-6">
                   <AvatarImage src={user?.logo || ""} />
                   <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
                 </Avatar>
-                <span className={`font-bold`}>{user?.name}</span>
+                <span className={`text-xs font-bold lg:text-[16px]`}>{user?.name}</span>
               </p>
               <div className="flex items-center gap-2">
                 <StarRating rating={product?.avg_rating} />
-                <span className="font-bold">{product?.avg_rating} ratings</span>
+                <span className="text-xs font-bold lg:text-[16px]">{product?.avg_rating} ratings</span>
               </div>
             </div>
           </div>
