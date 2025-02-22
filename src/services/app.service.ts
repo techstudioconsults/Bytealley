@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpAdapter } from "~/adapters/http-adapter";
 import { EmailIntegrationFormData, ProfileFormData } from "~/schemas";
 
