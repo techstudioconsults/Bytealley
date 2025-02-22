@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { getDaysInMonth } from "date-fns";
+
 import { HttpAdapter } from "~/adapters/http-adapter";
 
 export class AnalyticsService {
@@ -19,6 +22,27 @@ export class AnalyticsService {
     const response = await this.http.get<{ data: IPayout }>(`/downloads/${downloadId}`);
     if (response?.status === 200) {
       return response.data;
+    }
+  }
+
+  async getDailyRevenueData(monthIndex: string) {
+    const year = new Date().getFullYear();
+    const month = monthIndex.padStart(2, "0");
+
+    const response = await this.http.get<{ data: any }>(`/revenues/daily?month=${year}-${month}`);
+    if (response?.status === 200) {
+      const data = response.data.data;
+      const daysInMonths = getDaysInMonth(Number.parseInt(monthIndex, 10));
+      const dailyRevenueData = Array.from({ length: daysInMonths }, (_, index) => {
+        const day = index + 1;
+        const formattedDay = day.toString().padStart(2, "0");
+        const date = `${year}-${month}-${formattedDay}`;
+        return {
+          day,
+          revenue: data[date] ? data[date].amount : 0,
+        };
+      });
+      return dailyRevenueData;
     }
   }
 

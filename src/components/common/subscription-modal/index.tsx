@@ -30,7 +30,7 @@ export const Subscription = ({ triggerStyle, appService }: { triggerStyle?: stri
           </CustomButton>
         )
       }
-      className={`p-14 lg:min-w-[817px]`}
+      className={`lg:min-w-[817px] lg:p-14`}
       headerClassName={`text-2xl text-center`}
     >
       <section className={`rounded-xl bg-low-purple p-10 shadow-2xl`}>
@@ -41,12 +41,12 @@ export const Subscription = ({ triggerStyle, appService }: { triggerStyle?: stri
           </h2>
         </div>
         <div className={`my-10 space-y-8`}>
-          <p>✔ Instantly accept payments</p>
-          <p>✔ Access to existing features</p>
-          <p>✔ Future releases each year</p>
-          <p>✔ When can I withdraw from my wallet</p>
-          <p>✔ When can I withdraw from my wallet</p>
-          <p>✔ When can I withdraw from my wallet</p>
+          <p className={`text-xs lg:text-[16px]`}>✔ Instantly accept payments</p>
+          <p className={`text-xs lg:text-[16px]`}>✔ Access to existing features</p>
+          <p className={`text-xs lg:text-[16px]`}>✔ Future releases each year</p>
+          <p className={`text-xs lg:text-[16px]`}>✔ When can I withdraw from my wallet</p>
+          <p className={`text-xs lg:text-[16px]`}>✔ When can I withdraw from my wallet</p>
+          <p className={`text-xs lg:text-[16px]`}>✔ When can I withdraw from my wallet</p>
         </div>
         <CustomButton
           onClick={handleSubscription}

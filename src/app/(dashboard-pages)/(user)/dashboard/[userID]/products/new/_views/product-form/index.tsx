@@ -1,5 +1,6 @@
 "use client";
 
+import { useCallback, useEffect, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 
 import {
@@ -12,9 +13,29 @@ import {
   RichTextEditor,
   ThumbNailUpload,
 } from "~/components/common/FormFields";
+import { ProductService } from "~/services/product.service";
 
-export const ProductForm = ({ methods, tags }: { methods: UseFormReturn<ProductFormValues>; tags: [] }) => {
+export const ProductForm = ({
+  methods,
+  service,
+}: {
+  methods: UseFormReturn<ProductFormValues>;
+  service: ProductService;
+}) => {
   const productType = methods.watch("product_type");
+  const [tags, setTags] = useState<{ value: string; label: string }[]>([]);
+
+  const getProductTags = useCallback(async () => {
+    const response = await service.getProductTags();
+    if (response) {
+      const formattrdTags = response.map((tag) => ({ value: tag, label: tag }));
+      setTags(formattrdTags);
+    }
+  }, [service]);
+
+  useEffect(() => {
+    getProductTags();
+  }, [getProductTags]);
 
   return (
     <form className="space-y-[40px]">

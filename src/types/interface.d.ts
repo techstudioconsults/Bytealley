@@ -346,6 +346,7 @@ declare global {
   }
 
   interface IBillingCycle {
+    id: string;
     renewal_date: string | "";
     plan: string;
     billing_total: number | null;
@@ -353,6 +354,7 @@ declare global {
   }
 
   interface ISubscriptionPlan {
+    link: string;
     authorization_url: string;
     access_code: string;
     reference: string;

@@ -22,7 +22,6 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
   const searchParameters = useSearchParams();
   const [isPublishing, startTransition] = useTransition();
   const [isPublished, setIsPublished] = useState(false);
-  const [tags, setTags] = useState<[]>([]);
 
   const currentTab = searchParameters.get("tab") || "product-details";
   const productID = searchParameters.get("product_id") || "";
@@ -115,19 +114,6 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
       });
     });
   };
-
-  const getProductTags = useCallback(async () => {
-    const response = await productService.getProductTags();
-    console.log(response);
-    
-    if (response) {
-      setTags(response);
-    }
-  }, [productService]);
-
-  useEffect(() => {
-    getProductTags();
-  }, [getProductTags]);
 
   return (
     <FormProvider {...methods}>
@@ -251,7 +237,7 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
 
         {/* Tab Content */}
         <TabsContent value="product-details">
-          <ProductForm methods={methods} tags={tags} />
+          <ProductForm methods={methods} service={productService} />
         </TabsContent>
         <TabsContent value="preview">
           <ViewProductLayout productService={productService} />

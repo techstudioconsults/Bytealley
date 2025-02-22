@@ -4,7 +4,7 @@ import { MenuIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FC } from "react";
+import { FC, useState } from "react";
 
 import { Logo } from "~/components/common/logo";
 import { DialogTitle } from "~/components/ui/dialog";
@@ -15,6 +15,7 @@ import { cn } from "~/utils/utils";
 export const Drawer: FC<ISidebarProperties> = ({ sideNavitems = sideItems, logoComponent }) => {
   const pathname = usePathname();
   const userID = pathname.split("/")[2];
+  const [isOpen, setIsOpen] = useState(false);
 
   const renderIcon = (item: SidebarItem) => {
     if (item.icon) {
@@ -51,6 +52,7 @@ export const Drawer: FC<ISidebarProperties> = ({ sideNavitems = sideItems, logoC
           "relative z-50 flex items-center gap-3 rounded-lg px-3 py-2.5 font-medium transition-all duration-200",
           isActive ? "border-2 border-primary text-primary shadow-active" : "text-mid-grey-II hover:bg-low-grey-I",
         )}
+        onClick={() => setIsOpen(false)}
       >
         {renderIcon(item)}
         <span>{item.route}</span>
@@ -67,8 +69,9 @@ export const Drawer: FC<ISidebarProperties> = ({ sideNavitems = sideItems, logoC
       </Link>
     );
   };
+
   return (
-    <Sheet>
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger className={`xl:hidden`}>
         <MenuIcon />
       </SheetTrigger>

@@ -20,3 +20,8 @@ export const formatTime = (date: string) => {
     hour12: true,
   });
 };
+
+// export const getDaysInMonth = (month: number) => {
+//   const year = new Date().getFullYear();
+//   return new Date(year, month, 0).getDate();
+// };

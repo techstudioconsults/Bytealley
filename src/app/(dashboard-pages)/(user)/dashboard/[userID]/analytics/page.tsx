@@ -1,29 +1,28 @@
 "use client";
 
-import refreshIcon from "@/icons/Property_2_Update_ojnsf7.svg";
-import uploadIcon from "@/icons/Property_2_Upload_cm42yb.svg";
+// import refreshIcon from "@/icons/Property_2_Update_ojnsf7.svg";
+// import uploadIcon from "@/icons/Property_2_Upload_cm42yb.svg";
 import productImage from "@/images/empty_product.svg";
 import { format } from "date-fns";
 import debounce from "lodash.debounce";
-import Image from "next/image";
+// import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { DateRange } from "react-day-picker";
 
 import { AnalyticsCard } from "~/app/(dashboard-pages)/_components/analytics-card/index";
-import { Line_Chart } from "~/app/(dashboard-pages)/_components/chart/bar-chart";
+import { Bar_Chart } from "~/app/(dashboard-pages)/_components/chart/bar-chart";
 import { DashboardTable } from "~/app/(dashboard-pages)/_components/dashboard-table";
 import { orderColumns } from "~/app/(dashboard-pages)/_components/dashboard-table/table-data";
 import { DateRangePicker } from "~/app/(dashboard-pages)/_components/date-range-picker";
 import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
-import { SelectDropdown } from "~/app/(dashboard-pages)/_components/select-dropdown";
-import CustomButton from "~/components/common/common-button/common-button";
+// import { SelectDropdown } from "~/app/(dashboard-pages)/_components/select-dropdown";
+// import CustomButton from "~/components/common/common-button/common-button";
 import { LoadingSpinner } from "~/components/miscellaneous/loading-spinner";
 import { WithDependency } from "~/HOC/withDependencies";
 import { useSession } from "~/hooks/use-session";
 import { OrderService } from "~/services/orders.service";
 import { ProductService } from "~/services/product.service";
-import { statusOptions } from "~/utils/constants";
 import { dependencies } from "~/utils/dependencies";
 
 const Analytics = ({
@@ -37,17 +36,17 @@ const Analytics = ({
   const [analytics, setAnalytics] = useState<IDashboardAnalytics | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [paginationMeta, setPaginationMeta] = useState<IPaginationMeta | null>(null);
-  const [status, setStatus] = useState<string>("all");
+  // const [status, setStatus] = useState<string>("all");
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
   const [topProducts, setTopProducts] = useState<IOrder[]>([]);
   const router = useRouter();
   const { user } = useSession();
 
-  const debouncedStatusReference = useRef(
-    debounce((value: string) => {
-      setStatus(value);
-    }, 300),
-  );
+  // const debouncedStatusReference = useRef(
+  //   debounce((value: string) => {
+  //     setStatus(value);
+  //   }, 300),
+  // );
 
   const debounceDateRangeReference = useRef(
     debounce((value: DateRange) => {
@@ -55,10 +54,10 @@ const Analytics = ({
     }, 300),
   );
 
-  const handleStatusChange = useCallback((value: string) => {
-    debouncedStatusReference.current(value);
-    setCurrentPage(1);
-  }, []);
+  // const handleStatusChange = useCallback((value: string) => {
+  //   debouncedStatusReference.current(value);
+  //   setCurrentPage(1);
+  // }, []);
 
   const handleDateRangeChange = useCallback((value: DateRange) => {
     debounceDateRangeReference.current(value);
@@ -93,14 +92,14 @@ const Analytics = ({
         <section className="flex w-full flex-col gap-4 sm:items-center md:flex-row md:justify-between">
           <div className="flex w-full flex-col gap-2 sm:flex-row md:w-auto">
             <DateRangePicker onDateChange={handleDateRangeChange} />
-            <SelectDropdown
+            {/* <SelectDropdown
               options={statusOptions}
               value={status}
               onValueChange={handleStatusChange}
               placeholder="Filter by status"
-            />
+            /> */}
           </div>
-          <div className="flex w-full flex-row gap-2 sm:w-auto sm:justify-start">
+          {/* <div className="flex w-full flex-row gap-2 sm:w-auto sm:justify-start">
             <CustomButton
               className="w-full border-primary text-[16px] text-primary sm:w-auto"
               variant="outline"
@@ -119,7 +118,7 @@ const Analytics = ({
             >
               Export
             </CustomButton>
-          </div>
+          </div> */}
         </section>
 
         <section className={`grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-12`}>
@@ -156,7 +155,7 @@ const Analytics = ({
         </section>
       </section>
       <section className={`my-6`}>
-        <Line_Chart />
+        <Bar_Chart />
       </section>
       <section className={`mt-10`}>
         {topProducts.length > 0 ? (

@@ -30,6 +30,13 @@ export class SettingsService {
     }
   }
 
+  async manageSubscriptionPlan(billingID: string) {
+    const response = await this.http.get<{ data: ISubscriptionPlan }>(`/subscriptions/${billingID}/manage`);
+    if (response?.status === 200) {
+      return response.data;
+    }
+  }
+
   async changeAccountStatus(data: object, accountID: string) {
     const response = await this.http.patch<{ data: IPaymentAccount[] }>(`/accounts/${accountID}`, data);
     if (response?.status === 200) {

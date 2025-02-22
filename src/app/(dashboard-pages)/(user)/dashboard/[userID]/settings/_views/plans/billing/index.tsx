@@ -26,6 +26,13 @@ const Billing = ({ settingsService }: { settingsService: SettingsService }) => {
     fetchProductData();
   }, [settingsService]);
 
+  const handleSubscriptionDeactivation = async () => {
+    const response = await settingsService.manageSubscriptionPlan(billingCycle?.id || "");
+    if (response) {
+      window.location.href = response.data.link;
+    }
+  };
+
   if (isPending) {
     return <Loading text={`Loading current billing cycle...`} className={`w-fill h-fit p-20`} />;
   }
@@ -37,7 +44,11 @@ const Billing = ({ settingsService }: { settingsService: SettingsService }) => {
       </section>
       <section className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <AnalyticsCard
-          action={<p className={`cursor-pointer font-semibold text-mid-danger`}>Deactivate Plan</p>}
+          action={
+            <p onClick={handleSubscriptionDeactivation} className={`cursor-pointer font-semibold text-mid-danger`}>
+              Deactivate Plan
+            </p>
+          }
           title="Renewal Date"
           value={billingCycle ? formatDate(billingCycle.renewal_date) : `N/A`}
         />

@@ -28,6 +28,13 @@ const Settings = ({ appService, params }: { appService: AppService; params: { us
   const handlePlanClick = () => {
     const parameters = new URLSearchParams(searchParameters);
     parameters.set("tab", "plans");
+    router.replace(`${pathname}?${parameters.toString()}`, { scroll: false });
+  };
+
+  const handleBillingClick = () => {
+    const parameters = new URLSearchParams(searchParameters);
+    parameters.set("tab", "billing");
+    router.replace(`${pathname}?${parameters.toString()}`, { scroll: false });
   };
 
   return (
@@ -66,7 +73,7 @@ const Settings = ({ appService, params }: { appService: AppService; params: { us
           </TabsTrigger>
           <TabsTrigger
             onClick={handlePlanClick}
-            value={currentTab === "plans" ? "plans" : "billing"}
+            value="plans"
             className="relative h-full min-w-[80px] shrink-0 rounded-none border-transparent px-3 text-sm data-[state=active]:bg-transparent data-[state=active]:shadow-none sm:px-4"
           >
             Plans
@@ -88,8 +95,11 @@ const Settings = ({ appService, params }: { appService: AppService; params: { us
       <TabsContent value="kyc">
         <KYC />
       </TabsContent>
-      <TabsContent value={currentTab === "plans" ? "plans" : "billing"}>
-        {currentTab === `plans` ? <Plans userID={params.userID} /> : <Billing />}
+      <TabsContent value="plans">
+        <Plans userID={params.userID} onBillingClick={handleBillingClick} />
+      </TabsContent>
+      <TabsContent value="billing">
+        <Billing />
       </TabsContent>
     </Tabs>
   );
