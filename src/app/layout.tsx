@@ -3,6 +3,8 @@ import { Montserrat } from "next/font/google";
 
 import "./globals.scss";
 
+import { SpeedInsights } from "@vercel/speed-insights/next";
+
 import { LenisProvider } from "~/components/lenis-provider";
 import { GotoTop } from "~/components/miscellaneous/goto-top";
 import { Progress_Bar } from "~/components/progress-bar";
@@ -40,6 +42,7 @@ export default async function RootLayout({
                   <main>
                     <Progress_Bar />
                     {children}
+                    <SpeedInsights />
                   </main>
                 </LenisProvider>
               </ToastProvider>
