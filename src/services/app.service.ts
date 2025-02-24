@@ -15,6 +15,13 @@ export class AppService {
     }
   }
 
+  async search(data: { text: string }) {
+    const response = await this.http.post<{ data: IProduct[] }>("/products/search", data);
+    if (response?.status === 200) {
+      return response.data.data;
+    }
+  }
+
   async updateUser(data: ProfileFormData) {
     const headers = { "Content-Type": "multipart/form-data" };
     const response = await this.http.post<{ data: IUser }>(`/users/me`, data, headers);

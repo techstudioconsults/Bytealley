@@ -138,13 +138,14 @@ declare global {
     slug: string;
     total_order: number;
     total_sales: number;
-    assets: File[] | string[];
+    assets?: File[] | string[];
     avg_rating: number;
     created_at: string;
     updated_at: string;
     deleted_at: string | null;
     resource_link?: string[];
     portfolio_link?: string;
+    publisher?: string;
   }
 
   interface IPaginationLink {

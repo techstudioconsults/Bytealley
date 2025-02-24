@@ -51,8 +51,40 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
   } = methods;
 
   const onSubmit = async (data: IProduct) => {
-    console.log(data);
+    const commonFields = {
+      product_type: data.product_type,
+      title: data.title,
+      category: data.category,
+      price: data.price,
+      discount_price: data.discount_price,
+      description: data.description,
+      cover_photos: data.cover_photos,
+      thumbnail: data.thumbnail,
+      highlights: data.highlights,
+      tags: data.tags,
+    };
 
+    const productSpecificFields =
+      data.product_type === "digital_product"
+        ? { assets: data.assets }
+        : {
+            resource_link: data.resource_link,
+            portfolio_link: data.portfolio_link,
+          };
+
+    const productData = { ...commonFields, ...productSpecificFields };
+
+    const productId = await productService.createProduct(productData);
+
+    Toast.getInstance().showToast({
+      title: "Success",
+      description: `Product "${data.title}" created successfully! You can now preview and publish it.`,
+      variant: "success",
+    });
+    router.push(`/dashboard/${params.userID}/products/new?tab=preview&product_id=${productId}`);
+  };
+
+  const updateProduct = async (data: IProduct) => {
     // Helper function to filter out non-File objects
     const filterFiles = (items: (string | File)[]): File[] => {
       return items.filter((item) => item instanceof File) as File[];
@@ -90,11 +122,8 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
     // Combine common and product-specific fields
     const productData = { ...commonFields, ...productSpecificFields };
 
-    // Log the final payload (for debugging)
-    console.log("Product Data:", productData);
-
     // Create the product
-    const productId = await productService.createProduct(productData);
+    const productId = await productService.updateProduct(productData, productID);
 
     // Show success toast
     Toast.getInstance().showToast({
@@ -197,7 +226,7 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
                     variant="primary"
                     size="lg"
                     className="w-full sm:w-auto"
-                    onClick={handleSubmit(onSubmit)}
+                    onClick={handleSubmit(updateProduct)}
                     isDisabled={isSubmitting}
                     isLoading={isSubmitting}
                   >

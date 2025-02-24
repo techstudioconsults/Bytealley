@@ -47,7 +47,7 @@ export const ProductForm = ({ methods, service }: { methods: UseFormReturn<IProd
         methods.setValue("discount_price", product.discount_price);
         methods.setValue("description", product.description);
         methods.setValue("highlights", product.highlights);
-        methods.setValue("thumbnail", product.logo);
+        methods.setValue("thumbnail", product.thumbnail);
         methods.setValue("cover_photos", product.cover_photos);
         methods.setValue("tags", product.tags);
         methods.setValue("assets", product.assets);
