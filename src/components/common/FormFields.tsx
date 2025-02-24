@@ -376,7 +376,8 @@ export function ImageUpload({
   maxFiles = 4,
   acceptedFormats = "image/jpeg, image/png",
   maxFileSize = 2 * 1024 * 1024, // Default to 2MB
-}: ImageUploadProperties) {
+  initialValue = [], // Add this prop for initial values
+}: ImageUploadProperties & { initialValue?: (string | File)[] }) {
   const {
     control,
     formState: { errors },
@@ -384,6 +385,21 @@ export function ImageUpload({
   const error = errors[name];
   const fileInputReference = useRef<HTMLInputElement>(null);
   const [previews, setPreviews] = useState<string[]>([]);
+
+  // Handle initial values
+  useEffect(() => {
+    if (initialValue && initialValue.length > 0) {
+      const initialPreviews = initialValue.map((item) => {
+        if (typeof item === "string") {
+          return item; // If it's a URL, use it directly
+        } else if (item instanceof File) {
+          return URL.createObjectURL(item); // If it's a File, create a preview URL
+        }
+        return ""; // Fallback for invalid values
+      });
+      setPreviews(initialPreviews);
+    }
+  }, [initialValue]);
 
   const handleButtonClick = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -530,14 +546,29 @@ export function FileUpload({
   maxFiles = 4,
   acceptedFormats = "application/pdf",
   maxFileSize = 100 * 1024 * 1024, // Default to 100MB
-}: FileUploadProperties) {
+  initialValue = [], // Add this prop for initial values
+}: FileUploadProperties & {
+  initialValue?: Array<{ name: string; size: string; mime_type: string; extension: string }>;
+}) {
   const {
     control,
     formState: { errors },
   } = useFormContext();
   const error = errors[name];
   const fileUploadInputReference = useRef<HTMLInputElement>(null);
-  const [previews, setPreviews] = useState<{ name: string; size: number; type: string }[]>([]);
+  const [previews, setPreviews] = useState<{ name: string; size: string; type: string }[]>([]);
+
+  // Handle initial values
+  useEffect(() => {
+    if (initialValue && initialValue.length > 0) {
+      const initialPreviews = initialValue.map((item) => ({
+        name: item.name,
+        size: item.size, // Keep size as a string (e.g., "0.169MB")
+        type: item.mime_type, // Use mime_type for the file type
+      }));
+      setPreviews(initialPreviews);
+    }
+  }, [initialValue]);
 
   const handleButtonClick = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -563,7 +594,11 @@ export function FileUpload({
       });
 
       // Create new previews for the valid files
-      const newPreviews = validFiles.map((file) => ({ name: file.name, size: file.size, type: file.type }));
+      const newPreviews = validFiles.map((file) => ({
+        name: file.name,
+        size: `${(file.size / 1024 / 1024).toFixed(3)}MB`, // Convert size to MB string
+        type: file.type,
+      }));
       // Append new previews to the existing previews
       setPreviews((previousPreviews) => [...previousPreviews, ...newPreviews].slice(0, maxFiles));
       // Append new files to the existing files in the form state
@@ -658,7 +693,7 @@ export function FileUpload({
                   <Image src={fileIcon} alt={`Preview ${index + 1}`} width={72} height={72} />
                   <div className="flex flex-col gap-1">
                     <span className="text-sm font-bold">{preview.name}</span>
-                    <span className="text-xs text-mid-grey-II">{(preview.size / 1024 / 1024).toFixed(2)}MB</span>
+                    <span className="text-xs text-mid-grey-II">{preview.size}</span>
                   </div>
                   <CustomButton
                     isIconOnly
@@ -691,29 +726,22 @@ export function ThumbNailUpload({
   required = false,
   disabled = false,
   className = "",
-  // defaultSrc = "",
   acceptedFormats = "image/jpeg, image/png",
   maxFileSize = 2 * 1024 * 1024,
-}: ThumbNailUploadProperties) {
+  initialValue = null, // Add this prop
+}: ThumbNailUploadProperties & { initialValue?: string | null | File }) {
   const {
     control,
-    getValues,
     formState: { errors },
   } = useFormContext();
   const error = errors[name];
   const thumbnailUploadInputReference = useRef<HTMLInputElement>(null);
-  const [preview, setPreview] = useState<string | null>(null);
+  const [preview, setPreview] = useState<string | null>();
 
   const handleButtonClick = (event: React.MouseEvent) => {
     event.preventDefault();
     thumbnailUploadInputReference.current?.click();
   };
-
-  useEffect(() => {
-    if (getValues("logo")) {
-      setPreview(getValues("logo"));
-    }
-  }, [getValues]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, field: any) => {
     const file = event.target.files?.[0];
@@ -742,6 +770,16 @@ export function ThumbNailUpload({
     setPreview(null); // Clear the preview
     field.onChange(null); // Clear the file in the form state
   };
+
+  useEffect(() => {
+    // const getInit = async () => {
+    if (initialValue && typeof initialValue === "string") {
+      // console.log(await createFileFromUrl(initialValue));
+      setPreview(initialValue);
+    }
+    // };
+    // getInit();
+  }, [initialValue]);
 
   return (
     <div className={cn("space-y-2", className)}>

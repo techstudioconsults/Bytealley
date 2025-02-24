@@ -8,7 +8,7 @@ import { DateRange } from "react-day-picker";
 
 import { AnalyticsCard } from "~/app/(dashboard-pages)/_components/analytics-card";
 import { DashboardTable } from "~/app/(dashboard-pages)/_components/dashboard-table";
-import { productColumns, RowActions } from "~/app/(dashboard-pages)/_components/dashboard-table/table-data";
+import { productColumns, ProductRowActions } from "~/app/(dashboard-pages)/_components/dashboard-table/table-data";
 import { DateRangePicker } from "~/app/(dashboard-pages)/_components/date-range-picker";
 import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import ExportAction from "~/app/(dashboard-pages)/_components/export-action";
@@ -135,7 +135,7 @@ export const AllProducts = ({ productService }: { productService: ProductService
                     totalPages={paginationMeta?.last_page}
                     itemsPerPage={paginationMeta?.per_page}
                     onPageChange={handlePageChange}
-                    rowActions={(product) => RowActions(product, productService)}
+                    rowActions={(product) => ProductRowActions(product, productService)}
                     showPagination
                     onRowClick={(product) => {
                       router.push(`/dashboard/${user?.id}/products/${product.id}`);

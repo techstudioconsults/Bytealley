@@ -26,12 +26,12 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
   const currentTab = searchParameters.get("tab") || "product-details";
   const productID = searchParameters.get("product_id") || "";
 
-  const methods = useForm<ProductFormValues>({
+  const methods = useForm<IProduct>({
     resolver: zodResolver(ProductFormSchema),
     defaultValues: {
       product_type: "",
-      title: "kingsley",
-      category: "",
+      title: "",
+      category: "Product",
       price: 0,
       discount_price: 0,
       description: "",
@@ -50,7 +50,15 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
     formState: { isSubmitting },
   } = methods;
 
-  const onSubmit = async (data: ProductFormValues) => {
+  const onSubmit = async (data: IProduct) => {
+    console.log(data);
+
+    // Helper function to filter out non-File objects
+    const filterFiles = (items: (string | File)[]): File[] => {
+      return items.filter((item) => item instanceof File) as File[];
+    };
+
+    // Common fields
     const commonFields = {
       product_type: data.product_type,
       title: data.title,
@@ -58,29 +66,44 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
       price: data.price,
       discount_price: data.discount_price,
       description: data.description,
-      cover_photos: data.cover_photos,
-      thumbnail: data.thumbnail,
       highlights: data.highlights,
       tags: data.tags,
+      ...(data.thumbnail instanceof File ? { thumbnail: data.thumbnail } : {}), // Include thumbnail if it's a File
+      ...(data.cover_photos && data.cover_photos.length > 0
+        ? { cover_photos: filterFiles(data.cover_photos) } // Include cover_photos if they contain Files
+        : {}),
     };
 
+    // Product-specific fields
     const productSpecificFields =
       data.product_type === "digital_product"
-        ? { assets: data.assets }
+        ? {
+            ...(data.assets && data.assets.length > 0
+              ? { assets: filterFiles(data.assets) } // Include assets if they contain Files
+              : {}),
+          }
         : {
             resource_link: data.resource_link,
             portfolio_link: data.portfolio_link,
           };
 
+    // Combine common and product-specific fields
     const productData = { ...commonFields, ...productSpecificFields };
 
+    // Log the final payload (for debugging)
+    console.log("Product Data:", productData);
+
+    // Create the product
     const productId = await productService.createProduct(productData);
 
+    // Show success toast
     Toast.getInstance().showToast({
       title: "Success",
       description: `Product "${data.title}" created successfully! You can now preview and publish it.`,
       variant: "success",
     });
+
+    // Redirect to the preview page
     router.push(`/dashboard/${params.userID}/products/new?tab=preview&product_id=${productId}`);
   };
 
@@ -169,16 +192,29 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
                 >
                   Cancel
                 </CustomButton>
-                <CustomButton
-                  variant="primary"
-                  size="lg"
-                  className="w-full sm:w-auto"
-                  onClick={handleSubmit(onSubmit)}
-                  isDisabled={isSubmitting}
-                  isLoading={isSubmitting}
-                >
-                  Save & Continue
-                </CustomButton>
+                {productID ? (
+                  <CustomButton
+                    variant="primary"
+                    size="lg"
+                    className="w-full sm:w-auto"
+                    onClick={handleSubmit(onSubmit)}
+                    isDisabled={isSubmitting}
+                    isLoading={isSubmitting}
+                  >
+                    Update & Continue
+                  </CustomButton>
+                ) : (
+                  <CustomButton
+                    variant="primary"
+                    size="lg"
+                    className="w-full sm:w-auto"
+                    onClick={handleSubmit(onSubmit)}
+                    isDisabled={isSubmitting}
+                    isLoading={isSubmitting}
+                  >
+                    Save & Continue
+                  </CustomButton>
+                )}
               </>
             )}
             {currentTab === "preview" && (

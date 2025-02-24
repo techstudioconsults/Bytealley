@@ -1,5 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 
@@ -15,13 +17,9 @@ import {
 } from "~/components/common/FormFields";
 import { ProductService } from "~/services/product.service";
 
-export const ProductForm = ({
-  methods,
-  service,
-}: {
-  methods: UseFormReturn<ProductFormValues>;
-  service: ProductService;
-}) => {
+export const ProductForm = ({ methods, service }: { methods: UseFormReturn<IProduct>; service: ProductService }) => {
+  const searchParameters = useSearchParams();
+  const productID = searchParameters.get("product_id");
   const productType = methods.watch("product_type");
   const [tags, setTags] = useState<{ value: string; label: string }[]>([]);
 
@@ -36,6 +34,41 @@ export const ProductForm = ({
   useEffect(() => {
     getProductTags();
   }, [getProductTags]);
+
+  const getProductIfExist = useCallback(async () => {
+    if (productID) {
+      const product = await service.getProductById(productID);
+
+      // setProduct(product || undefined);
+      if (product) {
+        methods.setValue("product_type", product.product_type);
+        methods.setValue("title", product.title);
+        methods.setValue("price", product.price);
+        methods.setValue("discount_price", product.discount_price);
+        methods.setValue("description", product.description);
+        methods.setValue("highlights", product.highlights);
+        methods.setValue("thumbnail", product.logo);
+        methods.setValue("cover_photos", product.cover_photos);
+        methods.setValue("tags", product.tags);
+        methods.setValue("assets", product.assets);
+        methods.setValue("resource_link", product.resource_link);
+        methods.setValue("portfolio_link", product.portfolio_link);
+        // methods.setValue("category", product.category);
+        // if (productType === "digital_product") {
+        //   methods.setValue("assets", product.assets);
+        // } else {
+        //   methods.setValue("resource_link", product.resource_link);
+        //   methods.setValue("portfolio_link", product.portfolio_link);
+        // }
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (productID) {
+      getProductIfExist();
+    }
+  }, [getProductIfExist, productID]);
 
   return (
     <form className="space-y-[40px]">
@@ -109,6 +142,14 @@ export const ProductForm = ({
             maxFiles={4}
             acceptedFormats="application/pdf, video/mp4"
             maxFileSize={100 * 1024 * 1024}
+            initialValue={
+              methods.getValues("assets") as unknown as {
+                name: string;
+                size: string;
+                mime_type: string;
+                extension: string;
+              }[]
+            }
           />
         </section>
       )}
@@ -120,6 +161,7 @@ export const ProductForm = ({
           maxFiles={4}
           acceptedFormats="image/jpeg, image/png"
           maxFileSize={2 * 1024 * 1024}
+          initialValue={methods.getValues("cover_photos")}
         />
       </section>
       {productType === "skill_selling" && (
@@ -141,6 +183,7 @@ export const ProductForm = ({
           required
           acceptedFormats="image/jpeg, image/png"
           maxFileSize={2 * 1024 * 1024}
+          initialValue={methods.getValues("thumbnail")}
         />
       </section>
       <section className="grid gap-4 lg:grid-cols-2">

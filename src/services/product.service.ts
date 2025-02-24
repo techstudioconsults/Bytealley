@@ -8,7 +8,7 @@ export class ProductService {
   }
 
   // Example: Sending a POST request with custom headers
-  async createProduct(data: ProductFormValues) {
+  async createProduct(data: IProduct) {
     const headers = { "Content-Type": "multipart/form-data" };
 
     const response = await this.http.post<{ data: IProduct }>("/products", data, headers);
@@ -34,6 +34,35 @@ export class ProductService {
       await this.http.post("/skillSellings", skillSellingData, headers);
     }
     return response.data.data.id;
+  }
+
+  async updateProduct(data: IProduct, productID: string) {
+    const headers = { "Content-Type": "multipart/form-data" };
+
+    const response = await this.http.post<{ data: IProduct }>(`/products/${productID}?_method=PUT`, data, headers);
+    console.log(response);
+
+    // if (response?.status !== 201) return;
+
+    // const { id, product_type } = response.data.data;
+
+    // if (product_type === "digital_product") {
+    //   const digitalProductData = {
+    //     product_id: id,
+    //     category: data.category,
+    //     assets: data.assets,
+    //   };
+    //   await this.http.post("/digitalProducts", digitalProductData, headers);
+    // } else if (product_type === "skill_selling") {
+    //   const skillSellingData = {
+    //     product_id: id,
+    //     category: data.category,
+    //     resource_link: data.resource_link,
+    //     link: data.portfolio_link,
+    //   };
+    //   await this.http.post("/skillSellings", skillSellingData, headers);
+    // }
+    // return response.data.data.id;
   }
 
   async getAllProducts(filters: IFilters = Object.create({ page: 1 })) {

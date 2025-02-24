@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { JWTPayload } from "jose";
 
 declare global {
@@ -123,11 +122,12 @@ declare global {
     title: string;
     logo: string | null;
     price: number;
+    category: string;
     discount_price: number;
     description: string;
     product_type: string;
     highlights: string[];
-    thumbnail: string;
+    thumbnail: File | string | null;
     cover_photos: string[];
     tags: string[];
     stock_count: boolean;
@@ -138,11 +138,13 @@ declare global {
     slug: string;
     total_order: number;
     total_sales: number;
-    assets: any[]; // You may want to define a specific type for assets
+    assets: File[] | string[];
     avg_rating: number;
     created_at: string;
     updated_at: string;
     deleted_at: string | null;
+    resource_link?: string[];
+    portfolio_link?: string;
   }
 
   interface IPaginationLink {

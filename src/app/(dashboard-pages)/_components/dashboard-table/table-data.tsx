@@ -8,7 +8,7 @@ import { ProductService } from "~/services/product.service";
 import { Toast } from "~/utils/notificationManager";
 import { cn, formatDate, formatTime } from "~/utils/utils";
 
-export const RowActions: (product: IProduct, service: any) => IRowAction<IProduct>[] = (
+export const ProductRowActions: (product: IProduct, service: any) => IRowAction<IProduct>[] = (
   product: IProduct,
   productService: ProductService,
 ) => {
@@ -20,7 +20,9 @@ export const RowActions: (product: IProduct, service: any) => IRowAction<IProduc
       actions.push(
         {
           label: "Edit",
-          onClick: () => {},
+          onClick: () => {
+            router.push(`/dashboard/${product.user_id}/products/new?product_id=${product.id}`);
+          },
           icon: <Edit className={`text-high-primary`} />,
         },
         {
@@ -82,7 +84,7 @@ export const productColumns: IColumnDefinition<IProduct>[] = [
     render: (_, product: IProduct) => (
       <div className={`flex w-fit items-center gap-2`}>
         <Image
-          src={product.thumbnail}
+          src={typeof product.thumbnail === "string" ? product.thumbnail : ""}
           alt="product"
           width={100}
           height={64}
@@ -163,7 +165,7 @@ export const orderColumns: IColumnDefinition<IOrder>[] = [
     render: (_, order: IOrder) => (
       <div className={`flex w-fit items-center gap-2`}>
         <Image
-          src={order?.product?.thumbnail || ""}
+          src={typeof order?.product?.thumbnail === "string" ? order.product.thumbnail : ""}
           alt="product"
           width={44}
           height={44}
@@ -235,7 +237,13 @@ export const latestPurchaseColumns: IColumnDefinition<IOrder>[] = [
     accessorKey: "product",
     render: (_, order: IOrder) => (
       <div className={`flex w-fit items-center gap-2`}>
-        <Image src={order?.product.thumbnail} alt="product" width={44} height={44} className={`bg-low-grey-II`} />
+        <Image
+          src={typeof order?.product.thumbnail === "string" ? order.product.thumbnail : ""}
+          alt="product"
+          width={44}
+          height={44}
+          className={`bg-low-grey-II`}
+        />
         <span className="text-[16px] font-medium">{order?.product.title}</span>
       </div>
     ),
@@ -346,7 +354,7 @@ export const deletedProductColumns: IColumnDefinition<IProduct>[] = [
     render: (_, product: IProduct) => (
       <div className={`flex w-fit items-center gap-2`}>
         <Image
-          src={product.thumbnail}
+          src={typeof product.thumbnail === "string" ? product.thumbnail : ""}
           alt="product"
           width={100}
           height={64}

@@ -99,21 +99,21 @@ declare global {
     maxFileSize?: number;
   };
 
-  type ProductFormValues = {
-    product_type: string;
-    title: string;
-    category: string;
-    price: number;
-    discount_price?: number;
-    assets?: File[];
-    description: string;
-    cover_photos: File[];
-    highlights: string[];
-    thumbnail: File | null;
-    tags: string[];
-    resource_link?: string[];
-    portfolio_link?: string;
-  };
+  // type ProductFormValues = {
+  //   product_type: string;
+  //   title: string;
+  //   category: string;
+  //   price: number;
+  //   discount_price?: number;
+  //   assets?: File[] | string[];
+  //   description: string;
+  //   cover_photos: File[] | string[];
+  //   highlights: string[];
+  //   thumbnail: File | null | string;
+  //   tags: string[];
+  //   resource_link?: string[];
+  //   portfolio_link?: string;
+  // };
 }
 
 // This export is needed to make the file a module
