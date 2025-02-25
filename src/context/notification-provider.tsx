@@ -1,10 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-console */
 "use client";
 
 import Pusher from "pusher-js";
-import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
+import { createContext, ReactNode, useCallback, useEffect, useState } from "react";
 
-import { getSession } from "~/lib/session/session";
-import { PushService } from "~/services/push-service";
+import { PushService } from "~/features/Push_Notification/push.service";
+import { WithDependency } from "~/HOC/withDependencies";
+import { dependencies } from "~/utils/dependencies";
 import { Toast } from "~/utils/notificationManager";
 
 interface Notification {
@@ -33,9 +36,16 @@ interface NotificationContextType {
 
 export const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
-export const NotificationProvider = ({ children }: { children: ReactNode }) => {
+export const BaseNotificationProvider = ({
+  pushService,
+  children,
+  session,
+}: {
+  children: ReactNode;
+  pushService: PushService;
+  session: any;
+}) => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [pushService] = useState(new PushService(new HttpAdapter()));
 
   // Fetch notifications from the backend
   const fetchNotifications = useCallback(async () => {
@@ -51,7 +61,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
 
   // Add a new notification
   const addNotification = (notification: Notification) => {
-    setNotifications((prev) => [{ ...notification, read: false }, ...prev]);
+    setNotifications((previous) => [{ ...notification, read: false }, ...previous]);
     Toast.getInstance().showToast({
       title: "New Notification",
       description: notification.data.message,
@@ -63,7 +73,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const markAllAsRead = async () => {
     try {
       await pushService.readAllNotification();
-      setNotifications((prev) => prev.map((notification) => ({ ...notification, read: true })));
+      setNotifications((previous) => previous.map((notification) => ({ ...notification, read: true })));
     } catch (error) {
       console.error("Failed to mark notifications as read:", error);
     }
@@ -72,8 +82,6 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   // Initialize Pusher and bind events
   useEffect(() => {
     const initializePusher = async () => {
-      const session = await getSession();
-
       const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_APP_KEY!, {
         cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
         forceTLS: false,
@@ -108,11 +116,11 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
         "withdraw.successful",
       ];
 
-      events.forEach((event) => {
+      for (const event of events) {
         channel.bind(event, (data: Notification) => {
           addNotification(data);
         });
-      });
+      }
 
       return () => {
         pusher.unsubscribe(`private-users.${session?.user.id}`);
@@ -121,7 +129,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
     };
 
     initializePusher();
-  }, []);
+  }, [session?.user.id, session?.user.token]);
 
   return (
     <NotificationContext.Provider value={{ notifications, addNotification, markAllAsRead, fetchNotifications }}>
@@ -129,3 +137,9 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
     </NotificationContext.Provider>
   );
 };
+
+const NotificationProvider = WithDependency(BaseNotificationProvider, {
+  pushService: dependencies.PUSH_SERVICES,
+});
+
+export default NotificationProvider;

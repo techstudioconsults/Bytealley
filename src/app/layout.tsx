@@ -10,7 +10,7 @@ import { GotoTop } from "~/components/miscellaneous/goto-top";
 import { Progress_Bar } from "~/components/progress-bar";
 import { TooltipProvider } from "~/components/ui/tooltip";
 import { LoadingProvider } from "~/context/loading-provider";
-import { NotificationProvider } from "~/context/notification-provider";
+import NotificationProvider from "~/context/notification-provider";
 import SessionProvider from "~/context/session-provider";
 import ToastProvider from "~/context/toast-provider";
 import { getSession } from "~/lib/session/session";
@@ -37,7 +37,7 @@ export default async function RootLayout({
         <LoadingProvider>
           <TooltipProvider>
             <SessionProvider session={session}>
-              <NotificationProvider>
+              <NotificationProvider session={session}>
                 <ToastProvider>
                   <GotoTop />
                   <LenisProvider>
