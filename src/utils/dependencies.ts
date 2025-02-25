@@ -4,6 +4,7 @@ import { PayoutService } from "~/services/payout.service";
 import { ProductService } from "~/services/product.service";
 import { HttpAdapter } from "../adapters/http-adapter";
 import { AuthService } from "../services/auth.service";
+import { PushService } from "./../features/Push_Notification/push.service";
 import { AnalyticsService } from "./../services/analytics.service";
 import { AppService } from "./../services/app.service";
 import { DownloadService } from "./../services/download.service";
@@ -24,6 +25,7 @@ const dependencies = {
   HELP_SERVICE: Symbol("HelpService"),
   APP_SERVICE: Symbol("AppService"),
   SETTINGS_SERVICE: Symbol("SettingsService"),
+  PUSH_SERVICES: Symbol("PushService"),
 };
 
 const httpAdapter = new HttpAdapter();
@@ -38,6 +40,7 @@ const analyticsService = new AnalyticsService(httpAdapter);
 const helpService = new HelpService(httpAdapter);
 const appService = new AppService(httpAdapter);
 const settingsService = new SettingsService(httpAdapter);
+const pushService = new PushService(httpAdapter);
 
 class DependencyContainer implements IDependencyContainer {
   _dependencies = {};
@@ -68,5 +71,6 @@ container.add(dependencies.ANALYTICS_SERVICE, analyticsService);
 container.add(dependencies.HELP_SERVICE, helpService);
 container.add(dependencies.APP_SERVICE, appService);
 container.add(dependencies.SETTINGS_SERVICE, settingsService);
+container.add(dependencies.PUSH_SERVICES, pushService);
 
 export { container, dependencies };

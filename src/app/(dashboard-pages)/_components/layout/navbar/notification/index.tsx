@@ -6,6 +6,7 @@ import { LuBell } from "react-icons/lu";
 import CustomButton from "~/components/common/common-button/common-button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
 import { Switch } from "~/components/ui/switch";
+import PushNotice from "~/features/Push_Notification";
 import { cn } from "~/utils/utils";
 
 interface NotificationPreview {
@@ -54,6 +55,7 @@ export const UnreadNotificationCard: FC<CardProperties> = ({
                   {preview.time}
                 </p>
               </div>
+              <PushNotice />
             </div>
           ))}
         </div>

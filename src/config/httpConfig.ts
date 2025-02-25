@@ -2,7 +2,7 @@ import axios from "axios";
 
 import { getSession } from "~/lib/session/session";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL as string;
 const TIMEOUTMSG = "Waiting for too long...Aborted!";
 
 const config = {
