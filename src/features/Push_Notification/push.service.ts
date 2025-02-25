@@ -10,7 +10,6 @@ export class PushService {
 
   async getNotification() {
     const response = await this.http.get<{ data: any }>(`/users/notifications`);
-    console.log(response);
     if (response?.status === 200) {
       return response.data;
     }
@@ -18,7 +17,6 @@ export class PushService {
 
   async readAllNotification() {
     const response = await this.http.post<{ data: any }>(`/users/notifications`, null);
-    console.log(response);
     if (response?.status === 200) {
       return response.data;
     }

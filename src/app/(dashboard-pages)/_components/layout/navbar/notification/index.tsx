@@ -9,22 +9,11 @@ import { Switch } from "~/components/ui/switch";
 import PushNotice from "~/features/Push_Notification";
 import { cn } from "~/utils/utils";
 
-interface NotificationPreview {
-  header: string;
-  time: string;
-}
-
 interface CardProperties extends React.ComponentProps<typeof Card> {
-  notificationsPreview: NotificationPreview[];
   unreadCount: number;
 }
 
-export const UnreadNotificationCard: FC<CardProperties> = ({
-  className,
-  notificationsPreview = [],
-  unreadCount = 0,
-  ...properties
-}) => {
+export const UnreadNotificationCard: FC<CardProperties> = ({ className, unreadCount = 0, ...properties }) => {
   return (
     <Card data-testid="cardContainer" className={cn("h-fit w-fit sm:w-[380px]", className)} {...properties}>
       <CardHeader className="px-4 sm:p-6">
@@ -41,23 +30,10 @@ export const UnreadNotificationCard: FC<CardProperties> = ({
             <p className="text-sm font-medium leading-none">Push Notifications</p>
             <p className="text-sm text-muted-foreground">Send notifications to device.</p>
           </div>
-          <Switch name="mobile_push_notifications" />
+          <Switch disabled name="mobile_push_notifications" />
         </div>
         <div data-testid="previewBody">
-          {notificationsPreview.map((preview, index) => (
-            <div key={index} className="mb-2 grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0 sm:mb-4">
-              <span className="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500" />
-              <div className="space-y-1">
-                <p data-testid={`previewHeader${index}`} className="text-sm font-medium leading-none">
-                  {preview.header}
-                </p>
-                <p data-testid={`previewTime${index}`} className="text-sm text-muted-foreground">
-                  {preview.time}
-                </p>
-              </div>
-              <PushNotice />
-            </div>
-          ))}
+          <PushNotice />
         </div>
       </CardContent>
       <CardFooter className="px-4 sm:px-6">
