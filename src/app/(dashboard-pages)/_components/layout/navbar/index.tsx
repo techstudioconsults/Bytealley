@@ -49,10 +49,13 @@ export const DashboardNavbar = () => {
                 align="end"
                 className="w-fit border-none p-0 shadow-none"
               >
-                <UnreadNotificationCard unreadCount={30} />
+                <UnreadNotificationCard
+                  notificationsPreview={[{ header: "Check mail", time: "1 hour ago" }]}
+                  unreadCount={30}
+                />
               </PopoverContent>
             </Popover>
-            <span className="absolute right-1 top-0 h-[6px] w-[6px] rounded-full bg-mid-purple"></span>
+            <span className="bg-error absolute right-1 top-0 h-[6px] w-[6px] rounded-full"></span>
           </div>
           <div className="flex items-center gap-[10px]">
             <DropdownMenu>

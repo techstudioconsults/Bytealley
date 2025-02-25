@@ -6,14 +6,16 @@ import { LuBell } from "react-icons/lu";
 import CustomButton from "~/components/common/common-button/common-button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
 import { Switch } from "~/components/ui/switch";
-import PushNotice from "~/features/Push_Notification";
+import { useNotifications } from "~/contexts/NotificationContext";
 import { cn } from "~/utils/utils";
 
-interface CardProperties extends React.ComponentProps<typeof Card> {
-  unreadCount: number;
-}
+interface CardProperties extends React.ComponentProps<typeof Card> {}
 
-export const UnreadNotificationCard: FC<CardProperties> = ({ className, unreadCount = 0, ...properties }) => {
+export const UnreadNotificationCard: FC<CardProperties> = ({ className, ...properties }) => {
+  const { notifications, markAllAsRead } = useNotifications();
+
+  const unreadCount = notifications.filter((notification) => !notification.read).length;
+
   return (
     <Card data-testid="cardContainer" className={cn("h-fit w-fit sm:w-[380px]", className)} {...properties}>
       <CardHeader className="px-4 sm:p-6">
@@ -30,10 +32,30 @@ export const UnreadNotificationCard: FC<CardProperties> = ({ className, unreadCo
             <p className="text-sm font-medium leading-none">Push Notifications</p>
             <p className="text-sm text-muted-foreground">Send notifications to device.</p>
           </div>
-          <Switch disabled name="mobile_push_notifications" />
+          <Switch name="mobile_push_notifications" />
         </div>
         <div data-testid="previewBody">
-          <PushNotice />
+          {notifications.map((notification, index) => (
+            <div key={index} className="mb-2 grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0 sm:mb-4">
+              <span className="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500" />
+              <div className="space-y-1">
+                <p data-testid={`previewHeader${index}`} className="text-sm font-medium leading-none">
+                  {notification.data.message}
+                </p>
+                <p data-testid={`previewTime${index}`} className="text-sm text-muted-foreground">
+                  {new Date(notification.created_at).toLocaleTimeString()}
+                </p>
+                {notification.data.product && (
+                  <p className="text-sm text-muted-foreground">Product: {notification.data.product.title}</p>
+                )}
+                {notification.data.account && (
+                  <p className="text-sm text-muted-foreground">
+                    Account: {notification.data.account.name} ({notification.data.account.bank_name})
+                  </p>
+                )}
+              </div>
+            </div>
+          ))}
         </div>
       </CardContent>
       <CardFooter className="px-4 sm:px-6">
@@ -42,9 +64,7 @@ export const UnreadNotificationCard: FC<CardProperties> = ({ className, unreadCo
             variant="primary"
             isDisabled={unreadCount === 0}
             className="w-full bg-primary"
-            onClick={() => {
-              // MARK ALL NOTIFICATION LOGIC
-            }}
+            onClick={markAllAsRead}
           >
             Mark all as read
           </CustomButton>
