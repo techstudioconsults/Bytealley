@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpAdapter } from "~/adapters/http-adapter";
 
 export class ProductService {
@@ -36,7 +37,7 @@ export class ProductService {
     return response.data.data.id;
   }
 
-  async updateProduct(data: IProduct, productID: string) {
+  async updateProduct(data: any, productID: string) {
     const headers = { "Content-Type": "multipart/form-data" };
     const response = await this.http.post<{ data: IProduct }>(`/products/${productID}?_method=PUT`, data, headers);
 
