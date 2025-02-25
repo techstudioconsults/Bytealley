@@ -4,6 +4,7 @@ import bell from "@/icons/Property_2_Notifications_1_w4v7g4.svg";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect } from "react";
 import { LuChevronDown } from "react-icons/lu";
 
 import { SearchInput } from "~/components/common/search-input";
@@ -17,14 +18,22 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
+import { useNotifications } from "~/hooks/use-notification";
 import { useSession } from "~/hooks/use-session";
+import { cn } from "~/utils/utils";
 import { Drawer } from "../drawer/drawer";
 import { UnreadNotificationCard } from "./notification";
 
 export const DashboardNavbar = () => {
   const pathname = usePathname();
   const title = pathname.split("/")[3].charAt(0).toUpperCase() + pathname.split("/")[3].slice(1);
+  const { notifications, fetchNotifications } = useNotifications();
   const { user, logout } = useSession();
+  const unreadCount = notifications.filter((notification) => !notification.read).length;
+
+  useEffect(() => {
+    fetchNotifications();
+  }, [fetchNotifications]);
 
   const handleLogOut = async () => {
     await logout();
@@ -52,7 +61,12 @@ export const DashboardNavbar = () => {
                 <UnreadNotificationCard />
               </PopoverContent>
             </Popover>
-            <span className="bg-error absolute right-1 top-0 h-[6px] w-[6px] rounded-full"></span>
+            <span
+              className={cn(
+                "absolute right-1 top-0 h-[6px] w-[6px] rounded-full bg-mid-success",
+                unreadCount > 0 ? "block" : "hidden",
+              )}
+            ></span>
           </div>
           <div className="flex items-center gap-[10px]">
             <DropdownMenu>
