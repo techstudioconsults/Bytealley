@@ -6,6 +6,7 @@ import Pusher from "pusher-js";
 import { createContext, ReactNode, useCallback, useEffect, useState } from "react";
 
 import { WithDependency } from "~/HOC/withDependencies";
+import { PushService } from "~/services/notification.service";
 import { dependencies } from "~/utils/dependencies";
 import { Toast } from "~/utils/notificationManager";
 
