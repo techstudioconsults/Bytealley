@@ -12,9 +12,7 @@ import { cn } from "~/utils/utils";
 interface CardProperties extends React.ComponentProps<typeof Card> {}
 
 export const UnreadNotificationCard: FC<CardProperties> = ({ className, ...properties }) => {
-  const { notifications, markAllAsRead } = useNotifications();
-
-  const unreadCount = notifications.filter((notification) => !notification.read).length;
+  const { notifications, markAllAsRead, unreadCount } = useNotifications();
 
   return (
     <Card data-testid="cardContainer" className={cn("h-fit w-fit sm:w-[380px]", className)} {...properties}>

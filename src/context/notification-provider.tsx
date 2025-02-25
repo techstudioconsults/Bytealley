@@ -5,7 +5,6 @@
 import Pusher from "pusher-js";
 import { createContext, ReactNode, useCallback, useEffect, useState } from "react";
 
-import { PushService } from "~/features/Push_Notification/push.service";
 import { WithDependency } from "~/HOC/withDependencies";
 import { dependencies } from "~/utils/dependencies";
 import { Toast } from "~/utils/notificationManager";
@@ -32,6 +31,7 @@ interface NotificationContextType {
   addNotification: (notification: Notification) => void;
   markAllAsRead: () => Promise<void>;
   fetchNotifications: () => Promise<void>;
+  unreadCount: number;
 }
 
 export const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
@@ -58,6 +58,8 @@ export const BaseNotificationProvider = ({
       console.error("Failed to fetch notifications:", error);
     }
   }, [pushService]);
+
+  const unreadCount = notifications.filter((notification) => !notification.read).length;
 
   // Add a new notification
   const addNotification = (notification: Notification) => {
@@ -132,7 +134,9 @@ export const BaseNotificationProvider = ({
   }, [session?.user.id, session?.user.token]);
 
   return (
-    <NotificationContext.Provider value={{ notifications, addNotification, markAllAsRead, fetchNotifications }}>
+    <NotificationContext.Provider
+      value={{ notifications, unreadCount, addNotification, markAllAsRead, fetchNotifications }}
+    >
       {children}
     </NotificationContext.Provider>
   );

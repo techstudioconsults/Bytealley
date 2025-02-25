@@ -32,7 +32,6 @@ const BaseSearchInput: FC<SearchProperties> = ({ appService, inputBackgroundColo
       return;
     }
     const results = await appService.search({ text: query });
-    console.log(results);
     setSearchResults(results);
   }, 500);
 

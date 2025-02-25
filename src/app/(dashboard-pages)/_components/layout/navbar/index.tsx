@@ -27,9 +27,8 @@ import { UnreadNotificationCard } from "./notification";
 export const DashboardNavbar = () => {
   const pathname = usePathname();
   const title = pathname.split("/")[3].charAt(0).toUpperCase() + pathname.split("/")[3].slice(1);
-  const { notifications, fetchNotifications } = useNotifications();
+  const { unreadCount, fetchNotifications } = useNotifications();
   const { user, logout } = useSession();
-  const unreadCount = notifications.filter((notification) => !notification.read).length;
 
   useEffect(() => {
     fetchNotifications();
