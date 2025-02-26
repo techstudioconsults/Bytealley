@@ -1,8 +1,9 @@
 import debounce from "lodash.debounce"; // Import debounce from lodash
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { FC, HTMLAttributes, useState } from "react";
+import { FC, HTMLAttributes, useState, useTransition } from "react";
 import { LuSearch } from "react-icons/lu";
 
+import Loading from "~/app/Loading";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { WithDependency } from "~/HOC/withDependencies";
 import { AppService } from "~/services/app.service";
@@ -22,6 +23,7 @@ const BaseSearchInput: FC<SearchProperties> = ({ appService, inputBackgroundColo
   const searchParameters = useSearchParams();
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [searchResults, setSearchResults] = useState<IProduct[] | undefined>([]);
+  const [isPending, startTransition] = useTransition();
 
   const currentTab = searchParameters.get("search") || "all";
 
@@ -37,9 +39,11 @@ const BaseSearchInput: FC<SearchProperties> = ({ appService, inputBackgroundColo
 
   // Handle input change
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const query = event.target.value;
-    setSearchQuery(query);
-    debouncedSearch(query);
+    startTransition(() => {
+      const query = event.target.value;
+      setSearchQuery(query);
+      debouncedSearch(query);
+    });
   };
 
   // Handle tab change
@@ -156,7 +160,13 @@ const BaseSearchInput: FC<SearchProperties> = ({ appService, inputBackgroundColo
 
           {/* Tab content */}
           <TabsContent className={`space-y-4`} value="all">
-            {searchResultsFormated}
+            {searchResults?.length === 0 && !isPending ? (
+              <p className="text-center text-muted-foreground">No search results found</p>
+            ) : isPending ? (
+              <Loading text={`Loading search results...`} className={`w-fill h-fit p-20`} />
+            ) : (
+              searchResultsFormated
+            )}
           </TabsContent>
           <TabsContent value="products">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex nihil doloribus sed recusandae distinctio

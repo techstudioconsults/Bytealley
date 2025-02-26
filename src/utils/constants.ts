@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import orders from "@/icons/Property_2_Cart_1_ubt3so.svg";
@@ -13,6 +14,35 @@ import settings from "@/icons/Property_2_Settings_4_tm54pe.svg";
 import profile from "@/icons/Property_2_User_iiqfxz.svg";
 import customers from "@/icons/Property_2_User-folder_n4spfl.svg";
 import payouts from "@/icons/Property_2_Wallet_3_teopvy.svg";
+import { useEffect, useState } from "react";
+
+import { useNotifications } from "~/hooks/use-notification";
+
+export const useSidebarItems = () => {
+  const { notifications } = useNotifications();
+  const [items, setItems] = useState<SidebarItem[]>(sideItems);
+
+  useEffect(() => {
+    const orderCreatedCount = notifications.filter((notification) => notification.type === "order.created").length;
+
+    const updatedItems = items.map((item) => {
+      if (item.id === "orders") {
+        return {
+          ...item,
+          badge: {
+            ...item.badge,
+            count: orderCreatedCount,
+          },
+        };
+      }
+      return item;
+    });
+
+    setItems(updatedItems);
+  }, [notifications]);
+
+  return items;
+};
 
 export const sideItems: SidebarItem[] = [
   {
@@ -39,7 +69,7 @@ export const sideItems: SidebarItem[] = [
     iconUrl: orders,
     id: "orders",
     badge: {
-      count: 2,
+      count: 0,
       variant: "danger",
     },
   },

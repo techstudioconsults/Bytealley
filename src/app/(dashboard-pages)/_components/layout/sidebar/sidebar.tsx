@@ -6,12 +6,18 @@ import { usePathname } from "next/navigation";
 import { FC } from "react";
 
 import { Logo } from "~/components/common/logo";
-import { sideItems } from "~/utils/constants";
+import { useSidebarItems } from "~/utils/constants";
 import { cn } from "~/utils/utils";
 
-export const Sidebar: FC<ISidebarProperties> = ({ sideNavitems = sideItems, logoComponent }) => {
+export const Sidebar: FC<ISidebarProperties> = ({ sideNavitems, logoComponent }) => {
   const pathname = usePathname();
   const userID = pathname.split("/")[2];
+
+  // Use the custom hook to get dynamically updated sidebar items
+  const updatedSideItems = useSidebarItems();
+
+  // Use the passed `sideNavitems` if provided, otherwise use the updated `sideItems`
+  const items = sideNavitems || updatedSideItems;
 
   const renderIcon = (item: SidebarItem) => {
     if (item.icon) {
@@ -67,10 +73,9 @@ export const Sidebar: FC<ISidebarProperties> = ({ sideNavitems = sideItems, logo
 
   return (
     <div>
-      {/* <div className={cn("hidden h-screen w-[283px] flex-col border-r bg-white xl:flex", className)}> */}
       <div className="flex items-center justify-center py-8">{logoComponent || <Logo width={140} height={47} />}</div>
       <nav className="flex-1 space-y-2 overflow-y-auto p-4">
-        {sideNavitems.map((item) => (
+        {items.map((item) => (
           <div key={item.id}>{renderSidebarItem(item)}</div>
         ))}
       </nav>
