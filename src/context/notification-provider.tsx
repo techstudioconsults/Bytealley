@@ -105,7 +105,17 @@ export const BaseNotificationProvider = ({
       for (const event of events) {
         channel.bind(event, (data: any) => {
           console.log("Received event:", event, data);
-          // addNotification(data);
+          const formattedNotication = {
+            id: data.id,
+            type: event,
+            notifiable_type: "",
+            notifiable_id: session?.user.id,
+            data,
+            read_at: "",
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          };
+          addNotification(formattedNotication as Notification);
         });
       }
 

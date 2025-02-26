@@ -1,3 +1,4 @@
+import { BlurImage } from "~/components/miscellaneous/blur-image";
 import { useNotifications } from "~/hooks/use-notification";
 
 export const NotificationDataFormat = () => {
@@ -21,19 +22,39 @@ export const NotificationDataFormat = () => {
       case "product.created":
       case "first.product.created": {
         return (
-          <div className={"flex items-center justify-between"}>
-            <p className="text-sm font-medium leading-none">{data.message}</p>
-            <p className="text-xs text-muted-foreground">{new Date(notification.created_at).toLocaleTimeString()}</p>
-          </div>
+          <>
+            <div className={"flex items-center justify-between"}>
+              <p className="text-sm font-medium leading-none">{data.message}</p>
+              <p className="text-xs text-muted-foreground">{new Date(notification.created_at).toLocaleTimeString()}</p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Product: {data.product.title}</p>
+              <div className="relative h-6 w-6 overflow-hidden rounded-[4px] sm:h-12 sm:w-12">
+                <BlurImage
+                  src={data.product.thumbnail}
+                  alt={data.product.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 640px) 1.5rem, 3rem"
+                />
+              </div>
+            </div>
+          </>
         );
       }
 
       case "payout.card.added": {
         return (
-          <div className={"flex items-center justify-between"}>
-            <p className="text-sm font-medium leading-none">{data.message}</p>
-            <p className="text-xs text-muted-foreground">{new Date(notification.created_at).toLocaleTimeString()}</p>
-          </div>
+          <>
+            <div className={"flex items-center justify-between"}>
+              <p className="text-sm font-medium leading-none">{data.message}</p>
+              <p className="text-xs text-muted-foreground">{new Date(notification.created_at).toLocaleTimeString()}</p>
+            </div>
+            <div>
+              <p className="text-sm text-muted-foreground">Account: {data.account.name}</p>
+              <p className="text-sm text-muted-foreground">{data.account.bank_name}</p>
+            </div>
+          </>
         );
       }
 
@@ -62,28 +83,3 @@ export const NotificationDataFormat = () => {
     </>
   );
 };
-
-{
-  /* <div key={index} className="mb-2 grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0 sm:mb-4">
-  <span className="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500" />
-  <div className="space-y-1">
-    <div className={"flex items-center justify-between"}>
-      <p data-testid={`previewHeader${index}`} className="text-sm font-medium leading-none">
-        {notification.data.message}
-      </p>
-      <p data-testid={`previewTime${index}`} className="text-xs text-muted-foreground">
-        {new Date(notification.created_at).toLocaleTimeString()}
-      </p>
-    </div>
-    {notification.data.product && (
-      <p className="text-sm text-muted-foreground">Product: {notification.data.product.title}</p>
-    )}
-    {notification.data.account && (
-      <>
-        <p className="text-sm text-muted-foreground">Account: {notification.data.account.name}</p>
-        <p className="text-sm text-muted-foreground">{notification.data.account.bank_name}</p>
-      </>
-    )}
-  </div>
-</div>; */
-}
