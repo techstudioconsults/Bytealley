@@ -39,7 +39,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "next.config.mjs"
-  ],
+, "src/components/common/theme-toggle"  ],
   "exclude": [
     "node_modules"
   ]

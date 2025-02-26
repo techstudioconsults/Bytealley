@@ -2,8 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @layer base {
   :root {
+    /* Light mode colors */
     --background: 0, 0%, 100%;
     --foreground: 0, 0%, 16%;
 
@@ -96,6 +101,101 @@
     --low-grey-III: 0, 0%, 95%;
     --low-grey-II: 0, 0%, 98%;
     --low-grey-I: 0, 0%, 100%;
+  }
+
+  .dark {
+    /* Dark mode colors */
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --default: 222.2 84% 4.9%;
+    --default-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --subtle: 217.2 32.6% 17.5%;
+    --subtle-hover: 210 40% 98%;
+    --subtle-foreground: 210 40% 98%;
+
+    --loading: 210 40% 98%;
+    --loading-hover: 217.2 32.6% 17.5%;
+    --loading-foreground: 222.2 84% 4.9%;
+
+    --outline: 217.2 32.6% 17.5%;
+    --outline-hover: 210 40% 98%;
+    --outline-foreground: 210 40% 98%;
+
+    --link: 210 40% 98%;
+
+    --error: 0 62.8% 30.6%;
+    --success: 143 79% 32%;
+    --warning: 45 92% 54%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+
+    --radius: 0.5rem;
+
+    --stroke-colors-stroke: 217.2 32.6% 17.5%;
+
+    --neutralColor-dark-1: 210 40% 98%;
+    --neutralColor-dark-2: 222.2 84% 4.9%;
+
+    /* byte-alley design system */
+    --white: 222.2 84% 4.9%;
+    --black: 210 40% 98%;
+
+    --high-purple: 210 40% 98%;
+    --mid-purple: 217.2 32.6% 17.5%;
+    --low-purple: 222.2 84% 4.9%;
+
+    --high-coral: 210 40% 98%;
+    --mid-coral: 217.2 32.6% 17.5%;
+    --low-coral: 222.2 84% 4.9%;
+
+    --high-danger: 210 40% 98%;
+    --mid-danger: 217.2 32.6% 17.5%;
+    --low-danger: 222.2 84% 4.9%;
+
+    --high-warning: 210 40% 98%;
+    --mid-warning: 217.2 32.6% 17.5%;
+    --low-warning: 222.2 84% 4.9%;
+
+    --high-success: 210 40% 98%;
+    --mid-success: 217.2 32.6% 17.5%;
+    --low-success: 222.2 84% 4.9%;
+
+    --high-grey-III: 210 40% 98%;
+    --high-grey-II: 217.2 32.6% 17.5%;
+    --high-grey-I: 222.2 84% 4.9%;
+
+    --mid-grey-III: 210 40% 98%;
+    --mid-grey-II: 217.2 32.6% 17.5%;
+    --mid-grey-I: 222.2 84% 4.9%;
+
+    --low-grey-III: 210 40% 98%;
+    --low-grey-II: 217.2 32.6% 17.5%;
+    --low-grey-I: 222.2 84% 4.9%;
   }
 }
 

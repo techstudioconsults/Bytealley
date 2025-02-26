@@ -1,5 +1,6 @@
 "use client";
 
+// import DarkModeToggle from "~/components/common/theme-toggle";
 import { useSession } from "~/hooks/use-session";
 import Loading from "../Loading";
 import { DashboardNavbar } from "./_components/layout/navbar";
@@ -17,6 +18,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Sidebar */}
       <aside className="fixed inset-y-0 z-30 hidden w-64 flex-shrink-0 overflow-y-auto border-r bg-white xl:block">
         <Sidebar />
+        {/* <DarkModeToggle /> */}
       </aside>
 
       {/* Main Content */}
