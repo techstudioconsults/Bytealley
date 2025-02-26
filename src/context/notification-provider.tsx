@@ -58,7 +58,7 @@ export const BaseNotificationProvider = ({
   const markAllAsRead = async () => {
     try {
       await pushService.readAllNotification();
-      setNotifications((previous) => previous.map((notification) => ({ ...notification, read: true })));
+      setNotifications([]);
     } catch (error) {
       console.error("Failed to mark notifications as read:", error);
     }
@@ -104,7 +104,6 @@ export const BaseNotificationProvider = ({
 
       for (const event of events) {
         channel.bind(event, (data: any) => {
-          console.log("Received event:", event, data);
           const formattedNotication = {
             id: data.id,
             type: event,

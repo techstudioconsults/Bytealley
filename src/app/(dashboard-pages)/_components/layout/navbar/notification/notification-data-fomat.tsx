@@ -1,85 +1,69 @@
 import { BlurImage } from "~/components/miscellaneous/blur-image";
 import { useNotifications } from "~/hooks/use-notification";
 
+const NotificationTime = ({ time }: { time: string }) => (
+  <p className="text-[10px] text-muted-foreground">{new Date(time).toLocaleTimeString()}</p>
+);
+
+const NotificationMessage = ({ message }: { message: string }) => (
+  <p className="max-w-[70%] text-xs font-medium leading-none">{message}</p>
+);
+
+const ProductDetails = ({ product }: { product: { title: string; thumbnail: string } }) => (
+  <div className="mt-2 flex items-center gap-2">
+    <div className="relative h-6 w-6 overflow-hidden rounded-[4px] sm:h-10 sm:w-10">
+      <BlurImage
+        src={product.thumbnail}
+        alt={product.title}
+        fill
+        className="object-cover"
+        sizes="(max-width: 640px) 1.5rem, 3rem"
+      />
+    </div>
+    <p className="text-xs text-muted-foreground">{product.title}</p>
+  </div>
+);
+
+const AccountDetails = ({ account }: { account: { name: string; bank_name: string } }) => (
+  <div className="mt-2 space-y-1">
+    <p className="text-[10px] text-muted-foreground">Account: {account.name}</p>
+    <p className="text-[10px] text-muted-foreground">{account.bank_name}</p>
+  </div>
+);
+
 export const NotificationDataFormat = () => {
   const { notifications } = useNotifications();
 
   const renderNotificationContent = (notification: Notification) => {
-    const { type, data } = notification;
+    const { type, data, created_at } = notification;
 
-    switch (type) {
-      case "withdraw.successful": {
-        return (
-          <div className={"flex items-center justify-between"}>
-            <p className="text-sm font-medium leading-none">{data.message}</p>
-            <p className="text-xs text-muted-foreground">{new Date(notification.created_at).toLocaleTimeString()}</p>
-          </div>
-        );
-      }
+    return (
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <NotificationMessage message={data.message} />
+          <NotificationTime time={created_at} />
+        </div>
 
-      case "order.created":
-      case "product.published":
-      case "product.created":
-      case "first.product.created": {
-        return (
-          <>
-            <div className={"flex items-center justify-between"}>
-              <p className="text-sm font-medium leading-none">{data.message}</p>
-              <p className="text-xs text-muted-foreground">{new Date(notification.created_at).toLocaleTimeString()}</p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Product: {data.product.title}</p>
-              <div className="relative h-6 w-6 overflow-hidden rounded-[4px] sm:h-12 sm:w-12">
-                <BlurImage
-                  src={data.product.thumbnail}
-                  alt={data.product.title}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 640px) 1.5rem, 3rem"
-                />
-              </div>
-            </div>
-          </>
-        );
-      }
+        {["order.created", "product.published", "product.created", "first.product.created"].includes(type) && (
+          <ProductDetails product={data.product} />
+        )}
 
-      case "payout.card.added": {
-        return (
-          <>
-            <div className={"flex items-center justify-between"}>
-              <p className="text-sm font-medium leading-none">{data.message}</p>
-              <p className="text-xs text-muted-foreground">{new Date(notification.created_at).toLocaleTimeString()}</p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Account: {data.account.name}</p>
-              <p className="text-sm text-muted-foreground">{data.account.bank_name}</p>
-            </div>
-          </>
-        );
-      }
-
-      default: {
-        return (
-          <div className={"flex items-center justify-between"}>
-            <p className="text-sm font-medium leading-none">{data.message}</p>
-            <p className="text-xs text-muted-foreground">{new Date(notification.created_at).toLocaleTimeString()}</p>
-          </div>
-        );
-      }
-    }
+        {type === "payout.card.added" && <AccountDetails account={data.account} />}
+      </div>
+    );
   };
 
   return (
-    <>
+    <div className="space-y-4">
       {notifications.map((notification) => (
         <div
           key={notification.id}
-          className="mb-2 grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0 sm:mb-4"
+          className="grid grid-cols-[25px_1fr] items-start gap-3 rounded-lg border p-3 transition-all hover:bg-accent/50 sm:p-4"
         >
-          <span className="flex h-2 w-2 translate-y-1 rounded-full bg-sky-500" />
-          <div className="space-y-1">{renderNotificationContent(notification)}</div>
+          <span className="mt-1.5 h-2 w-2 rounded-full bg-sky-500" />
+          <div className="w-full overflow-hidden">{renderNotificationContent(notification)}</div>
         </div>
       ))}
-    </>
+    </div>
   );
 };

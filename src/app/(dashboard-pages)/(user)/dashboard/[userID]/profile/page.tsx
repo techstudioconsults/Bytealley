@@ -65,7 +65,7 @@ const Profile = () => {
               <p className={`text-sm text-mid-grey-II lg:text-[16px]`}>Update your profile picture.</p>
             </div>
             <div className={`col-span-3`}>
-              <ProfilePicture />
+              <ProfilePicture initialValue={methods.getValues("logo")} />
             </div>
           </section>
           <section className={`grid grid-cols-1 gap-4 lg:grid-cols-5 lg:gap-16`}>
