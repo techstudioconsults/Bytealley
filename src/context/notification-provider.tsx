@@ -10,23 +10,6 @@ import { PushService } from "~/services/notification.service";
 import { dependencies } from "~/utils/dependencies";
 import { Toast } from "~/utils/notificationManager";
 
-interface Notification {
-  type: string;
-  data: {
-    message: string;
-    product?: {
-      title: string;
-      thumbnail?: string;
-    };
-    account?: {
-      name: string;
-      bank_name: string;
-    };
-  };
-  created_at: string;
-  read?: boolean; // Optional field to track read status
-}
-
 interface NotificationContextType {
   notifications: Notification[];
   addNotification: (notification: Notification) => void;
@@ -53,18 +36,17 @@ export const BaseNotificationProvider = ({
     try {
       const response = await pushService.getNotification();
       if (response?.data) {
-        setNotifications(response.data.map((notification: Notification) => ({ ...notification, read: false })));
+        setNotifications(response.data);
       }
     } catch (error) {
       console.error("Failed to fetch notifications:", error);
     }
   }, [pushService]);
 
-  const unreadCount = notifications.filter((notification) => !notification.read).length;
+  const unreadCount = notifications.length;
 
-  // Add a new notification
   const addNotification = (notification: Notification) => {
-    setNotifications((previous) => [{ ...notification, read: false }, ...previous]);
+    setNotifications((previous) => [{ ...notification }, ...previous]);
     Toast.getInstance().showToast({
       title: "New Notification",
       description: notification.data.message,
@@ -95,6 +77,7 @@ export const BaseNotificationProvider = ({
           },
         },
       });
+      Pusher.logToConsole = true;
 
       pusher.connection.bind("error", (error: Error) => {
         console.error("Pusher connection error:", error);
@@ -120,8 +103,9 @@ export const BaseNotificationProvider = ({
       ];
 
       for (const event of events) {
-        channel.bind(event, (data: Notification) => {
-          addNotification(data);
+        channel.bind(event, (data: any) => {
+          console.log("Received event:", event, data);
+          // addNotification(data);
         });
       }
 

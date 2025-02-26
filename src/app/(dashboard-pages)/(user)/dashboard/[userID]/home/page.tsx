@@ -58,7 +58,7 @@ const UserHomePage = ({
       buttonLabel: "Make money",
       icon: "/images/payout.svg",
       isCompleted: user?.payout_setup,
-      action: () => router.push(`/dashboard/${params.userID}/settings/payout`),
+      action: () => router.push(`/dashboard/${params.userID}/settings?tab=payment`),
     },
     {
       title: "Make your first sale",
@@ -66,7 +66,7 @@ const UserHomePage = ({
       buttonLabel: "View guide",
       icon: "/images/first_sale.svg",
       isCompleted: user?.first_sale,
-      action: () => router.push(`/dashboard/${params.userID}/guide/first-sale`),
+      action: () => router.push(`/dashboard/${params.userID}/products/new`),
     },
   ];
 

@@ -114,6 +114,17 @@ declare global {
     resource_link?: string[];
     portfolio_link?: string;
   };
+
+  interface Notification {
+    id: string;
+    type: string;
+    notifiable_type: string;
+    notifiable_id: string;
+    data: any;
+    read_at: string;
+    created_at: string;
+    updated_at: string;
+  }
 }
 
 // This export is needed to make the file a module
