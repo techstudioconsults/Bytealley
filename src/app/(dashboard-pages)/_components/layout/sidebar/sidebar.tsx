@@ -9,7 +9,13 @@ import { Logo } from "~/components/common/logo";
 import { useSidebarItems } from "~/utils/constants";
 import { cn } from "~/utils/utils";
 
-export const Sidebar: FC<ISidebarProperties> = ({ sideNavitems, logoComponent }) => {
+interface ISidebarProperties {
+  sideNavitems?: SidebarItem[];
+  logoComponent?: React.ReactNode;
+  onClose?: () => void;
+}
+
+export const Sidebar: FC<ISidebarProperties> = ({ sideNavitems, logoComponent, onClose }) => {
   const pathname = usePathname();
   const userID = pathname.split("/")[2];
 
@@ -50,6 +56,7 @@ export const Sidebar: FC<ISidebarProperties> = ({ sideNavitems, logoComponent })
         href={dynamicLink}
         data-testid={item.id}
         role="sidebar-link"
+        onClick={onClose}
         className={cn(
           "relative z-50 flex items-center gap-3 rounded-lg px-3 py-2.5 font-medium transition-all duration-200",
           isActive ? "border-2 border-primary text-primary shadow-active" : "text-mid-grey-II hover:bg-low-grey-I",

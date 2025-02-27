@@ -19,6 +19,7 @@ const StudioWrapper = ({ onReady }: StudioWrapperProperties) => {
         onReady={onReady}
         options={{
           licenseKey: "YOUR_LICENSE_KEY",
+          theme: "light",
           project: {
             default: {
               pages: [
