@@ -1,20 +1,27 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
-// features/push-notification/context/NotificationProvider.tsx
-
 "use client";
 
 import Pusher from "pusher-js";
-import { ReactNode, useCallback, useEffect, useState } from "react";
+import { createContext, ReactNode, useCallback, useEffect, useState } from "react";
 
-import { PushService } from "~/features/push-notification/services/notification.service";
 import { WithDependency } from "~/HOC/withDependencies";
 import { dependencies } from "~/utils/dependencies";
 import { Toast } from "~/utils/notificationManager";
+import { PushService } from "../services/notification.service";
 import { Notification } from "../types";
-import { NotificationContext } from "./notification-context";
 
-const BaseNotificationProvider = ({
+interface NotificationContextType {
+  notifications: Notification[];
+  addNotification: (notification: Notification) => void;
+  markAllAsRead: () => Promise<void>;
+  fetchNotifications: () => Promise<void>;
+  unreadCount: number;
+}
+
+export const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
+
+export const BaseNotificationProvider = ({
   pushService,
   children,
   session,
@@ -52,7 +59,7 @@ const BaseNotificationProvider = ({
   const markAllAsRead = async () => {
     try {
       await pushService.readAllNotification();
-      setNotifications([]);
+      setNotifications((previous) => previous.map((notification) => ({ ...notification, read: true })));
     } catch (error) {
       console.error("Failed to mark notifications as read:", error);
     }
@@ -98,6 +105,7 @@ const BaseNotificationProvider = ({
 
       for (const event of events) {
         channel.bind(event, (data: any) => {
+          console.log("Received event:", event, data);
           const formattedNotication = {
             id: data.id,
             type: event,

@@ -40,6 +40,7 @@
     "@t3-oss/env-nextjs": "^0.10.1",
     "@types/jest-axe": "^3.5.9",
     "@vercel/speed-insights": "^1.2.0",
+    "@grapesjs/studio-sdk": "latest",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
