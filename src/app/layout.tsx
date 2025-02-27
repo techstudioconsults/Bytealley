@@ -10,9 +10,9 @@ import { GotoTop } from "~/components/miscellaneous/goto-top";
 import { Progress_Bar } from "~/components/progress-bar";
 import { TooltipProvider } from "~/components/ui/tooltip";
 import { LoadingProvider } from "~/context/loading-provider";
-import NotificationProvider from "~/context/notification-provider";
 import SessionProvider from "~/context/session-provider";
 import ToastProvider from "~/context/toast-provider";
+import NotificationProvider from "~/features/push-notification/context/notification-provider";
 import { getSession } from "~/lib/session/session";
 
 // import { ReduxProvider } from "~/store/provider";

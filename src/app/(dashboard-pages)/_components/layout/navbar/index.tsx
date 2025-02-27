@@ -18,11 +18,11 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
-import { useNotifications } from "~/hooks/use-notification";
+import { UnreadNotificationCard } from "~/features/push-notification";
+import { useNotifications } from "~/features/push-notification/hooks/use-notification";
 import { useSession } from "~/hooks/use-session";
 import { cn } from "~/utils/utils";
 import { Drawer } from "../drawer/drawer";
-import { UnreadNotificationCard } from "./notification";
 
 export const DashboardNavbar = () => {
   const pathname = usePathname();

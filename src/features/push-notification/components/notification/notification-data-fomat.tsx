@@ -1,5 +1,5 @@
 import { BlurImage } from "~/components/miscellaneous/blur-image";
-import { useNotifications } from "~/hooks/use-notification";
+import { useNotifications } from "~/features/push-notification/hooks/use-notification";
 
 const NotificationTime = ({ time }: { time: string }) => (
   <p className="text-[10px] text-muted-foreground">{new Date(time).toLocaleTimeString()}</p>

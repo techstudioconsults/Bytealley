@@ -1,6 +1,6 @@
+import { PushService } from "~/features/push-notification/services/notification.service";
 import { CustomerService } from "~/services/customer.service";
 import { EarningService } from "~/services/earnings.service";
-import { PushService } from "~/services/notification.service";
 import { PayoutService } from "~/services/payout.service";
 import { ProductService } from "~/services/product.service";
 import { HttpAdapter } from "../adapters/http-adapter";

@@ -1,26 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
+// features/push-notification/context/NotificationProvider.tsx
+
 "use client";
 
 import Pusher from "pusher-js";
-import { createContext, ReactNode, useCallback, useEffect, useState } from "react";
+import { ReactNode, useCallback, useEffect, useState } from "react";
 
+import { PushService } from "~/features/push-notification/services/notification.service";
 import { WithDependency } from "~/HOC/withDependencies";
-import { PushService } from "~/services/notification.service";
 import { dependencies } from "~/utils/dependencies";
 import { Toast } from "~/utils/notificationManager";
+import { Notification } from "../types";
+import { NotificationContext } from "./notification-context";
 
-interface NotificationContextType {
-  notifications: Notification[];
-  addNotification: (notification: Notification) => void;
-  markAllAsRead: () => Promise<void>;
-  fetchNotifications: () => Promise<void>;
-  unreadCount: number;
-}
-
-export const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
-
-export const BaseNotificationProvider = ({
+const BaseNotificationProvider = ({
   pushService,
   children,
   session,

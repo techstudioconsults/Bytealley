@@ -16,7 +16,7 @@ import customers from "@/icons/Property_2_User-folder_n4spfl.svg";
 import payouts from "@/icons/Property_2_Wallet_3_teopvy.svg";
 import { useEffect, useState } from "react";
 
-import { useNotifications } from "~/hooks/use-notification";
+import { useNotifications } from "~/features/push-notification/hooks/use-notification";
 
 export const useSidebarItems = () => {
   const { notifications } = useNotifications();
