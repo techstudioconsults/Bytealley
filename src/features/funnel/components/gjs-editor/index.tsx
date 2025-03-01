@@ -6,6 +6,8 @@ import GrapesJsStudio from "@grapesjs/studio-sdk/react";
 
 import "@grapesjs/studio-sdk/style";
 
+import { editorOptions } from "../../config";
+
 // import type { Editor } from "grapesjs";
 
 interface StudioWrapperProperties {
@@ -15,25 +17,7 @@ interface StudioWrapperProperties {
 const StudioWrapper = ({ onReady }: StudioWrapperProperties) => {
   return (
     <div className="h-full w-full flex-1 overflow-hidden">
-      <GrapesJsStudio
-        onReady={onReady}
-        options={{
-          licenseKey: "YOUR_LICENSE_KEY",
-          theme: "light",
-          project: {
-            default: {
-              pages: [
-                {
-                  name: "Home",
-                  component: `<h1 style="padding: 2rem; text-align: center">
-                    Hello Studio 👋
-                  </h1>`,
-                },
-              ],
-            },
-          },
-        }}
-      />
+      <GrapesJsStudio onReady={onReady} options={editorOptions} />
     </div>
   );
 };
