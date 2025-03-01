@@ -1,15 +1,14 @@
 "use client";
 
 import template1 from "@/images/template-1.png";
-import template2 from "@/images/template-2.png";
-import template3 from "@/images/template-3.png";
 import { LucidePlusCircle } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
 import CustomButton from "~/components/common/common-button/common-button";
 import { ReusableDialog } from "~/components/common/Dialog";
-import { FunnelService } from "~/features/funnel";
+import { template } from "~/features/funnel";
+import { templatesFunctions } from "~/features/funnel/templates";
 import { WithDependency } from "~/HOC/withDependencies";
 import { useSession } from "~/hooks/use-session";
 import { ProductService } from "~/services/product.service";
@@ -20,6 +19,7 @@ const BaseSelectFunnelModal = ({ productService }: { productService: ProductServ
   //   const [isPending, starttransition] = useTransition();
   const { user } = useSession();
   const [isProduct, setProduct] = useState(false);
+  const [templates, setTemplates] = useState<template[]>([]);
 
   useEffect(() => {
     const doProductExist = async () => {
@@ -30,6 +30,14 @@ const BaseSelectFunnelModal = ({ productService }: { productService: ProductServ
     };
     doProductExist();
   }, [productService]);
+
+  useEffect(() => {
+    const fetchTemplates = async () => {
+      const fetchedTemplates = await Promise.all(templatesFunctions.map((fn) => fn()));
+      setTemplates(fetchedTemplates);
+    };
+    fetchTemplates();
+  }, []);
 
   return (
     <ReusableDialog
@@ -51,9 +59,14 @@ const BaseSelectFunnelModal = ({ productService }: { productService: ProductServ
     >
       {isProduct ? (
         <section className={`grid w-full grid-cols-1 justify-between gap-4 border p-2 lg:grid-cols-3`}>
-          <TemplateCard image={template1.src} text={"Sales Template"} />
-          <TemplateCard image={template2.src} text={"Webinar Template"} />
-          <TemplateCard image={template3.src} text={"Lead Template"} />
+          {templates.map((template) => (
+            <TemplateCard
+              key={template.id}
+              templateID={template.id}
+              image={template.thumbnail as unknown as string}
+              text={`${template.id} template`}
+            />
+          ))}
         </section>
       ) : (
         <section className={`text-center`}>

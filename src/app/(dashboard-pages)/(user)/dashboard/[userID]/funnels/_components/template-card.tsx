@@ -4,7 +4,7 @@ import CustomButton from "~/components/common/common-button/common-button";
 import { BlurImage } from "~/components/miscellaneous/blur-image";
 import { useSession } from "~/hooks/use-session";
 
-export const TemplateCard = ({ image, text }: { image: string; text: string }) => {
+export const TemplateCard = ({ image, text, templateID }: { image: string; text: string; templateID: string }) => {
   const { user } = useSession();
   return (
     <div className={`flex flex-col items-center justify-between gap-4 rounded-lg border p-3`}>
@@ -20,7 +20,7 @@ export const TemplateCard = ({ image, text }: { image: string; text: string }) =
         <InfoIcon className="h-[1rem] w-[1rem]" />
       </div>
       <CustomButton
-        href={`/dashboard/${user?.id}/funnels/editor`}
+        href={`/dashboard/${user?.id}/funnels/editor?templateID=${templateID}`}
         className={`w-[200px] border-primary text-primary`}
         variant={`outline`}
       >
