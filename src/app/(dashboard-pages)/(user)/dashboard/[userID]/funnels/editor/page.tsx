@@ -7,9 +7,10 @@ import { useEffect, useState } from "react";
 
 import { StudioWrapper, template, useGrapesJS } from "~/features/funnel";
 import { fetchTemplateByID } from "~/lib/funnel";
+import { FunnelControls } from "../_components/funnel-controls";
 
 export default function Funnel() {
-  const { onReady, editor } = useGrapesJS();
+  const { editor } = useGrapesJS();
   const [template, setTemplate] = useState<template>();
   const searchParameters = useSearchParams();
   const ID = searchParameters.get("templateID") as string;
@@ -58,9 +59,12 @@ export default function Funnel() {
     }
   }, [editor, template]);
 
+  //trigger the save and continue modal
+
   return (
     <main className="flex h-screen flex-col justify-between gap-2">
-      <StudioWrapper onReady={onReady} />
+      {template && <FunnelControls template={template} />}
+      <StudioWrapper />
     </main>
   );
 }

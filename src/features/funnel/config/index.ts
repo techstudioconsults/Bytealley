@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export const editorOptions = {
   licenseKey: "YOUR_LICENSE_KEY",
   theme: "light" as "light" | "dark" | "auto",
@@ -14,40 +13,60 @@ export const editorOptions = {
       ],
     },
   },
-  layout: {
-    default: {
-      type: "row",
-      style: { height: "100%" },
-      children: [
-        { type: "sidebarLeft" },
-        {
-          type: "canvasSidebarTop",
-          sidebarTop: {
-            leftContainer: {
-              buttons: ({ items }: { items: any[] }) => [
-                ...items,
-                {
-                  id: "publish-funnel",
-                  label: "Save and Continue",
-                  style: { backgroundColor: "green", color: "#FFFFFF" },
-                  // onClick: () => alert("Button clicked"),
-                },
-              ],
-            },
-          },
-        },
-        { type: "sidebarRight" },
-      ],
-    },
-  },
+  // layout: {
+  //   default: {
+  //     type: "row",
+  //     style: { height: "100%" },
+  //     children: [
+  //       { type: "sidebarLeft" },
+  //       {
+  //         type: "canvasSidebarTop",
+  //         sidebarTop: {
+  //           leftContainer: {
+  //             buttons: ({ items }: { items: any[] }) => [
+  //               ...items,
+  //               {
+  //                 id: "publish-funnel",
+  //                 label: "Save and Continue",
+  //                 style: { backgroundColor: "green", color: "#FFFFFF" },
+  //                 onClick: ({ editor }: any) => {
+  //                   // Use the editor's Modal API to show a modal
+  //                   editor.Modal.open({
+  //                     title: "Save and Continue", // Modal title
+  //                     content: `
+  //                       <div>
+  //                         <p>Are you sure you want to save and continue?</p>
+  //                       </div>
+  //                     `, // Modal content (HTML)
+  //                     buttons: [
+  //                       {
+  //                         id: "confirm-save",
+  //                         label: "Confirm",
+  //                         className: "btn-primary",
+  //                         onClick: () => {
+  //                           console.log("Save confirmed!");
+  //                           editor.Modal.close(); // Close the modal
+  //                         },
+  //                       },
+  //                       {
+  //                         id: "cancel-save",
+  //                         label: "Cancel",
+  //                         className: "btn-secondary",
+  //                         onClick: () => {
+  //                           console.log("Save cancelled!");
+  //                           editor.Modal.close(); // Close the modal
+  //                         },
+  //                       },
+  //                     ],
+  //                   });
+  //                 },
+  //               },
+  //             ],
+  //           },
+  //         },
+  //       },
+  //       { type: "sidebarRight" },
+  //     ],
+  //   },
+  // },
 };
-
-// {id: 'componentOutline', icon: 'borderRadius', tooltip: 'Component outline', editorEvents: {…}, onClick: ƒ}editorEvents: {command:run:core:component-outline: ƒ, command:stop:core:component-outline: ƒ}icon: "borderRadius"id: "componentOutline"onClick: () => {…}length: 0name: ""arguments: (...)caller: (...)[[FunctionLocation]]: react.es.js:22744[[Prototype]]: ƒ ()[[Scopes]]: Scopes[6]tooltip: "Component outline"[[Prototype]]: Object
-// VM7799 index.ts:38 {id: 'preview', icon: 'eye', tooltip: 'Preview', editorEvents: {…}, onClick: ƒ}
-// VM7799 index.ts:38 {id: 'fullscreen', icon: 'fullscreen', tooltip: 'Fullscreen', editorEvents: {…}, onClick: ƒ}
-// VM7799 index.ts:38 {id: 'showCode', icon: 'xml', tooltip: 'Code', onClick: ƒ}
-// VM7799 index.ts:38 {id: 'showImportCode', icon: 'trayArrowDown', tooltip: 'Import code', onClick: ƒ}
-// VM7799 index.ts:38 {id: 'clearCanvas', icon: 'delete', tooltip: 'Clear page', onClick: ƒ}
-// VM7799 index.ts:38 {id: 'store', tooltip: 'Save content', editorEvents: {…}, onClick: ƒ, label: ƒ}
-// VM7799 index.ts:38 {id: 'undo', icon: 'arrowULeftTop', disabled: true, editorEvents: {…}, onClick: ƒ}
-// VM7799 index.ts:38 {id: 'redo', icon: 'arrowURightTop', disabled: true, editorEvents: {…}, onClick: ƒ}

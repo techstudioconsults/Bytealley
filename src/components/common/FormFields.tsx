@@ -21,6 +21,7 @@ import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import { MdCancel } from "react-icons/md";
 
+import { BlurImage } from "../miscellaneous/blur-image";
 import { Badge } from "../ui/badge";
 import { Checkbox } from "../ui/checkbox";
 import { Switch } from "../ui/switch";
@@ -873,12 +874,11 @@ export function MultiSelect({
   options,
   placeholder = "Select options",
   required = false,
-  // disabled = false,
   className = "",
 }: {
   label?: string;
   name: string;
-  options: { value: string; label: string }[];
+  options: { value: string; label: string; thumbnail?: string | File | null }[];
   placeholder?: string;
   required?: boolean;
   disabled?: boolean;
@@ -922,17 +922,29 @@ export function MultiSelect({
                 </SelectTrigger>
                 <SelectContent>
                   {options.map((option) => (
-                    <div
+                    <section
                       key={option.value}
-                      className="flex items-center space-x-2 p-2"
+                      className="flex items-center justify-between space-x-2 p-2"
                       onClick={() => handleSelect(option.value)}
                     >
+                      <div className="flex items-center space-x-2">
+                        {option.thumbnail && (
+                          <BlurImage
+                            src={typeof option.thumbnail === "string" ? option.thumbnail : ""}
+                            alt={option.label}
+                            width={40}
+                            height={40}
+                            className="h-[20px] w-[20px] rounded-full object-cover"
+                          />
+                        )}
+
+                        <label className="text-sm">{option.label}</label>
+                      </div>
                       <Checkbox
                         checked={selectedValues.includes(option.value)}
                         onCheckedChange={() => handleSelect(option.value)}
                       />
-                      <label className="text-sm">{option.label}</label>
-                    </div>
+                    </section>
                   ))}
                 </SelectContent>
               </Select>
@@ -941,10 +953,19 @@ export function MultiSelect({
               {selectedValues.length > 0 && (
                 <div className="mt-2 flex flex-wrap gap-2">
                   {selectedValues.map((value: string) => {
-                    const label = options.find((opt) => opt.value === value)?.label;
-                    return label ? (
+                    const selectedOption = options.find((opt) => opt.value === value);
+                    return selectedOption ? (
                       <Badge key={value} className="text-xs">
-                        {label}
+                        {selectedOption.thumbnail && (
+                          <Image
+                            src={selectedOption.thumbnail}
+                            alt={selectedOption.label}
+                            width={20}
+                            height={20}
+                            className="mr-1 rounded-md object-cover"
+                          />
+                        )}
+                        {selectedOption.label}
                       </Badge>
                     ) : null;
                   })}

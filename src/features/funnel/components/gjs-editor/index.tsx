@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-// features/grapesjs-studio/components/StudioWrapper.tsx
 "use client";
 
 import GrapesJsStudio from "@grapesjs/studio-sdk/react";
@@ -7,14 +5,10 @@ import GrapesJsStudio from "@grapesjs/studio-sdk/react";
 import "@grapesjs/studio-sdk/style";
 
 import { editorOptions } from "../../config";
+import useGrapesJS from "../../hooks/use-grapejs";
 
-// import type { Editor } from "grapesjs";
-
-interface StudioWrapperProperties {
-  onReady: (editor: any) => void;
-}
-
-const StudioWrapper = ({ onReady }: StudioWrapperProperties) => {
+const StudioWrapper = () => {
+  const { onReady } = useGrapesJS();
   return (
     <div className="h-full w-full flex-1 overflow-hidden">
       <GrapesJsStudio onReady={onReady} options={editorOptions} />

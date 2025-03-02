@@ -127,6 +127,13 @@ export const emailIntegrationSchema = z.object({
   token: z.string().min(1, "API key is required"),
 });
 
+export const funnelSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  thumbnail: z.any().refine((file) => file !== null, "Thumbnail is required"),
+  products: z.string().min(1, "A product is required"),
+  asset: z.any().refine((file) => file !== null, "asset is required"),
+});
+
 export type RegisterFormData = z.infer<typeof registerSchema>;
 export type LoginFormData = z.infer<typeof loginSchema>;
 export type ForgotPasswordData = z.infer<typeof forgotPasswordSchema>;
@@ -141,5 +148,6 @@ export type ChangePasswordFormData = z.infer<typeof changePasswordSchema>;
 export type ChangeEmailFormData = z.infer<typeof changeEmailSchema>;
 export type KycFormData = z.infer<typeof kycSchema>;
 export type EmailIntegrationFormData = z.infer<typeof emailIntegrationSchema>;
+export type FunnelFormData = z.infer<typeof funnelSchema>;
 
 // export type ProductFormData = z.infer<typeof ProductFormSchema>;

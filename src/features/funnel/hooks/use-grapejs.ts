@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// features/grapesjs-studio/hooks/useGrapesJS.ts
 import { StudioCommands, ToastVariant } from "@grapesjs/studio-sdk/react";
 import { useState } from "react";
 
@@ -33,43 +32,11 @@ const useGrapesJS = () => {
     }
   };
 
-  const showModal = (options: {
-    title: string;
-    content: string;
-    buttons?: Array<{
-      id: string;
-      label: string;
-      className?: string;
-      onClick: () => void;
-    }>;
-  }) => {
-    if (editor) {
-      const { title, content, buttons = [] } = options;
-
-      editor.Modal.open({
-        title,
-        content,
-        buttons: [
-          ...buttons,
-          {
-            id: "close-modal",
-            label: "Close",
-            className: "btn-secondary",
-            onClick: () => editor.Modal.close(),
-          },
-        ],
-      });
-    } else {
-      console.warn("Editor is not initialized. Cannot show modal.");
-    }
-  };
-
   return {
     editor,
     onReady,
     getProjectData,
     getExportData,
-    showModal, // Add showModal to the returned object
   };
 };
 
