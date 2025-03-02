@@ -1,10 +1,12 @@
+/* eslint-disable unicorn/no-array-for-each */
+/* eslint-disable no-console */
 "use client";
 
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { StudioWrapper, template, useGrapesJS } from "~/features/funnel";
-import { fetchTemplates } from "~/features/funnel/templates";
+import { fetchTemplateByID } from "~/lib/funnel";
 
 export default function Funnel() {
   const { onReady, editor } = useGrapesJS();
@@ -16,10 +18,10 @@ export default function Funnel() {
   useEffect(() => {
     const getTemplate = async () => {
       try {
-        const response = await fetchTemplates({ templateID: ID });
+        const response = await fetchTemplateByID(ID);
         if (response) {
           console.log(response);
-          setTemplate(response[0]);
+          setTemplate(response);
         }
       } catch (error) {
         console.error("Failed to fetch template:", error);
@@ -39,18 +41,18 @@ export default function Funnel() {
     existingPages.forEach((page: template) => editor.Pages.remove(page.id));
 
     // Add new pages from the template
-    template.pages.forEach((page) => {
+    for (const page of template.pages) {
       const { id, name, content } = page;
       console.log(content);
 
-      const newPage = editor.Pages.add({ id, name });
+      const newPage = editor.Pages.add({ id, name, content });
       if (newPage) {
         // Set the newly created page as active
         editor.Pages.select(newPage.id);
         // Add content to the page
-        editor.addComponents("<p>Some initial content</p>", { pageId: newPage.id });
+        editor.addComponents(content, { pageId: newPage.id });
       }
-    });
+    }
 
     // Set the first page as the active page
     const firstPageId = template.pages[0].id;
