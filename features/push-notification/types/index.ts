@@ -8,7 +8,7 @@ export type NotificationContextType = {
   unreadCount: number;
 };
 
-export type Notification = {
+export type PushNotification = {
   id: string;
   type: string;
   notifiable_type: string;
