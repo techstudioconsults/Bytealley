@@ -8,7 +8,6 @@ const useGrapesJS = () => {
   const [editor, setEditor] = useState<any>();
 
   const onReady = (editor: any) => {
-    console.log("Editor loaded", editor);
     setEditor(editor);
   };
 

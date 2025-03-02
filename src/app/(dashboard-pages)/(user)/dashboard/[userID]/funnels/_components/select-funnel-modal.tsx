@@ -1,6 +1,5 @@
 "use client";
 
-import template1 from "@/images/template-1.png";
 import { LucidePlusCircle } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -8,7 +7,7 @@ import { useEffect, useState } from "react";
 import CustomButton from "~/components/common/common-button/common-button";
 import { ReusableDialog } from "~/components/common/Dialog";
 import { template } from "~/features/funnel";
-import { templatesFunctions } from "~/features/funnel/templates";
+import { fetchTemplates } from "~/features/funnel/templates";
 import { WithDependency } from "~/HOC/withDependencies";
 import { useSession } from "~/hooks/use-session";
 import { ProductService } from "~/services/product.service";
@@ -32,11 +31,13 @@ const BaseSelectFunnelModal = ({ productService }: { productService: ProductServ
   }, [productService]);
 
   useEffect(() => {
-    const fetchTemplates = async () => {
-      const fetchedTemplates = await Promise.all(templatesFunctions.map((fn) => fn()));
-      setTemplates(fetchedTemplates);
+    const getTemplate = async () => {
+      const response = await fetchTemplates();
+      if (response) {
+        setTemplates(response);
+      }
     };
-    fetchTemplates();
+    getTemplate();
   }, []);
 
   return (
