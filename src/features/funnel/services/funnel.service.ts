@@ -1,5 +1,6 @@
+/* eslint-disable unicorn/no-array-for-each */
 import { HttpAdapter } from "~/adapters/http-adapter";
-import { ChangePasswordFormData, KycFormData } from "~/schemas";
+import { FunnelFormData } from "~/schemas";
 
 export class FunnelService {
   private readonly http: HttpAdapter;
@@ -8,38 +9,40 @@ export class FunnelService {
     this.http = httpAdapter;
   }
 
-  async changePassword(data: ChangePasswordFormData) {
-    const response = await this.http.post(`/users/change-password`, data);
-    if (response?.status === 200) {
-      return response.data;
-    }
-  }
-
-  async submitKYCDocument(data: KycFormData) {
+  async saveFunnelToDraft(data: FunnelFormData & { funnel: string }) {
     const headers = { "Content-Type": "multipart/form-data" };
-    const response = await this.http.post(`/users/kyc`, data, headers);
-    if (response?.status === 200) {
+    const formattedData = new FormData();
+
+    formattedData.append("title", data.title);
+    formattedData.append("thumbnail", data.thumbnail);
+    formattedData.append("status", "draft");
+    formattedData.append("template", JSON.stringify(data.funnel));
+    formattedData.append("asset", data.assets[0]);
+    data.products.forEach((productId, index) => {
+      formattedData.append(`products[${index}]`, productId);
+    });
+
+    const response = await this.http.post("/funnels", formattedData, headers);
+    if (response?.status === 201) {
       return response.data;
     }
   }
 
-  async getSubscriptionBillingCycle() {
-    const response = await this.http.get<IBillingCycle>(`/subscriptions/billing`);
-    if (response?.status === 200) {
-      return response.data;
-    }
-  }
+  async publishFunnel(data: FunnelFormData & { funnel: string }) {
+    const headers = { "Content-Type": "multipart/form-data" };
+    const formattedData = new FormData();
 
-  async manageSubscriptionPlan(billingID: string) {
-    const response = await this.http.get<{ data: ISubscriptionPlan }>(`/subscriptions/${billingID}/manage`);
-    if (response?.status === 200) {
-      return response.data;
-    }
-  }
+    formattedData.append("title", data.title);
+    formattedData.append("thumbnail", data.thumbnail);
+    formattedData.append("status", "published");
+    formattedData.append("template", JSON.stringify(data.funnel));
+    formattedData.append("asset", data.assets[0]);
+    data.products.forEach((productId, index) => {
+      formattedData.append(`products[${index}]`, productId);
+    });
 
-  async changeAccountStatus(data: object, accountID: string) {
-    const response = await this.http.patch<{ data: IPaymentAccount[] }>(`/accounts/${accountID}`, data);
-    if (response?.status === 200) {
+    const response = await this.http.post("/funnels", formattedData, headers);
+    if (response?.status === 201) {
       return response.data;
     }
   }

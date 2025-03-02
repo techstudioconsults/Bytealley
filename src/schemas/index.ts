@@ -130,8 +130,9 @@ export const emailIntegrationSchema = z.object({
 export const funnelSchema = z.object({
   title: z.string().min(1, "Title is required"),
   thumbnail: z.any().refine((file) => file !== null, "Thumbnail is required"),
-  products: z.string().min(1, "A product is required"),
-  asset: z.any().refine((file) => file !== null, "asset is required"),
+  products: z.array(z.string()).min(1, "At least one product is required"),
+  // asset: z.any().refine((file) => file !== null, "asset is required"),
+  assets: z.array(z.any()).min(1, "Product files are required").max(4, "You can upload up to 4 files"),
 });
 
 export type RegisterFormData = z.infer<typeof registerSchema>;

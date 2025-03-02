@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { LucidePlusCircle } from "lucide-react";
@@ -6,7 +7,9 @@ import CustomButton from "~/components/common/common-button/common-button";
 import { ReusableDialog } from "~/components/common/Dialog";
 import { FunnelForm } from "./funnel-form";
 
-export const FunnelFormModal = () => {
+export const FunnelFormModal = ({ editor }: { editor: any }) => {
+  //   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
+
   return (
     <ReusableDialog
       trigger={
@@ -25,7 +28,7 @@ export const FunnelFormModal = () => {
       title={`Final Steps Before Publishing...`}
       description={`Fill the form below to complete your funnel creation`}
     >
-      <FunnelForm />
+      <FunnelForm editor={editor} />
     </ReusableDialog>
   );
 };

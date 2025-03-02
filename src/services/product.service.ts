@@ -8,7 +8,6 @@ export class ProductService {
     this.http = httpAdapter;
   }
 
-  // Example: Sending a POST request with custom headers
   async createProduct(data: ProductFormValues) {
     const headers = { "Content-Type": "multipart/form-data" };
 
