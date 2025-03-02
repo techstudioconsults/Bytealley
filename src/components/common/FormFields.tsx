@@ -958,11 +958,11 @@ export function MultiSelect({
                       <Badge key={value} className="text-xs">
                         {selectedOption.thumbnail && (
                           <Image
-                            src={selectedOption.thumbnail}
+                            src={typeof selectedOption.thumbnail === "string" ? selectedOption.thumbnail : ""}
                             alt={selectedOption.label}
-                            width={20}
-                            height={20}
-                            className="mr-1 rounded-md object-cover"
+                            width={40}
+                            height={40}
+                            className="mr-1 h-[20px] w-[20px] rounded-full object-cover"
                           />
                         )}
                         {selectedOption.label}
