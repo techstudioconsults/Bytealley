@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 export type NotificationContextType = {
-  notifications: Notification[];
-  addNotification: (notification: Notification) => void;
+  notifications: PushNotification[];
+  addNotification: (notification: PushNotification) => void;
   markAllAsRead: () => Promise<void>;
   fetchNotifications: () => Promise<void>;
   unreadCount: number;
 };
 
-export type Notification = {
+export type PushNotification = {
   id: string;
   type: string;
   notifiable_type: string;

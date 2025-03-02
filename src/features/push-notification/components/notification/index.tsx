@@ -7,8 +7,8 @@ import Loading from "~/app/Loading";
 import CustomButton from "~/components/common/common-button/common-button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
 import { Switch } from "~/components/ui/switch";
-import { useNotifications } from "~/features/push-notification/hooks/use-notification";
 import { cn } from "~/utils/utils";
+import { useNotifications } from "../../hooks/use-notification";
 import { NotificationDataFormat } from "./notification-data-fomat";
 
 interface CardProperties extends React.ComponentProps<typeof Card> {}

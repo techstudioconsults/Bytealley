@@ -9,15 +9,7 @@ import { WithDependency } from "~/HOC/withDependencies";
 import { dependencies } from "~/utils/dependencies";
 import { Toast } from "~/utils/notificationManager";
 import { PushService } from "../services/notification.service";
-import { Notification } from "../types";
-
-interface NotificationContextType {
-  notifications: Notification[];
-  addNotification: (notification: Notification) => void;
-  markAllAsRead: () => Promise<void>;
-  fetchNotifications: () => Promise<void>;
-  unreadCount: number;
-}
+import { NotificationContextType, PushNotification } from "../types";
 
 export const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
@@ -30,7 +22,7 @@ export const BaseNotificationProvider = ({
   pushService: PushService;
   session: any;
 }) => {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [notifications, setNotifications] = useState<PushNotification[]>([]);
 
   // Fetch notifications from the backend
   const fetchNotifications = useCallback(async () => {
@@ -46,7 +38,7 @@ export const BaseNotificationProvider = ({
 
   const unreadCount = notifications.length;
 
-  const addNotification = (notification: Notification) => {
+  const addNotification = (notification: PushNotification) => {
     setNotifications((previous) => [{ ...notification }, ...previous]);
     Toast.getInstance().showToast({
       title: "New Notification",
@@ -116,7 +108,7 @@ export const BaseNotificationProvider = ({
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
           };
-          addNotification(formattedNotication as Notification);
+          addNotification(formattedNotication as PushNotification);
         });
       }
 

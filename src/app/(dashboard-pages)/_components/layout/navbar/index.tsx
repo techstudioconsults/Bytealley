@@ -18,8 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
-import { UnreadNotificationCard } from "~/features/push-notification";
-import { useNotifications } from "~/features/push-notification/hooks/use-notification";
+import { UnreadNotificationCard, useNotifications } from "~/features/push-notification";
 import { useSession } from "~/hooks/use-session";
 import { cn } from "~/utils/utils";
 import { Drawer } from "../drawer/drawer";

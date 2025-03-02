@@ -1,5 +1,6 @@
 import { BlurImage } from "~/components/miscellaneous/blur-image";
-import { useNotifications } from "~/features/push-notification/hooks/use-notification";
+import { useNotifications } from "../../hooks/use-notification";
+import { PushNotification } from "../../types";
 
 const NotificationTime = ({ time }: { time: string }) => (
   <p className="text-[10px] text-muted-foreground">{new Date(time).toLocaleTimeString()}</p>
@@ -34,7 +35,7 @@ const AccountDetails = ({ account }: { account: { name: string; bank_name: strin
 export const NotificationDataFormat = () => {
   const { notifications } = useNotifications();
 
-  const renderNotificationContent = (notification: Notification) => {
+  const renderNotificationContent = (notification: PushNotification) => {
     const { type, data, created_at } = notification;
 
     return (

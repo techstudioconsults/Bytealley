@@ -20,7 +20,6 @@ export default function Funnel() {
       try {
         const response = await fetchTemplateByID(ID);
         if (response) {
-          console.log(response);
           setTemplate(response);
         }
       } catch (error) {
@@ -43,8 +42,6 @@ export default function Funnel() {
     // Add new pages from the template
     for (const page of template.pages) {
       const { id, name, content } = page;
-      console.log(content);
-
       const newPage = editor.Pages.add({ id, name, content });
       if (newPage) {
         // Set the newly created page as active

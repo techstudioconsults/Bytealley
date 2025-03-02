@@ -23,7 +23,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
           return { ...page, content };
         } catch (error) {
           console.error(`Error reading file ${filePath}:`, error);
-          return { ...page, content: "" }; // Return empty content if file not found
+          return { ...page, content: "" };
         }
       }),
     );
