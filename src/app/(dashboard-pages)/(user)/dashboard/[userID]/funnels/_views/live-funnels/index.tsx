@@ -1,8 +1,7 @@
-import empty1 from "@/images/empty_img_1.svg";
-import empty2 from "@/images/empty_img_2.svg";
+import empty4 from "@/images/empty_img_4.svg";
 import { format } from "date-fns";
 import debounce from "lodash.debounce";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { DateRange } from "react-day-picker";
 
@@ -10,19 +9,18 @@ import { DateRangePicker } from "~/app/(dashboard-pages)/_components/date-range-
 import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import Loading from "~/app/Loading";
 import { FunnelService } from "~/features/funnel";
-import { useSession } from "~/hooks/use-session";
+// import { useSession } from "~/hooks/use-session";
 import FunnelCard from "../../_components/funnel-card";
 import { SelectFunnelModal } from "../../_components/select-funnel-modal";
 
-export const AllFunnels = ({ service }: { service: FunnelService }) => {
-  const router = useRouter();
+export const LiveFunnels = ({ service }: { service: FunnelService }) => {
+  //   const router = useRouter();
   const [isPendingFunnels, startTransitionFunnels] = useTransition();
   const [funnels, setFunnels] = useState<IFunnel[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [paginationMeta, setPaginationMeta] = useState<IPaginationMeta | null>(null);
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
-  const [status, setStatus] = useState<string>("all");
-  const { user } = useSession();
+  //   const { user } = useSession();
 
   // const debouncedStatusReference = useRef(
   //   debounce((value: string) => {
@@ -51,9 +49,7 @@ export const AllFunnels = ({ service }: { service: FunnelService }) => {
       page: currentPage,
       ...(dateRange?.from && { start_date: format(dateRange.from, "yyyy-MM-dd") }),
       ...(dateRange?.to && { end_date: format(dateRange.to, "yyyy-MM-dd") }),
-      ...(status !== "all" && {
-        status: status as "published" | "draft",
-      }),
+      status: "published",
     };
 
     startTransitionFunnels(async () => {
@@ -61,7 +57,7 @@ export const AllFunnels = ({ service }: { service: FunnelService }) => {
       setFunnels(funnelData?.data || []);
       setPaginationMeta(funnelData?.meta || null);
     });
-  }, [currentPage, dateRange?.from, dateRange?.to, status]);
+  }, [currentPage, dateRange?.from, dateRange?.to]);
 
   // const handlePageChange = (page: number) => {
   //   setCurrentPage(page);
@@ -102,13 +98,9 @@ export const AllFunnels = ({ service }: { service: FunnelService }) => {
                 </section>
               ) : (
                 <EmptyState
-                  images={[
-                    { src: empty1.src, alt: "Empty product", width: 322, height: 220 },
-                    { src: empty2.src, alt: "Empty product", width: 322, height: 220 },
-                    { src: empty1.src, alt: "Empty product", width: 322, height: 220 },
-                  ]}
-                  title="Create your first Funnel."
-                  description="Unlock your creative potential and take the first step towards success on our platform. Create your first Funnel today and join our vibrant community of digital creators. Your masterpiece is just a click away!"
+                  images={[{ src: empty4.src, alt: "Empty published funnel", width: 1136, height: 220 }]}
+                  title="You’re yet to publish a funnel."
+                  description="it looks like you're yet to publish a funnel on our platform. Don't miss out on the opportunity to share your talents with the world. Get started today and showcase your creations to a global audience. Your digital journey begins now!"
                   actionButton={<SelectFunnelModal />}
                 />
               )}

@@ -8,6 +8,9 @@ import { WithDependency } from "~/HOC/withDependencies";
 import { dependencies } from "~/utils/dependencies";
 import { SelectFunnelModal } from "./_components/select-funnel-modal";
 import { AllFunnels } from "./_views/all-funnels";
+import { DeletedFunnels } from "./_views/deleted-funnels";
+import { DraftFunnels } from "./_views/draft-funnels";
+import { LiveFunnels } from "./_views/live-funnels";
 
 const Page = ({ funnelService }: { funnelService: FunnelService }) => {
   const router = useRouter();
@@ -77,19 +80,13 @@ const Page = ({ funnelService }: { funnelService: FunnelService }) => {
         <AllFunnels service={funnelService} />
       </TabsContent>
       <TabsContent value="live">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Non similique qui, distinctio maxime necessitatibus sed
-        commodi eveniet aut dolore alias, deleniti veritatis quo recusandae explicabo. Nesciunt illum perferendis neque
-        illo?
+        <LiveFunnels service={funnelService} />
       </TabsContent>
       <TabsContent value="drafts">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt magnam debitis sunt maxime commodi, iusto
-        tempora quis. Quidem deleniti temporibus esse eos fugiat voluptatum odio corrupti! Saepe ipsum consectetur
-        rerum!
+        <DraftFunnels service={funnelService} />
       </TabsContent>
       <TabsContent value="deleted">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus vero itaque veritatis quibusdam consectetur
-        et sunt, quod aperiam eaque enim mollitia nesciunt reiciendis, similique iusto incidunt iure quis distinctio
-        commodi?
+        <DeletedFunnels service={funnelService} />
       </TabsContent>
     </Tabs>
   );

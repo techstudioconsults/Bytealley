@@ -14,8 +14,7 @@ import SessionProvider from "~/context/session-provider";
 import ToastProvider from "~/context/toast-provider";
 import NotificationProvider from "~/features/push-notification/context/notification-provider";
 import { getSession } from "~/lib/session/session";
-
-// import { ReduxProvider } from "~/store/provider";
+import { ReduxProvider } from "~/store/provider";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 export const metadata: Metadata = {
@@ -33,26 +32,26 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={montserrat.className}>
-        {/* <ReduxProvider> */}
-        <LoadingProvider>
-          <TooltipProvider>
-            <SessionProvider session={session}>
-              <NotificationProvider session={session}>
-                <ToastProvider>
-                  <GotoTop />
-                  <LenisProvider>
-                    <main>
-                      <Progress_Bar />
-                      {children}
-                      <SpeedInsights />
-                    </main>
-                  </LenisProvider>
-                </ToastProvider>
-              </NotificationProvider>
-            </SessionProvider>
-            {/* </ReduxProvider> */}
-          </TooltipProvider>
-        </LoadingProvider>
+        <ReduxProvider>
+          <LoadingProvider>
+            <TooltipProvider>
+              <SessionProvider session={session}>
+                <NotificationProvider session={session}>
+                  <ToastProvider>
+                    <GotoTop />
+                    <LenisProvider>
+                      <main>
+                        <Progress_Bar />
+                        {children}
+                        <SpeedInsights />
+                      </main>
+                    </LenisProvider>
+                  </ToastProvider>
+                </NotificationProvider>
+              </SessionProvider>
+            </TooltipProvider>
+          </LoadingProvider>
+        </ReduxProvider>
       </body>
     </html>
   );

@@ -1,5 +1,9 @@
 import { JWTPayload } from "jose";
 
+
+
+
+
 declare global {
   interface ISessionContextType {
     user: IUser | undefined;
@@ -361,6 +365,16 @@ declare global {
     authorization_url: string;
     access_code: string;
     reference: string;
+  }
+  interface IFunnel {
+    id: string;
+    title: string;
+    status: string;
+    thumbnail: string | File;
+    slug?: string;
+    url?: string;
+    created_at: string;
+    template?: string;
   }
 }
 

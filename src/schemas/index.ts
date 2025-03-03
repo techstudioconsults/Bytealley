@@ -135,6 +135,14 @@ export const funnelSchema = z.object({
   assets: z.array(z.any()).min(1, "Product files are required").max(4, "You can upload up to 4 files"),
 });
 
+export const funnelSettingsSchema = z.object({
+  title: z.string().min(1, "Title is required").optional(),
+  logo: z
+    .any()
+    .refine((file) => file !== null, "Thumbnail is required")
+    .optional(),
+});
+
 export type RegisterFormData = z.infer<typeof registerSchema>;
 export type LoginFormData = z.infer<typeof loginSchema>;
 export type ForgotPasswordData = z.infer<typeof forgotPasswordSchema>;
@@ -150,5 +158,6 @@ export type ChangeEmailFormData = z.infer<typeof changeEmailSchema>;
 export type KycFormData = z.infer<typeof kycSchema>;
 export type EmailIntegrationFormData = z.infer<typeof emailIntegrationSchema>;
 export type FunnelFormData = z.infer<typeof funnelSchema>;
+export type FunnelSettingFormData = z.infer<typeof funnelSettingsSchema>;
 
 // export type ProductFormData = z.infer<typeof ProductFormSchema>;

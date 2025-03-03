@@ -7,27 +7,38 @@ import { useEffect, useState } from "react";
 
 import { StudioWrapper, template, useGrapesJS } from "~/features/funnel";
 import { fetchTemplateByID } from "~/lib/funnel";
+import { useAppDispatch, useAppSelector } from "~/store";
+import { clearTemplate } from "~/store/features/template/template-slice";
 import { FunnelControls } from "../_components/funnel-controls";
 
 export default function Funnel() {
+  const dispatch = useAppDispatch();
   const { onReady, editor } = useGrapesJS();
   const [template, setTemplate] = useState<template>();
   const searchParameters = useSearchParams();
   const ID = searchParameters.get("templateID") as string;
-
+  const funnelTemplate = useAppSelector((state: RootState) => state.template.template);
   useEffect(() => {
-    const getTemplate = async () => {
-      try {
-        const response = await fetchTemplateByID(ID);
-        if (response) {
-          console.log(response);
-          setTemplate(response);
-        }
-      } catch (error) {
-        console.error("Failed to fetch template:", error);
+    try {
+      if (funnelTemplate) {
+        setTemplate(JSON.parse(funnelTemplate));
+      } else {
+        const getTemplate = async () => {
+          try {
+            const response = await fetchTemplateByID(ID);
+            if (response) {
+              console.log(response);
+              setTemplate(response);
+            }
+          } catch (error) {
+            console.error("Failed to fetch template:", error);
+          }
+        };
+        getTemplate();
       }
-    };
-    getTemplate();
+    } finally {
+      dispatch(clearTemplate());
+    }
   }, [ID]);
 
   useEffect(() => {
@@ -54,7 +65,7 @@ export default function Funnel() {
 
   return (
     <main className="flex h-screen flex-col justify-between gap-2">
-      {template && <FunnelControls editor={editor} template={template} />}
+      {editor && <FunnelControls editor={editor} template={template as template} />}
       <StudioWrapper onReady={onReady} />
     </main>
   );

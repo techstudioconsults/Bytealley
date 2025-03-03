@@ -3,19 +3,24 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+
+
 
 import CustomButton from "~/components/common/common-button/common-button";
 import { FileUpload, FormField, MultiSelect, ThumbNailUpload } from "~/components/common/FormFields";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "~/components/ui/dialog";
 import { FunnelService } from "~/features/funnel";
 import { WithDependency } from "~/HOC/withDependencies";
+import { useSession } from "~/hooks/use-session";
 import { FunnelFormData, funnelSchema } from "~/schemas";
 import { ProductService } from "~/services/product.service";
 import { dependencies } from "~/utils/dependencies";
 import { Toast } from "~/utils/notificationManager";
 import { cn } from "~/utils/utils";
+
 
 const BaseFunnelForm = ({
   funnelService,
@@ -28,6 +33,8 @@ const BaseFunnelForm = ({
   editor: any;
   onCloseFormModal?: () => void; // Function to close the form modal
 }) => {
+  const router = useRouter();
+  const { user } = useSession();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isPublishPending, startPublishTransition] = useTransition();
   const [isDraftPending, startDraftTransition] = useTransition();
@@ -111,8 +118,9 @@ const BaseFunnelForm = ({
           variant: "default",
         });
         reset();
+        setIsDialogOpen(false);
+        router.push(`/dashboard/${user?.id}/funnels`);
       }
-      setIsDialogOpen(false);
     });
   };
 
@@ -126,8 +134,9 @@ const BaseFunnelForm = ({
           variant: "default",
         });
         reset();
+        setIsDialogOpen(false);
+		router.push(`/dashboard/${user?.id}/funnels`);
       }
-      setIsDialogOpen(false);
     });
   };
 

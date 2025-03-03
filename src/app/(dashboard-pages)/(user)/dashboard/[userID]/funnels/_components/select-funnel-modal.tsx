@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 "use client";
 
 import { LucidePlusCircle } from "lucide-react";
@@ -24,13 +23,9 @@ const BaseSelectFunnelModal = ({ productService }: { productService: ProductServ
 
   useEffect(() => {
     startTransition(async () => {
-      try {
-        const response = await productService.getAllProducts({ status: `published` });
-        if (response) {
-          setProduct(response?.data?.length > 0);
-        }
-      } catch (error) {
-        console.error("Error fetching products:", error);
+      const response = await productService.getAllProducts({ status: `published` });
+      if (response) {
+        setProduct(response?.data?.length > 0);
       }
     });
   }, [productService]);
@@ -39,7 +34,6 @@ const BaseSelectFunnelModal = ({ productService }: { productService: ProductServ
     startTransition(async () => {
       try {
         const data = await fetchAllTemplates();
-        console.log(data);
         setTemplates(data);
       } catch (error) {
         console.error("Error fetching templates:", error);
