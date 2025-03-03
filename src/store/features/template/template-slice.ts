@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { template } from "~/features/funnel"; // Adjust the import based on your project structure
-
 interface TemplateState {
   template: string;
 }

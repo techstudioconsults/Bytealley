@@ -17,7 +17,7 @@ export const DeletedFunnels = ({ service }: { service: FunnelService }) => {
   const [isPendingFunnels, startTransitionFunnels] = useTransition();
   const [funnels, setFunnels] = useState<IFunnel[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [paginationMeta, setPaginationMeta] = useState<IPaginationMeta | null>(null);
+  // const [paginationMeta, setPaginationMeta] = useState<IPaginationMeta | null>(null);
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
   //   const { user } = useSession();
 
@@ -54,9 +54,9 @@ export const DeletedFunnels = ({ service }: { service: FunnelService }) => {
     startTransitionFunnels(async () => {
       const funnelData = await service.getAllFunnels(parameters);
       setFunnels(funnelData?.data || []);
-      setPaginationMeta(funnelData?.meta || null);
+      // setPaginationMeta(funnelData?.meta || null);
     });
-  }, [currentPage, dateRange?.from, dateRange?.to, status]);
+  }, [currentPage, dateRange?.from, dateRange?.to, service]);
 
   // const handlePageChange = (page: number) => {
   //   setCurrentPage(page);

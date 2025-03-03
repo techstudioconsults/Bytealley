@@ -2,7 +2,7 @@ import empty1 from "@/images/empty_img_1.svg";
 import empty2 from "@/images/empty_img_2.svg";
 import { format } from "date-fns";
 import debounce from "lodash.debounce";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { DateRange } from "react-day-picker";
 
@@ -10,19 +10,19 @@ import { DateRangePicker } from "~/app/(dashboard-pages)/_components/date-range-
 import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import Loading from "~/app/Loading";
 import { FunnelService } from "~/features/funnel";
-import { useSession } from "~/hooks/use-session";
+// import { useSession } from "~/hooks/use-session";
 import FunnelCard from "../../_components/funnel-card";
 import { SelectFunnelModal } from "../../_components/select-funnel-modal";
 
 export const AllFunnels = ({ service }: { service: FunnelService }) => {
-  const router = useRouter();
+  // const router = useRouter();
   const [isPendingFunnels, startTransitionFunnels] = useTransition();
   const [funnels, setFunnels] = useState<IFunnel[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [paginationMeta, setPaginationMeta] = useState<IPaginationMeta | null>(null);
+  // const [paginationMeta, setPaginationMeta] = useState<IPaginationMeta | null>(null);
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
-  const [status, setStatus] = useState<string>("all");
-  const { user } = useSession();
+  const [status] = useState<string>("all");
+  // const { user } = useSession();
 
   // const debouncedStatusReference = useRef(
   //   debounce((value: string) => {
@@ -59,9 +59,9 @@ export const AllFunnels = ({ service }: { service: FunnelService }) => {
     startTransitionFunnels(async () => {
       const funnelData = await service.getAllFunnels(parameters);
       setFunnels(funnelData?.data || []);
-      setPaginationMeta(funnelData?.meta || null);
+      // setPaginationMeta(funnelData?.meta || null);
     });
-  }, [currentPage, dateRange?.from, dateRange?.to, status]);
+  }, [currentPage, dateRange?.from, dateRange?.to, service, status]);
 
   // const handlePageChange = (page: number) => {
   //   setCurrentPage(page);
