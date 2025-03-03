@@ -7,8 +7,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
-
-
 import CustomButton from "~/components/common/common-button/common-button";
 import { FileUpload, FormField, MultiSelect, ThumbNailUpload } from "~/components/common/FormFields";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "~/components/ui/dialog";
@@ -20,7 +18,6 @@ import { ProductService } from "~/services/product.service";
 import { dependencies } from "~/utils/dependencies";
 import { Toast } from "~/utils/notificationManager";
 import { cn } from "~/utils/utils";
-
 
 const BaseFunnelForm = ({
   funnelService,
@@ -135,7 +132,7 @@ const BaseFunnelForm = ({
         });
         reset();
         setIsDialogOpen(false);
-		router.push(`/dashboard/${user?.id}/funnels`);
+        router.push(`/dashboard/${user?.id}/funnels`);
       }
     });
   };

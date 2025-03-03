@@ -27,19 +27,20 @@ export default function Funnel() {
           try {
             const response = await fetchTemplateByID(ID);
             if (response) {
-              console.log(response);
               setTemplate(response);
             }
           } catch (error) {
             console.error("Failed to fetch template:", error);
           }
         };
-        getTemplate();
+        if (ID) {
+          getTemplate();
+        }
       }
     } finally {
       dispatch(clearTemplate());
     }
-  }, [ID]);
+  }, [ID, dispatch, funnelTemplate]);
 
   useEffect(() => {
     if (!editor || !template || !Array.isArray(template.pages)) {

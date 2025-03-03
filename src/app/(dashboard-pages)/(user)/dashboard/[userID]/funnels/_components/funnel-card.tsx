@@ -1,6 +1,6 @@
 "use client";
 
-import { Eye, MinusCircleIcon, MoreVertical, Pencil, Settings, Trash, User } from "lucide-react";
+import { Eye, MinusCircleIcon, MoreVertical, Pencil, Settings, Trash } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
@@ -58,7 +58,7 @@ export const FunnelCard = ({ template, service }: FunnelCardProperties) => {
 
   const handleEdit = () => {
     dispatch(setTemplate(template?.template as string));
-    router.push(`/dashboard/${user?.id}/funnels/editor?funnel-title=${title}`);
+    router.push(`/dashboard/${user?.id}/funnels/editor?funnel-title=${title}&funnelID=${id}`);
   };
 
   const handleReturnToDraft = () => {
@@ -70,7 +70,7 @@ export const FunnelCard = ({ template, service }: FunnelCardProperties) => {
           description: `Funnel ${response.data.title} has been moved to draft successfully!`,
           variant: "default",
         });
-        router.push(`/dashboard/${user?.id}/funnels?tab=draft`);
+        router.push(`/dashboard/${user?.id}/funnels?tab=drafts`);
       }
     });
   };
