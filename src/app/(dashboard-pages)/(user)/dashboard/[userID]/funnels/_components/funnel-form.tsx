@@ -3,8 +3,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LucidePlusCircle } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import CustomButton from "~/components/common/common-button/common-button";
@@ -22,7 +21,7 @@ const BaseFunnelForm = ({
   funnelService,
   productService,
   editor,
-  onCloseFormModal, // Add this prop to close the form modal
+  // onCloseFormModal, // Add this prop to close the form modal
 }: {
   funnelService: FunnelService;
   productService: ProductService;
@@ -30,11 +29,14 @@ const BaseFunnelForm = ({
   onCloseFormModal?: () => void; // Function to close the form modal
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isPublishPending, startPublishTransition] = useTransition();
+  const [isDraftPending, startDraftTransition] = useTransition();
   const [funnel, setFunnel] = useState<any>();
   const [formatedData, setFormattedData] = useState<any>();
   const [products, setProducts] = useState<{ value: string; label: string; thumbnail: string | File | null }[]>([]);
   const methods = useForm<FunnelFormData>({
     resolver: zodResolver(funnelSchema),
+    mode: "onChange",
     defaultValues: {
       title: "",
       products: [],
@@ -46,7 +48,7 @@ const BaseFunnelForm = ({
   const {
     handleSubmit,
     reset,
-    formState: { isSubmitting, errors },
+    formState: { isValid },
   } = methods;
 
   useEffect(() => {
@@ -96,59 +98,44 @@ const BaseFunnelForm = ({
       funnel,
     };
     setFormattedData(formatedData);
-    setIsDialogOpen(true); // Open the publish/save modal
-    // onCloseFormModal(); // Close the form modal
+    setIsDialogOpen(true);
   };
 
-  const handlePublish = async () => {
-    if (Object.keys(errors).length > 0) {
-      Toast.getInstance().showToast({
-        title: "Validation Error",
-        description: "Please fix the errors in the form before publishing.",
-        variant: "error",
-      });
-      return;
-    }
-
-    const response = await funnelService.publishFunnel(formatedData);
-    if (response) {
-      Toast.getInstance().showToast({
-        title: "Funnel status",
-        description: `Funnel successfully published`,
-        variant: "default",
-      });
-      reset();
-    }
-    setIsDialogOpen(false);
+  const handlePublish = () => {
+    startPublishTransition(async () => {
+      const response = await funnelService.publishFunnel(formatedData);
+      if (response) {
+        Toast.getInstance().showToast({
+          title: "Funnel status",
+          description: `Funnel successfully published`,
+          variant: "default",
+        });
+        reset();
+      }
+      setIsDialogOpen(false);
+    });
   };
 
-  const handleSaveToDraft = async () => {
-    if (Object.keys(errors).length > 0) {
-      Toast.getInstance().showToast({
-        title: "Validation Error",
-        description: "Please fix the errors in the form before saving to draft.",
-        variant: "error",
-      });
-      return;
-    }
-
-    const response = await funnelService.saveFunnelToDraft(formatedData);
-    if (response) {
-      Toast.getInstance().showToast({
-        title: "Funnel status",
-        description: `Funnel successfully saved to draft`,
-        variant: "default",
-      });
-      reset();
-    }
-    setIsDialogOpen(false);
+  const handleSaveToDraft = () => {
+    startDraftTransition(async () => {
+      const response = await funnelService.saveFunnelToDraft(formatedData);
+      if (response) {
+        Toast.getInstance().showToast({
+          title: "Funnel status",
+          description: `Funnel successfully saved to draft`,
+          variant: "default",
+        });
+        reset();
+      }
+      setIsDialogOpen(false);
+    });
   };
 
   return (
     <section>
       <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(handleSubmitForm)} className="space-y-6">
-          <section className={cn(`h-[40rem] overflow-y-auto p-2`)}>
+        <form onSubmit={handleSubmit(handleSubmitForm)}>
+          <section className={cn(`h-[40rem] space-y-6 overflow-y-auto p-2`)}>
             <FormField
               label="Title"
               name="title"
@@ -198,14 +185,7 @@ const BaseFunnelForm = ({
             </CustomButton>
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
-                <CustomButton
-                  isLoading={isSubmitting}
-                  isDisabled={isSubmitting}
-                  size={`xl`}
-                  variant={`primary`}
-                  type="submit"
-                  className="w-full"
-                >
+                <CustomButton isDisabled={!isValid} size={`xl`} variant={`primary`} type="submit" className="w-full">
                   Save and Continue
                 </CustomButton>
               </DialogTrigger>
@@ -214,10 +194,24 @@ const BaseFunnelForm = ({
                   <DialogTitle>Do you wish to publish this funnel?</DialogTitle>
                 </DialogHeader>
                 <div className="mt-4 flex gap-4">
-                  <CustomButton size={`xl`} className={`w-full`} variant="primary" onClick={handlePublish}>
+                  <CustomButton
+                    isDisabled={isPublishPending || isDraftPending}
+                    isLoading={isPublishPending}
+                    size={`xl`}
+                    className={`w-full`}
+                    variant="primary"
+                    onClick={handlePublish}
+                  >
                     Publish
                   </CustomButton>
-                  <CustomButton size={`xl`} className={`w-full`} variant="outline" onClick={handleSaveToDraft}>
+                  <CustomButton
+                    isDisabled={isDraftPending || isPublishPending}
+                    isLoading={isDraftPending}
+                    size={`xl`}
+                    className={`w-full`}
+                    variant="outline"
+                    onClick={handleSaveToDraft}
+                  >
                     Save to Draft
                   </CustomButton>
                 </div>

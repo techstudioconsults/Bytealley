@@ -3,13 +3,13 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
-// import { FunnelService } from "~/features/funnel";
+import { FunnelService } from "~/features/funnel";
 import { WithDependency } from "~/HOC/withDependencies";
 import { dependencies } from "~/utils/dependencies";
 import { SelectFunnelModal } from "./_components/select-funnel-modal";
 import { AllFunnels } from "./_views/all-funnels";
 
-const Page = () => {
+const Page = ({ funnelService }: { funnelService: FunnelService }) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParameters = useSearchParams();
@@ -74,7 +74,7 @@ const Page = () => {
 
       {/* tab content */}
       <TabsContent value="all-funnels">
-        <AllFunnels />
+        <AllFunnels service={funnelService} />
       </TabsContent>
       <TabsContent value="live">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Non similique qui, distinctio maxime necessitatibus sed

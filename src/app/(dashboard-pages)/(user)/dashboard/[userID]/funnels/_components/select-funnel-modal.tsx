@@ -3,8 +3,9 @@
 
 import { LucidePlusCircle } from "lucide-react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 
+import Loading from "~/app/Loading";
 import CustomButton from "~/components/common/common-button/common-button";
 import { ReusableDialog } from "~/components/common/Dialog";
 import { template } from "~/features/funnel";
@@ -16,33 +17,34 @@ import { dependencies } from "~/utils/dependencies";
 import { TemplateCard } from "./template-card";
 
 const BaseSelectFunnelModal = ({ productService }: { productService: ProductService }) => {
-  //   const [isPending, starttransition] = useTransition();
+  const [isPending, startTransition] = useTransition();
   const { user } = useSession();
   const [isProduct, setProduct] = useState(false);
   const [templates, setTemplates] = useState<template[]>([]);
 
   useEffect(() => {
-    const doProductExist = async () => {
-      const response = await productService.getAllProducts({ status: `published` });
-      if (response) {
-        setProduct(response.data.length > 0);
+    startTransition(async () => {
+      try {
+        const response = await productService.getAllProducts({ status: `published` });
+        if (response) {
+          setProduct(response?.data?.length > 0);
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
       }
-    };
-    doProductExist();
+    });
   }, [productService]);
 
   useEffect(() => {
-    const loadTemplates = async () => {
+    startTransition(async () => {
       try {
         const data = await fetchAllTemplates();
         console.log(data);
-
         setTemplates(data);
       } catch (error) {
         console.error("Error fetching templates:", error);
       }
-    };
-    loadTemplates();
+    });
   }, []);
 
   return (
@@ -58,13 +60,15 @@ const BaseSelectFunnelModal = ({ productService }: { productService: ProductServ
           New Funnel
         </CustomButton>
       }
-      className={`lg:min-w-[817px] lg:p-8`}
-      headerClassName={`text-4xl`}
+      className="lg:min-w-[817px] lg:p-8"
+      headerClassName="text-4xl"
       title={isProduct ? `Choose a Template` : ""}
       description={isProduct ? `Select a template to continue` : ""}
     >
-      {isProduct ? (
-        <section className={`grid w-full grid-cols-1 justify-between gap-4 border p-2 lg:grid-cols-3`}>
+      {isPending ? (
+        <Loading text={`Loading templates...`} className={`w-fill h-fit p-20`} />
+      ) : isProduct ? (
+        <section className="grid w-full grid-cols-1 justify-between gap-4 border p-2 lg:grid-cols-3">
           {templates.map((template) => (
             <TemplateCard
               key={template.id}
@@ -75,15 +79,15 @@ const BaseSelectFunnelModal = ({ productService }: { productService: ProductServ
           ))}
         </section>
       ) : (
-        <section className={`text-center`}>
-          <Image className={`mx-auto`} src={`/images/alert.png`} alt={`alert`} width={70} height={70} />
+        <section className="text-center">
+          <Image className="mx-auto" src="/images/alert.png" alt="alert" width={70} height={70} />
           <h4>You Haven’t Created any Product yet</h4>
-          <p className={`my-3 text-mid-grey-II`}>You must create a product in order to create a funnel</p>
+          <p className="my-3 text-mid-grey-II">You must create a product in order to create a funnel</p>
           <CustomButton
             href={`/dashboard/${user?.id}/products/new`}
-            variant={`outline`}
-            size={`xl`}
-            className={`w-full border-primary text-xl text-mid-purple`}
+            variant="outline"
+            size="xl"
+            className="w-full border-primary text-xl text-mid-purple"
           >
             Create A Product
           </CustomButton>
