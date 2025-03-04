@@ -22,8 +22,8 @@ const config = {
 const http = axios.create(config);
 
 // Function to fetch CSRF token from cookies
-const getCsrfToken = (name: string) => {
-  return Cookies.get(name);
+const getCsrfToken = () => {
+  return Cookies.get("XSRF-TOKEN");
 };
 
 // Function to initialize CSRF token
@@ -39,9 +39,9 @@ const initializeCsrf = async () => {
 http.interceptors.request.use(
   async (config) => {
     await initializeCsrf();
-    const xsrfToken = getCsrfToken(`XSRF-TOKEN`);
+    const xsrfToken = getCsrfToken();
     const session = await getSession();
-
+    console.log(document.cookie);
     if (session?.user.token) {
       config.headers.Authorization = `Bearer ${session.user.token}`;
     }
