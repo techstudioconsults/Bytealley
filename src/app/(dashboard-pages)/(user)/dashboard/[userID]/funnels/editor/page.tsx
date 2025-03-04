@@ -65,9 +65,11 @@ export default function Funnel() {
   }, [editor, template]);
 
   return (
-    <main className="flex h-screen flex-col justify-between gap-2">
-      {editor && <FunnelControls editor={editor} template={template as template} />}
-      <StudioWrapper onReady={onReady} />
-    </main>
+    <>
+      <main className="flex h-screen flex-col justify-between gap-2">
+        {editor && <FunnelControls editor={editor} template={template as template} />}
+        <StudioWrapper onReady={onReady} />
+      </main>
+    </>
   );
 }

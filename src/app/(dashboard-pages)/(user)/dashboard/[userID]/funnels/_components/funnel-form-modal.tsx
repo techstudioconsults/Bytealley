@@ -13,7 +13,7 @@ export const FunnelFormModal = ({ editor }: { editor: any }) => {
   return (
     <ReusableDialog
       trigger={
-        <CustomButton isLeftIconVisible icon={<LucidePlusCircle />} variant="primary" className="w-full sm:w-auto">
+        <CustomButton isLeftIconVisible icon={<LucidePlusCircle />} variant="primary" className="SE w-full sm:w-auto">
           Save and Continue
         </CustomButton>
       }

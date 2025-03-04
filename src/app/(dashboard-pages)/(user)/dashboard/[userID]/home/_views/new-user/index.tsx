@@ -8,7 +8,9 @@ import { DashboardTable } from "~/app/(dashboard-pages)/_components/dashboard-ta
 import { orderColumns } from "~/app/(dashboard-pages)/_components/dashboard-table/table-data";
 import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import Loading from "~/app/Loading";
+import { TourWrapper } from "~/components/common/tour-guide/tour-wrapper";
 import { OrderService } from "~/services/orders.service";
+import { homeSteps } from "~/utils/steps/home";
 import { ActionBanner } from "../../_components/action-banner";
 import { DashboardBanner } from "../../_components/home-banner";
 import { OnboardingHeader } from "../onboarding/onboarding-header";
@@ -44,65 +46,67 @@ export const NewUser = ({ steps, completedSteps, orderService }: NewUserProperti
   };
 
   return (
-    <section className="space-y-10">
-      <div className="flex flex-col gap-4 lg:flex-row">
-        <DashboardBanner
-          img={onboardingImage.src}
-          title="Welcome to Byte Alley"
-          desc="Complete your profile to start getting your products published."
-        />
-        <div className="space-y-6">
-          <OnboardingHeader completedSteps={completedSteps} totalSteps={steps.length} />
-          {nextStep && (
-            <ActionBanner
-              title={nextStep.title}
-              description={nextStep.description}
-              button={{
-                label: nextStep.buttonLabel,
-                onClick: nextStep.action,
-              }}
-              icon={nextStep.icon}
-              isCompleted={nextStep.isCompleted}
-            />
-          )}
+    <TourWrapper steps={homeSteps}>
+      <section className="space-y-10">
+        <div className="step-1 flex flex-col gap-4 lg:flex-row">
+          <DashboardBanner
+            img={onboardingImage.src}
+            title="Welcome to Byte Alley"
+            desc="Complete your profile to start getting your products published."
+          />
+          <div className="space-y-6">
+            <OnboardingHeader completedSteps={completedSteps} totalSteps={steps.length} />
+            {nextStep && (
+              <ActionBanner
+                title={nextStep.title}
+                description={nextStep.description}
+                button={{
+                  label: nextStep.buttonLabel,
+                  onClick: nextStep.action,
+                }}
+                icon={nextStep.icon}
+                isCompleted={nextStep.isCompleted}
+              />
+            )}
+          </div>
         </div>
-      </div>
-      <div className="space-y-4">
-        <h6 className="text-lg font-semibold">Sales</h6>
-        <section>
-          {isPendingOrders ? (
-            <Loading text={`Loading sales table...`} className={`w-fill h-fit p-20`} />
-          ) : (
-            <>
-              {orders.length > 0 ? (
-                <DashboardTable
-                  data={orders}
-                  columns={orderColumns}
-                  showPagination
-                  onPageChange={handlePageChange}
-                  currentPage={paginationMeta?.current_page}
-                  totalPages={paginationMeta?.last_page}
-                  itemsPerPage={paginationMeta?.per_page}
-                />
-              ) : (
-                <EmptyState
-                  images={[
-                    {
-                      src: emptyCart,
-                      alt: "Empty Cart",
-                      width: 100,
-                      height: 100,
-                    },
-                  ]}
-                  title="No sales found."
-                  description="You do not have any sales yet."
-                  button={{ text: "Create New Order", onClick: () => {} }}
-                />
-              )}
-            </>
-          )}
-        </section>
-      </div>
-    </section>
+        <div className="step-2 space-y-4">
+          <h6 className="text-lg font-semibold">Sales</h6>
+          <section>
+            {isPendingOrders ? (
+              <Loading text={`Loading sales table...`} className={`w-fill h-fit p-20`} />
+            ) : (
+              <>
+                {orders.length > 0 ? (
+                  <DashboardTable
+                    data={orders}
+                    columns={orderColumns}
+                    showPagination
+                    onPageChange={handlePageChange}
+                    currentPage={paginationMeta?.current_page}
+                    totalPages={paginationMeta?.last_page}
+                    itemsPerPage={paginationMeta?.per_page}
+                  />
+                ) : (
+                  <EmptyState
+                    images={[
+                      {
+                        src: emptyCart,
+                        alt: "Empty Cart",
+                        width: 100,
+                        height: 100,
+                      },
+                    ]}
+                    title="No sales found."
+                    description="You do not have any sales yet."
+                    button={{ text: "Create New Order", onClick: () => {} }}
+                  />
+                )}
+              </>
+            )}
+          </section>
+        </div>
+      </section>
+    </TourWrapper>
   );
 };

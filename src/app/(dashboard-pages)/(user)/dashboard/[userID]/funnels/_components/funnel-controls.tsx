@@ -117,7 +117,7 @@ const BaseFunnelControls = ({ template, editor, funnelService }: BaseFunnelContr
 
   return (
     <section className="flex items-center justify-between px-8 pt-2">
-      <h4 className="text-2xl font-semibold">{template?.id || funnelTitle}</h4>
+      <h4 className="funnel-title text-2xl font-semibold">{template?.id || funnelTitle}</h4>
       {funnelTitle ? (
         <div className="flex items-center justify-between gap-4">
           <CustomButton
@@ -125,7 +125,7 @@ const BaseFunnelControls = ({ template, editor, funnelService }: BaseFunnelContr
             isLoading={isDraftPending}
             onClick={() => startDraftTransition(handleEditAndSave)}
             variant="outline"
-            className="border-mid-primary text-mid-primary w-full"
+            className="border-mid-primary text-mid-primary save-draft-btn w-full"
           >
             Save Edit and Continue
           </CustomButton>
@@ -134,7 +134,7 @@ const BaseFunnelControls = ({ template, editor, funnelService }: BaseFunnelContr
             isLoading={isPublishPending}
             onClick={() => startPublishTransition(handleEditAndPublish)}
             variant="primary"
-            className="w-full"
+            className="publish-btn w-full"
           >
             Save Edit & Publish
           </CustomButton>

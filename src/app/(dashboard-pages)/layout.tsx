@@ -4,6 +4,7 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import { Toaster } from "~/components/ui/sonner";
 import { useSession } from "~/hooks/use-session";
 import { cn } from "~/utils/utils";
 import Loading from "../Loading";
@@ -44,7 +45,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </header>
 
         {/* Page Content */}
-        <section className={cn(isEditor ? "p-0" : "container mx-auto p-4 py-8")}>{children}</section>
+        <section className={cn(isEditor ? "p-0" : "container mx-auto p-4 py-8")}>
+          {children}
+          <Toaster />
+        </section>
       </div>
     </main>
   );

@@ -41,7 +41,6 @@ http.interceptors.request.use(
     await initializeCsrf();
     const xsrfToken = getCsrfToken();
     const session = await getSession();
-    console.log(document.cookie);
     if (session?.user.token) {
       config.headers.Authorization = `Bearer ${session.user.token}`;
     }
