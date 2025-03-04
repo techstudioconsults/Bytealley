@@ -30,7 +30,7 @@ export async function middleware(request: Request) {
       if (session) {
         // If user is already logged in, redirect based on their role
         if (session.user.role === "SUPER_ADMIN") {
-          return NextResponse.redirect(new URL("/SUPER_ADMIN/dashboard", url));
+          return NextResponse.redirect(new URL("/super-admin/dashboard", url));
         } else if (session.user.role === "ADMIN") {
           return NextResponse.redirect(new URL("/admin/home", url));
         } else {
