@@ -38,8 +38,7 @@ const initializeCsrf = async () => {
 // Add request interceptor to add auth token and ensure CSRF is initialized
 http.interceptors.request.use(
   async (config) => {
-    await initializeCsrf(); // Ensure CSRF protection is set before each request
-
+    await initializeCsrf();
     const xsrfToken = getCsrfToken(`XSRF-TOKEN`);
     const session = await getSession();
 
