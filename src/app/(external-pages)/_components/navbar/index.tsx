@@ -96,13 +96,7 @@ export function Navbar() {
                     <ChevronDown className="h-4 w-4" />
                   </p>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  className={cn(
-                    "w-48 rounded-md bg-white p-2 shadow-lg",
-                    "data-[state=open]:animate-fade-in data-[state=closed]:animate-fade-out", // Fade animation
-                    "origin-top transition-all duration-300 ease-in-out", // Smooth transition
-                  )}
-                >
+                <DropdownMenuContent className={cn("w-48 rounded-md bg-white p-2 shadow-lg")}>
                   {link.subLinks?.map((subLink) => (
                     <DropdownMenuItem key={subLink.id} asChild>
                       <Link href={subLink.path} className="block px-4 py-2 text-sm hover:bg-gray-100">
@@ -169,11 +163,11 @@ export function Navbar() {
       <div
         className={cn(
           getRouteTheme(),
-          "fixed left-0 top-20 z-40 w-full overflow-hidden shadow-md transition-all duration-300 lg:hidden",
-          isMobileMenuOpen ? "h-auto opacity-100" : "h-0 opacity-0", // Animate height and opacity
+          "fixed left-0 top-20 z-40 w-full overflow-hidden shadow-md transition-all duration-700 lg:hidden",
+          isMobileMenuOpen ? "h-auto opacity-100" : "h-0 opacity-0",
         )}
       >
-        <div className="flex flex-col gap-4 bg-white p-4">
+        <div className="flex flex-col gap-4 p-4">
           {externalNavlinks.map((link) =>
             link.type === "dropdown" ? (
               <DropdownMenu key={link.id}>
@@ -183,13 +177,7 @@ export function Navbar() {
                     <ChevronDown className="h-4 w-4" />
                   </p>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  className={cn(
-                    "w-48 rounded-md bg-white p-2 shadow-lg",
-                    "data-[state=open]:animate-fade-in data-[state=closed]:animate-fade-out", // Fade animation
-                    "origin-top transition-all duration-300 ease-in-out", // Smooth transition
-                  )}
-                >
+                <DropdownMenuContent className={cn("w-48 rounded-md bg-white p-2 shadow-lg")}>
                   {link.subLinks?.map((subLink) => (
                     <DropdownMenuItem key={subLink.id} asChild>
                       <Link href={subLink.path} className="block px-4 py-2 text-sm hover:bg-gray-100">
