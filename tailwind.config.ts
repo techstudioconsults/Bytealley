@@ -17,6 +17,7 @@ const config = {
       boxShadow: {
         active: "0px 0px 0px 2px #6D5DD380",
         spread: "0px 1px 18px 0px #0A39B01F",
+        neoB: "8px 8px 0px 0px #000000",
       },
       colors: {
         background: "hsl(var(--background))",

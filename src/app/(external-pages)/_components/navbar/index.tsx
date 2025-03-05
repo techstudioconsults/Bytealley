@@ -63,27 +63,16 @@ export function Navbar() {
         isNavbarVisible ? "translate-y-0" : "-translate-y-full",
       )}
     >
-      <div className="mx-auto flex h-20 max-w-[1120px] items-center justify-between px-4 lg:px-0">
-        <div className="flex items-center gap-4">
-          <CustomButton
-            size={`icon`}
-            variant={`ghost`}
-            isIconOnly
-            icon={isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            className="lg:hidden"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Toggle mobile menu"
+      <div className="mx-auto flex h-20 max-w-[1120px] items-center justify-between px-4 xl:px-0">
+        <Link href="/seller">
+          <BlurImage
+            alt={`bytealley`}
+            width={100}
+            height={50}
+            className={`h-[50px] w-[100px]`}
+            src={`/images/logo.svg`}
           />
-          <Link href="/seller">
-            <BlurImage
-              alt={`bytealley`}
-              width={100}
-              height={50}
-              className={`h-[50px] w-[100px]`}
-              src={`/images/logo.svg`}
-            />
-          </Link>
-        </div>
+        </Link>
 
         {/* Desktop Links */}
         <div className="hidden items-center gap-8 lg:flex">
@@ -130,13 +119,7 @@ export function Navbar() {
                 <p className="hidden lg:block">{user?.username || user?.name || "Byte alley User"}</p>
                 <LuChevronDown className="hidden lg:block" size="20px" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent
-                className={cn(
-                  "relative z-[999999]",
-                  "data-[state=open]:animate-fade-in data-[state=closed]:animate-fade-out", // Fade animation
-                  "origin-top transition-all duration-300 ease-in-out", // Smooth transition
-                )}
-              >
+              <DropdownMenuContent className={cn("relative z-[999999]")}>
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <Link href={`/dashboard/${user?.id}/home`}>
@@ -146,16 +129,27 @@ export function Navbar() {
             </DropdownMenu>
           ) : (
             <>
-              <Link href="/auth/login">
-                <CustomButton variant="outline" className="hidden lg:flex">
+              <Link className="hidden lg:flex" href="/auth/login">
+                <CustomButton size={`xl`} variant={`ghost`}>
                   Login
                 </CustomButton>
               </Link>
-              <Link href="/auth">
-                <CustomButton variant={`primary`}>Get Started</CustomButton>
+              <Link href="/auth/login">
+                <CustomButton size={`xl`} className={`bg-mid-warning`} variant={`primary`}>
+                  Get Started
+                </CustomButton>
               </Link>
             </>
           )}
+          <CustomButton
+            size={`icon`}
+            variant={`ghost`}
+            isIconOnly
+            icon={isMobileMenuOpen ? <X /> : <Menu />}
+            className="lg:hidden"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Toggle mobile menu"
+          />
         </div>
       </div>
 

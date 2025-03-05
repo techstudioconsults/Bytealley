@@ -1,5 +1,6 @@
 import React from "react";
 
+import { Footer } from "./_components/footer";
 import { Navbar } from "./_components/navbar";
 
 export default function LandingLayout({
@@ -10,7 +11,8 @@ export default function LandingLayout({
   return (
     <section>
       <Navbar />
-      {children}
+      <section>{children}</section>
+      <Footer />
     </section>
   );
 }

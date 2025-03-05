@@ -16,7 +16,10 @@ import customers from "@/icons/Property_2_User-folder_n4spfl.svg";
 import payouts from "@/icons/Property_2_Wallet_3_teopvy.svg";
 import { useEffect, useState } from "react";
 
+
+
 import { useNotifications } from "~/features/push-notification/hooks/use-notification";
+
 
 export const useSidebarItems = () => {
   const { notifications } = useNotifications();
@@ -581,8 +584,7 @@ export const months = [
 ];
 
 export const externalNavlinks = [
-  { id: 1, name: "Home", path: "/", type: "link" },
-  { id: 5, name: "features", path: "/features", type: "link" },
+  { id: 5, name: "Features", path: "/features", type: "link" },
   {
     id: 3,
     name: "Explore",
@@ -595,4 +597,27 @@ export const externalNavlinks = [
     ],
   },
   { id: 4, name: "Pricing", path: "/pricing", type: "link" },
+];
+
+export const cards: CardData[] = [
+  {
+    image: "https://res.cloudinary.com/kingsleysolomon/image/upload/v1699951006/productize/Image_1_wc3l2p_a7lovq.png",
+    title: "Digital Product",
+    description: "Ebooks, video content, digital art/graphics, online courses or stock photos.",
+  },
+  {
+    image: "https://res.cloudinary.com/kingsleysolomon/image/upload/v1721286358/productize/gkw6ietvs5asmzsqlkkk.png",
+    title: "Sales Dashboard",
+    description: "Monitor real-time sales data, track trends, and optimize your business.",
+  },
+  {
+    image: "https://res.cloudinary.com/kingsleysolomon/image/upload/v1721286358/productize/obodmkoin4emt8vhncll.png",
+    title: "Product Analytics",
+    description: "Gain valuable insights into your product performance and understand user engagement.",
+  },
+  {
+    image: "https://res.cloudinary.com/kingsleysolomon/image/upload/v1721286358/productize/wl8tu0t12l1fse6gm8tw.png",
+    title: "Branded Profiles",
+    description: "Showcase your unique identity with a personalized profile and connect with your audience.",
+  },
 ];
