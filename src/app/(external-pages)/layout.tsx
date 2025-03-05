@@ -1,5 +1,7 @@
 import React from "react";
 
+import { Navbar } from "./_components/navbar";
+
 export default function LandingLayout({
   children,
 }: Readonly<{
@@ -7,7 +9,8 @@ export default function LandingLayout({
 }>) {
   return (
     <section>
-      <div>{children}</div>
+      <Navbar />
+      {children}
     </section>
   );
 }

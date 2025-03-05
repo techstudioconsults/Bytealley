@@ -220,7 +220,6 @@
   h4,
   h5,
   h6 {
-    // color: hsl(var(--secondary));
     color: hsl(var(--high-purple));
   }
 
@@ -371,4 +370,8 @@
 /* For Internet Explorer and Legacy Edge */
 body {
   -ms-overflow-style: scrollbar; /* Standard scrollbar */
+}
+
+.nr-font {
+  font-family: var(--font-newsreader);
 }

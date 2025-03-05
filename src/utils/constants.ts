@@ -579,3 +579,20 @@ export const months = [
   { value: "11", label: "November" },
   { value: "12", label: "December" },
 ];
+
+export const externalNavlinks = [
+  { id: 1, name: "Home", path: "/", type: "link" },
+  { id: 5, name: "features", path: "/features", type: "link" },
+  {
+    id: 3,
+    name: "Explore",
+    path: "/explore",
+    type: "dropdown",
+    subLinks: [
+      { id: 1, name: "All", path: "/explore" },
+      { id: 2, name: "Category 1", path: "/explore/category1" },
+      { id: 3, name: "Category 2", path: "/explore/category2" },
+    ],
+  },
+  { id: 4, name: "Pricing", path: "/pricing", type: "link" },
+];

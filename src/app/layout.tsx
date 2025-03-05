@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Montserrat } from "next/font/google";
+import { Montserrat, Newsreader } from "next/font/google"; // Import additional font
 
 import "./globals.scss";
 
@@ -16,7 +16,10 @@ import NotificationProvider from "~/features/push-notification/context/notificat
 import { getSession } from "~/lib/session/session";
 import { ReduxProvider } from "~/store/provider";
 
+// Configure fonts
 const montserrat = Montserrat({ subsets: ["latin"] });
+const newsreader = Newsreader({ subsets: ["latin"], variable: "--font-newsreader" });
+
 export const metadata: Metadata = {
   title: "bytealley",
   description: "bytealley",
@@ -31,7 +34,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={montserrat.className}>
+      <body className={`${montserrat.className} ${newsreader.variable}`}>
         <ReduxProvider>
           <LoadingProvider>
             <TooltipProvider>

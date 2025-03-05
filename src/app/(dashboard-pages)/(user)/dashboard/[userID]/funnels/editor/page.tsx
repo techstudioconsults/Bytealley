@@ -5,10 +5,12 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import { TourWrapper } from "~/components/common/tour-guide/tour-wrapper";
 import { StudioWrapper, template, useGrapesJS } from "~/features/funnel";
 import { fetchTemplateByID } from "~/lib/funnel";
 import { useAppDispatch, useAppSelector } from "~/store";
 import { clearTemplate } from "~/store/features/template/template-slice";
+import { funnelSteps } from "~/utils/steps/funnel";
 import { FunnelControls } from "../_components/funnel-controls";
 
 export default function Funnel() {
@@ -65,11 +67,11 @@ export default function Funnel() {
   }, [editor, template]);
 
   return (
-    <>
+    <TourWrapper steps={funnelSteps}>
       <main className="flex h-screen flex-col justify-between gap-2">
         {editor && <FunnelControls editor={editor} template={template as template} />}
         <StudioWrapper onReady={onReady} />
       </main>
-    </>
+    </TourWrapper>
   );
 }
