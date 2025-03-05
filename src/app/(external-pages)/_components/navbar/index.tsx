@@ -69,17 +69,17 @@ export function Navbar() {
             size={`icon`}
             variant={`ghost`}
             isIconOnly
-            icon={isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-8 w-8" />}
+            icon={isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             className="lg:hidden"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle mobile menu"
           />
-          <Link className={`h-fit`} href="/seller">
+          <Link href="/seller">
             <BlurImage
               alt={`bytealley`}
               width={100}
               height={50}
-              className={`h-[2rem] w-[100px]`}
+              className={`h-[50px] w-[100px]`}
               src={`/images/logo.svg`}
             />
           </Link>
@@ -166,50 +166,52 @@ export function Navbar() {
       </div>
 
       {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className={cn(getRouteTheme(), "shadow-md lg:hidden")}>
-          <div className="flex flex-col gap-4 p-4">
-            {externalNavlinks.map((link) =>
-              link.type === "dropdown" ? (
-                <DropdownMenu key={link.id}>
-                  <DropdownMenuTrigger asChild>
-                    <p
-                      className={cn(getRouteTheme(), "flex w-full items-center justify-start gap-1 text-sm font-bold")}
-                    >
-                      <span>{link.name}</span>
-                      <ChevronDown className="h-4 w-4" />
-                    </p>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent
-                    className={cn(
-                      "w-48 rounded-md bg-white p-2 shadow-lg",
-                      "data-[state=open]:animate-fade-in data-[state=closed]:animate-fade-out", // Fade animation
-                      "origin-top transition-all duration-300 ease-in-out", // Smooth transition
-                    )}
-                  >
-                    {link.subLinks?.map((subLink) => (
-                      <DropdownMenuItem key={subLink.id} asChild>
-                        <Link href={subLink.path} className="block px-4 py-2 text-sm hover:bg-gray-100">
-                          {subLink.name}
-                        </Link>
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              ) : (
-                <Link
-                  key={link.id}
-                  href={link.path}
-                  className={cn(getRouteTheme(), "text-sm font-bold transition-colors")}
-                  onClick={() => setIsMobileMenuOpen(false)}
+      <div
+        className={cn(
+          getRouteTheme(),
+          "fixed left-0 top-20 z-40 w-full overflow-hidden shadow-md transition-all duration-300 lg:hidden",
+          isMobileMenuOpen ? "h-auto opacity-100" : "h-0 opacity-0", // Animate height and opacity
+        )}
+      >
+        <div className="flex flex-col gap-4 bg-white p-4">
+          {externalNavlinks.map((link) =>
+            link.type === "dropdown" ? (
+              <DropdownMenu key={link.id}>
+                <DropdownMenuTrigger asChild>
+                  <p className={cn(getRouteTheme(), "flex w-full items-center justify-start gap-1 text-sm font-bold")}>
+                    <span>{link.name}</span>
+                    <ChevronDown className="h-4 w-4" />
+                  </p>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  className={cn(
+                    "w-48 rounded-md bg-white p-2 shadow-lg",
+                    "data-[state=open]:animate-fade-in data-[state=closed]:animate-fade-out", // Fade animation
+                    "origin-top transition-all duration-300 ease-in-out", // Smooth transition
+                  )}
                 >
-                  {link.name}
-                </Link>
-              ),
-            )}
-          </div>
+                  {link.subLinks?.map((subLink) => (
+                    <DropdownMenuItem key={subLink.id} asChild>
+                      <Link href={subLink.path} className="block px-4 py-2 text-sm hover:bg-gray-100">
+                        {subLink.name}
+                      </Link>
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link
+                key={link.id}
+                href={link.path}
+                className={cn(getRouteTheme(), "text-sm font-bold transition-colors")}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                {link.name}
+              </Link>
+            ),
+          )}
         </div>
-      )}
+      </div>
     </nav>
   );
 }
