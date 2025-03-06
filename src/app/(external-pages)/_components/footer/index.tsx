@@ -44,10 +44,10 @@ export const Footer: React.FC = () => {
             <FooterLink href="/explore">Explore</FooterLink>
             <FooterLink href="/pricing">Pricing</FooterLink>
             <FooterLink href="/features">Features</FooterLink>
-            <FooterLink href="/auth">Become A Creator</FooterLink>
+            <FooterLink href="/auth/register">Become A Creator</FooterLink>
           </div>
           <div className="flex flex-col items-center gap-2 lg:items-start">
-            <FooterLink href="/termsandconditions">Terms And Conditions</FooterLink>
+            <FooterLink href="/terms-and-conditions">Terms And Conditions</FooterLink>
             <FooterLink href="/privacypolicy">Privacy Policy</FooterLink>
             <FooterLink href="/blogs" disabled>
               Blog

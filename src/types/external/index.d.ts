@@ -61,6 +61,12 @@ declare global {
     description: string;
     imageSrc: string;
   }
+
+  interface Term {
+    title: string;
+    text: string;
+    points: string[];
+  }
 }
 
 export {};
