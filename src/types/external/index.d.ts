@@ -1,37 +1,50 @@
 declare global {
-  type SubLink = {
+  interface SubLink {
     id: number;
     name: string;
     path: string;
-  };
+  }
 
-  type LinkProperty = {
+  interface LinkProperty {
     id: number;
     name: string;
     path: string;
     type: string;
     subLinks?: SubLink[];
-  };
+  }
 
-  type HeroProperties = {
+  interface HeroProperties {
     children: React.ReactNode;
     height?: string;
     bgImg?: string;
     bgColor?: string;
-  };
+  }
 
-  type SectionLayoutProperties = {
+  interface SectionLayoutProperties {
     height?: string;
     bgColor?: string;
     bgImg?: string;
     children: React.ReactNode;
-  };
+  }
 
-  type CardData = {
+  interface CardData {
     image: string;
     title: string;
     description: string;
-  };
+  }
+
+  interface DualSectionLayoutListProperties {
+    title: string;
+    subTitle: string;
+    listItems?: string[];
+    iconColor?: string;
+    shouldShowButton?: boolean;
+    buttonText?: string;
+    onButtonClick?: () => void;
+    className?: string;
+    headerClassName?: string;
+    subHeaderClassName?: string;
+  }
 }
 
 export {};

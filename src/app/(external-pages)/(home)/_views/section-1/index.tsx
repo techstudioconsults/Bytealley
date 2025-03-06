@@ -1,16 +1,16 @@
 "use client";
 
-import Link from "next/link";
 import React from "react";
 
-import { SectionLayout } from "~/app/(external-pages)/_components/section-layout";
+import { SectionLayout } from "~/app/(external-pages)/_components/layout/section-layout";
 import CustomButton from "~/components/common/common-button/common-button";
 import { BlurImage } from "~/components/miscellaneous/blur-image";
 import { Card, CardContent } from "~/components/ui/card";
+import { useSession } from "~/hooks/use-session";
 import { cards } from "~/utils/constants";
 
 export const SectionOne = () => {
-  const isAuth = false; // Replace with your auth logic
+  const { user } = useSession();
 
   return (
     <SectionLayout bgColor="bg-low-warning">
@@ -25,13 +25,11 @@ export const SectionOne = () => {
               Are you a digital artist, designer, writer, or developer looking to share your creations with the world
               and earn from your passion? Look no further! ByteAlley is the ultimate platform for creators like you.
             </p>
-            {!isAuth && (
+            {!user && (
               <div className="hidden lg:block">
-                <Link href="/auth">
-                  <CustomButton className={`w-full`} size={`xl`} variant={`primary`}>
-                    Get Started
-                  </CustomButton>
-                </Link>
+                <CustomButton href="/auth" className={`w-full`} size={`xl`} variant={`primary`}>
+                  Get Started
+                </CustomButton>
               </div>
             )}
           </div>
@@ -39,7 +37,7 @@ export const SectionOne = () => {
           {/* Right Section - Cards */}
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:w-[60%]">
             {cards.map((card, index) => (
-              <Card key={index} className="shadow-neoB h-full rounded-xl border-0 bg-white shadow">
+              <Card key={index} className="shadow-neoB h-full rounded-xl border-0 bg-white">
                 <CardContent className="p-6">
                   <BlurImage
                     src={card.image}
