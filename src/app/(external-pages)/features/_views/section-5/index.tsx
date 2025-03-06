@@ -1,25 +1,24 @@
-import moneyTree from "@/images/external/money_tree.svg";
+import coins from "@/images/external/feature_coin_img.svg";
 
 import {
   DualSectionLayout,
   DualSectionLayoutList,
 } from "~/app/(external-pages)/_components/layout/dual-section-layout";
 
-export const SectionTwo = () => {
+export const SectionFive = () => {
   return (
     <DualSectionLayout
-      img={moneyTree}
-      imgClassName={`relative right-[5rem] xl:top-[5rem] 2xl:top-0`}
+      img={coins}
       height="xl:h-[641px]"
       leftSectionClassName="bg-high-purple items-center justify-end lg:pr-24 py-10 text-center lg:text-left"
-      rightSectionClassName="bg-mid-purple"
+      rightSectionClassName="bg-low-purple"
+      className={`flex-row-reverse`}
     >
       <DualSectionLayoutList
-        title="Everyone can Buy & Sell on ByteAlley"
+        title="Making Money"
         headerClassName={`text-white nr-font text-5xl xl:text-7xl`}
         subHeaderClassName={`text-white xl:text-2xl`}
-        subTitle="Not really tech-savvy or just looking for a way to share that knowledge you think will be valuable to others, ByteAlley is here to cater to whatever your needs may be."
-        iconColor="text-blue-500"
+        subTitle="Make money with those genius ideas of yours by letting your products reach multitude of buyers without the hassle of marketing. Just list it on ByteAlley and get paid when they shop."
         className={`px-4 lg:w-[530px] xl:px-0`}
       />
     </DualSectionLayout>

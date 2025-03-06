@@ -9,7 +9,7 @@ export const HomeHero = () => {
   return (
     <Hero height="h-[530px] md:h-[674px]" bgImg={heroImg.src} bgColor="bg-mid-purple">
       <Wrapper className={`max-w-3xl space-y-8 py-8 text-center text-white`}>
-        <h1 className="nr-font text-4xl font-bold text-white lg:text-7xl">Monetize your skills with ease</h1>
+        <h1 className="nr-font text-5xl font-bold text-white lg:text-7xl">Monetize your skills with ease</h1>
         <p className={`text-lg lg:text-2xl`}>
           With ByteAlley, selling your products online is hassle-free. You can showcase your work and let us handle the
           backend tasks, allowing you to concentrate on what you do best.

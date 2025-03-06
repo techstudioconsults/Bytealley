@@ -33,6 +33,16 @@ declare global {
     description: string;
   }
 
+  interface DualSectionLayoutProperties {
+    children: React.ReactNode;
+    img: string;
+    height?: string;
+    className?: string;
+    imgClassName?: string;
+    leftSectionClassName?: string;
+    rightSectionClassName?: string;
+  }
+
   interface DualSectionLayoutListProperties {
     title: string;
     subTitle: string;
@@ -44,6 +54,12 @@ declare global {
     className?: string;
     headerClassName?: string;
     subHeaderClassName?: string;
+    buttonClassName?: string;
+  }
+  interface StepCardProperties {
+    title: string;
+    description: string;
+    imageSrc: string;
   }
 }
 

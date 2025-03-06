@@ -581,7 +581,6 @@ export const months = [
 ];
 
 export const externalNavlinks = [
-  { id: 5, name: "Features", path: "/features", type: "link" },
   {
     id: 3,
     name: "Explore",
@@ -593,6 +592,7 @@ export const externalNavlinks = [
       { id: 3, name: "Category 2", path: "/explore/category2" },
     ],
   },
+  { id: 5, name: "Features", path: "/features", type: "link" },
   { id: 4, name: "Pricing", path: "/pricing", type: "link" },
 ];
 
@@ -616,5 +616,33 @@ export const cards: CardData[] = [
     image: "https://res.cloudinary.com/kingsleysolomon/image/upload/v1721286358/productize/wl8tu0t12l1fse6gm8tw.png",
     title: "Branded Profiles",
     description: "Showcase your unique identity with a personalized profile and connect with your audience.",
+  },
+];
+
+export const steps = [
+  {
+    title: "Customize your profile",
+    description: "Start off by putting in your details and customizing what you want your profile to look like.",
+    imageSrc:
+      "https://res.cloudinary.com/kingsleysolomon/image/upload/v1699951004/productize/Illustration_jzxpjd_zawis9.png",
+  },
+  {
+    title: "Set up your payout",
+    description: "Put in your payment details and get ready to receive payments from all over the world.",
+    imageSrc:
+      "https://res.cloudinary.com/kingsleysolomon/image/upload/v1699951033/productize/Illustration_1_wdmvgf_jpnhgm.png",
+  },
+  {
+    title: "Create your first product",
+    description:
+      "Upload your first product on our platform and put in the necessary details to ensure customers can get a feel of what you’re selling.",
+    imageSrc:
+      "https://res.cloudinary.com/kingsleysolomon/image/upload/v1699951002/productize/Illustration_2_zibmgb_aun5ux.png",
+  },
+  {
+    title: "Make your first sale",
+    description: "Patiently await your first customer and make your first sale.",
+    imageSrc:
+      "https://res.cloudinary.com/kingsleysolomon/image/upload/v1699951025/productize/Frame_40446_y425kr_pcfgv4.png",
   },
 ];

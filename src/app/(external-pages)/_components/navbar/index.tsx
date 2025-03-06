@@ -50,7 +50,7 @@ export function Navbar() {
   const getRouteTheme = (): string => {
     const colorMap: { [key: string]: string } = {
       "/": "text-mid-grey-I bg-mid-purple",
-      "/features": "text-mid-grey-III",
+      "/features": "text-mid-grey-III bg-low-coral",
       "/pricing": "text-mid-grey-III",
     };
     return colorMap[pathname as string] || "text-mid-grey-III";
