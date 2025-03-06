@@ -56,14 +56,13 @@ export const DualSectionLayoutList: React.FC<DualSectionLayoutListProperties> = 
           ))}
         </ul>
       )}
-      {!user &&
-        shouldShowButton && (
-          <div className="mt-10">
-            <CustomButton size={`xl`} className={cn(buttonClassName)} variant="primary" onClick={onButtonClick}>
-              {buttonText}
-            </CustomButton>
-          </div>
-        )}
+      {!user && shouldShowButton && (
+        <div className="mt-10">
+          <CustomButton size={`xl`} className={cn(buttonClassName)} variant="primary" onClick={onButtonClick}>
+            {buttonText}
+          </CustomButton>
+        </div>
+      )}
     </section>
   );
 };

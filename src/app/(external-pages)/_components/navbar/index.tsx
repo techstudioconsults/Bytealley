@@ -51,7 +51,7 @@ export function Navbar() {
     const colorMap: { [key: string]: string } = {
       "/": "text-mid-grey-I bg-mid-purple",
       "/features": "text-mid-grey-III bg-low-coral",
-      "/pricing": "text-mid-grey-III",
+      "/pricing": "text-mid-grey-III bg-low-warning",
     };
     return colorMap[pathname as string] || "text-mid-grey-III";
   };
