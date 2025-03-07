@@ -43,7 +43,7 @@ export const DualSectionLayoutList: React.FC<DualSectionLayoutListProperties> = 
   return (
     <section className={cn(className)}>
       <div className={`space-y-4`}>
-        <h1 className={cn(headerClassName)}>{title}</h1>
+        <h1 className={cn(`font-black`, headerClassName)}>{title}</h1>
         <p className={cn(subHeaderClassName)}>{subTitle}</p>
       </div>
       {listItems && (

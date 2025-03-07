@@ -10,7 +10,7 @@ export const publicRoutes: string[] = [
   "/pricing",
   "/terms-and-conditions",
   "/privacy-policy",
-  "/about-us",
+  "/about",
   "/contact",
 ];
 

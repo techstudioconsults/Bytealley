@@ -12,9 +12,9 @@ import { dependencies } from "~/utils/dependencies";
 const BaseSectionOne = ({ helpService }: { helpService: HelpService }) => {
   return (
     <SectionLayout>
-      <Wrapper className="grid space-y-4 py-16 lg:grid-cols-2 lg:py-32">
+      <Wrapper className="grid gap-4 space-y-4 py-16 lg:grid-cols-2 lg:space-y-0 lg:py-32">
         <section className={`space-y-4`}>
-          <h1 className="nr-font text-center text-3xl font-bold text-high-warning lg:text-left xl:text-6xl">
+          <h1 className="nr-font text-center text-3xl font-black text-high-warning lg:text-left xl:text-5xl">
             Frequently asked questions
           </h1>
           <div className={`hidden lg:block`}>

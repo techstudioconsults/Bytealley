@@ -17,7 +17,7 @@ export const SectionOne = () => {
           {/* Left Section */}
           <div className="flex flex-col justify-between text-center lg:w-[40%] lg:text-left">
             <div>
-              <h1 className="nr-font text-5xl font-bold text-high-warning xl:text-7xl">You can monetize everything</h1>
+              <h1 className="nr-font text-5xl font-black text-high-warning xl:text-7xl">You can monetize everything</h1>
               <p className="mb-8 mt-8 text-lg font-light xl:text-2xl">
                 Are you a digital artist, designer, writer, or developer looking to share your creations with the world
                 and earn from your passion? Look no further! ByteAlley is the ultimate platform for creators like you.

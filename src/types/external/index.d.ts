@@ -20,7 +20,7 @@ declare global {
     bgColor?: string;
   }
 
-  interface SectionLayoutProperties {
+  interface SectionLayoutProperties extends React.HTMLAttributes<HTMLDivElement> {
     height?: string;
     bgColor?: string;
     bgImg?: string;
@@ -31,6 +31,16 @@ declare global {
     image: string;
     title: string;
     description: string;
+  }
+
+  interface DualLayoutProperties extends React.HTMLAttributes<HTMLDivElement> {
+    bgHeight?: string;
+    leftChild: React.ReactNode | string;
+    leftChildBgColor: string;
+    rightChild: React.ReactNode | string;
+    rightChildBgColor: string;
+    rightChildClassName?: string;
+    leftChildClassName?: string;
   }
 
   interface DualSectionLayoutProperties {
@@ -45,7 +55,7 @@ declare global {
 
   interface DualSectionLayoutListProperties {
     title: string;
-    subTitle: string;
+    subTitle: string | React.ReactNode;
     listItems?: string[];
     iconColor?: string;
     shouldShowButton?: boolean;

@@ -52,7 +52,9 @@ export function Navbar() {
       "/": "text-mid-grey-I bg-mid-purple",
       "/features": "text-mid-grey-III bg-low-coral",
       "/pricing": "text-mid-grey-III bg-low-warning",
+      "/about": "text-mid-grey-III bg-low-warning",
       "/terms-and-conditions": "text-mid-grey-III bg-mid-warning",
+      "/privacy-policy": "text-mid-grey-I bg-mid-purple",
     };
     return colorMap[pathname as string] || "text-mid-grey-III";
   };

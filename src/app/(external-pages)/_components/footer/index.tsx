@@ -48,7 +48,7 @@ export const Footer: React.FC = () => {
           </div>
           <div className="flex flex-col items-center gap-2 lg:items-start">
             <FooterLink href="/terms-and-conditions">Terms And Conditions</FooterLink>
-            <FooterLink href="/privacypolicy">Privacy Policy</FooterLink>
+            <FooterLink href="/privacy-policy">Privacy Policy</FooterLink>
             <FooterLink href="/blogs" disabled>
               Blog
             </FooterLink>
