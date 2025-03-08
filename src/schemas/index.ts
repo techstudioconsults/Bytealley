@@ -81,6 +81,14 @@ export const contactSchema = z.object({
   message: z.string().min(1, "Message is required"),
 });
 
+export const externalContactSchema = z.object({
+  firstname: z.string().min(2, "Full name must be at least 2 characters"),
+  lastname: z.string().min(2, "Full name must be at least 2 characters"),
+  email: z.string().min(1, "Email is required").email("Please enter a valid email address"),
+  subject: z.string().min(1, "Subject is required"),
+  message: z.string().min(1, "Message is required"),
+});
+
 export const profileSchema = z.object({
   full_name: z.string().min(2, "Full name must be at least 2 characters"),
   username: z.string().min(2, "Username must be at least 2 characters"),
@@ -159,5 +167,6 @@ export type KycFormData = z.infer<typeof kycSchema>;
 export type EmailIntegrationFormData = z.infer<typeof emailIntegrationSchema>;
 export type FunnelFormData = z.infer<typeof funnelSchema>;
 export type FunnelSettingFormData = z.infer<typeof funnelSettingsSchema>;
+export type ExternalContactFormData = z.infer<typeof externalContactSchema>;
 
 // export type ProductFormData = z.infer<typeof ProductFormSchema>;

@@ -51,14 +51,14 @@ export const Footer: React.FC = () => {
             <FooterLink href="/privacy-policy">Privacy Policy</FooterLink>
             <FooterLink href="/blogs" disabled>
               Blog
-            </FooterLink>
+            </FooterLink> 
             <FooterLink href="/dashboard/help" disabled>
               Help And Support
             </FooterLink>
           </div>
           <div className="flex flex-col items-center gap-2 lg:items-start">
             <FooterLink href="/about">About us</FooterLink>
-            <FooterLink href="/contact-us">Contact us</FooterLink>
+            <FooterLink href="/contact">Contact us</FooterLink>
           </div>
         </div>
         <div className="my-10 flex flex-col-reverse items-center justify-center gap-5 lg:flex-row lg:justify-between">

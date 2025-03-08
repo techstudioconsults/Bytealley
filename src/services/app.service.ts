@@ -1,5 +1,5 @@
 import { HttpAdapter } from "~/adapters/http-adapter";
-import { EmailIntegrationFormData, ProfileFormData } from "~/schemas";
+import { EmailIntegrationFormData, ExternalContactFormData, ProfileFormData } from "~/schemas";
 
 export class AppService {
   private readonly http: HttpAdapter;
@@ -48,6 +48,13 @@ export class AppService {
     const response = await this.http.post<{ data: IUser }>(`/users/me`, data);
     if (response?.status === 200) {
       return response.data.data;
+    }
+  }
+
+  async contactUs(data: ExternalContactFormData) {
+    const response = await this.http.post<{ message: string }>(`/complaints/contact-us`, data);
+    if (response?.status === 200) {
+      return response.data;
     }
   }
 }
