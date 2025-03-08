@@ -1,25 +1,26 @@
-import dashboardImg from "@/images/external/dashboard_img.svg";
+"use client";
 
-import {
-  DualSectionLayout,
-  DualSectionLayoutList,
-} from "~/app/(external-pages)/_components/layout/dual-section-layout";
+import React from "react";
 
-export const SectionFour = () => {
+import { StepCard } from "~/app/(external-pages)/(home)/_views/section-3/_components/step-card";
+import { Wrapper } from "~/components/layout/wrapper";
+import { aboutSteps } from "~/utils/constants";
+
+export const SectionFour: React.FC = () => {
   return (
-    <DualSectionLayout
-      img={dashboardImg}
-      height="xl:h-[641px]"
-      leftSectionClassName="bg-mid-warning items-center justify-end lg:pr-24 py-10 text-center lg:text-left"
-      rightSectionClassName="bg-low-purple"
-    >
-      <DualSectionLayoutList
-        title="Helpful Information at your fingertips"
-        headerClassName={`text-high-warning nr-font text-5xl xl:text-7xl`}
-        subHeaderClassName={`text-high-warning xl:text-2xl`}
-        subTitle="You can find out your best customers and what products sell better from your dashboard with ease. This can help you plan better."
-        className={`px-4 lg:w-[530px] xl:px-0`}
-      />
-    </DualSectionLayout>
+    <section className="py-24">
+      <Wrapper className={`max-w-[1240px]`}>
+        <Wrapper className={`max-w-[800px] text-center`}>
+          <h1 className="nr-font e mb-4 text-5xl font-black leading-tight lg:text-7xl">Why Choose ByteAlley</h1>
+        </Wrapper>
+        <Wrapper className="px-4 py-20 xl:px-0">
+          <div className="grid grid-cols-1 gap-10 sm:grid-cols-2">
+            {aboutSteps.map((step, index) => (
+              <StepCard key={index} title={step.title} description={step.description} />
+            ))}
+          </div>
+        </Wrapper>
+      </Wrapper>
+    </section>
   );
 };

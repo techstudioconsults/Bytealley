@@ -34,7 +34,7 @@ declare global {
   }
 
   interface DualLayoutProperties extends React.HTMLAttributes<HTMLDivElement> {
-    bgHeight?: string;
+    bgClassName?: string;
     leftChild: React.ReactNode | string;
     leftChildBgColor: string;
     rightChild: React.ReactNode | string;
@@ -66,10 +66,10 @@ declare global {
     subHeaderClassName?: string;
     buttonClassName?: string;
   }
-  interface StepCardProperties {
+  interface StepCardProperties extends React.HTMLAttributes<HTMLDivElement> {
     title: string;
     description: string;
-    imageSrc: string;
+    imageSrc?: string;
   }
 
   interface Term {

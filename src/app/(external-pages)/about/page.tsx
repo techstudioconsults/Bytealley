@@ -3,6 +3,7 @@ import { AboutHero } from "./_views/hero";
 import { SectionOne } from "./_views/section-1";
 import { SectionTwo } from "./_views/section-2";
 import { SectionThree } from "./_views/section-3";
+import { SectionFour } from "./_views/section-4";
 
 const Page = () => {
   return (
@@ -11,6 +12,7 @@ const Page = () => {
       <SectionOne />
       <SectionTwo />
       <SectionThree />
+      <SectionFour />
       <SharedSection
         title={"Join Our Thriving Creator Community"}
         desc={

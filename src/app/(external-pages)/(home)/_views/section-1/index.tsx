@@ -12,7 +12,7 @@ export const SectionOne = () => {
 
   return (
     <SectionLayout bgColor="bg-low-warning">
-      <div className="p-10 md:p-28 lg:pb-48 lg:pt-72">
+      <div className="py-10 md:py-28 lg:pb-48 lg:pt-72">
         <div className="flex flex-col gap-10 sm:gap-20 lg:flex-row">
           {/* Left Section */}
           <div className="flex flex-col justify-between text-center lg:w-[40%] lg:text-left">

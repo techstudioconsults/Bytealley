@@ -619,7 +619,7 @@ export const cards: CardData[] = [
   },
 ];
 
-export const steps = [
+export const homeSteps = [
   {
     title: "Customize your profile",
     description: "Start off by putting in your details and customizing what you want your profile to look like.",
@@ -644,6 +644,29 @@ export const steps = [
     description: "Patiently await your first customer and make your first sale.",
     imageSrc:
       "https://res.cloudinary.com/kingsleysolomon/image/upload/v1699951025/productize/Frame_40446_y425kr_pcfgv4.png",
+  },
+];
+
+export const aboutSteps = [
+  {
+    title: "Flexible Product Options",
+    description:
+      "Sell a variety of digital products, including courses, eBooks, software, music, and more. Customize your product pages with detailed descriptions, multimedia, and personalized settings.",
+  },
+  {
+    title: "Affiliate Programs",
+    description:
+      "Leverage our built-in affiliate marketing features to expand your product reach. Collaborate with affiliates who promote your products in exchange for commissions.",
+  },
+  {
+    title: "Secure Transactions",
+    description:
+      "Our platform ensures secure and seamless transactions, giving both sellers and buyers peace of mind. Our commitment to security extends to regular audits and compliance with industry standards",
+  },
+  {
+    title: "Community Engagement",
+    description:
+      "Join a vibrant community of creators and entrepreneurs. Share insights and learn from others’ experiences. Our platform fosters an environment of innovation, where you can network with like-minded individuals",
   },
 ];
 

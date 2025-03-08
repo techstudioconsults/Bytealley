@@ -36,7 +36,7 @@ export const SectionOne = () => {
       }
       leftChildBgColor={"bg-low-purple"}
       rightChildBgColor={"bg-low-coral"}
-      leftChildClassName={`flex items-center`}
+      leftChildClassName={`flex items-center text-center lg:text-left`}
       rightChildClassName={`items-end`}
     />
   );
