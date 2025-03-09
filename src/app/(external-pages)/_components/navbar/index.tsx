@@ -6,32 +6,56 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { LuChevronDown } from "react-icons/lu";
 
-
-
 import CustomButton from "~/components/common/common-button/common-button";
 import { Wrapper } from "~/components/layout/wrapper";
 import { BlurImage } from "~/components/miscellaneous/blur-image";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "~/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
+import { WithDependency } from "~/HOC/withDependencies";
 import { useSession } from "~/hooks/use-session";
-import { generateExternalNavlinks } from "~/utils/constants";
+import { AppService } from "~/services/app.service";
+import { externalNavlinks } from "~/utils/constants";
+import { dependencies } from "~/utils/dependencies";
 import { cn } from "~/utils/utils";
 
-
-export function Navbar() {
+function BaseNavbar({ appService }: { appService: AppService }) {
   const { user } = useSession();
   const pathname = usePathname();
   const [isNavbarVisible, setIsNavbarVisible] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [navlinks, setNavlinks] = useState<any[]>([]);
+  const [navlinks, setNavlinks] = useState<any[]>(externalNavlinks);
 
   useEffect(() => {
-    const fetchNavlinks = async () => {
-      const generatedNavlinks = await generateExternalNavlinks();
-      setNavlinks(generatedNavlinks);
-    };
+    const getData = async () => {
+      const response = await appService.getProductCategory();
+      if (response) {
+        const formattedLinks = response.map((link) => ({
+          name: link.name.replace("_", " "),
+          path: `/explore/${link.name.replace("_", "-")}`,
+          type: "link",
+        }));
 
-    fetchNavlinks();
+        const modifiedLinks = navlinks.map((link) => {
+          if (link.name === "Explore") {
+            return {
+              ...link,
+              subLinks: [...link.subLinks, ...formattedLinks],
+            };
+          }
+          return link;
+        });
+
+        setNavlinks(modifiedLinks);
+      }
+    };
+    getData();
   }, []);
 
   // Handle scroll event
@@ -216,3 +240,7 @@ export function Navbar() {
     </nav>
   );
 }
+
+export const Navbar = WithDependency(BaseNavbar, {
+  appService: dependencies.APP_SERVICE,
+});
