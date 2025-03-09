@@ -6,27 +6,33 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { LuChevronDown } from "react-icons/lu";
 
+
+
 import CustomButton from "~/components/common/common-button/common-button";
 import { Wrapper } from "~/components/layout/wrapper";
 import { BlurImage } from "~/components/miscellaneous/blur-image";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "~/components/ui/dropdown-menu";
 import { useSession } from "~/hooks/use-session";
-import { externalNavlinks } from "~/utils/constants";
+import { generateExternalNavlinks } from "~/utils/constants";
 import { cn } from "~/utils/utils";
+
 
 export function Navbar() {
   const { user } = useSession();
   const pathname = usePathname();
   const [isNavbarVisible, setIsNavbarVisible] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [navlinks, setNavlinks] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchNavlinks = async () => {
+      const generatedNavlinks = await generateExternalNavlinks();
+      setNavlinks(generatedNavlinks);
+    };
+
+    fetchNavlinks();
+  }, []);
 
   // Handle scroll event
   useEffect(() => {
@@ -82,34 +88,38 @@ export function Navbar() {
 
           {/* Desktop Links */}
           <div className="hidden items-center gap-8 lg:flex">
-            {externalNavlinks.map((link) =>
-              link.type === "dropdown" ? (
-                <DropdownMenu key={link.id}>
-                  <DropdownMenuTrigger asChild>
-                    <p className={cn(getRouteTheme(), "flex items-center gap-1 text-sm font-bold")}>
-                      <span>{link.name}</span>
-                      <ChevronDown className="h-4 w-4" />
-                    </p>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className={cn("w-48 rounded-md bg-white p-2 shadow-lg")}>
-                    {link.subLinks?.map((subLink) => (
-                      <DropdownMenuItem key={subLink.id} asChild>
-                        <Link href={subLink.path} className="block px-4 py-2 text-sm hover:bg-gray-100">
-                          {subLink.name}
-                        </Link>
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              ) : (
-                <Link
-                  key={link.id}
-                  href={link.path}
-                  className={cn(getRouteTheme(), "text-sm font-bold transition-colors")}
-                >
-                  {link.name}
-                </Link>
-              ),
+            {navlinks.length === 0 ? (
+              <p className={cn(getRouteTheme(), "text-sm font-bold transition-colors")}>Loading Links...</p>
+            ) : (
+              navlinks.map((link) =>
+                link.type === "dropdown" ? (
+                  <DropdownMenu key={link.id}>
+                    <DropdownMenuTrigger asChild>
+                      <p className={cn(getRouteTheme(), "flex items-center gap-1 text-sm font-bold")}>
+                        <span>{link.name}</span>
+                        <ChevronDown className="h-4 w-4" />
+                      </p>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className={cn("w-48 rounded-md bg-white p-2 shadow-lg")}>
+                      {link.subLinks?.map((subLink: any) => (
+                        <DropdownMenuItem key={subLink.id} asChild>
+                          <Link href={subLink.path} className="block px-4 py-2 text-sm hover:bg-gray-100">
+                            {subLink.name}
+                          </Link>
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ) : (
+                  <Link
+                    key={link.id}
+                    href={link.path}
+                    className={cn(getRouteTheme(), "text-sm font-bold transition-colors")}
+                  >
+                    {link.name}
+                  </Link>
+                ),
+              )
             )}
           </div>
 
@@ -168,7 +178,7 @@ export function Navbar() {
           )}
         >
           <div className="flex flex-col gap-4 p-4">
-            {externalNavlinks.map((link) =>
+            {navlinks.map((link) =>
               link.type === "dropdown" ? (
                 <DropdownMenu key={link.id}>
                   <DropdownMenuTrigger asChild>
@@ -180,7 +190,7 @@ export function Navbar() {
                     </p>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className={cn("w-48 rounded-md bg-white p-2 shadow-lg")}>
-                    {link.subLinks?.map((subLink) => (
+                    {link.subLinks?.map((subLink: any) => (
                       <DropdownMenuItem key={subLink.id} asChild>
                         <Link href={subLink.path} className="block px-4 py-2 text-sm hover:bg-gray-100">
                           {subLink.name}

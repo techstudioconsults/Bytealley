@@ -77,6 +77,11 @@ declare global {
     text: string;
     points: string[];
   }
+
+  type CategoryItem = {
+    name: string;
+    categories: string[];
+  };
 }
 
 export {};

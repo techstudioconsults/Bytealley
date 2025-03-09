@@ -16,7 +16,13 @@ import customers from "@/icons/Property_2_User-folder_n4spfl.svg";
 import payouts from "@/icons/Property_2_Wallet_3_teopvy.svg";
 import { useEffect, useState } from "react";
 
+import { HttpAdapter } from "~/adapters/http-adapter";
 import { useNotifications } from "~/features/push-notification/hooks/use-notification";
+import { AppService } from "~/services/app.service";
+
+// Initialize the HttpAdapter and AppService
+const httpAdapter = new HttpAdapter(); // Assuming HttpAdapter is properly configured
+const appService = new AppService(httpAdapter);
 
 export const useSidebarItems = () => {
   const { notifications } = useNotifications();
@@ -580,21 +586,49 @@ export const months = [
   { value: "12", label: "December" },
 ];
 
-export const externalNavlinks = [
-  {
-    id: 3,
-    name: "Explore",
-    path: "/explore",
-    type: "dropdown",
-    subLinks: [
-      { id: 1, name: "All", path: "/explore" },
-      { id: 2, name: "Category 1", path: "/explore/category1" },
-      { id: 3, name: "Category 2", path: "/explore/category2" },
-    ],
-  },
-  { id: 5, name: "Features", path: "/features", type: "link" },
-  { id: 4, name: "Pricing", path: "/pricing", type: "link" },
-];
+export async function generateExternalNavlinks() {
+  try {
+    // Fetch product categories from the service
+    const productCategories = await appService.getProductCategory();
+    console.log(productCategories);
+
+    // Generate the externalNavlinks array
+    const externalNavlinks = [
+      {
+        id: 3,
+        name: "Explore",
+        path: "/explore",
+        type: "dropdown",
+        subLinks: [
+          { id: 1, name: "All", path: "/explore" },
+          ...(productCategories?.map((category, index) => ({
+            id: index + 2,
+            name: category.name.replace("_", " "),
+            path: `/explore/${category.name.replace("_", "-")}`,
+          })) || []),
+        ],
+      },
+      { id: 5, name: "Features", path: "/features", type: "link" },
+      { id: 4, name: "Pricing", path: "/pricing", type: "link" },
+    ];
+
+    return externalNavlinks;
+  } catch (error) {
+    console.error("Error generating external navlinks:", error);
+    // Return a fallback version of externalNavlinks if there's an error
+    return [
+      {
+        id: 3,
+        name: "Explore",
+        path: "/explore",
+        type: "dropdown",
+        subLinks: [{ id: 1, name: "All", path: "/explore" }],
+      },
+      { id: 5, name: "Features", path: "/features", type: "link" },
+      { id: 4, name: "Pricing", path: "/pricing", type: "link" },
+    ];
+  }
+}
 
 export const cards: CardData[] = [
   {
