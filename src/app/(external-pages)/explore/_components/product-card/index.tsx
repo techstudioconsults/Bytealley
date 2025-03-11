@@ -44,46 +44,52 @@ export const CardComponent: React.FC<CardProperties> = ({
   return (
     <Link href={`/products/${productID}`}>
       <Card
-        className={`flex h-[19.8125rem] w-full flex-col items-start justify-start overflow-hidden p-2.5 transition-all hover:scale-105 hover:shadow-lg sm:w-[${width}]`}
+        className={`flex min-h-[20rem] w-full flex-col items-start justify-between overflow-hidden p-2.5 transition-all hover:scale-105 hover:shadow-lg sm:w-[${width}]`}
       >
         {/* Image Section */}
-        <div className="flex h-[12.063rem] w-full items-center justify-center overflow-hidden">
+        <div className="flex h-[12rem] w-full items-center justify-center overflow-hidden">
           <BlurImage
             src={image}
             alt={heading}
             width={300}
             height={200}
-            className="h-full w-full object-cover"
+            className="h-full w-full rounded-lg object-cover"
             priority
           />
         </div>
 
-        {/* Heading */}
-        <h3 className="mt-3 line-clamp-2 text-sm font-bold text-gray-900">{heading}</h3>
+        <section className={`w-full`}>
+          {/* Heading */}
+          <h3 className="mt-3 line-clamp-2 text-xs font-bold text-high-grey-III lg:text-sm">{heading}</h3>
 
-        {/* Publisher and Rating */}
-        <div className="mt-2.5 flex w-full items-center justify-between">
-          <p className="line-clamp-1 text-xs text-gray-600">By {publisher}</p>
-          {aggrRating ? (
-            <div className="flex items-center gap-1">
-              <Star filled />
-              <span className="text-xs text-gray-600">{aggrRating}</span>
-            </div>
-          ) : null}
-        </div>
-
-        {/* Price and Discount */}
-        <div className="mt-2 flex w-full items-center justify-between">
-          <div className="flex items-center gap-2">
-            <p className="text-sm font-bold text-purple-600">
-              {discountPrice ? discountPrice.toLocaleString() : price.toLocaleString()}
-            </p>
-            {discountPrice ? <p className="text-xs text-mid-danger line-through">{price.toLocaleString()}</p> : null}
+          {/* Publisher and Rating */}
+          <div className="mt-2.5 flex w-full items-center justify-between">
+            <p className="line-clamp-1 text-[10px] text-mid-grey-II lg:text-xs">By {publisher}</p>
+            {aggrRating ? (
+              <div className="flex items-center gap-1">
+                <Star filled />
+                <span className="text-xs text-gray-600">{aggrRating}</span>
+              </div>
+            ) : null}
           </div>
-          {discountPercentage && (
-            <Badge className="rounded bg-low-warning px-2 py-1 text-xs text-high-warning">{-discountPercentage}%</Badge>
-          )}
-        </div>
+
+          {/* Price and Discount */}
+          <div className="mt-2 flex w-full items-center justify-between">
+            <div className="flex items-center gap-2">
+              <p className="text-xs font-bold text-mid-purple lg:text-sm">
+                {discountPrice ? discountPrice.toLocaleString() : price.toLocaleString()}
+              </p>
+              {discountPrice ? (
+                <p className="text-[10px] text-mid-danger line-through lg:text-xs">{price.toLocaleString()}</p>
+              ) : null}
+            </div>
+            {discountPercentage && (
+              <Badge className="rounded bg-low-warning px-2 py-1 text-[10px] text-high-warning lg:text-xs">
+                {-discountPercentage}%
+              </Badge>
+            )}
+          </div>
+        </section>
       </Card>
     </Link>
   );
