@@ -1,7 +1,6 @@
 import { HttpAdapter } from "~/adapters/http-adapter";
 import { EmailIntegrationFormData, ExternalContactFormData, ProfileFormData } from "~/schemas";
 
-
 export class AppService {
   private readonly http: HttpAdapter;
 
@@ -20,6 +19,14 @@ export class AppService {
     const response = await this.http.get<{ data: CategoryItem[] }>("/products/types");
     if (response?.status === 200) {
       return response.data.data;
+    }
+  }
+
+  async getAllProducts(filters: IFilters = Object.create({ page: 1 })) {
+    const queryParameters = this.buildQueryParameters(filters);
+    const response = await this.http.get<IPaginatedResponse<IProduct>>(`/products/external?${queryParameters}`);
+    if (response?.status === 200) {
+      return response.data;
     }
   }
 
@@ -64,5 +71,15 @@ export class AppService {
     if (response?.status === 200) {
       return response.data;
     }
+  }
+
+  private buildQueryParameters(filters: IFilters): string {
+    const queryParameters = new URLSearchParams();
+    for (const [key, value] of Object.entries(filters)) {
+      if (value !== undefined) {
+        queryParameters.append(key, value.toString());
+      }
+    }
+    return queryParameters.toString();
   }
 }

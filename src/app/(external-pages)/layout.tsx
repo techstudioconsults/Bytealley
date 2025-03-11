@@ -1,3 +1,6 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import React from "react";
 
 import { Footer } from "./_components/footer";
@@ -8,11 +11,17 @@ export default function LandingLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
+
+  if (pathname.startsWith("/explore")) {
+    return <>{children}</>;
+  }
+
   return (
-    <section>
+    <>
       <Navbar />
-      <section>{children}</section>
+      <main>{children}</main>
       <Footer />
-    </section>
+    </>
   );
 }

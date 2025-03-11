@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { ChevronDown, Menu, X } from "lucide-react";
@@ -7,8 +9,8 @@ import { useEffect, useState } from "react";
 import { LuChevronDown } from "react-icons/lu";
 
 import CustomButton from "~/components/common/common-button/common-button";
+import { Logo } from "~/components/common/logo";
 import { Wrapper } from "~/components/layout/wrapper";
-import { BlurImage } from "~/components/miscellaneous/blur-image";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import {
   DropdownMenu,
@@ -19,44 +21,36 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { WithDependency } from "~/HOC/withDependencies";
+import { useProductCategories } from "~/hooks/use-product-categories";
 import { useSession } from "~/hooks/use-session";
 import { AppService } from "~/services/app.service";
 import { externalNavlinks } from "~/utils/constants";
 import { dependencies } from "~/utils/dependencies";
 import { cn } from "~/utils/utils";
 
-function BaseNavbar({ appService }: { appService: AppService }) {
+const BaseNavbar = ({ appService }: { appService: AppService }) => {
   const { user } = useSession();
   const pathname = usePathname();
   const [isNavbarVisible, setIsNavbarVisible] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [navlinks, setNavlinks] = useState<any[]>(externalNavlinks);
 
+  const categories = useProductCategories(appService);
+
   useEffect(() => {
-    const getData = async () => {
-      const response = await appService.getProductCategory();
-      if (response) {
-        const formattedLinks = response.map((link) => ({
-          name: link.name.replace("_", " "),
-          path: `/explore/${link.name.replace("_", "-")}`,
-          type: "link",
-        }));
-
-        const modifiedLinks = navlinks.map((link) => {
-          if (link.name === "Explore") {
-            return {
-              ...link,
-              subLinks: [...link.subLinks, ...formattedLinks],
-            };
-          }
-          return link;
-        });
-
-        setNavlinks(modifiedLinks);
-      }
-    };
-    getData();
-  }, []);
+    if (categories.length > 0) {
+      const modifiedLinks = navlinks.map((link) => {
+        if (link.name === "Explore") {
+          return {
+            ...link,
+            subLinks: [...link.subLinks, ...categories],
+          };
+        }
+        return link;
+      });
+      setNavlinks(modifiedLinks);
+    }
+  }, [categories]);
 
   // Handle scroll event
   useEffect(() => {
@@ -100,16 +94,7 @@ function BaseNavbar({ appService }: { appService: AppService }) {
     >
       <Wrapper>
         <div className="mx-auto flex h-20 items-center justify-between">
-          <Link href="/seller">
-            <BlurImage
-              alt={`bytealley`}
-              width={100}
-              height={50}
-              className={`h-[50px] w-[100px]`}
-              src={`/images/logo.svg`}
-            />
-          </Link>
-
+          <Logo width={100} height={50} className={`h-[50px] w-[100px] md:h-auto md:w-auto`} />
           {/* Desktop Links */}
           <div className="hidden items-center gap-8 lg:flex">
             {navlinks.length === 0 ? (
@@ -239,7 +224,7 @@ function BaseNavbar({ appService }: { appService: AppService }) {
       </Wrapper>
     </nav>
   );
-}
+};
 
 export const Navbar = WithDependency(BaseNavbar, {
   appService: dependencies.APP_SERVICE,

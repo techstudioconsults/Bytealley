@@ -16,8 +16,8 @@ export async function middleware(request: Request) {
     return NextResponse.next();
   }
 
-  // Allow public routes
-  if (publicRoutes.includes(pathname)) {
+  // Allow public routes and any route under /explore
+  if (publicRoutes.includes(pathname) || pathname.startsWith("/explore")) {
     return NextResponse.next();
   }
 
@@ -95,7 +95,7 @@ export async function middleware(request: Request) {
 
     // If none of the above conditions are met, redirect to appropriate homepage
     if (session.user.role === "SUPER_ADMIN") {
-      return NextResponse.redirect(new URL("/SUPER_ADMIN/dashboard", url));
+      return NextResponse.redirect(new URL("/super-admin/dashboard", url));
     } else if (session.user.role === "ADMIN") {
       return NextResponse.redirect(new URL("/admin/home", url));
     } else {

@@ -4,17 +4,17 @@ import { cn } from "~/utils/utils";
 
 interface IStarRatingProperties extends HTMLAttributes<HTMLDivElement> {
   rating?: number;
-  size?: string; // Added size prop for star size customization
-  onRatingChange?: (rating: number) => void; // Added callback for rating change
+  size?: string;
+  onRatingChange?: (rating: number) => void;
 }
 
 interface IStarProperties {
-  filled: boolean;
-  size: string; // Added size prop for star size customization
-  onClick: () => void; // Added onClick handler
+  filled?: boolean;
+  size?: string;
+  onClick?: () => void;
 }
 
-const Star = ({ filled, size, onClick }: IStarProperties) => {
+export const Star = ({ filled, size, onClick }: IStarProperties) => {
   return filled ? (
     <span className={`h-fit px-0.5 text-mid-warning ${size}`} onClick={onClick}>
       ★

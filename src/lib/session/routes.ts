@@ -6,7 +6,7 @@
 export const publicRoutes: string[] = [
   "/",
   "/features",
-  "/expore/*",
+  "/explore/*",
   "/pricing",
   "/terms-and-conditions",
   "/privacy-policy",

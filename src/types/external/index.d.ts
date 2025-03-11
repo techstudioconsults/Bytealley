@@ -82,6 +82,19 @@ declare global {
     name: string;
     categories: string[];
   };
+
+  interface CardProperties {
+    width?: string;
+    image: string;
+    heading: string;
+    rate?: number;
+    count?: number;
+    price: number;
+    publisher: string;
+    productID: string | number;
+    aggrRating: string | number;
+    discountPrice: number; // Ensure discountPrice is a number
+  }
 }
 
 export {};

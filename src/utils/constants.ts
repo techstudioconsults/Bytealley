@@ -586,7 +586,7 @@ export const externalNavlinks = [
     name: "Explore",
     path: "/explore",
     type: "dropdown",
-    subLinks: [{ id: 1, name: "All", path: "/explore/all", type: "link" }],
+    subLinks: [{ id: 1, name: "All", path: "/explore?category=all", type: "link" }],
   },
   { id: 5, name: "Features", path: "/features", type: "link" },
   { id: 4, name: "Pricing", path: "/pricing", type: "link" },

@@ -51,7 +51,7 @@ export const Footer: React.FC = () => {
             <FooterLink href="/privacy-policy">Privacy Policy</FooterLink>
             <FooterLink href="/blogs" disabled>
               Blog
-            </FooterLink> 
+            </FooterLink>
             <FooterLink href="/dashboard/help" disabled>
               Help And Support
             </FooterLink>
