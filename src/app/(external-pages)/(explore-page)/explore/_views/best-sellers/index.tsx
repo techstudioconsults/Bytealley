@@ -9,6 +9,7 @@ import "swiper/css/pagination";
 
 import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import Loading from "~/app/Loading";
+import { Wrapper } from "~/components/layout/wrapper";
 import { AppService } from "~/services/app.service";
 import { CardComponent } from "../../_components/product-card";
 
@@ -73,10 +74,10 @@ export const BestSellingProduct = ({ appService }: { appService: AppService }) =
   }
 
   return (
-    <div className="container mx-auto max-w-7xl px-4">
-      <div className="mb-5 flex items-center justify-between">
-        <h4>Trending Products</h4>
-      </div>
+    <Wrapper>
+      <section className={`mb-6`}>
+        <h1 className="text-xl lg:text-3xl">Trending Products</h1>
+      </section>
 
       <Swiper
         spaceBetween={24}
@@ -91,6 +92,6 @@ export const BestSellingProduct = ({ appService }: { appService: AppService }) =
         {renderCards}
         <div className="py-5"></div>
       </Swiper>
-    </div>
+    </Wrapper>
   );
 };

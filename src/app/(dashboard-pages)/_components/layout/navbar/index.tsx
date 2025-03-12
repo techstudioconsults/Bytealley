@@ -2,24 +2,13 @@
 
 import bell from "@/icons/Property_2_Notifications_1_w4v7g4.svg";
 import Image from "next/image";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
-import { LuChevronDown } from "react-icons/lu";
 
+import { Profile } from "~/components/common/profile";
 import { SearchInput } from "~/components/common/search-input";
-import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "~/components/ui/dropdown-menu";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
 import { UnreadNotificationCard, useNotifications } from "~/features/push-notification";
-import { useSession } from "~/hooks/use-session";
 import { cn } from "~/utils/utils";
 import { Drawer } from "../drawer/drawer";
 
@@ -27,15 +16,10 @@ export const DashboardNavbar = () => {
   const pathname = usePathname();
   const title = pathname.split("/")[3].charAt(0).toUpperCase() + pathname.split("/")[3].slice(1);
   const { unreadCount, fetchNotifications } = useNotifications();
-  const { user, logout } = useSession();
 
   useEffect(() => {
     fetchNotifications();
   }, [fetchNotifications]);
-
-  const handleLogOut = async () => {
-    await logout();
-  };
 
   return (
     <nav className="sticky top-0 z-[5] border-b-[0.5px] border-border" role="navbar">
@@ -66,28 +50,7 @@ export const DashboardNavbar = () => {
               )}
             ></span>
           </div>
-          <div className="flex items-center gap-[10px]">
-            <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-[5px] focus:outline-none active:outline-none">
-                <Avatar>
-                  <AvatarImage src={user?.logo || "https://github.com/shadcn.png"} />
-                  <AvatarFallback>{user?.name[0]?.toUpperCase() || "U"}</AvatarFallback>
-                </Avatar>
-                <p className="hidden lg:block">{user?.username || user?.name || "Byte alley User"}</p>
-                <LuChevronDown className="hidden lg:block" size="20px" />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="relative z-[999999]">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <Link href={`/dashboard/${user?.id}/profile`}>
-                  <DropdownMenuItem>Profile</DropdownMenuItem>
-                </Link>
-                <DropdownMenuItem onClick={handleLogOut} className="text-mid-danger">
-                  Log out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+          <Profile />
         </section>
       </section>
       <section className="relative z-[5] flex items-center justify-center bg-white p-4 lg:hidden">

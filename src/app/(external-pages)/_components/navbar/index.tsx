@@ -6,18 +6,15 @@ import { ChevronDown, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { LuChevronDown } from "react-icons/lu";
 
 import CustomButton from "~/components/common/common-button/common-button";
 import { Logo } from "~/components/common/logo";
+import { Profile } from "~/components/common/profile";
 import { Wrapper } from "~/components/layout/wrapper";
-import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { WithDependency } from "~/HOC/withDependencies";
@@ -135,23 +132,7 @@ const BaseNavbar = ({ appService }: { appService: AppService }) => {
           {/* Auth Buttons */}
           <div className="flex items-center gap-4">
             {user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger className="flex items-center gap-[5px] focus:outline-none active:outline-none">
-                  <Avatar>
-                    <AvatarImage src={user?.logo || "https://github.com/shadcn.png"} />
-                    <AvatarFallback>{user?.name[0]?.toUpperCase() || "U"}</AvatarFallback>
-                  </Avatar>
-                  <p className="hidden lg:block">{user?.username || user?.name || "Byte alley User"}</p>
-                  <LuChevronDown className="hidden lg:block" size="20px" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className={cn("relative z-[999999]")}>
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <Link href={`/dashboard/${user?.id}/home`}>
-                    <DropdownMenuItem>Dashboard</DropdownMenuItem>
-                  </Link>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <Profile />
             ) : (
               <>
                 <Link className="hidden lg:flex" href="/auth/login">

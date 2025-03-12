@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useSearchParams } from "next/navigation";
@@ -5,13 +6,12 @@ import { useEffect, useState } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { useSession } from "~/hooks/use-session";
-import { ProductService } from "~/services/product.service";
 import { cn } from "~/utils/utils";
 import { ProductImageCarousel } from "../carousel";
 import CustomButton from "../common-button/common-button";
 import { StarRating } from "../rating/star";
 
-export function ViewProductLayout({ productService }: { productService: ProductService }) {
+export function ViewProductLayout({ productService }: { productService: any }) {
   const searchParameters = useSearchParams();
   const productID = searchParameters.get("product_id");
   const [product, setProduct] = useState<IProduct>();

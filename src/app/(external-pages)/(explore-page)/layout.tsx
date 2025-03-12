@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Footer } from "../_components/footer";
-import { ExploreNavbar } from "./_components/layout/navbar";
+import { ExploreNavbar } from "./explore/_components/layout/navbar";
 
 export default function ExploreLayout({
   children,

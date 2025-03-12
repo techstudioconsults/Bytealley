@@ -42,7 +42,7 @@ export const CardComponent: React.FC<CardProperties> = ({
   }, [calculateDiscountPercentage, discountPrice, price]);
 
   return (
-    <Link href={`/products/${productID}`}>
+    <Link href={`/explore/product/${productID}`}>
       <Card
         className={`flex min-h-[20rem] w-full flex-col items-start justify-between overflow-hidden p-2.5 transition-all hover:scale-105 hover:shadow-lg sm:w-[${width}]`}
       >

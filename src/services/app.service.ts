@@ -30,6 +30,21 @@ export class AppService {
     }
   }
 
+  async getProductBySlug(productSlug: string) {
+    const token = Math.random().toString(36).slice(2, 15);
+    const response = await this.http.get<{ data: IProduct }>(`/products/${productSlug}/${token}`);
+    if (response?.status === 200) {
+      return response.data.data;
+    }
+  }
+
+  async getProductReviews(productID: string) {
+    const response = await this.http.get<{ data: any }>(`reviews/products/${productID}`);
+    if (response?.status === 200) {
+      return response.data.data;
+    }
+  }
+
   async search(data: { text: string }) {
     const response = await this.http.post<{ data: IProduct[] }>("/products/search", data);
     if (response?.status === 200) {

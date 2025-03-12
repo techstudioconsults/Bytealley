@@ -138,7 +138,10 @@ declare global {
     slug: string;
     total_order: number;
     total_sales: number;
-    assets?: File[] | string[];
+    assets?: File[] | string[] | {
+      extension?: string;
+      size?: string
+    }[];
     avg_rating: number;
     created_at: string;
     updated_at: string;
