@@ -1,5 +1,4 @@
 import { Mail, Phone } from "lucide-react"; // Using Lucide icons for simplicity
-import React from "react";
 
 import { Wrapper } from "~/components/layout/wrapper";
 import { ContactUsForm } from "../../_components/contact-form";

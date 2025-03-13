@@ -12,6 +12,7 @@ export const publicRoutes: string[] = [
   "/privacy-policy",
   "/about",
   "/contact",
+  // "/cart",
 ];
 
 /**

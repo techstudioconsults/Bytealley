@@ -100,7 +100,7 @@ const BaseNavbar = ({ appService }: { appService: AppService }) => {
               navlinks.map((link) =>
                 link.type === "dropdown" ? (
                   <DropdownMenu key={link.id}>
-                    <DropdownMenuTrigger asChild>
+                    <DropdownMenuTrigger className={`cursor-pointer`} asChild>
                       <p className={cn(getRouteTheme(), "flex items-center gap-1 text-sm font-bold")}>
                         <span>{link.name}</span>
                         <ChevronDown className="h-4 w-4" />

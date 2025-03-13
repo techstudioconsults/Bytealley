@@ -93,7 +93,39 @@ declare global {
     publisher: string;
     productID: string | number;
     aggrRating: string | number;
-    discountPrice: number; // Ensure discountPrice is a number
+    discountPrice: number;
+  }
+
+  interface CartedProduct {
+    id: string;
+    quantity: number;
+    product_slug: string;
+    product_title: string;
+    product_thumbnail: string;
+    product_price: number;
+  }
+
+  interface CartState {
+    cart: CartedProduct[];
+    isPending: boolean;
+    isAddToCartPending: boolean;
+    isRemoveFromCartPending: boolean;
+    isUpdateQuantityPending: boolean;
+    isPurchaseProductFromCartPending: boolean;
+  }
+
+  interface CartContextType {
+    cart: CartedProduct[];
+    isPending: boolean;
+    isAddToCartPending: boolean;
+    isRemoveFromCartPending: boolean;
+    isUpdateQuantityPending: boolean;
+    isPurchaseProductFromCartPending: boolean;
+    addToCart: (productSlug: string, quantity: number) => void;
+    removeFromCart: (productId: string) => void;
+    updateQuantity: (productId: string, quantity: number) => void;
+    purchaseProductInCart: (cart: CartedProduct[]) => void;
+    getAllProductsFromCart: () => void;
   }
 }
 

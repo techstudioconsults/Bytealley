@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 
 import { BackNavigator } from "~/app/(dashboard-pages)/_components/back-navigator";
@@ -12,6 +14,7 @@ import { SetToolTip } from "~/components/common/tool-tip";
 import { Wrapper } from "~/components/layout/wrapper";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { WithDependency } from "~/HOC/withDependencies";
+import { useCart } from "~/hooks/use-cart";
 import { useSession } from "~/hooks/use-session";
 import { AppService } from "~/services/app.service";
 import { dependencies } from "~/utils/dependencies";
@@ -19,11 +22,13 @@ import { cn } from "~/utils/utils";
 
 const ProductPreview = ({ appService, params }: { appService: AppService; params: { slug: string } }) => {
   const slug = params.slug;
-  const [isPending, startTransition] = useTransition();
+  const [isdataPending, startTransition] = useTransition();
   const [isExpanded, setIsExpanded] = useState(false);
   const [product, setProduct] = useState<IProduct | null>(null);
   const [productReview, setProductReview] = useState<any[]>([]);
   const { user } = useSession();
+  const { addToCart, isAddToCartPending } = useCart();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,7 +49,7 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
     }
   }, [appService, slug]);
 
-  if (isPending) {
+  if (isdataPending) {
     return <Loading text={`Loading ${slug} details...`} className="h-screen w-full p-20" />;
   }
 
@@ -125,16 +130,23 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
             <div className="flex flex-col gap-2">
               <SetToolTip content={"You need to be logged in to purchase product"}>
                 <CustomButton
-                  isDisabled={user?.name === product?.publisher}
+                  isLoading={isAddToCartPending}
+                  isDisabled={user?.name === product?.publisher || isAddToCartPending}
                   variant="primary"
                   className={cn({ "cursor-not-allowed": user?.name === product?.publisher })}
+                  onClick={() => addToCart(slug, 1)}
                 >
                   Add to Cart
                 </CustomButton>
               </SetToolTip>
               <SetToolTip content={"You need to be logged in to purchase product"}>
                 <CustomButton
-                  isDisabled={user?.name === product?.publisher}
+                  isLoading={isAddToCartPending}
+                  isDisabled={user?.name === product?.publisher || isAddToCartPending}
+                  onClick={() => {
+                    addToCart(slug, 1);
+                    router.push(`/explore/cart`);
+                  }}
                   variant="outline"
                   className={cn(
                     { "cursor-not-allowed": user?.name === product?.publisher },

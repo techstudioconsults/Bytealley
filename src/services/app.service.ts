@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpAdapter } from "~/adapters/http-adapter";
 import { EmailIntegrationFormData, ExternalContactFormData, ProfileFormData } from "~/schemas";
 
@@ -85,6 +86,53 @@ export class AppService {
     const response = await this.http.post<{ message: string }>(`/complaints/contact-us`, data);
     if (response?.status === 200) {
       return response.data;
+    }
+  }
+
+  async storeProductsInCart(data: { product_slug: string; quantity: number }) {
+    const response = await this.http.post<{ data: CartedProduct }>("/carts", data);
+    if (response?.status === 201) {
+      return response.data;
+    }
+  }
+
+  async getProductsFromCart() {
+    const response = await this.http.get<{ data: CartedProduct[] }>("/carts");
+    if (response?.status === 200) {
+      return response.data.data;
+    }
+  }
+
+  async updateProductInCart(productID: string, data: { quantity: number }) {
+    const response = await this.http.post<{ data: CartedProduct }>(`/carts/${productID}`, data);
+    if (response?.status === 200) {
+      return response.data.data;
+    }
+  }
+
+  async deleteProductInCart(productID: string) {
+    const response = await this.http.delete<{ message: string }>(`/carts/${productID}`);
+    if (response?.status === 200) {
+      return response.data;
+    }
+  }
+
+  async purchaseProductInCart(data: {
+    amount: number;
+    products: {
+      product_slug: string;
+      quantity: number;
+    }[];
+  }) {
+    const response = await this.http.post<{
+      data: {
+        authorization_url: string;
+        access_code: string;
+        reference: string;
+      };
+    }>(`/carts/clear`, data);
+    if (response?.status === 200) {
+      return response.data.data;
     }
   }
 
