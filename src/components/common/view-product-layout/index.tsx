@@ -107,8 +107,8 @@ export function ViewProductLayout({ productService }: { productService: any }) {
               <p className="text-sm font-semibold">{product?.total_order}</p>
             </div>
             <div className="mb-7 mt-4 flex items-center gap-2">
-              <span className="text-2xl font-bold">N{product?.price.toLocaleString()}</span>
-              <span className="text-destructive line-through">₦{product?.discount_price.toLocaleString()}</span>
+              <span className="text-2xl font-bold">N{product?.discount_price.toLocaleString()}</span>
+              <span className="text-destructive line-through">₦{product?.price.toLocaleString()}</span>
             </div>
             <div className="flex flex-col gap-2">
               <CustomButton

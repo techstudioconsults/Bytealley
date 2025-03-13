@@ -105,7 +105,7 @@ export const sideItems: SidebarItem[] = [
   },
   {
     route: "Explore",
-    link: "/dashboard/:userID/explore",
+    link: "/explore?category=all",
     iconUrl: explore,
     id: "explore",
   },

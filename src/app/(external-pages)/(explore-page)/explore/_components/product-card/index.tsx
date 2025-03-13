@@ -44,7 +44,7 @@ export const CardComponent: React.FC<CardProperties> = ({
   return (
     <Link href={`/explore/product/${productID}`}>
       <Card
-        className={`shadow-NB flex min-h-[20rem] w-full flex-col items-start justify-between overflow-hidden p-2.5 transition-all hover:scale-105 hover:shadow-lg sm:w-[${width}]`}
+        className={`flex min-h-[20rem] w-full flex-col items-start justify-between overflow-hidden p-2.5 transition-all hover:scale-105 hover:shadow-lg sm:w-[${width}]`}
       >
         {/* Image Section */}
         <div className="flex h-[12rem] w-full items-center justify-center overflow-hidden">

@@ -1,8 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { Menu } from "lucide-react";
+import { ChevronDown, Menu } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation"; // Import useSearchParams
+import { useEffect, useState } from "react";
 import { IoCartSharp } from "react-icons/io5";
 
 import CustomButton from "~/components/common/common-button/common-button";
@@ -11,12 +14,19 @@ import { Profile } from "~/components/common/profile";
 import { SearchInput } from "~/components/common/search-input";
 import { Wrapper } from "~/components/layout/wrapper";
 import { Badge } from "~/components/ui/badge";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "~/components/ui/sheet";
 import { WithDependency } from "~/HOC/withDependencies";
 import { useCart } from "~/hooks/use-cart";
 import { useProductCategories } from "~/hooks/use-product-categories";
 import { useSession } from "~/hooks/use-session";
 import { AppService } from "~/services/app.service";
+import { externalNavlinks } from "~/utils/constants";
 import { dependencies } from "~/utils/dependencies";
 import { cn } from "~/utils/utils";
 
@@ -25,6 +35,7 @@ const BaseExploreNavBar = ({ appService }: { appService: AppService }) => {
   const searchParameters = useSearchParams(); // Get search params
   const { user } = useSession();
   const categories = useProductCategories(appService);
+  const [navlinks, setNavlinks] = useState<any[]>(externalNavlinks);
   const { cart } = useCart();
   const router = useRouter();
 
@@ -38,6 +49,21 @@ const BaseExploreNavBar = ({ appService }: { appService: AppService }) => {
     router.push(`/explore?category=${categoryParameter}`);
   };
 
+  useEffect(() => {
+    if (categories.length > 0) {
+      const modifiedLinks = navlinks.map((link) => {
+        if (link.name === "Explore") {
+          return {
+            ...link,
+            subLinks: [...link.subLinks, ...categories],
+          };
+        }
+        return link;
+      });
+      setNavlinks(modifiedLinks);
+    }
+  }, [categories]);
+
   return (
     <nav className={cn("bg-mid-coral py-4", productRoute && `bg-low-grey-III`)}>
       <Wrapper>
@@ -48,7 +74,7 @@ const BaseExploreNavBar = ({ appService }: { appService: AppService }) => {
               {user ? (
                 <Profile />
               ) : (
-                <CustomButton size={`xl`} className={`bg-mid-warning text-white`}>
+                <CustomButton href={`/auth/login`} size={`xl`} className={`bg-mid-warning text-white`}>
                   Create Account
                 </CustomButton>
               )}
@@ -60,7 +86,38 @@ const BaseExploreNavBar = ({ appService }: { appService: AppService }) => {
                 <Menu className="h-6 w-6" />
               </SheetTrigger>
               <SheetContent side="right">
-                {/* Add NavigationLinks component or mobile menu content here */}
+                <div className="flex flex-col gap-4 p-4">
+                  {navlinks.map((link) =>
+                    link.type === "dropdown" ? (
+                      <DropdownMenu key={link.id}>
+                        <DropdownMenuTrigger asChild>
+                          <p
+                            className={cn(
+                              // getRouteTheme(),
+                              "flex w-full items-center justify-start gap-1 text-sm font-bold",
+                            )}
+                          >
+                            <span>{link.name}</span>
+                            <ChevronDown className="h-4 w-4" />
+                          </p>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className={cn("w-48 rounded-md bg-white p-2 shadow-lg")}>
+                          {link.subLinks?.map((subLink: any) => (
+                            <DropdownMenuItem key={subLink.id} asChild>
+                              <Link href={subLink.path} className="block px-4 py-2 text-sm hover:bg-gray-100">
+                                {subLink.name}
+                              </Link>
+                            </DropdownMenuItem>
+                          ))}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    ) : (
+                      <Link key={link.id} href={link.path} className={cn("text-sm font-bold transition-colors")}>
+                        {link.name}
+                      </Link>
+                    ),
+                  )}
+                </div>
               </SheetContent>
             </Sheet>
             <div className="flex-1 lg:flex-none">
@@ -85,7 +142,7 @@ const BaseExploreNavBar = ({ appService }: { appService: AppService }) => {
               {user ? (
                 <Profile />
               ) : (
-                <CustomButton size={`xl`} className={`bg-mid-warning text-white`}>
+                <CustomButton href={`/auth/login`} size={`xl`} className={`bg-mid-warning text-white`}>
                   Create Account
                 </CustomButton>
               )}
