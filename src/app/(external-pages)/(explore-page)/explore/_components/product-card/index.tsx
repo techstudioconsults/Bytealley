@@ -77,10 +77,10 @@ export const CardComponent: React.FC<CardProperties> = ({
           <div className="mt-2 flex w-full items-center justify-between">
             <div className="flex items-center gap-2">
               <p className="text-xs font-bold text-mid-purple lg:text-sm">
-                {discountPrice ? discountPrice.toLocaleString() : price.toLocaleString()}
+                ₦{discountPrice ? discountPrice.toLocaleString() : price.toLocaleString()}
               </p>
               {discountPrice ? (
-                <p className="text-[10px] text-mid-danger line-through lg:text-xs">{price.toLocaleString()}</p>
+                <p className="text-[10px] text-mid-danger line-through lg:text-xs">₦{price.toLocaleString()}</p>
               ) : null}
             </div>
             {discountPercentage && (

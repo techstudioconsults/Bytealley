@@ -122,7 +122,12 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
               <p className="text-sm font-semibold">{product?.total_order}</p>
             </div>
             <div className="mb-7 mt-4 flex items-center gap-2">
-              <span className="text-2xl font-bold">N{product?.discount_price.toLocaleString()}</span>
+              <span className="text-2xl font-bold">
+                ₦
+                {(product?.discount_price ?? 0) > 0
+                  ? product?.discount_price?.toLocaleString()
+                  : product?.price?.toLocaleString()}
+              </span>
               {!!product?.discount_price && (
                 <span className="text-destructive line-through">₦{product?.price.toLocaleString()}</span>
               )}

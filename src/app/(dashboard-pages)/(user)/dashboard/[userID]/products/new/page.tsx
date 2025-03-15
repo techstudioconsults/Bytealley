@@ -51,6 +51,10 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
   } = methods;
 
   const onSubmit = async (data: IProduct) => {
+    const filterFiles = (items: (string | File | { extension?: string; size?: string })[]): File[] => {
+      return items.filter((item) => item instanceof File) as File[];
+    };
+
     const commonFields = {
       product_type: data.product_type,
       title: data.title,
@@ -58,15 +62,15 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
       price: data.price,
       discount_price: data.discount_price,
       description: data.description,
-      cover_photos: data.cover_photos,
-      thumbnail: data.thumbnail,
+      cover_photos: filterFiles(data.cover_photos),
+      thumbnail: data.thumbnail instanceof File ? data.thumbnail : null,
       highlights: data.highlights,
       tags: data.tags,
     };
 
     const productSpecificFields =
       data.product_type === "digital_product"
-        ? { assets: data.assets }
+        ? { assets: filterFiles(data.assets || []) }
         : {
             resource_link: data.resource_link,
             portfolio_link: data.portfolio_link,
@@ -85,12 +89,10 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
   };
 
   const updateProduct = async (data: IProduct) => {
-    // Helper function to filter out non-File objects
-    const filterFiles = (items: (string | File)[]): File[] => {
+    const filterFiles = (items: (string | File | { extension?: string; size?: string })[]): File[] => {
       return items.filter((item) => item instanceof File) as File[];
     };
 
-    // Common fields
     const commonFields = {
       product_type: data.product_type,
       title: data.title,
@@ -100,39 +102,30 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
       description: data.description,
       highlights: data.highlights,
       tags: data.tags,
-      ...(data.thumbnail instanceof File ? { thumbnail: data.thumbnail } : {}), // Include thumbnail if it's a File
-      ...(data.cover_photos && data.cover_photos.length > 0
-        ? { cover_photos: filterFiles(data.cover_photos) } // Include cover_photos if they contain Files
-        : {}),
+      ...(data.thumbnail instanceof File ? { thumbnail: data.thumbnail } : {}),
+      ...(data.cover_photos && data.cover_photos.length > 0 ? { cover_photos: filterFiles(data.cover_photos) } : {}),
     };
 
-    // Product-specific fields
     const productSpecificFields =
       data.product_type === "digital_product"
         ? {
-            ...(data.assets && data.assets.length > 0
-              ? { assets: filterFiles(data.assets) } // Include assets if they contain Files
-              : {}),
+            ...(data.assets && data.assets.length > 0 ? { assets: filterFiles(data.assets) } : {}),
           }
         : {
             resource_link: data.resource_link,
             portfolio_link: data.portfolio_link,
           };
 
-    // Combine common and product-specific fields
     const productData = { ...commonFields, ...productSpecificFields };
 
-    // Create the product
     const productId = await productService.updateProduct(productData, productID);
 
-    // Show success toast
     Toast.getInstance().showToast({
       title: "Success",
-      description: `Product "${data.title}" created successfully! You can now preview and publish it.`,
+      description: `Product "${data.title}" updated successfully! You can now preview and publish it.`,
       variant: "success",
     });
 
-    // Redirect to the preview page
     router.push(`/dashboard/${params.userID}/products/new?tab=preview&product_id=${productId}`);
   };
 
