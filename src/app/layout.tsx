@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Montserrat, Newsreader } from "next/font/google"; // Import additional font
+import { Montserrat, Newsreader } from "next/font/google";
 
 import "./globals.scss";
 
@@ -7,7 +7,6 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { LenisProvider } from "~/components/lenis-provider";
 import { GotoTop } from "~/components/miscellaneous/goto-top";
-import { Progress_Bar } from "~/components/progress-bar";
 import { TooltipProvider } from "~/components/ui/tooltip";
 import { LoadingProvider } from "~/context/loading-provider";
 import SessionProvider from "~/context/session-provider";
@@ -23,6 +22,7 @@ const newsreader = Newsreader({ subsets: ["latin"], variable: "--font-newsreader
 export const metadata: Metadata = {
   title: "bytealley",
   description: "bytealley",
+  viewport: "width=device-width, initial-scale=0.5",
 };
 
 export default async function RootLayout({
@@ -44,7 +44,6 @@ export default async function RootLayout({
                     <GotoTop />
                     <LenisProvider>
                       <main>
-                        <Progress_Bar />
                         {children}
                         <SpeedInsights />
                       </main>

@@ -199,16 +199,6 @@
   }
 }
 
-#nprogress .bar {
-  background: linear-gradient(90deg, hsl(44, 100%, 87%), hsl(203, 100%, 38%)) !important;
-  box-shadow: 10px 0px 20px hsla(44, 100%, 87%, 0.641) !important;
-  position: fixed;
-  z-index: 99999999 !important;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 4px !important;
-}
 /* Base typography settings */
 @layer base {
   /* Body text */

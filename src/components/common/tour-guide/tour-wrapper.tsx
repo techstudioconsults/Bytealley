@@ -17,6 +17,8 @@ export const TourWrapper = ({ steps, children }: TourWrapperProperties) => {
   const handleTourStart = () => {
     setIsTourRunning(true);
     toast.dismiss();
+    // Set a flag in sessionStorage to indicate the tour has been shown
+    sessionStorage.setItem("tourShown", "true");
   };
 
   const handleTourCallback = (data: CallBackProps) => {
@@ -26,24 +28,35 @@ export const TourWrapper = ({ steps, children }: TourWrapperProperties) => {
     }
   };
 
+  const dismiss = () => {
+    setIsTourRunning(false);
+    toast.dismiss();
+    sessionStorage.setItem("tourShown", "true");
+  };
+
   useEffect(() => {
-    toast(
-      <div className="flex flex-col gap-2">
-        <p>Would you like to take a guided tour of this page?</p>
-        <div className="flex justify-end gap-2">
-          <CustomButton variant="outline" onClick={() => toast.dismiss()}>
-            Not Now
-          </CustomButton>
-          <CustomButton variant="primary" onClick={handleTourStart}>
-            Start Tour
-          </CustomButton>
-        </div>
-      </div>,
-      {
-        duration: Infinity,
-        position: "bottom-right",
-      },
-    );
+    // Check if the tour has already been shown in this session
+    const tourShown = sessionStorage.getItem("tourShown");
+
+    if (!tourShown) {
+      toast(
+        <div className="flex flex-col gap-2">
+          <p>Would you like to take a guided tour of this page?</p>
+          <div className="flex justify-end gap-2">
+            <CustomButton variant="outline" onClick={dismiss}>
+              Not Now
+            </CustomButton>
+            <CustomButton variant="primary" onClick={handleTourStart}>
+              Start Tour
+            </CustomButton>
+          </div>
+        </div>,
+        {
+          duration: Infinity,
+          position: "bottom-right",
+        },
+      );
+    }
   }, []);
 
   return (

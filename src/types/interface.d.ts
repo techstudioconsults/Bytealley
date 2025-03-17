@@ -67,11 +67,13 @@ declare global {
   }
 
   interface ICookieMetadata {
+    maxAge?: number;
     expires?: Date;
-    httpOnly?: boolean;
-    secure?: boolean;
-    sameSite?: "strict" | "lax" | "none";
     path?: string;
+    domain?: string;
+    secure?: boolean;
+    httpOnly?: boolean;
+    sameSite?: "strict" | "lax" | "none";
   }
 
   interface ILayoutProperties {

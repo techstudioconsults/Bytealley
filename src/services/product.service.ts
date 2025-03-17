@@ -103,11 +103,7 @@ export class ProductService {
 
   async downloadProducts(filters: IFilters = Object.create({ page: 1 })) {
     const queryParameters = this.buildQueryParameters(filters);
-    const response = await this.http.get(`/products/download?${queryParameters}`);
-    if (response?.status === 200) {
-      // console.log(response.data);
-      // return response.data; // This will be a Blob for the CSV file
-    }
+    await this.http.get(`/products/records?${queryParameters}`);
   }
 
   async softDeleteProduct(productId: string) {
