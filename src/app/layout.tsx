@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Montserrat, Newsreader } from "next/font/google";
 
 import "./globals.scss";
@@ -22,7 +22,11 @@ const newsreader = Newsreader({ subsets: ["latin"], variable: "--font-newsreader
 export const metadata: Metadata = {
   title: "bytealley",
   description: "bytealley",
-  viewport: "width=device-width, initial-scale=0.5",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 0.5,
 };
 
 export default async function RootLayout({
