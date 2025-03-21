@@ -39,7 +39,7 @@ const BaseSubscriptionCard = ({ appService }: { appService: AppService }) => {
     });
   };
   return (
-    <section className={`shadow-NB w-full rounded-xl bg-low-purple p-10`}>
+    <section className={`shadow-NB w-full rounded-xl border border-black bg-low-purple p-10`}>
       <div className={`space-y-2 text-center`}>
         <p className={`text-lg font-semibold text-mid-coral`}>Subscription Plan</p>
         <h2 className={`nr-font text-2xl md:text-4xl`}>
