@@ -135,7 +135,7 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
             <div className="flex flex-col gap-2">
               <SetToolTip content={"You need to be logged in to purchase product"}>
                 <CustomButton
-                  isLoading={isAddToCartPending}
+                  // isLoading={isAddToCartPending}
                   isDisabled={user?.name === product?.publisher || isAddToCartPending}
                   variant="primary"
                   className={cn({ "cursor-not-allowed": user?.name === product?.publisher })}
@@ -146,7 +146,7 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
               </SetToolTip>
               <SetToolTip content={"You need to be logged in to purchase product"}>
                 <CustomButton
-                  isLoading={isAddToCartPending}
+                  // isLoading={isAddToCartPending}
                   isDisabled={user?.name === product?.publisher || isAddToCartPending}
                   onClick={() => {
                     addToCart(slug, 1);

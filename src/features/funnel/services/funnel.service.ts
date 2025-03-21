@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/no-array-for-each */
 import { HttpAdapter } from "~/adapters/http-adapter";
 import { FunnelFormData } from "~/schemas";
 
@@ -18,9 +17,10 @@ export class FunnelService {
     formattedData.append("status", "draft");
     formattedData.append("template", JSON.stringify(data.funnel));
     formattedData.append("asset", data.assets[0]);
-    data.products.forEach((productId, index) => {
-      formattedData.append(`products[${index}]`, productId);
-    });
+    formattedData.append(`product_id`, data.product_id);
+    // data.products.forEach((productId, index) => {
+    //   formattedData.append(`products[${index}]`, productId);
+    // });
 
     const response = await this.http.post("/funnels", formattedData, headers);
     if (response?.status === 201) {
@@ -37,9 +37,11 @@ export class FunnelService {
     formattedData.append("status", "published");
     formattedData.append("template", JSON.stringify(data.funnel));
     formattedData.append("asset", data.assets[0]);
-    data.products.forEach((productId, index) => {
-      formattedData.append(`products[${index}]`, productId);
-    });
+    formattedData.append(`product_id`, data.product_id);
+
+    // data.products.forEach((productId, index) => {
+    //   formattedData.append(`products[${index}]`, productId);
+    // });
 
     const response = await this.http.post("/funnels", formattedData, headers);
     if (response?.status === 201) {

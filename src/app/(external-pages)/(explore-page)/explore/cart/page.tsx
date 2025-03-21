@@ -33,7 +33,7 @@ const BaseProductCart = () => {
                 <hr className="my-4 border-gray-200" />
               </div>
             ))}
-            <div className="mt-4 flex items-center justify-between font-semibold">
+            <div className="mt-4 flex items-center justify-between px-4 font-semibold">
               <p>Total</p>
               <p>₦{cart.reduce((total, item) => total + item.product_price * item.quantity, 0).toLocaleString()}</p>
             </div>

@@ -676,22 +676,29 @@
       </div>
 
       <div class="form-section">
-        <form id="form" method="POST">
-          <div class="form">
-            <label for="name">Full Name</label>
-            <input type="text" id="name" name="Full Name" placeholder="Enter Name" required />
-          </div>
-          <div class="form">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="Email" placeholder="Enter Email" required />
-          </div>
+         <form id="form" method="POST" class="t2_form">
+          <div class="t2_formfill">
+            <div class="t2_name">
+              <label for="first_name">First Name</label>
+              <input type="text" id="first_name" name="first_name" placeholder="Enter First Name" required />
+            </div>
+            <div class="t2_name">
+              <label for="last_name">Last Name</label>
+              <input type="text" id="last_name" name="last_name" placeholder="Enter Last Name" required />
+            </div>
+            <div class="t2_name">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="Enter Email" required />
+            </div>
+            <div class="t2_name">
+              <label>
+                <input type="checkbox" id="maillist_permission" name="maillist_permission" checked />
+                Subscribe to mailing list
+              </label>
+            </div>
 
-          <div class="form">
-            <label for="phone">Phone Number</label>
-            <input type="tel" id="phone" name="Phone" placeholder="08101234567" required />
+            <button type="submit" id="submit-button" class="t2_form-button t2_package">Get package</button>
           </div>
-
-          <button type="submit" id="submit-button" class="form-button">Submit</button>
         </form>
       </div>
     </section>
@@ -711,60 +718,66 @@
     </footer>
   </body>
   <script>
-    document.getElementById("form").addEventListener("submit", function (e) {
-      e.preventDefault(); // Prevent the default form submission
-      document.getElementById("submit-button").textContent = "Submitting..";
-      document.getElementById("submit-button").disabled = true;
+    const BASE_URL = "{{BASE_URL}}";
 
-      // Collect the form data
-      var formData = new FormData(this);
-      var keyValuePairs = [];
-      for (var pair of formData.entries()) {
-        keyValuePairs.push(pair[0] + "=" + pair[1]);
-      }
+    document.getElementById("form").addEventListener("submit", async function (e) {
+      e.preventDefault();
 
-      var formDataString = keyValuePairs.join("&");
+      // Update button state
+      const submitButton = document.getElementById("submit-button");
+      submitButton.textContent = "Submitting..";
+      submitButton.disabled = true;
 
-      // Send a POST request to your Google Apps Script
-      fetch(
-        "https://script.google.com/macros/s/AKfycbyWE9sb91qa3MCAps-lfwOqRaevhG5BvGyJ_8ImAElQ9mJMwCu-S5WH_pCgAKE_pkTing/exec",
-        {
-          redirect: "follow",
+      // Get form data
+      const formData = {
+        first_name: document.getElementById("first_name").value,
+        last_name: document.getElementById("last_name").value,
+        email: document.getElementById("email").value,
+        maillist_permission: document.getElementById("maillist_permission").checked,
+      };
+
+      try {
+        // Extract funnel ID from subdomain
+        const hostname = window.location.hostname;
+        const funnelId = hostname.split(".")[0];
+
+        const apiUrl = `${BASE_URL}/${funnelId}/email`;
+
+        const response = await fetch(apiUrl, {
           method: "POST",
-          body: formDataString,
           headers: {
-            "Content-Type": "text/plain;charset=utf-8",
+            "Content-Type": "application/json",
+            Accept: "application/json",
           },
-        },
-      )
-        .then(function (response) {
-          if (response) {
-            return response;
-          } else {
-            throw new Error("Failed to submit the form.");
-          }
-        })
-        .then(function (data) {
-          window.location.href = "./Feedback.html";
-          document.getElementById("submit-button").disabled = false;
-          document.getElementById("form").reset();
-
-          setTimeout(function () {
-            document.getElementById("submit-button").textContent = "Get Package";
-          }, 2600);
-        })
-        .catch(function (error) {
-          console.error(error);
+          body: JSON.stringify(formData),
         });
+
+        if (response.ok) {
+          // If successful, redirect to feedback page
+          window.location.href = "./Feedback.html";
+        } else {
+          // Handle error response
+          const errorData = await response.json();
+          alert("Error: " + (errorData.message || "Something went wrong"));
+          submitButton.textContent = "Get Package";
+          submitButton.disabled = false;
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        alert("An error occurred. Please try again.");
+        submitButton.textContent = "Get Package";
+        submitButton.disabled = false;
+      }
     });
 
-    const hamburger = document.querySelector(".t1_hamburger");
-    const navLinks = document.querySelector(".t1_nav-links");
+    const hamburger = document.querySelector(".t2_hamburger");
+    const navLinks = document.querySelector(".t2_nav-links");
     const body = document.body;
 
     hamburger.addEventListener("click", () => {
       hamburger.classList.toggle("active");
       navLinks.classList.toggle("active");
+      // Prevent scrolling when menu is open
       body.style.overflow = navLinks.classList.contains("active") ? "hidden" : "auto";
     });
 
@@ -778,27 +791,11 @@
     });
 
     // Close menu when clicking a link
-    document.querySelectorAll(".t1_nav-links a, .t1_nav-item p").forEach((link) => {
+    document.querySelectorAll(".t2_nav-links a, .t2_nav-item p").forEach((link) => {
       link.addEventListener("click", () => {
         hamburger.classList.remove("active");
         navLinks.classList.remove("active");
         body.style.overflow = "auto";
-      });
-    });
-
-    // Add smooth scrolling for all links with smooth-scroll class
-    document.querySelectorAll(".smooth-scroll").forEach((anchor) => {
-      anchor.addEventListener("click", function (e) {
-        e.preventDefault();
-        const targetId = this.getAttribute("href");
-        const targetElement = document.querySelector(targetId);
-
-        if (targetElement) {
-          targetElement.scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-          });
-        }
       });
     });
   </script>

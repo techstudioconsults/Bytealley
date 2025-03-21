@@ -7,7 +7,7 @@ export const editorOptions = {
         {
           name: "Home",
           component: `<h1 style="padding: 2rem; text-align: center">
-                   Welcome to Byte-alley 👋
+                   Welcome to Byte-alley Funnels Creator 👋
                   </h1>`,
         },
       ],

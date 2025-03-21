@@ -1,3 +1,5 @@
+import { TrashIcon } from "lucide-react";
+
 import CustomButton from "~/components/common/common-button/common-button";
 import { BlurImage } from "~/components/miscellaneous/blur-image";
 import { useCart } from "~/hooks/use-cart";
@@ -5,7 +7,7 @@ import { useCart } from "~/hooks/use-cart";
 export const ProductCard = ({ product }: { product: CartedProduct }) => {
   const { removeFromCart, isRemoveFromCartPending } = useCart();
   return (
-    <div className="flex flex-col items-center gap-4 rounded-lg border border-black p-4 shadow-sm sm:flex-row">
+    <div className="flex flex-col items-center gap-4 p-4 sm:flex-row">
       <div className="relative h-32 w-32 flex-shrink-0 sm:w-48">
         <BlurImage
           src={product.product_thumbnail || "/placeholder-image.png"}
@@ -22,14 +24,15 @@ export const ProductCard = ({ product }: { product: CartedProduct }) => {
         <div className="mt-4 flex items-center justify-between">
           <p className="text-sm">Qty: {product.quantity}</p>
           <CustomButton
-            isLoading={isRemoveFromCartPending}
+            // isLoading={isRemoveFromCartPending}
+            isIconOnly
             isDisabled={isRemoveFromCartPending}
             className={`border-mid-danger text-mid-danger`}
-            variant="outline"
+            variant={`ghost`}
+            size={`icon`}
             onClick={() => removeFromCart(product.id)}
-          >
-            Remove
-          </CustomButton>
+            icon={<TrashIcon />}
+          />
         </div>
       </div>
     </div>

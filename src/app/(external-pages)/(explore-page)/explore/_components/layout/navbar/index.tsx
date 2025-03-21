@@ -13,7 +13,6 @@ import { Logo } from "~/components/common/logo";
 import { Profile } from "~/components/common/profile";
 import { SearchInput } from "~/components/common/search-input";
 import { Wrapper } from "~/components/layout/wrapper";
-import { Badge } from "~/components/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -87,9 +86,9 @@ const BaseExploreNavBar = ({ appService }: { appService: AppService }) => {
               </SheetTrigger>
               <SheetContent side="right">
                 <div className="flex flex-col gap-4 p-4">
-                  {navlinks.map((link) =>
+                  {navlinks.map((link, index) =>
                     link.type === "dropdown" ? (
-                      <DropdownMenu key={link.id}>
+                      <DropdownMenu key={index}>
                         <DropdownMenuTrigger asChild>
                           <p
                             className={cn(
@@ -102,8 +101,8 @@ const BaseExploreNavBar = ({ appService }: { appService: AppService }) => {
                           </p>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className={cn("w-48 rounded-md bg-white p-2 shadow-lg")}>
-                          {link.subLinks?.map((subLink: any) => (
-                            <DropdownMenuItem key={subLink.id} asChild>
+                          {link.subLinks?.map((subLink: any, index: number) => (
+                            <DropdownMenuItem key={index} asChild>
                               <Link href={subLink.path} className="block px-4 py-2 text-sm hover:bg-gray-100">
                                 {subLink.name}
                               </Link>
@@ -127,14 +126,14 @@ const BaseExploreNavBar = ({ appService }: { appService: AppService }) => {
               <div className="relative text-2xl">
                 <IoCartSharp />
                 {cart.length > 0 && (
-                  <Badge
+                  <p
                     className={cn(
-                      `absolute left-2 top-2 flex h-8 w-8 items-center justify-center rounded-full border-4`,
+                      `absolute left-2 top-2 flex h-8 w-8 items-center justify-center rounded-full border-4 bg-mid-purple text-xs text-white`,
                       productRoute ? `border-low-grey-III` : `border-mid-coral`,
                     )}
                   >
                     {cart.length}
-                  </Badge>
+                  </p>
                 )}
               </div>
             </Link>

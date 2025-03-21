@@ -10,8 +10,8 @@ export const SectionFive = () => {
       leftChild={
         <DualSectionLayoutList
           title="Making Money"
-          headerClassName={`text-white nr-font text-5xl xl:text-7xl`}
-          subHeaderClassName={`text-white xl:text-2xl`}
+          headerClassName={`lg:text-white nr-font text-5xl xl:text-7xl`}
+          subHeaderClassName={`lg:text-white xl:text-2xl`}
           subTitle="Make money with those genius ideas of yours by letting your products reach multitude of buyers without the hassle of marketing. Just list it on ByteAlley and get paid when they shop."
           className={`px-4 lg:w-[530px] xl:px-0`}
         />

@@ -97,9 +97,9 @@ const BaseNavbar = ({ appService }: { appService: AppService }) => {
             {navlinks.length === 0 ? (
               <p className={cn(getRouteTheme(), "text-sm font-bold transition-colors")}>Loading Links...</p>
             ) : (
-              navlinks.map((link) =>
+              navlinks.map((link, index) =>
                 link.type === "dropdown" ? (
-                  <DropdownMenu key={link.id}>
+                  <DropdownMenu key={index}>
                     <DropdownMenuTrigger className={`cursor-pointer`} asChild>
                       <p className={cn(getRouteTheme(), "flex items-center gap-1 text-sm font-bold")}>
                         <span>{link.name}</span>
@@ -107,8 +107,8 @@ const BaseNavbar = ({ appService }: { appService: AppService }) => {
                       </p>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className={cn("w-48 rounded-md bg-white p-2 shadow-lg")}>
-                      {link.subLinks?.map((subLink: any) => (
-                        <DropdownMenuItem key={subLink.id} asChild>
+                      {link.subLinks?.map((subLink: any, index: number) => (
+                        <DropdownMenuItem key={index} asChild>
                           <Link href={subLink.path} className="block px-4 py-2 text-sm hover:bg-gray-100">
                             {subLink.name}
                           </Link>
@@ -118,7 +118,7 @@ const BaseNavbar = ({ appService }: { appService: AppService }) => {
                   </DropdownMenu>
                 ) : (
                   <Link
-                    key={link.id}
+                    key={index}
                     href={link.path}
                     className={cn(getRouteTheme(), "text-sm font-bold transition-colors")}
                   >
@@ -168,9 +168,9 @@ const BaseNavbar = ({ appService }: { appService: AppService }) => {
           )}
         >
           <div className="flex flex-col gap-4 p-4">
-            {navlinks.map((link) =>
+            {navlinks.map((link, index) =>
               link.type === "dropdown" ? (
-                <DropdownMenu key={link.id}>
+                <DropdownMenu key={index}>
                   <DropdownMenuTrigger asChild>
                     <p
                       className={cn(getRouteTheme(), "flex w-full items-center justify-start gap-1 text-sm font-bold")}
@@ -180,8 +180,8 @@ const BaseNavbar = ({ appService }: { appService: AppService }) => {
                     </p>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className={cn("w-48 rounded-md bg-white p-2 shadow-lg")}>
-                    {link.subLinks?.map((subLink: any) => (
-                      <DropdownMenuItem key={subLink.id} asChild>
+                    {link.subLinks?.map((subLink: any, index: number) => (
+                      <DropdownMenuItem key={index} asChild>
                         <Link href={subLink.path} className="block px-4 py-2 text-sm hover:bg-gray-100">
                           {subLink.name}
                         </Link>
@@ -191,7 +191,7 @@ const BaseNavbar = ({ appService }: { appService: AppService }) => {
                 </DropdownMenu>
               ) : (
                 <Link
-                  key={link.id}
+                  key={index}
                   href={link.path}
                   className={cn(getRouteTheme(), "text-sm font-bold transition-colors")}
                   onClick={() => setIsMobileMenuOpen(false)}

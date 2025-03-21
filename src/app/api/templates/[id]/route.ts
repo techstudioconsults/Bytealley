@@ -4,6 +4,9 @@ import path from "node:path";
 import { templatesMetadata } from "@/templates/templates";
 import { NextResponse } from "next/server";
 
+// Use environment variable for base URL
+// const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
 export async function GET(request: Request, { params }: { params: { id: string } }) {
   try {
     const { id } = params;
@@ -20,6 +23,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
         const filePath = path.join(process.cwd(), "public", "templates", template.id, page.file);
         try {
           const content = await fs.readFile(filePath, "utf8");
+          // const updatedContent = content.replaceAll("{{BASE_URL}}", baseUrl || "");
           return { ...page, content };
         } catch (error) {
           console.error(`Error reading file ${filePath}:`, error);

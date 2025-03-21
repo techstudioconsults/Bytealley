@@ -1,12 +1,11 @@
 export const funnelSteps = [
   {
     target: ".funnel-step-1",
-    content: "This is the first step of the tour!",
-    disableBeacon: true, // Start the tour immediately
+    content: "This is the header section, where custom action can be performed",
   },
   {
     target: ".gs-cmp-editor-topbar",
-    content: "This is the second step of the tour!",
+    content: "The funnel internal tool bar, this tool bar holds the ",
   },
   {
     target: ".gs-sidebar-left",

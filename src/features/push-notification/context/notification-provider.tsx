@@ -118,8 +118,10 @@ export const BaseNotificationProvider = ({
       };
     };
 
-    initializePusher();
-  }, [session?.user.id, session?.user.token]);
+    if (session) {
+      initializePusher();
+    }
+  }, [session, session?.user.id, session?.user.token]);
 
   return (
     <NotificationContext.Provider

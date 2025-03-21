@@ -1011,6 +1011,7 @@ export function StarRatingField({ label, size, name, required = false, className
         control={control}
         render={({ field }) => (
           <StarRating
+            disabled={false}
             rating={field.value}
             onRatingChange={field.onChange}
             size={size}

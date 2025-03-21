@@ -8,7 +8,7 @@ import { useEffect, useState, useTransition } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import CustomButton from "~/components/common/common-button/common-button";
-import { FileUpload, FormField, MultiSelect, ThumbNailUpload } from "~/components/common/FormFields";
+import { FileUpload, FormField, ThumbNailUpload } from "~/components/common/FormFields";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "~/components/ui/dialog";
 import { FunnelService } from "~/features/funnel";
 import { WithDependency } from "~/HOC/withDependencies";
@@ -43,7 +43,7 @@ const BaseFunnelForm = ({
     mode: "onChange",
     defaultValues: {
       title: "",
-      products: [],
+      product_id: "",
       thumbnail: null,
       assets: [],
     },
@@ -158,10 +158,11 @@ const BaseFunnelForm = ({
               maxFileSize={2 * 1024 * 1024}
             />
 
-            <MultiSelect
+            <FormField
+              type={`select`}
               className={`h-12 bg-low-grey-III`}
               label="Products"
-              name="products"
+              name="product_id"
               options={products}
               placeholder="Choose a product"
               required

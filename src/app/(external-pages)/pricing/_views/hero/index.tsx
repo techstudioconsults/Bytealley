@@ -16,7 +16,7 @@ export const PricingHero = () => {
           backend tasks, allowing you to concentrate on what you do best.
         </p>
       </Wrapper>
-      <Wrapper className={`md:w-[600px]`}>
+      <Wrapper className={`w-full md:w-[600px]`}>
         <SubscriptionCard />
       </Wrapper>
     </Hero>
