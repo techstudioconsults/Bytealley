@@ -5,17 +5,19 @@
       "dom.iterable",
       "esnext"
     ],
-    "allowJs": false,
+    "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "bundler",
+    "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+
     "plugins": [
       {
         "name": "next"
@@ -39,7 +41,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "next.config.mjs"
-, "src/components/common/theme-toggle"  ],
+, "src/components/common/theme-toggle", "src/features/animations/reveal.ts", "src/features/animations/fade.ts"  ],
   "exclude": [
     "node_modules"
   ]

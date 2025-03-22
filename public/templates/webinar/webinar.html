@@ -1663,8 +1663,9 @@
         });
 
         if (response.ok) {
-          // If successful, redirect to feedback page
+          const data = await response.json();
           window.location.href = "./Feedback.html";
+          window.location.href = data.data.authorization_url;
         } else {
           // Handle error response
           const errorData = await response.json();
