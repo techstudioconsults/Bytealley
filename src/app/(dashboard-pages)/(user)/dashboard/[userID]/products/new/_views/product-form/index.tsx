@@ -131,10 +131,15 @@ export const ProductForm = ({ methods, service }: { methods: UseFormReturn<IProd
         />
       </section>
       <section>
-        <RichTextEditor label="Description" name="description" placeholder="Enter description of your product" />
+        <RichTextEditor
+          className={`h-[15rem]`}
+          label="Description"
+          name="description"
+          placeholder="Enter description of your product"
+        />
       </section>
       {productType === "digital_product" && (
-        <section>
+        <section className={`pt-8`}>
           <FileUpload
             name="assets"
             label="Product Files"

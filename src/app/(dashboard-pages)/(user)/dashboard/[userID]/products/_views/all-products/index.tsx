@@ -83,7 +83,7 @@ export const AllProducts = ({ productService }: { productService: ProductService
 
   return (
     <section className={`space-y-10`}>
-      <section className={`grid gap-8 lg:grid-cols-4`}>
+      <section className={`grid gap-8 sm:grid-cols-2 lg:grid-cols-4`}>
         <AnalyticsCard
           title={"Total Products"}
           value={isPendingAnalytics ? <LoadingSpinner /> : analytics?.total_products?.toLocaleString()}

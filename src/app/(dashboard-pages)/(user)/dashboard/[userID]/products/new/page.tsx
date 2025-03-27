@@ -29,7 +29,7 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
   const methods = useForm<IProduct>({
     resolver: zodResolver(ProductFormSchema),
     defaultValues: {
-      product_type: "",
+      product_type: "digital_product",
       title: "",
       category: "Product",
       price: 0,
@@ -163,12 +163,12 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
   return (
     <FormProvider {...methods}>
       <Tabs value={currentTab} onValueChange={onTabChange} className="w-full">
-        <TabsList className="sticky top-[154px] mb-8 flex h-fit w-full flex-col-reverse gap-4 rounded-none border-b bg-white p-0 sm:flex-row sm:items-center sm:justify-between md:top-[80px] lg:h-[58px]">
+        <TabsList className="sticky top-[154px] z-10 mb-8 flex h-fit w-full flex-col-reverse gap-4 rounded-none border-b bg-white p-0 sm:flex-row sm:items-center sm:justify-between lg:top-[80px] lg:h-[58px]">
           <section className="flex h-full w-full flex-wrap items-center gap-2 sm:w-auto sm:flex-nowrap sm:gap-0">
             <TabsTrigger
               disabled
               value="product-details"
-              className="relative h-full min-w-[100px] shrink-0 rounded-none border-transparent px-3 text-sm data-[state=active]:bg-transparent data-[state=active]:shadow-none sm:px-4"
+              className="relative h-full min-w-[100px] shrink-0 rounded-none border-transparent px-3 text-sm disabled:text-black data-[state=active]:bg-transparent data-[state=active]:shadow-none sm:px-4"
             >
               Product Details
               <span

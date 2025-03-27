@@ -9,6 +9,7 @@ import { LenisProvider } from "~/components/lenis-provider";
 import { GotoTop } from "~/components/miscellaneous/goto-top";
 import { TooltipProvider } from "~/components/ui/tooltip";
 import { LoadingProvider } from "~/context/loading-provider";
+import { ProgressProviders } from "~/context/progress-provider";
 import SessionProvider from "~/context/session-provider";
 import ToastProvider from "~/context/toast-provider";
 import NotificationProvider from "~/features/push-notification/context/notification-provider";
@@ -48,7 +49,7 @@ export default async function RootLayout({
                     <GotoTop />
                     <LenisProvider>
                       <main>
-                        {children}
+                        <ProgressProviders>{children}</ProgressProviders>
                         <SpeedInsights />
                       </main>
                     </LenisProvider>
