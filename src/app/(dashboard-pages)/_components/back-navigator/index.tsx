@@ -15,7 +15,7 @@ export const BackNavigator: FC<IBackNavigator> = ({ text, className }) => {
   const router = useRouter();
   return (
     <div onClick={() => router.back()} className={cn(`flex items-center space-x-4`, className)}>
-      <Image src={ArrowLeftIcon} alt="Arrow Left" />
+      <Image src={ArrowLeftIcon} alt="Arrow Left" className={`cursor-pointer`} />
       {text && <p className={`text-lg font-semibold`}>{text}</p>}
     </div>
   );
