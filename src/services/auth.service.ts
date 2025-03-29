@@ -1,6 +1,6 @@
 import { HttpAdapter } from "~/adapters/http-adapter";
 import { createSession, deleteSession } from "~/lib/session/session";
-import { LoginFormData, RegisterFormData } from "~/schemas";
+import { ForgotPasswordData, LoginFormData, RegisterFormData, ResetPasswordData } from "~/schemas";
 import { Toast } from "~/utils/notificationManager";
 
 export class AuthService {
@@ -52,6 +52,20 @@ export class AuthService {
       const user = this.mapUserResponse(response.data);
       await this.createUserSession(user);
       return user;
+    }
+  }
+
+  async forgotPassword(credentials: ForgotPasswordData) {
+    const response = await this.http.post<{ message: string }>("/auth/forgot-password", credentials);
+    if (response?.status === 200) {
+      return response.data;
+    }
+  }
+
+  async resetPassword(credentials: ResetPasswordData) {
+    const response = await this.http.post<{ message: string }>("/auth/reset-password", credentials);
+    if (response?.status === 200) {
+      return response.data;
     }
   }
 

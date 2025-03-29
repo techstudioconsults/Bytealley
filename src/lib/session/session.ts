@@ -20,7 +20,7 @@ export async function encrypt(payload: ISessionData): Promise<string> {
   return await new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
-    .setExpirationTime("1h")
+    .setExpirationTime("2h")
     .sign(key);
 }
 
@@ -46,7 +46,29 @@ export async function decrypt(input: string): Promise<ISessionData> {
 export async function getSession(): Promise<ISessionData | null> {
   const bytealley = cookies().get("bytealley")?.value;
   if (!bytealley) return null;
-  return await decrypt(bytealley);
+
+  try {
+    const { payload } = await jwtVerify(bytealley, key, {
+      algorithms: ["HS256"],
+    });
+
+    // Validate the payload has the required properties
+    if (!payload.user || !payload.expires) {
+      throw new Error("Invalid session data");
+    }
+
+    // Check if the token has expired
+    const now = Math.floor(Date.now() / 1000); // Current time in seconds
+    if (payload.exp && payload.exp < now) {
+      throw new Error("Token has expired");
+    }
+
+    return payload as ISessionData;
+  } catch {
+    // Handle JWT verification errors (including expiration)
+    await deleteSession(); // Clear the invalid cookie
+    return null; // Return null to indicate no valid session
+  }
 }
 
 export async function setCookie(data: string, metaData: ICookieMetadata) {

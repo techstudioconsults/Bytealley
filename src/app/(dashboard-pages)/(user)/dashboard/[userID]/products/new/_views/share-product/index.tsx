@@ -45,7 +45,7 @@ export const ShareProductView = ({ productId, productService }: ShareProductView
         <div className="space-y-2 rounded-md border p-2 transition-all">
           <div className="h-[197px] w-full rounded-md bg-muted">
             <BlurImage
-              src={product.thumbnail}
+              src={typeof product.thumbnail === "string" ? product.thumbnail : ""}
               alt={product.title}
               width={542}
               height={197}

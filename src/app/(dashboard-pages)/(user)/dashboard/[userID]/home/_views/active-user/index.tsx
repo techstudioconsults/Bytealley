@@ -1,12 +1,12 @@
 "use client";
 
 import nairaIcon from "@/icons/naira.svg";
-import refreshIcon from "@/icons/Property_2_Update_ojnsf7.svg";
-import uploadIcon from "@/icons/Property_2_Upload_cm42yb.svg";
+// import refreshIcon from "@/icons/Property_2_Update_ojnsf7.svg";
 import emptyCart from "@/images/empty-cart.svg";
 import { format } from "date-fns";
 import debounce from "lodash.debounce";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { DateRange } from "react-day-picker";
 
@@ -15,10 +15,11 @@ import { DashboardTable } from "~/app/(dashboard-pages)/_components/dashboard-ta
 import { orderColumns } from "~/app/(dashboard-pages)/_components/dashboard-table/table-data";
 import { DateRangePicker } from "~/app/(dashboard-pages)/_components/date-range-picker";
 import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
+import ExportAction from "~/app/(dashboard-pages)/_components/export-action";
 // import { SelectDropdown } from "~/app/(dashboard-pages)/_components/select-dropdown";
 import Loading from "~/app/Loading";
-import CustomButton from "~/components/common/common-button/common-button";
 import { LoadingSpinner } from "~/components/miscellaneous/loading-spinner";
+import { useSession } from "~/hooks/use-session";
 import { OrderService } from "~/services/orders.service";
 import { ProductService } from "~/services/product.service";
 
@@ -36,6 +37,8 @@ export const ActiveUser = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [paginationMeta, setPaginationMeta] = useState<IPaginationMeta | null>(null);
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
+  const router = useRouter();
+  const { user } = useSession();
 
   const debounceDateRangeReference = useRef(
     debounce((value: DateRange) => {
@@ -82,16 +85,15 @@ export const ActiveUser = ({
             {/* <SelectDropdown options={[]} /> */}
           </div>
           <div className="flex w-full flex-row gap-2 sm:w-auto sm:justify-start">
-            <CustomButton
-              className="w-full border-primary text-[16px] text-primary sm:w-auto"
-              variant="outline"
-              size="xl"
-              isLeftIconVisible
-              icon={<Image src={uploadIcon} width={16} height={16} alt="export" />}
-            >
-              Export
-            </CustomButton>
-            <CustomButton
+            <ExportAction
+              serviceMethod={(filters) => orderService.downloadOrdersAsCSV(filters)}
+              currentPage={1}
+              dateRange={dateRange}
+              buttonText="Export Sales"
+              fileName="orders"
+              size={`xl`}
+            />
+            {/* <CustomButton
               className="w-full border-primary text-[16px] text-primary sm:w-auto"
               variant="outline"
               size="xl"
@@ -99,7 +101,7 @@ export const ActiveUser = ({
               icon={<Image src={refreshIcon} width={16} height={16} alt="export" />}
             >
               Refresh
-            </CustomButton>
+            </CustomButton> */}
           </div>
         </section>
 
@@ -165,7 +167,12 @@ export const ActiveUser = ({
                   ]}
                   title="No sales found."
                   description="You do not have any sales yet."
-                  button={{ text: "Create New Order", onClick: () => {} }}
+                  button={{
+                    text: "Create New product",
+                    onClick: () => {
+                      router.push(`/dashboard/${user?.id}/products/new`);
+                    },
+                  }}
                 />
               )}
             </>

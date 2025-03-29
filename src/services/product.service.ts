@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpAdapter } from "~/adapters/http-adapter";
 
 export class ProductService {
@@ -7,13 +8,39 @@ export class ProductService {
     this.http = httpAdapter;
   }
 
-  // Example: Sending a POST request with custom headers
   async createProduct(data: ProductFormValues) {
     const headers = { "Content-Type": "multipart/form-data" };
 
     const response = await this.http.post<{ data: IProduct }>("/products", data, headers);
 
     if (response?.status !== 201) return;
+
+    const { id, product_type } = response.data.data;
+
+    if (product_type === "digital_product") {
+      const digitalProductData = {
+        product_id: id,
+        category: data.category,
+        assets: data.assets,
+      };
+      await this.http.post("/digitalProducts", digitalProductData, headers);
+    } else if (product_type === "skill_selling") {
+      const skillSellingData = {
+        product_id: id,
+        category: data.category,
+        resource_link: data.resource_link,
+        link: data.portfolio_link,
+      };
+      await this.http.post("/skillSellings", skillSellingData, headers);
+    }
+    return response.data.data.id;
+  }
+
+  async updateProduct(data: any, productID: string) {
+    const headers = { "Content-Type": "multipart/form-data" };
+    const response = await this.http.post<{ data: IProduct }>(`/products/${productID}?_method=PUT`, data, headers);
+
+    if (response?.status !== 200) return;
 
     const { id, product_type } = response.data.data;
 
@@ -66,17 +93,35 @@ export class ProductService {
     }
   }
 
+  async getProductTags() {
+    const response = await this.http.get<{ data: [] }>(`/products/tags`);
+
+    if (response?.status === 200) {
+      return response.data.data;
+    }
+  }
+
   async downloadProducts(filters: IFilters = Object.create({ page: 1 })) {
     const queryParameters = this.buildQueryParameters(filters);
-    const response = await this.http.get(`/products/download?${queryParameters}`);
-    if (response?.status === 200) {
-      // console.log(response.data);
-      // return response.data; // This will be a Blob for the CSV file
-    }
+    await this.http.get(`/products/records?${queryParameters}`);
   }
 
   async softDeleteProduct(productId: string) {
     const response = await this.http.delete<IProduct>(`/products/${productId}`);
+    if (response?.status === 200) {
+      return response.data;
+    }
+  }
+
+  async restoreDeleteProduct(productId: string) {
+    const response = await this.http.get<IProduct>(`/products/${productId}/restore`);
+    if (response?.status === 200) {
+      return response.data;
+    }
+  }
+
+  async deleteProductPermanently(productId: string) {
+    const response = await this.http.delete<IProduct>(`/products/${productId}/force`);
     if (response?.status === 200) {
       return response.data;
     }

@@ -105,11 +105,11 @@ declare global {
     category: string;
     price: number;
     discount_price?: number;
-    assets?: File[];
+    assets?: File[] | string[];
     description: string;
-    cover_photos: File[];
+    cover_photos: File[] | string[];
     highlights: string[];
-    thumbnail: File | null;
+    thumbnail: File | null | string;
     tags: string[];
     resource_link?: string[];
     portfolio_link?: string;

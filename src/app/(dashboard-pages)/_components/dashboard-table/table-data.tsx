@@ -8,7 +8,7 @@ import { ProductService } from "~/services/product.service";
 import { Toast } from "~/utils/notificationManager";
 import { cn, formatDate, formatTime } from "~/utils/utils";
 
-export const RowActions: (product: IProduct, service: any) => IRowAction<IProduct>[] = (
+export const ProductRowActions: (product: IProduct, service: any) => IRowAction<IProduct>[] = (
   product: IProduct,
   productService: ProductService,
 ) => {
@@ -20,7 +20,9 @@ export const RowActions: (product: IProduct, service: any) => IRowAction<IProduc
       actions.push(
         {
           label: "Edit",
-          onClick: () => {},
+          onClick: () => {
+            router.push(`/dashboard/${product.user_id}/products/new?product_id=${product.id}`);
+          },
           icon: <Edit className={`text-high-primary`} />,
         },
         {
@@ -49,6 +51,13 @@ export const RowActions: (product: IProduct, service: any) => IRowAction<IProduc
     case "published": {
       actions.push(
         {
+          label: "Preview",
+          onClick: () => {
+            router.push(`/dashboard/${product.user_id}/products/new?product_id=${product.id}&tab=preview`);
+          },
+          icon: <Eye className={`text-high-primary`} />,
+        },
+        {
           label: "Unpublish to draft",
           onClick: async () => {
             await productService.publishProduct(product.id);
@@ -61,50 +70,10 @@ export const RowActions: (product: IProduct, service: any) => IRowAction<IProduc
           },
           icon: <MinusCircle className={`text-high-warning`} />,
         },
-        {
-          label: "Edit",
-          onClick: async () => {},
-          icon: <Edit className={`text-high-primary`} />,
-        },
-        {
-          label: "Delete",
-          onClick: async () => {
-            await productService.softDeleteProduct(product.id);
-            Toast.getInstance().showToast({
-              title: "Success",
-              description: `Product ${product.title} deleted successfully!`,
-              variant: "warning",
-            });
-            router.push(`/dashboard/${product.user_id}/products?tab=deleted`);
-          },
-          icon: <Trash className={`text-high-danger`} />,
-        },
       );
       break;
     }
-    case "deleted": {
-      actions.push(
-        {
-          label: "Recover to Draft",
-          onClick: () => {},
-          icon: <Eye className={`text-high-primary`} />,
-        },
-        {
-          label: "Delete Permanently",
-          onClick: () => {},
-          icon: <Trash className={`text-high-danger`} />,
-        },
-        {
-          label: "Preview",
-          onClick: () => {},
-          icon: <Eye className={`text-high-primary`} />,
-        },
-      );
-      break;
-    }
-    // No default
   }
-
   return actions;
 };
 
@@ -115,15 +84,15 @@ export const productColumns: IColumnDefinition<IProduct>[] = [
     render: (_, product: IProduct) => (
       <div className={`flex w-fit items-center gap-2`}>
         <Image
-          src={product.thumbnail}
+          src={typeof product.thumbnail === "string" ? product.thumbnail : ""}
           alt="product"
           width={100}
           height={64}
           className={`h-[64px] w-[100px] rounded-md bg-low-grey-III object-cover`}
         />
         <div className="flex flex-col space-y-2">
-          <span className="text-[16px] font-medium">{product.title}</span>
-          <span className="space-x-1 text-sm text-mid-grey-II">
+          <span className="text-sm font-medium lg:text-[16px]">{product.title}</span>
+          <span className="space-x-1 text-[10px] text-mid-grey-II lg:text-sm">
             {`PDF-55.MB • `}
             {formatDate(product.created_at)}
             <span>•</span>
@@ -145,6 +114,7 @@ export const productColumns: IColumnDefinition<IProduct>[] = [
   {
     header: "Type",
     accessorKey: "product_type",
+    render: (_, product: IProduct) => <span>{product.product_type.replace("_", " ")}</span>,
   },
   {
     header: "Status",
@@ -195,7 +165,7 @@ export const orderColumns: IColumnDefinition<IOrder>[] = [
     render: (_, order: IOrder) => (
       <div className={`flex w-fit items-center gap-2`}>
         <Image
-          src={order?.product?.thumbnail || ""}
+          src={typeof order?.product?.thumbnail === "string" ? order.product.thumbnail : ""}
           alt="product"
           width={44}
           height={44}
@@ -267,7 +237,13 @@ export const latestPurchaseColumns: IColumnDefinition<IOrder>[] = [
     accessorKey: "product",
     render: (_, order: IOrder) => (
       <div className={`flex w-fit items-center gap-2`}>
-        <Image src={order?.product.thumbnail} alt="product" width={44} height={44} className={`bg-low-grey-II`} />
+        <Image
+          src={typeof order?.product.thumbnail === "string" ? order.product.thumbnail : ""}
+          alt="product"
+          width={44}
+          height={44}
+          className={`bg-low-grey-II`}
+        />
         <span className="text-[16px] font-medium">{order?.product.title}</span>
       </div>
     ),
@@ -330,3 +306,129 @@ export const payoutColumns: IColumnDefinition<IPayout>[] = [
     ),
   },
 ];
+
+export const plansColumns: IColumnDefinition<IPlan>[] = [
+  {
+    header: "Plan",
+    accessorKey: "plan",
+  },
+  {
+    header: "Price",
+    accessorKey: "price",
+    render: (_, plan: IPlan) => <span>₦{plan.price?.toLocaleString()}</span>,
+  },
+  {
+    header: "Date",
+    accessorKey: "date",
+    render: (_, plan: IPlan) => (
+      <span>
+        {formatDate(plan?.date)} {formatTime(plan?.date)}
+      </span>
+    ),
+  },
+
+  {
+    header: "Status",
+    accessorKey: "status",
+    render: (_, plan: IPlan) => (
+      <Badge
+        className={cn(
+          plan.status === "success"
+            ? "bg-low-success text-mid-success"
+            : plan.status === "pending"
+              ? "bg-low-warning text-high-warning"
+              : "bg-low-danger text-mid-danger",
+          "rounded-sm px-4 py-2",
+        )}
+      >
+        {plan.status}
+      </Badge>
+    ),
+  },
+];
+
+export const deletedProductColumns: IColumnDefinition<IProduct>[] = [
+  {
+    header: "Product Name",
+    accessorKey: "title",
+    render: (_, product: IProduct) => (
+      <div className={`flex w-fit items-center gap-2`}>
+        <Image
+          src={typeof product.thumbnail === "string" ? product.thumbnail : ""}
+          alt="product"
+          width={100}
+          height={64}
+          className={`h-[64px] w-[100px] rounded-md bg-low-grey-III object-cover`}
+        />
+        <div className="flex flex-col space-y-2">
+          <span className="text-sm font-medium lg:text-[16px]">{product.title}</span>
+          <span className="space-x-1 text-[10px] text-mid-grey-II lg:text-sm">
+            {`PDF-55.MB • `}
+            {formatDate(product.created_at)}
+            <span>•</span>
+            <span>{formatTime(product.created_at)}</span>
+          </span>
+        </div>
+      </div>
+    ),
+  },
+  {
+    header: "Price",
+    accessorKey: "price",
+    render: (_, product: IProduct) => <span>₦{product.price?.toLocaleString()}</span>,
+  },
+  {
+    header: "Sales",
+    accessorKey: "total_sales",
+  },
+  {
+    header: "Type",
+    accessorKey: "product_type",
+    render: (_, product: IProduct) => <span>{product.product_type.replace("_", " ")}</span>,
+  },
+];
+
+export const DeletedProductRowActions: (product: IProduct, service: any) => IRowAction<IProduct>[] = (
+  product: IProduct,
+  productService: ProductService,
+) => {
+  const router = useRouter();
+  const actions: IRowAction<IProduct>[] = [];
+  actions.push(
+    {
+      label: "Recover to Draft",
+      onClick: async () => {
+        await productService.restoreDeleteProduct(product.id);
+        Toast.getInstance().showToast({
+          title: "Success",
+          description: `Product ${product.title} restored to draft successfully!`,
+          variant: "success",
+        });
+        router.push(`/dashboard/${product.user_id}/products?tab=drafts`);
+      },
+      icon: <Eye className={`text-high-primary`} />,
+    },
+    {
+      label: "Delete Permanently",
+      onClick: async () => {
+        await productService.deleteProductPermanently(product.id);
+        Toast.getInstance().showToast({
+          title: "Success",
+          description: `Product ${product.title} deleted permanently!`,
+          variant: "warning",
+        });
+        router.push(`/dashboard/${product.user_id}/products?tab=all-products`);
+      },
+      icon: <Trash className={`text-high-danger`} />,
+    },
+    {
+      label: "Preview",
+      onClick: () => {
+        router.push(`/dashboard/${product.user_id}/products/new?product_id=${product.id}&tab=preview`);
+      },
+      icon: <Eye className={`text-high-primary`} />,
+    },
+  );
+
+  return actions;
+};

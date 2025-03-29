@@ -1,3 +1,5 @@
+import { FunnelService } from "~/features/funnel";
+import { PushService } from "~/features/push-notification/services/notification.service";
 import { CustomerService } from "~/services/customer.service";
 import { EarningService } from "~/services/earnings.service";
 import { PayoutService } from "~/services/payout.service";
@@ -24,6 +26,8 @@ const dependencies = {
   HELP_SERVICE: Symbol("HelpService"),
   APP_SERVICE: Symbol("AppService"),
   SETTINGS_SERVICE: Symbol("SettingsService"),
+  PUSH_SERVICES: Symbol("PushService"),
+  FUNNEL_SERVICE: Symbol("FunnelService"),
 };
 
 const httpAdapter = new HttpAdapter();
@@ -38,6 +42,8 @@ const analyticsService = new AnalyticsService(httpAdapter);
 const helpService = new HelpService(httpAdapter);
 const appService = new AppService(httpAdapter);
 const settingsService = new SettingsService(httpAdapter);
+const pushService = new PushService(httpAdapter);
+const funnelService = new FunnelService(httpAdapter);
 
 class DependencyContainer implements IDependencyContainer {
   _dependencies = {};
@@ -68,5 +74,7 @@ container.add(dependencies.ANALYTICS_SERVICE, analyticsService);
 container.add(dependencies.HELP_SERVICE, helpService);
 container.add(dependencies.APP_SERVICE, appService);
 container.add(dependencies.SETTINGS_SERVICE, settingsService);
+container.add(dependencies.PUSH_SERVICES, pushService);
+container.add(dependencies.FUNNEL_SERVICE, funnelService);
 
 export { container, dependencies };

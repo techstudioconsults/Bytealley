@@ -3,7 +3,17 @@
  * These routes do not require authentication
  * @type {string[]}
  */
-export const publicRoutes: string[] = ["/"];
+export const publicRoutes: string[] = [
+  "/",
+  "/features",
+  "/explore/*",
+  "/pricing",
+  "/terms-and-conditions",
+  "/privacy-policy",
+  "/about",
+  "/contact",
+  // "/cart",
+];
 
 /**
  * An array of auth routes that are accessible to the public
@@ -17,15 +27,6 @@ export const authRoutes: string[] = [
   "/auth/reset-password",
   "/auth/fetching-data/*",
 ];
-
-/**
- * Generates the default redirect URL after login
- * @param userID - The ID of the logged-in user
- * @returns {string} The formatted redirect URL
- */
-export const getDefaultLoginRedirect = (userID: string): string => {
-  return `/dashboard/${userID}/home`;
-};
 
 /**
  * An array of routes accessible to authenticated users (user-admin)

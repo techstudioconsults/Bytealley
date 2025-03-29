@@ -7,7 +7,10 @@ import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { DateRange } from "react-day-picker";
 
 import { DashboardTable } from "~/app/(dashboard-pages)/_components/dashboard-table";
-import { productColumns, RowActions } from "~/app/(dashboard-pages)/_components/dashboard-table/table-data";
+import {
+  deletedProductColumns,
+  DeletedProductRowActions,
+} from "~/app/(dashboard-pages)/_components/dashboard-table/table-data";
 import { DateRangePicker } from "~/app/(dashboard-pages)/_components/date-range-picker";
 import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import Loading from "~/app/Loading";
@@ -68,12 +71,12 @@ export const DeletedProducts = ({ productService }: { productService: ProductSer
               <section>
                 <DashboardTable
                   data={products}
-                  columns={productColumns}
+                  columns={deletedProductColumns}
                   currentPage={paginationMeta?.current_page}
                   totalPages={paginationMeta?.last_page}
                   itemsPerPage={paginationMeta?.per_page}
                   onPageChange={handlePageChange}
-                  rowActions={(product) => RowActions(product, productService)}
+                  rowActions={(product) => DeletedProductRowActions(product, productService)}
                   showPagination
                 />
               </section>

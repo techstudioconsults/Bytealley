@@ -2,6 +2,7 @@
 
 import kyc from "@/images/kyc.svg";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
@@ -18,6 +19,7 @@ import { Toast } from "~/utils/notificationManager";
 
 const BaseKYCForm = ({ settingsService }: { service: AppService; settingsService: SettingsService }) => {
   const { user } = useSession();
+  const router = useRouter();
   const methods = useForm<KycFormData>({
     resolver: zodResolver(kycSchema),
     defaultValues: {
@@ -58,7 +60,12 @@ const BaseKYCForm = ({ settingsService }: { service: AppService; settingsService
         ]}
         title="You have completed your KYC verification successfully!"
         description={``}
-        button={{ text: "Create New Product", onClick: () => {} }}
+        button={{
+          text: "Create New Product",
+          onClick: () => {
+            router.push(`/dashboard/${user?.id}/products/new`);
+          },
+        }}
       />
     );
   }

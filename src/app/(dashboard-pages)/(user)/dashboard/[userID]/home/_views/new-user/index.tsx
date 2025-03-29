@@ -45,7 +45,7 @@ export const NewUser = ({ steps, completedSteps, orderService }: NewUserProperti
 
   return (
     <section className="space-y-10">
-      <div className="flex flex-col gap-4 lg:flex-row">
+      <div className="step-1 flex flex-col gap-4 lg:flex-row">
         <DashboardBanner
           img={onboardingImage.src}
           title="Welcome to Byte Alley"
@@ -67,7 +67,7 @@ export const NewUser = ({ steps, completedSteps, orderService }: NewUserProperti
           )}
         </div>
       </div>
-      <div className="space-y-4">
+      <div className="step-2 space-y-4">
         <h6 className="text-lg font-semibold">Sales</h6>
         <section>
           {isPendingOrders ? (

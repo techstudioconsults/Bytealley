@@ -2,25 +2,39 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
 
 import CustomButton from "~/components/common/common-button/common-button";
 import { FormField } from "~/components/common/FormFields";
 import { Logo } from "~/components/common/logo";
+import { useSession } from "~/hooks/use-session";
 import { ResetPasswordData, resetPasswordSchema } from "~/schemas";
 
 const ResetPasswordPage = () => {
+  const { resetPassword } = useSession();
+  const searchParameters = useSearchParams();
+  const token = searchParameters.get("token");
+  const email = searchParameters.get("email");
+
   const methods = useForm<ResetPasswordData>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
+      token: token || "",
+      email: email || "",
       password: "",
       password_confirmation: "",
     },
   });
 
-  // const handleSubmit = async () => {
-  //   // TODO: Implement login logic
-  // };
+  const {
+    handleSubmit,
+    formState: { isSubmitting },
+  } = methods;
+
+  const handleSubmitForm = async (data: ResetPasswordData) => {
+    await resetPassword(data);
+  };
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4">
@@ -33,7 +47,7 @@ const ResetPasswordPage = () => {
         <p className="mb-8 text-muted-foreground">Enter your new password to reset your password.</p>
 
         <FormProvider {...methods}>
-          <form className="space-y-4">
+          <form onSubmit={handleSubmit(handleSubmitForm)} className="space-y-4">
             <FormField
               label="New Password"
               name="password"
@@ -45,7 +59,7 @@ const ResetPasswordPage = () => {
 
             <FormField
               label="Confirm New Password"
-              name="confirmPassword"
+              name="password_confirmation"
               type="password"
               placeholder="Enter new password"
               className={`h-12 w-full bg-low-grey-III`}
@@ -53,7 +67,14 @@ const ResetPasswordPage = () => {
             />
 
             <div className={`pt-[32px]`}>
-              <CustomButton size={`xl`} variant={`primary`} type="submit" className="w-full">
+              <CustomButton
+                isLoading={isSubmitting}
+                isDisabled={isSubmitting}
+                size={`xl`}
+                variant={`primary`}
+                type="submit"
+                className="w-full"
+              >
                 Reset password
               </CustomButton>
             </div>

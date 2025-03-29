@@ -3,24 +3,28 @@
 import empty4 from "@/images/empty_img_4.svg";
 import { format } from "date-fns";
 import debounce from "lodash.debounce";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { DateRange } from "react-day-picker";
 
 import { DashboardTable } from "~/app/(dashboard-pages)/_components/dashboard-table";
-import { productColumns, RowActions } from "~/app/(dashboard-pages)/_components/dashboard-table/table-data";
+import { productColumns, ProductRowActions } from "~/app/(dashboard-pages)/_components/dashboard-table/table-data";
 import { DateRangePicker } from "~/app/(dashboard-pages)/_components/date-range-picker";
 import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import Loading from "~/app/Loading";
+import { useSession } from "~/hooks/use-session";
 import { ProductService } from "~/services/product.service";
 
 import "~/utils/constants";
 
 export const DraftProducts = ({ productService }: { productService: ProductService }) => {
+  const router = useRouter();
   const [isPendingDraftProducts, startTransitionDraftProducts] = useTransition();
   const [products, setProducts] = useState<IProduct[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [paginationMeta, setPaginationMeta] = useState<IPaginationMeta | null>(null);
   const [dateRange, setDateRange] = useState<DateRange | undefined>();
+  const { user } = useSession();
 
   const debounceDateRangeReference = useRef(
     debounce((value: DateRange) => {
@@ -73,7 +77,7 @@ export const DraftProducts = ({ productService }: { productService: ProductServi
                   totalPages={paginationMeta?.last_page}
                   itemsPerPage={paginationMeta?.per_page}
                   onPageChange={handlePageChange}
-                  rowActions={(product) => RowActions(product, productService)}
+                  rowActions={(product) => ProductRowActions(product, productService)}
                   showPagination
                 />
               </section>
@@ -82,7 +86,12 @@ export const DraftProducts = ({ productService }: { productService: ProductServi
                 images={[{ src: empty4.src, alt: "Empty published product", width: 1136, height: 220 }]}
                 title="Ops! Your draft is empty."
                 description="Oops! It seems your draft is empty. No worries, we're here to help you bring your ideas to life. Start crafting your digital masterpiece, and when you're ready, let's turn that blank canvas into a work of art!"
-                button={{ text: "Add New Product", onClick: () => {} }}
+                button={{
+                  text: "Publish New Product",
+                  onClick: () => {
+                    router.push(`/dashboard/${user?.id}/products/new`);
+                  },
+                }}
               />
             )}
           </section>

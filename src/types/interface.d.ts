@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { JWTPayload } from "jose";
 
 declare global {
@@ -8,6 +7,8 @@ declare global {
     updateUserInfo: (data: ProfileFormData) => Promise<void>;
     register: (data: RegisterFormData) => Promise<void>;
     logout: () => Promise<void>;
+    forgotPassword: (data: ForgotPasswordData) => Promise<void>;
+    resetPassword: (data: ResetPasswordData) => Promise<void>;
     googleSignIn: () => Promise<void>;
     handleGoogleCallback: (credentials: { code: string; provider: string }) => Promise<void>;
     fetchCurrentUser: () => Promise<void>;
@@ -66,11 +67,13 @@ declare global {
   }
 
   interface ICookieMetadata {
+    maxAge?: number;
     expires?: Date;
-    httpOnly?: boolean;
-    secure?: boolean;
-    sameSite?: "strict" | "lax" | "none";
     path?: string;
+    domain?: string;
+    secure?: boolean;
+    httpOnly?: boolean;
+    sameSite?: "strict" | "lax" | "none";
   }
 
   interface ILayoutProperties {
@@ -121,11 +124,12 @@ declare global {
     title: string;
     logo: string | null;
     price: number;
+    category: string;
     discount_price: number;
     description: string;
     product_type: string;
     highlights: string[];
-    thumbnail: string;
+    thumbnail: File | string | null;
     cover_photos: string[];
     tags: string[];
     stock_count: boolean;
@@ -136,11 +140,14 @@ declare global {
     slug: string;
     total_order: number;
     total_sales: number;
-    assets: any[]; // You may want to define a specific type for assets
+    assets?: (File | string | { extension?: string; size?: string })[];
     avg_rating: number;
     created_at: string;
     updated_at: string;
     deleted_at: string | null;
+    resource_link?: string[];
+    portfolio_link?: string;
+    publisher?: string;
   }
 
   interface IPaginationLink {
@@ -334,11 +341,38 @@ declare global {
     created_at: string;
   }
 
+  interface IPlan {
+    date: string;
+    description: string;
+    plan: string;
+    price: number;
+    reference: string;
+    status: string;
+  }
+
   interface IBillingCycle {
-    renewal_date: string;
+    id: string;
+    renewal_date: string | "";
     plan: string;
     billing_total: number | null;
-    plans: null | Array;
+    plans: IPlan[] | [];
+  }
+
+  interface ISubscriptionPlan {
+    link: string;
+    authorization_url: string;
+    access_code: string;
+    reference: string;
+  }
+  interface IFunnel {
+    id: string;
+    title: string;
+    status: string;
+    thumbnail: string | File;
+    slug?: string;
+    url?: string;
+    created_at: string;
+    template?: string;
   }
 }
 

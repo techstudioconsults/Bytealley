@@ -24,6 +24,8 @@ export const forgotPasswordSchema = z.object({
   }),
 });
 export const resetPasswordSchema = z.object({
+  token: z.string().min(1, "Title is required").optional(),
+  email: z.string().min(1, "Email is required").email("Please enter a valid email address").optional(),
   password: z.string().min(1, "Password is required").min(8, "Password must be at least 8 characters"),
   password_confirmation: z.string().min(1, "Confirm password is required"),
 });
@@ -79,6 +81,14 @@ export const contactSchema = z.object({
   message: z.string().min(1, "Message is required"),
 });
 
+export const externalContactSchema = z.object({
+  firstname: z.string().min(2, "Full name must be at least 2 characters"),
+  lastname: z.string().min(2, "Full name must be at least 2 characters"),
+  email: z.string().min(1, "Email is required").email("Please enter a valid email address"),
+  subject: z.string().min(1, "Subject is required"),
+  message: z.string().min(1, "Message is required"),
+});
+
 export const profileSchema = z.object({
   full_name: z.string().min(2, "Full name must be at least 2 characters"),
   username: z.string().min(2, "Username must be at least 2 characters"),
@@ -120,6 +130,27 @@ export const kycSchema = z.object({
   document_image: z.any().refine((file) => file !== null, "document image is required"),
 });
 
+export const emailIntegrationSchema = z.object({
+  provider: z.string().optional(),
+  token: z.string().min(1, "API key is required"),
+});
+
+export const funnelSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  thumbnail: z.any().refine((file) => file !== null, "Thumbnail is required"),
+  product_id: z.string().min(1, "At least one product is required"),
+  // asset: z.any().refine((file) => file !== null, "asset is required"),
+  assets: z.array(z.any()).min(1, "Product files are required").max(4, "You can upload up to 4 files"),
+});
+
+export const funnelSettingsSchema = z.object({
+  title: z.string().min(1, "Title is required").optional(),
+  logo: z
+    .any()
+    .refine((file) => file !== null, "Thumbnail is required")
+    .optional(),
+});
+
 export type RegisterFormData = z.infer<typeof registerSchema>;
 export type LoginFormData = z.infer<typeof loginSchema>;
 export type ForgotPasswordData = z.infer<typeof forgotPasswordSchema>;
@@ -133,5 +164,9 @@ export type EmailNotificationSettingFormData = z.infer<typeof emailNotificationS
 export type ChangePasswordFormData = z.infer<typeof changePasswordSchema>;
 export type ChangeEmailFormData = z.infer<typeof changeEmailSchema>;
 export type KycFormData = z.infer<typeof kycSchema>;
+export type EmailIntegrationFormData = z.infer<typeof emailIntegrationSchema>;
+export type FunnelFormData = z.infer<typeof funnelSchema>;
+export type FunnelSettingFormData = z.infer<typeof funnelSettingsSchema>;
+export type ExternalContactFormData = z.infer<typeof externalContactSchema>;
 
 // export type ProductFormData = z.infer<typeof ProductFormSchema>;

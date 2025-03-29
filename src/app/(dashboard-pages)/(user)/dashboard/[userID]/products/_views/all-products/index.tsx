@@ -8,7 +8,7 @@ import { DateRange } from "react-day-picker";
 
 import { AnalyticsCard } from "~/app/(dashboard-pages)/_components/analytics-card";
 import { DashboardTable } from "~/app/(dashboard-pages)/_components/dashboard-table";
-import { productColumns, RowActions } from "~/app/(dashboard-pages)/_components/dashboard-table/table-data";
+import { productColumns, ProductRowActions } from "~/app/(dashboard-pages)/_components/dashboard-table/table-data";
 import { DateRangePicker } from "~/app/(dashboard-pages)/_components/date-range-picker";
 import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import ExportAction from "~/app/(dashboard-pages)/_components/export-action";
@@ -83,7 +83,7 @@ export const AllProducts = ({ productService }: { productService: ProductService
 
   return (
     <section className={`space-y-10`}>
-      <section className={`grid gap-8 lg:grid-cols-4`}>
+      <section className={`grid gap-8 sm:grid-cols-2 lg:grid-cols-4`}>
         <AnalyticsCard
           title={"Total Products"}
           value={isPendingAnalytics ? <LoadingSpinner /> : analytics?.total_products?.toLocaleString()}
@@ -135,7 +135,7 @@ export const AllProducts = ({ productService }: { productService: ProductService
                     totalPages={paginationMeta?.last_page}
                     itemsPerPage={paginationMeta?.per_page}
                     onPageChange={handlePageChange}
-                    rowActions={(product) => RowActions(product, productService)}
+                    rowActions={(product) => ProductRowActions(product, productService)}
                     showPagination
                     onRowClick={(product) => {
                       router.push(`/dashboard/${user?.id}/products/${product.id}`);
@@ -151,7 +151,12 @@ export const AllProducts = ({ productService }: { productService: ProductService
                   ]}
                   title="Create your first product."
                   description="Unlock your creative potential and take the first step towards success on our platform. Create your first product today and join our vibrant community of digital creators. Your masterpiece is just a click away!"
-                  button={{ text: "Add New Product", onClick: () => {} }}
+                  button={{
+                    text: "Add New Product",
+                    onClick: () => {
+                      router.push(`/dashboard/${user?.id}/products/new`);
+                    },
+                  }}
                 />
               )}
             </section>

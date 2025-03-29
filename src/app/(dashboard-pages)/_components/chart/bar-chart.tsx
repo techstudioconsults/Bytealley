@@ -1,64 +1,73 @@
 "use client";
 
-import { IoEllipsisVerticalSharp } from "react-icons/io5";
-import { LuDot } from "react-icons/lu";
-import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
+import { useCallback, useEffect, useState } from "react";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "~/components/ui/chart";
-
-const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 215 },
-  { month: "July", desktop: 460 },
-  { month: "August", desktop: 59 },
-  { month: "September", desktop: 214 },
-  { month: "October", desktop: 187 },
-  { month: "November", desktop: 12 },
-  { month: "December", desktop: 214 },
-];
+import { WithDependency } from "~/HOC/withDependencies";
+import { AnalyticsService } from "~/services/analytics.service";
+import { months } from "~/utils/constants";
+import { dependencies } from "~/utils/dependencies";
+import { SelectDropdown } from "../select-dropdown";
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  revenue: {
+    label: "Revenue",
     color: "#6D5DD3",
   },
 } satisfies ChartConfig;
 
-export function Line_Chart() {
+export function Base_Bar_Chart({ analyticsService }: { analyticsService: AnalyticsService }) {
+  const [selectedMonth, setSelectedMonth] = useState<string>((new Date().getMonth() + 1).toString());
+  const [filteredData, setFilteredData] = useState<{ day: number; revenue: number }[]>([]);
+
+  const handleMonthChange = useCallback((value: string) => {
+    setSelectedMonth(value);
+  }, []);
+
+  useEffect(() => {
+    const fetchRevenueData = async () => {
+      // Fetch revenue data for the selected month
+      const response = await analyticsService.getDailyRevenueData(selectedMonth);
+      if (response) {
+        setFilteredData(response);
+      }
+    };
+    // setSelectedMonth(new Date().getMonth().toString());
+    fetchRevenueData();
+  }, [analyticsService, selectedMonth]);
+
   return (
     <section className="rounded-[8px] border bg-white p-[24px]">
-      <div className="mb-[36px] flex items-start justify-between lg:items-center">
-        <div className="flex flex-col items-center gap-[30px] lg:flex-row">
-          <h6 className="text-[14px] font-[700] text-high-grey-III lg:text-[18px]">Overview</h6>
-          <div className="flex items-start lg:items-center">
-            <span className="flex items-center text-[12px]">
-              <LuDot className="inline h-[60px] w-[60px] text-[#28166F]" />
-              <span>Data</span>
-            </span>
-          </div>
-        </div>
-        <div>
-          <IoEllipsisVerticalSharp />
-        </div>
-      </div>
+      <h6 className="text-[14px] font-[700] text-high-grey-III lg:text-[18px]">Revenue Overview</h6>
+      <section className={`mb-8 mt-4 flex items-center justify-between gap-4`}>
+        <SelectDropdown
+          triggerClassName={`w-[100%]`}
+          options={months}
+          placeholder={`Select month`}
+          onValueChange={handleMonthChange}
+        />
+        <SelectDropdown
+          disabled
+          triggerClassName={`w-[100%] hidden lg:flex`}
+          options={months}
+          placeholder="product Type"
+        />
+        <SelectDropdown disabled triggerClassName={`w-[20rem] hidden lg:flex`} options={months} placeholder="Weeks" />
+      </section>
       <ChartContainer config={chartConfig} className="h-[280px] w-full">
-        <LineChart accessibilityLayer data={chartData}>
+        <BarChart accessibilityLayer data={filteredData}>
           <CartesianGrid vertical={false} />
-          <XAxis
-            dataKey="month"
-            tickLine={false}
-            tickMargin={10}
-            axisLine={false}
-            tickFormatter={(value) => value.slice(0, 3)}
-          />
+          <XAxis dataKey="day" tickLine={false} tickMargin={10} axisLine={false} />
+          <YAxis />
           <ChartTooltip content={<ChartTooltipContent />} />
-          <Line dataKey="desktop" fill="var(--color-desktop)" strokeWidth={3} />
-        </LineChart>
+          <Bar dataKey="revenue" fill="var(--color-revenue)" radius={[5, 5, 0, 0]} />
+        </BarChart>
       </ChartContainer>
     </section>
   );
 }
+
+export const Bar_Chart = WithDependency(Base_Bar_Chart, {
+  analyticsService: dependencies.ANALYTICS_SERVICE,
+});
