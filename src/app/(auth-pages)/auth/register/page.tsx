@@ -2,27 +2,20 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 
 import CustomButton from "~/components/common/common-button/common-button";
-import { FormField } from "~/components/common/FormFields";
+import { FormField, PasswordValidation } from "~/components/common/FormFields";
 import { Logo } from "~/components/common/logo";
-import { withDependency } from "~/HOC/withDependencies";
+import { useSession } from "~/hooks/use-session";
 import { RegisterFormData, registerSchema } from "~/schemas";
-import type { AuthService } from "~/services/auth.service";
-import { dependencies } from "~/utils/dependencies";
 
-interface RegisterPageProperties {
-  authService: AuthService;
-}
-
-const BaseRegisterPage = ({ authService }: RegisterPageProperties) => {
-  const router = useRouter();
-  const [isPending, startTransition] = useTransition();
+const RegisterPage = () => {
   const [isGooglePending, startGoogleTransition] = useTransition();
+  const { register: registerUser, googleSignIn } = useSession();
+  const [, setPassword] = useState("");
 
   const methods = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
@@ -34,21 +27,27 @@ const BaseRegisterPage = ({ authService }: RegisterPageProperties) => {
     },
   });
 
-  const handleSubmit = async (data: RegisterFormData) => {
-    startTransition(async () => {
-      await authService.register(data, router);
-    });
+  const {
+    handleSubmit,
+    formState: { isSubmitting },
+    watch,
+  } = methods;
+
+  const handleSubmitForm = async (data: RegisterFormData) => {
+    await registerUser(data);
   };
 
   const handleGoogleSignIn = () => {
     startGoogleTransition(async () => {
-      await authService.googleSignIn();
+      await googleSignIn();
     });
   };
 
+  const passwordValue = watch("password");
+
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4">
-      <div className="w-full max-w-[547px] rounded-xl bg-white p-12 shadow-lg">
+      <div className="w-full max-w-[547px] rounded-xl bg-white p-6 shadow-lg lg:p-12">
         <div className="mb-8 flex justify-center">
           <Logo />
         </div>
@@ -58,14 +57,9 @@ const BaseRegisterPage = ({ authService }: RegisterPageProperties) => {
         </h1>
 
         <FormProvider {...methods}>
-          <form
-            onSubmit={methods.handleSubmit(handleSubmit)}
-            className="mt-[56px] space-y-4"
-          >
+          <form onSubmit={handleSubmit(handleSubmitForm)} className="mt-[56px] space-y-4">
             {methods.formState.errors.root && (
-              <p className="text-sm text-red-500">
-                {methods.formState.errors.root.message}
-              </p>
+              <p className="text-sm text-red-500">{methods.formState.errors.root.message}</p>
             )}
 
             <FormField
@@ -93,7 +87,9 @@ const BaseRegisterPage = ({ authService }: RegisterPageProperties) => {
               placeholder="Enter Password"
               className={`h-12 bg-low-grey-III`}
               required
+              onChange={(event) => setPassword(event.target.value)}
             />
+            <PasswordValidation password={passwordValue} />
 
             <FormField
               label="Confirm Password"
@@ -112,10 +108,7 @@ const BaseRegisterPage = ({ authService }: RegisterPageProperties) => {
                     Terms Of Use
                   </Link>{" "}
                   and{" "}
-                  <Link
-                    href="/privacy"
-                    className="text-primary hover:underline"
-                  >
+                  <Link href="/privacy" className="text-primary hover:underline">
                     Privacy Policy
                   </Link>
                 </p>
@@ -124,8 +117,8 @@ const BaseRegisterPage = ({ authService }: RegisterPageProperties) => {
               <CustomButton
                 type="submit"
                 variant="primary"
-                isDisabled={isPending}
-                isLoading={isPending}
+                isDisabled={isSubmitting}
+                isLoading={isSubmitting}
                 className="w-full"
                 size="xl"
               >
@@ -139,9 +132,7 @@ const BaseRegisterPage = ({ authService }: RegisterPageProperties) => {
               <div className="w-full border-t"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="bg-white px-2 text-muted-foreground">
-                or continue with
-              </span>
+              <span className="bg-white px-2 text-muted-foreground">or continue with</span>
             </div>
           </div>
 
@@ -170,9 +161,5 @@ const BaseRegisterPage = ({ authService }: RegisterPageProperties) => {
     </div>
   );
 };
-
-const RegisterPage = withDependency(BaseRegisterPage, {
-  authService: dependencies.AUTH_SERVICE,
-});
 
 export default RegisterPage;

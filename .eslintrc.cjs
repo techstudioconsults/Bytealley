@@ -35,14 +35,7 @@ module.exports = {
   ],
   ignorePatterns: ["dist", "node_modules"],
   parser: "@typescript-eslint/parser",
-  plugins: [
-    "@typescript-eslint",
-    "react",
-    "unicorn",
-    "unused-imports",
-    "vitest",
-    "testing-library",
-  ],
+  plugins: ["@typescript-eslint", "react", "unicorn", "unused-imports", "vitest", "testing-library"],
   rules: {
     "no-console": "error",
     "react/prop-types": "off",
@@ -56,10 +49,7 @@ module.exports = {
         argsIgnorePattern: "^_",
       },
     ],
-    "unicorn/filename-case": [
-      "error",
-      { cases: { kebabCase: true, pascalCase: true, camelCase: true } },
-    ],
+    "unicorn/filename-case": ["error", { cases: { kebabCase: true, pascalCase: true, camelCase: true } }],
     "unicorn/no-null": "off",
   },
   settings: {
@@ -83,10 +73,7 @@ module.exports = {
         "vitest/require-hook": "off",
         "vitest/max-expects": "off",
         "vitest/no-hooks": "off",
-        "testing-library/no-node-access": [
-          "error",
-          { allowContainerFirstChild: true },
-        ],
+        "testing-library/no-node-access": ["error", { allowContainerFirstChild: true }],
       },
     },
   ],

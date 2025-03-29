@@ -1,26 +1,26 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { IAuthState } from "~/types/interfaces";
+interface IAuthState {
+  completedSteps: number;
+}
 
 const initialState: IAuthState = {
-  isAuthenticated: false,
-  user: null,
+  completedSteps: 0,
 };
 
 export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<IAuthState["user"]>) => {
-      state.user = action.payload;
-      state.isAuthenticated = !!action.payload;
-    },
-    logout: (state) => {
-      state.user = null;
-      state.isAuthenticated = false;
+    setCompletedStepsCount: (state, action: PayloadAction<number>) => {
+      state.completedSteps = action.payload;
     },
   },
 });
 
-export const { setUser, logout } = authSlice.actions;
+export const { setCompletedStepsCount } = authSlice.actions;
+
+// Selectors
+export const selectCompletedStepsCount = (state: RootState) => state.auth.completedSteps;
+
 export default authSlice.reducer;

@@ -2,8 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @layer base {
   :root {
+    /* Light mode colors */
     --background: 0, 0%, 100%;
     --foreground: 0, 0%, 16%;
 
@@ -97,22 +102,103 @@
     --low-grey-II: 0, 0%, 98%;
     --low-grey-I: 0, 0%, 100%;
   }
+
+  .dark {
+    /* Dark mode colors */
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --default: 222.2 84% 4.9%;
+    --default-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --subtle: 217.2 32.6% 17.5%;
+    --subtle-hover: 210 40% 98%;
+    --subtle-foreground: 210 40% 98%;
+
+    --loading: 210 40% 98%;
+    --loading-hover: 217.2 32.6% 17.5%;
+    --loading-foreground: 222.2 84% 4.9%;
+
+    --outline: 217.2 32.6% 17.5%;
+    --outline-hover: 210 40% 98%;
+    --outline-foreground: 210 40% 98%;
+
+    --link: 210 40% 98%;
+
+    --error: 0 62.8% 30.6%;
+    --success: 143 79% 32%;
+    --warning: 45 92% 54%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+
+    --radius: 0.5rem;
+
+    --stroke-colors-stroke: 217.2 32.6% 17.5%;
+
+    --neutralColor-dark-1: 210 40% 98%;
+    --neutralColor-dark-2: 222.2 84% 4.9%;
+
+    /* byte-alley design system */
+    --white: 222.2 84% 4.9%;
+    --black: 210 40% 98%;
+
+    --high-purple: 210 40% 98%;
+    --mid-purple: 217.2 32.6% 17.5%;
+    --low-purple: 222.2 84% 4.9%;
+
+    --high-coral: 210 40% 98%;
+    --mid-coral: 217.2 32.6% 17.5%;
+    --low-coral: 222.2 84% 4.9%;
+
+    --high-danger: 210 40% 98%;
+    --mid-danger: 217.2 32.6% 17.5%;
+    --low-danger: 222.2 84% 4.9%;
+
+    --high-warning: 210 40% 98%;
+    --mid-warning: 217.2 32.6% 17.5%;
+    --low-warning: 222.2 84% 4.9%;
+
+    --high-success: 210 40% 98%;
+    --mid-success: 217.2 32.6% 17.5%;
+    --low-success: 222.2 84% 4.9%;
+
+    --high-grey-III: 210 40% 98%;
+    --high-grey-II: 217.2 32.6% 17.5%;
+    --high-grey-I: 222.2 84% 4.9%;
+
+    --mid-grey-III: 210 40% 98%;
+    --mid-grey-II: 217.2 32.6% 17.5%;
+    --mid-grey-I: 222.2 84% 4.9%;
+
+    --low-grey-III: 210 40% 98%;
+    --low-grey-II: 217.2 32.6% 17.5%;
+    --low-grey-I: 222.2 84% 4.9%;
+  }
 }
 
-#nprogress .bar {
-  background: linear-gradient(
-    90deg,
-    hsl(44, 100%, 87%),
-    hsl(203, 100%, 38%)
-  ) !important;
-  box-shadow: 10px 0px 20px hsla(44, 100%, 87%, 0.641) !important;
-  position: fixed;
-  z-index: 99999999 !important;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 4px !important;
-}
 /* Base typography settings */
 @layer base {
   /* Body text */
@@ -124,7 +210,7 @@
   h4,
   h5,
   h6 {
-    color: hsl(var(--secondary));
+    color: hsl(var(--high-purple));
   }
 
   h1 {
@@ -195,12 +281,7 @@
 }
 
 [data-placeholder="true"] {
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 0.129) 50%,
-    rgba(7, 7, 7, 0) 100%
-  );
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.129) 50%, rgba(7, 7, 7, 0) 100%);
   background-size: cover;
   transform: translateX(-120%);
 
@@ -279,4 +360,12 @@
 /* For Internet Explorer and Legacy Edge */
 body {
   -ms-overflow-style: scrollbar; /* Standard scrollbar */
+}
+
+.nr-font {
+  font-family: var(--font-newsreader);
+}
+
+.shadow-NB {
+  box-shadow: 8px 8px 0px 0px #000000;
 }

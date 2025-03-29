@@ -15,11 +15,7 @@ interface PaginationsProperties {
   onPageChange: (page: number) => void;
 }
 
-export const Paginations: React.FC<PaginationsProperties> = ({
-  currentPage,
-  totalPages,
-  onPageChange,
-}) => {
+export const Paginations: React.FC<PaginationsProperties> = ({ currentPage, totalPages, onPageChange }) => {
   const handlePageChange = (page: number, event: React.MouseEvent) => {
     event.preventDefault();
     onPageChange(page);
@@ -47,9 +43,7 @@ export const Paginations: React.FC<PaginationsProperties> = ({
                 href="#"
                 size={"default"}
                 onClick={(event) => handlePageChange(index + 1, event)}
-                className={`${
-                  currentPage === index + 1 ? "bg-primary text-white" : ""
-                }`}
+                className={`${currentPage === index + 1 ? "bg-primary text-white" : ""}`}
               >
                 {index + 1}
               </PaginationLink>

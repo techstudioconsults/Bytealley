@@ -1,11 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
-import authReducer from "./features/auth/authSlice";
+import templateReducer from "./features/template/template-slice";
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 
 export const store = configureStore({
   reducer: {
-    auth: authReducer,
+    template: templateReducer,
   },
   devTools: process.env.NODE_ENV !== "production",
 });
