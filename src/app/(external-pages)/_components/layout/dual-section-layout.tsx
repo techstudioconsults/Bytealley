@@ -5,6 +5,7 @@ import React from "react";
 import CustomButton from "~/components/common/common-button/common-button";
 import { BlurImage } from "~/components/miscellaneous/blur-image";
 import { useSession } from "~/hooks/use-session";
+import { FadeIn } from "~/lib/animations";
 import { cn } from "~/utils/utils";
 
 export const DualSectionLayout: React.FC<DualSectionLayoutProperties> = ({
@@ -44,7 +45,9 @@ export const DualSectionLayoutList: React.FC<DualSectionLayoutListProperties> = 
     <section className={cn(className)}>
       <div className={`space-y-4`}>
         <h1 className={cn(`text-center font-black lg:text-left`, headerClassName)}>{title}</h1>
-        <p className={cn(`text-center lg:text-left`, subHeaderClassName)}>{subTitle}</p>
+        <FadeIn>
+          <p className={cn(`text-center lg:text-left`, subHeaderClassName)}>{subTitle}</p>
+        </FadeIn>
       </div>
       {listItems && (
         <ul className="mt-8 space-y-3">
