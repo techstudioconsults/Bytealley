@@ -7,7 +7,16 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
+        hostname: "res.cloudinary.com",
+      },
+      {
         hostname: "productize.nyc3.cdn.digitaloceanspaces.com",
+      },
+      {
+        hostname: "bytealley.fra1.cdn.digitaloceanspaces.com",
+      },
+      {
+        hostname: "trybytealley.nyc3.cdn.digitaloceanspaces.com",
       },
     ],
   },

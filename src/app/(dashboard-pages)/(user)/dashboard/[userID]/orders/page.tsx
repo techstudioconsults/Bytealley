@@ -119,7 +119,12 @@ const BaseOrderPage = ({ orderService }: { orderService: OrderService }) => {
                 ]}
                 title="No orders found."
                 description="You do not have any active orders yet."
-                button={{ text: "Create New Order", onClick: () => {} }}
+                button={{
+                  text: "Create New Order",
+                  onClick: () => {
+                    router.push(`/dashboard/${user?.id}/products/new`);
+                  },
+                }}
                 className={`rounded-lg bg-low-grey-III`}
               />
             )}

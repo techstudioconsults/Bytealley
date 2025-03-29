@@ -114,7 +114,7 @@ const BasePayoutsPage = ({
             </CustomButton>
           </div>
         </section>
-        <section className="grid grid-cols-1 gap-4 lg:grid-cols-4">
+        <section className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
           <AnalyticsCard
             title="Total Earnings"
             value={isEarningsPending ? <LoadingSpinner /> : `₦${earnings?.total_earnings?.toLocaleString() || 0}`}

@@ -15,6 +15,7 @@ const config = {
     },
     extend: {
       boxShadow: {
+        // neoB: "8px 8px 0px 0px #000000",
         active: "0px 0px 0px 2px #6D5DD380",
         spread: "0px 1px 18px 0px #0A39B01F",
       },
@@ -109,11 +110,11 @@ const config = {
             height: "0",
           },
         },
-        fadeIn: {
-          "0%": { opacity: "0", transform: "translateY(10px)" },
+        "fade-in": {
+          "0%": { opacity: "0", transform: "translateY(-10px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
-        fadeOut: {
+        "fade-out": {
           "0%": { opacity: "1", transform: "translateY(0)" },
           "100%": { opacity: "0", transform: "translateY(-10px)" },
         },
@@ -121,8 +122,8 @@ const config = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        fadeIn: "fadeIn 0.5s ease-out",
-        fadeOut: "fadeOut 0.5s ease-in",
+        "fade-in": "fade-in 0.3s ease-in-out",
+        "fade-out": "fade-out 0.3s ease-in-out",
       },
     },
   },

@@ -20,7 +20,9 @@ export const Onboarding = ({ steps }: OnboardingProperties) => {
         title="Welcome to Byte Alley"
         desc="Complete your profile to start getting your products published."
       />
-      <OnboardingHeader completedSteps={completedSteps} totalSteps={steps.length} />
+      <div className={`my-4`}>
+        <OnboardingHeader completedSteps={completedSteps} totalSteps={steps.length} />
+      </div>
       <div className="flex flex-col gap-4">
         {steps.map((step) => (
           <ActionBanner

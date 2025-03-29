@@ -13,6 +13,7 @@ interface SelectDropdownProperties {
   value?: string;
   onValueChange?: (value: string) => void;
   triggerClassName?: string;
+  disabled?: boolean;
 }
 
 export const SelectDropdown = ({
@@ -20,11 +21,11 @@ export const SelectDropdown = ({
   placeholder = "Select an option",
   value,
   onValueChange,
-
   triggerClassName = "h-[48px] w-[180px]",
+  disabled,
 }: SelectDropdownProperties) => {
   return (
-    <Select value={value} onValueChange={onValueChange}>
+    <Select disabled={disabled} value={value} onValueChange={onValueChange}>
       <SelectTrigger className={triggerClassName}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>

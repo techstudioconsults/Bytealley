@@ -2,17 +2,16 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import CustomButton from "~/components/common/common-button/common-button";
 import { FormField } from "~/components/common/FormFields";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import { useSession } from "~/hooks/use-session";
 import { ForgotPasswordData, forgotPasswordSchema } from "~/schemas";
 
 const ForgotPasswordPage = () => {
-  const [isLoading, setIsLoading] = useState(false);
-
+  const { forgotPassword } = useSession();
   const methods = useForm<ForgotPasswordData>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
@@ -20,8 +19,13 @@ const ForgotPasswordPage = () => {
     },
   });
 
-  const onSubmit = async () => {
-    setIsLoading(true);
+  const {
+    handleSubmit,
+    formState: { isSubmitting },
+  } = methods;
+
+  const handleSubmitForm = async (data: ForgotPasswordData) => {
+    await forgotPassword(data);
   };
 
   return (
@@ -33,22 +37,22 @@ const ForgotPasswordPage = () => {
         </CardHeader>
         <CardContent>
           <FormProvider {...methods}>
-            <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={handleSubmit(handleSubmitForm)} className="space-y-6">
               <FormField
                 name="email"
                 type="email"
                 label="Email"
                 placeholder="sarah.williams@gmail.com"
                 required
-                disabled={isLoading}
+                disabled={isSubmitting}
               />
               <CustomButton
                 type="submit"
                 className="w-full"
                 size={`xl`}
                 variant={`primary`}
-                isDisabled={isLoading}
-                isLoading={isLoading}
+                isDisabled={isSubmitting}
+                isLoading={isSubmitting}
               >
                 Reset password
               </CustomButton>

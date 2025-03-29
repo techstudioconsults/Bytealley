@@ -30,7 +30,7 @@ export class EarningService {
       bank_name: parseBankData.bank_name,
     };
     const response = await this.http.post<{ data: IPaymentAccount }>(`/accounts`, formData);
-    if (response?.status === 200) {
+    if (response?.status === 201) {
       return response.data;
     }
   }

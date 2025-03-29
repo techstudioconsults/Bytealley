@@ -37,6 +37,15 @@ const UserHomePage = ({
       action: () => authService.verifyEmail(),
     },
     {
+      title: "Reset Password",
+      description: "Kindly reset your password to a secure one that you can easily remember.",
+      buttonLabel: "Reset Password",
+      icon: "/images/verify_email.svg",
+      // isCompleted: user?.password_is_set,
+      isCompleted: false,
+      action: () => router.push(`/dashboard/${params.userID}/settings`),
+    },
+    {
       title: "Customize your profile",
       description: "Add your personal information and customize your store profile",
       buttonLabel: "Edit profile",
@@ -58,7 +67,7 @@ const UserHomePage = ({
       buttonLabel: "Make money",
       icon: "/images/payout.svg",
       isCompleted: user?.payout_setup,
-      action: () => router.push(`/dashboard/${params.userID}/settings/payout`),
+      action: () => router.push(`/dashboard/${params.userID}/settings?tab=payment`),
     },
     {
       title: "Make your first sale",
@@ -66,14 +75,14 @@ const UserHomePage = ({
       buttonLabel: "View guide",
       icon: "/images/first_sale.svg",
       isCompleted: user?.first_sale,
-      action: () => router.push(`/dashboard/${params.userID}/guide/first-sale`),
+      action: () => router.push(`/dashboard/${params.userID}/products/new`),
     },
   ];
 
   const completedSteps = ONBOARDING_STEPS.filter((step) => step.isCompleted).length;
 
   // Less than 4 steps completed -> Onboarding
-  if (completedSteps < 4) {
+  if (completedSteps < 5) {
     return (
       <Wrapper className="max-w-[751px]">
         <Onboarding steps={ONBOARDING_STEPS} />
@@ -82,7 +91,7 @@ const UserHomePage = ({
   }
 
   // Exactly 4 steps completed -> NewUser
-  if (completedSteps >= 4 && completedSteps < 5) {
+  if (completedSteps >= 5 && completedSteps < 6) {
     return <NewUser steps={ONBOARDING_STEPS} completedSteps={completedSteps} orderService={orderService} />;
   }
 

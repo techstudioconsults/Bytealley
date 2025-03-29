@@ -105,7 +105,6 @@ export const DashboardTable = <T extends DataItem>({
             <div className="mb-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="text-sm font-medium text-muted-foreground">{renderColumn(columns[0], item)}</div>
-                <span>{columns.at(-1) ? renderColumn(columns.at(-1)!, item) : "N/A"}</span>
               </div>
               {rowActions && (
                 <DropdownMenu>
@@ -136,9 +135,10 @@ export const DashboardTable = <T extends DataItem>({
               {columns.slice(1, -1).map((column, colIndex) => (
                 <div key={colIndex} className="space-y-1">
                   <p className="text-xs font-medium uppercase text-muted-foreground/60">{column.header}</p>
-                  <div className="text-sm font-medium">{renderColumn(column, item)}</div>
+                  <div className="text-xs font-medium">{renderColumn(column, item)}</div>
                 </div>
               ))}
+              <span className={`text-xs`}>{columns.at(-1) ? renderColumn(columns.at(-1)!, item) : "N/A"}</span>
             </div>
 
             {/* Hover Effect Indicator */}

@@ -14,13 +14,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~
 import { Textarea } from "~/components/ui/textarea";
 import { cn } from "~/utils/utils";
 
-import "react-quill/dist/quill.snow.css"; // Import Quill styles
+import "react-quill/dist/quill.snow.css";
 
-import { CameraIcon, InfoIcon, PlusIcon } from "lucide-react";
+import { CameraIcon, Eye, EyeOff, InfoIcon, PlusIcon } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import { MdCancel } from "react-icons/md";
 
+import { BlurImage } from "../miscellaneous/blur-image";
 import { Badge } from "../ui/badge";
 import { Checkbox } from "../ui/checkbox";
 import { Switch } from "../ui/switch";
@@ -28,7 +29,7 @@ import CustomButton from "./common-button/common-button";
 import { StarRating } from "./rating/star";
 
 const ReactQuill = dynamic(() => import("react-quill"), {
-  ssr: false, // Disable server-side rendering
+  ssr: false,
 });
 
 interface FormFieldProperties {
@@ -44,6 +45,7 @@ interface FormFieldProperties {
   containerClassName?: string;
   leftAddon?: React.ReactNode; // Add left icon or button
   rightAddon?: React.ReactNode; // Add right icon or button
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export function FormField({
@@ -59,12 +61,18 @@ export function FormField({
   leftAddon,
   rightAddon,
   labelDetailedNode,
+  onChange,
 }: FormFieldProperties) {
   const {
     control,
     formState: { errors },
   } = useFormContext();
   const error = errors[name];
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((previous) => !previous);
+  };
 
   return (
     <div className="space-y-2">
@@ -121,6 +129,27 @@ export function FormField({
                   value={field.value || ""}
                   onChange={(event) => field.onChange(event.target.valueAsNumber)}
                 />
+              ) : type === "password" ? (
+                <div className="relative w-full">
+                  <Input
+                    {...field}
+                    type={showPassword ? "text" : "password"}
+                    placeholder={placeholder}
+                    disabled={disabled}
+                    className={inputClassName}
+                    onChange={(event) => {
+                      field.onChange(event);
+                      onChange?.(event);
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
               ) : (
                 <Input
                   {...field}
@@ -348,7 +377,8 @@ export function ImageUpload({
   maxFiles = 4,
   acceptedFormats = "image/jpeg, image/png",
   maxFileSize = 2 * 1024 * 1024, // Default to 2MB
-}: ImageUploadProperties) {
+  initialValue = [], // Add this prop for initial values
+}: ImageUploadProperties & { initialValue?: (string | File)[] }) {
   const {
     control,
     formState: { errors },
@@ -356,6 +386,21 @@ export function ImageUpload({
   const error = errors[name];
   const fileInputReference = useRef<HTMLInputElement>(null);
   const [previews, setPreviews] = useState<string[]>([]);
+
+  // Handle initial values
+  useEffect(() => {
+    if (initialValue && initialValue.length > 0) {
+      const initialPreviews = initialValue.map((item) => {
+        if (typeof item === "string") {
+          return item; // If it's a URL, use it directly
+        } else if (item instanceof File) {
+          return URL.createObjectURL(item); // If it's a File, create a preview URL
+        }
+        return ""; // Fallback for invalid values
+      });
+      setPreviews(initialPreviews);
+    }
+  }, [initialValue]);
 
   const handleButtonClick = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -502,14 +547,29 @@ export function FileUpload({
   maxFiles = 4,
   acceptedFormats = "application/pdf",
   maxFileSize = 100 * 1024 * 1024, // Default to 100MB
-}: FileUploadProperties) {
+  initialValue = [], // Add this prop for initial values
+}: FileUploadProperties & {
+  initialValue?: Array<{ name: string; size: string; mime_type: string; extension: string }>;
+}) {
   const {
     control,
     formState: { errors },
   } = useFormContext();
   const error = errors[name];
   const fileUploadInputReference = useRef<HTMLInputElement>(null);
-  const [previews, setPreviews] = useState<{ name: string; size: number; type: string }[]>([]);
+  const [previews, setPreviews] = useState<{ name: string; size: string; type: string }[]>([]);
+
+  // Handle initial values
+  useEffect(() => {
+    if (initialValue && initialValue.length > 0) {
+      const initialPreviews = initialValue.map((item) => ({
+        name: item.name,
+        size: item.size, // Keep size as a string (e.g., "0.169MB")
+        type: item.mime_type, // Use mime_type for the file type
+      }));
+      setPreviews(initialPreviews);
+    }
+  }, [initialValue]);
 
   const handleButtonClick = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -535,7 +595,11 @@ export function FileUpload({
       });
 
       // Create new previews for the valid files
-      const newPreviews = validFiles.map((file) => ({ name: file.name, size: file.size, type: file.type }));
+      const newPreviews = validFiles.map((file) => ({
+        name: file.name,
+        size: `${(file.size / 1024 / 1024).toFixed(3)}MB`, // Convert size to MB string
+        type: file.type,
+      }));
       // Append new previews to the existing previews
       setPreviews((previousPreviews) => [...previousPreviews, ...newPreviews].slice(0, maxFiles));
       // Append new files to the existing files in the form state
@@ -630,7 +694,7 @@ export function FileUpload({
                   <Image src={fileIcon} alt={`Preview ${index + 1}`} width={72} height={72} />
                   <div className="flex flex-col gap-1">
                     <span className="text-sm font-bold">{preview.name}</span>
-                    <span className="text-xs text-mid-grey-II">{(preview.size / 1024 / 1024).toFixed(2)}MB</span>
+                    <span className="text-xs text-mid-grey-II">{preview.size}</span>
                   </div>
                   <CustomButton
                     isIconOnly
@@ -663,29 +727,22 @@ export function ThumbNailUpload({
   required = false,
   disabled = false,
   className = "",
-  // defaultSrc = "",
   acceptedFormats = "image/jpeg, image/png",
   maxFileSize = 2 * 1024 * 1024,
-}: ThumbNailUploadProperties) {
+  initialValue = null, // Add this prop
+}: ThumbNailUploadProperties & { initialValue?: string | null | File }) {
   const {
     control,
-    getValues,
     formState: { errors },
   } = useFormContext();
   const error = errors[name];
   const thumbnailUploadInputReference = useRef<HTMLInputElement>(null);
-  const [preview, setPreview] = useState<string | null>(null);
+  const [preview, setPreview] = useState<string | null>();
 
   const handleButtonClick = (event: React.MouseEvent) => {
     event.preventDefault();
     thumbnailUploadInputReference.current?.click();
   };
-
-  useEffect(() => {
-    if (getValues("logo")) {
-      setPreview(getValues("logo"));
-    }
-  }, [getValues]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, field: any) => {
     const file = event.target.files?.[0];
@@ -714,6 +771,16 @@ export function ThumbNailUpload({
     setPreview(null); // Clear the preview
     field.onChange(null); // Clear the file in the form state
   };
+
+  useEffect(() => {
+    // const getInit = async () => {
+    if (initialValue && typeof initialValue === "string") {
+      // console.log(await createFileFromUrl(initialValue));
+      setPreview(initialValue);
+    }
+    // };
+    // getInit();
+  }, [initialValue]);
 
   return (
     <div className={cn("space-y-2", className)}>
@@ -807,12 +874,11 @@ export function MultiSelect({
   options,
   placeholder = "Select options",
   required = false,
-  // disabled = false,
   className = "",
 }: {
   label?: string;
   name: string;
-  options: { value: string; label: string }[];
+  options: { value: string; label: string; thumbnail?: string | File | null }[];
   placeholder?: string;
   required?: boolean;
   disabled?: boolean;
@@ -856,17 +922,29 @@ export function MultiSelect({
                 </SelectTrigger>
                 <SelectContent>
                   {options.map((option) => (
-                    <div
+                    <section
                       key={option.value}
-                      className="flex items-center space-x-2 p-2"
+                      className="flex items-center justify-between space-x-2 p-2"
                       onClick={() => handleSelect(option.value)}
                     >
+                      <div className="flex items-center space-x-2">
+                        {option.thumbnail && (
+                          <BlurImage
+                            src={typeof option.thumbnail === "string" ? option.thumbnail : ""}
+                            alt={option.label}
+                            width={40}
+                            height={40}
+                            className="h-[20px] w-[20px] rounded-full object-cover"
+                          />
+                        )}
+
+                        <label className="text-sm">{option.label}</label>
+                      </div>
                       <Checkbox
                         checked={selectedValues.includes(option.value)}
                         onCheckedChange={() => handleSelect(option.value)}
                       />
-                      <label className="text-sm">{option.label}</label>
-                    </div>
+                    </section>
                   ))}
                 </SelectContent>
               </Select>
@@ -875,10 +953,19 @@ export function MultiSelect({
               {selectedValues.length > 0 && (
                 <div className="mt-2 flex flex-wrap gap-2">
                   {selectedValues.map((value: string) => {
-                    const label = options.find((opt) => opt.value === value)?.label;
-                    return label ? (
+                    const selectedOption = options.find((opt) => opt.value === value);
+                    return selectedOption ? (
                       <Badge key={value} className="text-xs">
-                        {label}
+                        {selectedOption.thumbnail && (
+                          <Image
+                            src={typeof selectedOption.thumbnail === "string" ? selectedOption.thumbnail : ""}
+                            alt={selectedOption.label}
+                            width={40}
+                            height={40}
+                            className="mr-1 h-[20px] w-[20px] rounded-full object-cover"
+                          />
+                        )}
+                        {selectedOption.label}
                       </Badge>
                     ) : null;
                   })}
@@ -924,6 +1011,7 @@ export function StarRatingField({ label, size, name, required = false, className
         control={control}
         render={({ field }) => (
           <StarRating
+            disabled={false}
             rating={field.value}
             onRatingChange={field.onChange}
             size={size}
@@ -1039,3 +1127,33 @@ export function SwitchField({
     </div>
   );
 }
+
+export const PasswordValidation = ({ password }: { password: string }) => {
+  const hasMinLength = password.length >= 8;
+  const hasUppercase = /[A-Z]/.test(password);
+  const hasNumber = /\d/.test(password);
+  const hasSpecialChar = /[#$%&@^]/.test(password);
+
+  return (
+    <div className="mt-2 space-y-2">
+      <div className="flex items-center space-x-2">
+        <Checkbox className={`rounded-full border-black px-[1px]`} checked={hasMinLength} />
+        <span className="text-[10px] text-mid-grey-II">Password should be at least 8 characters long</span>
+      </div>
+      <div className="flex items-center space-x-2">
+        <Checkbox className={`rounded-full border-black px-[1px]`} checked={hasUppercase} />
+        <span className="text-[10px] text-mid-grey-II">Password should contain at least one uppercase letter</span>
+      </div>
+      <div className="flex items-center space-x-2">
+        <Checkbox className={`rounded-full border-black px-[1px]`} checked={hasNumber} />
+        <span className="text-[10px] text-mid-grey-II">Password should contain at least one number</span>
+      </div>
+      <div className="flex items-center space-x-2">
+        <Checkbox className={`rounded-full border-black px-[1px]`} checked={hasSpecialChar} />
+        <span className="text-[10px] text-mid-grey-II">
+          Password should contain at least one special character (@#$%^&)
+        </span>
+      </div>
+    </div>
+  );
+};

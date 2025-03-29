@@ -25,7 +25,7 @@ export const FaqAccordion = ({ service }: { service: any }) => {
   }, [service]);
 
   if (isPending) {
-    return <Loading text={`Loading FAQ...`} className={`w-fill h-fit p-20`} />;
+    return <Loading text={`Loading FAQ...`} className={`w-fill h-[793px] justify-start p-20`} />;
   }
 
   if (!FAQ || FAQ.length === 0) {

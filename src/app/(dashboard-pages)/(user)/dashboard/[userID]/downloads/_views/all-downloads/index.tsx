@@ -54,16 +54,16 @@ export const AllDownloads = ({ service }: { service: ProductService }) => {
         <>
           {downloads.length > 0 ? (
             <section className={`grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4`}>
-              {downloads.map((download) => (
+              {downloads?.map((download) => (
                 <DownloadCard
-                  key={download.id}
+                  key={download?.id}
                   title={download.title}
                   author={download.publisher}
                   image={download.thumbnail}
                   price={download.price}
                   onClick={() => {
                     router.push(
-                      `/dashboard/${user?.id}/downloads/${download.id}?product_type=${download.product_type}`,
+                      `/dashboard/${user?.id}/downloads/${download?.id}?product_type=${download.product_type}`,
                     );
                   }}
                 />
@@ -82,8 +82,13 @@ export const AllDownloads = ({ service }: { service: ProductService }) => {
               <EmptyState
                 images={[{ src: emptyCart.src, alt: "Empty download", width: 100, height: 50 }]}
                 description="You do not have any download yet"
-                button={{ text: "Add New Product", onClick: () => {} }}
                 className={`min-h-[273px] rounded-lg bg-low-grey-III`}
+                button={{
+                  text: "Add New Product",
+                  onClick: () => {
+                    router.push(`/dashboard/${user?.id}/products/new`);
+                  },
+                }}
               />
             </section>
           )}

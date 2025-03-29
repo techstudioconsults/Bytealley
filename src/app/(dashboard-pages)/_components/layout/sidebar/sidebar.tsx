@@ -6,12 +6,24 @@ import { usePathname } from "next/navigation";
 import { FC } from "react";
 
 import { Logo } from "~/components/common/logo";
-import { sideItems } from "~/utils/constants";
+import { useSidebarItems } from "~/utils/constants";
 import { cn } from "~/utils/utils";
 
-export const Sidebar: FC<ISidebarProperties> = ({ sideNavitems = sideItems, logoComponent, className = "" }) => {
+interface ISidebarProperties {
+  sideNavitems?: SidebarItem[];
+  logoComponent?: React.ReactNode;
+  onClose?: () => void;
+}
+
+export const Sidebar: FC<ISidebarProperties> = ({ sideNavitems, logoComponent, onClose }) => {
   const pathname = usePathname();
   const userID = pathname.split("/")[2];
+
+  // Use the custom hook to get dynamically updated sidebar items
+  const updatedSideItems = useSidebarItems();
+
+  // Use the passed `sideNavitems` if provided, otherwise use the updated `sideItems`
+  const items = sideNavitems || updatedSideItems;
 
   const renderIcon = (item: SidebarItem) => {
     if (item.icon) {
@@ -44,18 +56,20 @@ export const Sidebar: FC<ISidebarProperties> = ({ sideNavitems = sideItems, logo
         href={dynamicLink}
         data-testid={item.id}
         role="sidebar-link"
+        onClick={onClose}
         className={cn(
           "relative z-50 flex items-center gap-3 rounded-lg px-3 py-2.5 font-medium transition-all duration-200",
           isActive ? "border-2 border-primary text-primary shadow-active" : "text-mid-grey-II hover:bg-low-grey-I",
         )}
       >
         {renderIcon(item)}
-        <span className="hidden lg:block">{item.route}</span>
+        <span>{item.route}</span>
         {item.badge && (
           <span
             className={cn(
               "absolute right-2 flex h-5 w-5 items-center justify-center rounded-full text-xs",
               item.badge.variant === "danger" ? "bg-mid-danger text-white" : "bg-gray-200",
+              item.badge.count === 0 && "hidden",
             )}
           >
             {item.badge.count}
@@ -66,11 +80,10 @@ export const Sidebar: FC<ISidebarProperties> = ({ sideNavitems = sideItems, logo
   };
 
   return (
-    <div className={cn("sticky top-0 hidden h-screen w-[283px] flex-col border-r bg-white md:flex", className)}>
+    <div>
       <div className="flex items-center justify-center py-8">{logoComponent || <Logo width={140} height={47} />}</div>
-
       <nav className="flex-1 space-y-2 overflow-y-auto p-4">
-        {sideNavitems.map((item) => (
+        {items.map((item) => (
           <div key={item.id}>{renderSidebarItem(item)}</div>
         ))}
       </nav>

@@ -1,6 +1,10 @@
+import Link from "next/link";
+
 import { FormField } from "~/components/common/FormFields";
+import { useSession } from "~/hooks/use-session";
 
 export const ProfileInformation = () => {
+  const { user } = useSession();
   return (
     <>
       <FormField
@@ -22,7 +26,9 @@ export const ProfileInformation = () => {
         labelDetailedNode={
           <div className={`flex items-center justify-between`}>
             <span className={`text-xs text-mid-grey-II`}>This email is linked to your account</span>
-            <span className={`text-xs font-semibold text-mid-purple`}>Change Account Email</span>
+            <Link href={`/dashboard/${user?.id}/settings`} className={`text-xs font-semibold text-mid-purple`}>
+              Change Account Email
+            </Link>
           </div>
         }
         name="email"

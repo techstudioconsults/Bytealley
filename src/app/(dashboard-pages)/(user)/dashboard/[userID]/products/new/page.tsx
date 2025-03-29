@@ -26,12 +26,12 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
   const currentTab = searchParameters.get("tab") || "product-details";
   const productID = searchParameters.get("product_id") || "";
 
-  const methods = useForm<ProductFormValues>({
+  const methods = useForm<IProduct>({
     resolver: zodResolver(ProductFormSchema),
     defaultValues: {
-      product_type: "",
+      product_type: "digital_product",
       title: "",
-      category: "",
+      category: "Product",
       price: 0,
       discount_price: 0,
       description: "",
@@ -50,7 +50,11 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
     formState: { isSubmitting },
   } = methods;
 
-  const onSubmit = async (data: ProductFormValues) => {
+  const onSubmit = async (data: IProduct) => {
+    const filterFiles = (items: (string | File | { extension?: string; size?: string })[]): File[] => {
+      return items.filter((item) => item instanceof File) as File[];
+    };
+
     const commonFields = {
       product_type: data.product_type,
       title: data.title,
@@ -58,15 +62,15 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
       price: data.price,
       discount_price: data.discount_price,
       description: data.description,
-      cover_photos: data.cover_photos,
-      thumbnail: data.thumbnail,
+      cover_photos: filterFiles(data.cover_photos),
+      thumbnail: data.thumbnail instanceof File ? data.thumbnail : null,
       highlights: data.highlights,
       tags: data.tags,
     };
 
     const productSpecificFields =
       data.product_type === "digital_product"
-        ? { assets: data.assets }
+        ? { assets: filterFiles(data.assets || []) }
         : {
             resource_link: data.resource_link,
             portfolio_link: data.portfolio_link,
@@ -81,6 +85,47 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
       description: `Product "${data.title}" created successfully! You can now preview and publish it.`,
       variant: "success",
     });
+    router.push(`/dashboard/${params.userID}/products/new?tab=preview&product_id=${productId}`);
+  };
+
+  const updateProduct = async (data: IProduct) => {
+    const filterFiles = (items: (string | File | { extension?: string; size?: string })[]): File[] => {
+      return items.filter((item) => item instanceof File) as File[];
+    };
+
+    const commonFields = {
+      product_type: data.product_type,
+      title: data.title,
+      category: data.category,
+      price: data.price,
+      discount_price: data.discount_price,
+      description: data.description,
+      highlights: data.highlights,
+      tags: data.tags,
+      ...(data.thumbnail instanceof File ? { thumbnail: data.thumbnail } : {}),
+      ...(data.cover_photos && data.cover_photos.length > 0 ? { cover_photos: filterFiles(data.cover_photos) } : {}),
+    };
+
+    const productSpecificFields =
+      data.product_type === "digital_product"
+        ? {
+            ...(data.assets && data.assets.length > 0 ? { assets: filterFiles(data.assets) } : {}),
+          }
+        : {
+            resource_link: data.resource_link,
+            portfolio_link: data.portfolio_link,
+          };
+
+    const productData = { ...commonFields, ...productSpecificFields };
+
+    const productId = await productService.updateProduct(productData, productID);
+
+    Toast.getInstance().showToast({
+      title: "Success",
+      description: `Product "${data.title}" updated successfully! You can now preview and publish it.`,
+      variant: "success",
+    });
+
     router.push(`/dashboard/${params.userID}/products/new?tab=preview&product_id=${productId}`);
   };
 
@@ -118,12 +163,12 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
   return (
     <FormProvider {...methods}>
       <Tabs value={currentTab} onValueChange={onTabChange} className="w-full">
-        <TabsList className="sticky top-[154px] mb-8 flex h-fit w-full flex-col-reverse gap-4 rounded-none border-b bg-white p-0 sm:flex-row sm:items-center sm:justify-between md:top-[80px] lg:h-[58px]">
+        <TabsList className="sticky top-[154px] z-10 mb-8 flex h-fit w-full flex-col-reverse gap-4 rounded-none border-b bg-white p-0 sm:flex-row sm:items-center sm:justify-between lg:top-[80px] lg:h-[58px]">
           <section className="flex h-full w-full flex-wrap items-center gap-2 sm:w-auto sm:flex-nowrap sm:gap-0">
             <TabsTrigger
               disabled
               value="product-details"
-              className="relative h-full min-w-[100px] shrink-0 rounded-none border-transparent px-3 text-sm data-[state=active]:bg-transparent data-[state=active]:shadow-none sm:px-4"
+              className="relative h-full min-w-[100px] shrink-0 rounded-none border-transparent px-3 text-sm disabled:text-black data-[state=active]:bg-transparent data-[state=active]:shadow-none sm:px-4"
             >
               Product Details
               <span
@@ -169,16 +214,29 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
                 >
                   Cancel
                 </CustomButton>
-                <CustomButton
-                  variant="primary"
-                  size="lg"
-                  className="w-full sm:w-auto"
-                  onClick={handleSubmit(onSubmit)}
-                  isDisabled={isSubmitting}
-                  isLoading={isSubmitting}
-                >
-                  Save & Continue
-                </CustomButton>
+                {productID ? (
+                  <CustomButton
+                    variant="primary"
+                    size="lg"
+                    className="w-full sm:w-auto"
+                    onClick={handleSubmit(updateProduct)}
+                    isDisabled={isSubmitting}
+                    isLoading={isSubmitting}
+                  >
+                    Update & Continue
+                  </CustomButton>
+                ) : (
+                  <CustomButton
+                    variant="primary"
+                    size="lg"
+                    className="w-full sm:w-auto"
+                    onClick={handleSubmit(onSubmit)}
+                    isDisabled={isSubmitting}
+                    isLoading={isSubmitting}
+                  >
+                    Save & Continue
+                  </CustomButton>
+                )}
               </>
             )}
             {currentTab === "preview" && (
@@ -237,7 +295,7 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
 
         {/* Tab Content */}
         <TabsContent value="product-details">
-          <ProductForm methods={methods} />
+          <ProductForm methods={methods} service={productService} />
         </TabsContent>
         <TabsContent value="preview">
           <ViewProductLayout productService={productService} />
