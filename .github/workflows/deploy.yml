@@ -33,6 +33,11 @@ jobs:
          - name: Set Deployment Path
            run: echo "DEPLOY_PATH=/var/www/bytealley/frontend/staging" >> $GITHUB_ENV
 
+         - name: Move Repository to Deploy Path
+           run: |
+              mkdir -p $DEPLOY_PATH
+              rsync -a --delete "${{ github.workspace }}/" "$DEPLOY_PATH"
+
          - name: Create .env file 🌮
            run: echo "${{ secrets.ENV_STAGING }}" > $DEPLOY_PATH/.env
 
@@ -70,6 +75,11 @@ jobs:
 
          - name: Set Deployment Path
            run: echo "DEPLOY_PATH=/var/www/bytealley/frontend/prod" >> $GITHUB_ENV
+
+         - name: Move Repository to Deploy Path
+           run: |
+              mkdir -p $DEPLOY_PATH
+              rsync -a --delete "${{ github.workspace }}/" "$DEPLOY_PATH"
 
          - name: Create .env file 🌮
            run: echo "${{ secrets.ENV_PROD }}" > $DEPLOY_PATH/.env
