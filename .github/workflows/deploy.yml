@@ -110,5 +110,5 @@ jobs:
          - name: Build Application 💻
            run: pnpm --dir $DEPLOY_PATH run build
 
-        #  - name: Restart App 💻
-        #    run: pm2 restart tsa-server-prod
+         - name: Restart App 💻
+           run: pm2 restart bytealley-prod
