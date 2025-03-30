@@ -45,7 +45,7 @@ jobs:
            run: pnpm install --prefix $DEPLOY_PATH
 
          - name: Build Application 💻
-           run: pnpm run build --prefix $DEPLOY_PATH
+           run: pnpm --dir $DEPLOY_PATH run build
 
         #  - name: Restart App 💻
         #    run: pm2 restart tsa-server-staging
