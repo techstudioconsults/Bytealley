@@ -13,6 +13,7 @@ import { ProgressProviders } from "~/context/progress-provider";
 import SessionProvider from "~/context/session-provider";
 import ToastProvider from "~/context/toast-provider";
 import NotificationProvider from "~/features/push-notification/context/notification-provider";
+import { PageTransition } from "~/lib/animations";
 import { getSession } from "~/lib/session/session";
 import { ReduxProvider } from "~/store/provider";
 
@@ -48,10 +49,10 @@ export default async function RootLayout({
                   <ToastProvider>
                     <GotoTop />
                     <LenisProvider>
-                      <main>
+                      <PageTransition>
                         <ProgressProviders>{children}</ProgressProviders>
                         <SpeedInsights />
-                      </main>
+                      </PageTransition>
                     </LenisProvider>
                   </ToastProvider>
                 </NotificationProvider>

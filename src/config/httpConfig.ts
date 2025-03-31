@@ -14,6 +14,7 @@ const config = {
   baseURL: BASE_URL,
   timeoutErrorMessage: TIMEOUTMSG,
   withCredentials: true,
+  withXSRFToken: true,
   headers: {
     "Content-Type": "application/json",
   },
@@ -22,7 +23,7 @@ const config = {
 const http = axios.create(config);
 
 // Function to fetch CSRF token from cookies
-const getCsrfToken = () => {
+export const getCsrfToken = () => {
   return Cookies.get("XSRF-TOKEN");
 };
 

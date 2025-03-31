@@ -202,6 +202,10 @@
 /* Base typography settings */
 @layer base {
   /* Body text */
+  .gpu-optimized {
+    will-change: transform, opacity;
+    transform: translate3d(0, 0, 0);
+  }
 
   /* Headings */
   h1,
