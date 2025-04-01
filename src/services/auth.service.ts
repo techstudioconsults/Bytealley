@@ -35,6 +35,17 @@ export class AuthService {
     }
   }
 
+  async handleGoogleCallback(credentials: { code: string; provider: string }) {
+    // console.log(credentials);
+
+    const response = await this.http.get<ILoginResponse>("/auth/oauth/callback", credentials);
+    if (response?.status === 200) {
+      const user = this.mapUserResponse(response.data);
+      await this.createUserSession(user);
+      return user;
+    }
+  }
+
   async verifyEmail() {
     const response = await this.http.get<IEmailVerificationResponse>(`/auth/email/resend`);
     if (response?.status === 200) {
@@ -43,15 +54,6 @@ export class AuthService {
         description: response.data.message,
         variant: "success",
       });
-    }
-  }
-
-  async handleGoogleCallback(credentials: { code: string; provider: string }) {
-    const response = await this.http.post<ILoginResponse>("/auth/oauth/callback", credentials);
-    if (response?.status === 200) {
-      const user = this.mapUserResponse(response.data);
-      await this.createUserSession(user);
-      return user;
     }
   }
 
