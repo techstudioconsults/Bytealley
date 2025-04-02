@@ -36,8 +36,6 @@ export class AuthService {
   }
 
   async handleGoogleCallback(credentials: { code: string; provider: string }) {
-    // console.log(credentials);
-
     const response = await this.http.get<ILoginResponse>("/auth/oauth/callback", credentials);
     if (response?.status === 200) {
       const user = this.mapUserResponse(response.data);
