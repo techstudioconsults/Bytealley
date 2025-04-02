@@ -9,6 +9,7 @@ interface SearchProductCardProperties {
   productName: string;
   author: string;
   productLink: string;
+  onProductClick?: () => void;
 }
 
 export const SearchProductCard: React.FC<SearchProductCardProperties> = ({
@@ -17,6 +18,7 @@ export const SearchProductCard: React.FC<SearchProductCardProperties> = ({
   productName,
   author,
   productLink,
+  onProductClick,
 }) => {
   return (
     <div className="flex items-center justify-between">
@@ -36,7 +38,8 @@ export const SearchProductCard: React.FC<SearchProductCardProperties> = ({
         </div>
       </div>
       <Link
-        href={`/dashboard/products/${productLink}`}
+        onClick={onProductClick}
+        href={`/explore/product/${productLink}`}
         className="text-sm font-semibold text-mid-purple hover:underline"
       >
         view product

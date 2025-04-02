@@ -148,6 +148,7 @@ declare global {
     resource_link?: string[];
     portfolio_link?: string;
     publisher?: string;
+    publisher_avatar?: string;
   }
 
   interface IPaginationLink {

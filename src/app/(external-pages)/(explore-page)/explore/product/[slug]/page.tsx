@@ -70,7 +70,7 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
             <h1 className="mb-2 text-2xl font-bold text-gray-900 md:text-3xl">{product?.title}</h1>
             <div className="flex items-center gap-2">
               <Avatar className="relative z-[-1] h-6 w-6">
-                <AvatarImage src={typeof product?.thumbnail === "string" ? product.thumbnail : ""} />
+                <AvatarImage src={typeof product?.publisher_avatar === "string" ? product.publisher_avatar : ""} />
                 <AvatarFallback>{product?.publisher?.charAt(0)}</AvatarFallback>
               </Avatar>
               <span className="text-xs font-bold lg:text-[16px]">{product?.publisher}</span>
@@ -84,7 +84,7 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
         <section className="mb-4 rounded-md border p-4">
           <h2 className="mb-4 border-b py-4 text-xl font-bold text-gray-900">Features</h2>
           <ul className="list-inside list-disc space-y-4 text-gray-700">
-            {product?.highlights.map((highlight, index) => <li key={index}>✔️ {highlight}</li>)}
+            {product?.highlights.map((highlight, index) => <p key={index}>✔️ {highlight}</p>)}
           </ul>
         </section>
 
@@ -119,7 +119,7 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
           <div className="mb-8">
             <div className="flex items-center justify-between rounded-md bg-low-purple p-2">
               <p className="font-semibold">Sold</p>
-              <p className="text-sm font-semibold">{product?.total_order}</p>
+              <p className="text-sm font-semibold">{product?.total_sales}</p>
             </div>
             <div className="mb-7 mt-4 flex items-center gap-2">
               <span className="text-2xl font-bold">
@@ -193,10 +193,10 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
                 <span>{product?.assets?.length}</span>
               </div>
             </div>
-            <div className="mt-4 flex items-center gap-4">
+            {/* <div className="mt-4 flex items-center gap-4">
               <p className="text-sm font-semibold">Share</p>
-              {/* <p className="text-sm font-semibold">Give as Gift</p> */}
-            </div>
+              <p className="text-sm font-semibold">Give as Gift</p>
+            </div> */}
           </div>
         </section>
 
@@ -214,13 +214,13 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
                   <div className="mt-2 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Avatar className="h-4 w-4">
-                        <AvatarImage src={review.user.avatar} />
+                        <AvatarImage src={review.user.logo} />
                         <AvatarFallback>{review.user.name.charAt(0)}</AvatarFallback>
                       </Avatar>
                       <p className="text-[10px] font-semibold">{review.user.name}</p>
                     </div>
                     <StarRating size="text-xs" rating={review.rating} />
-                    <p className="text-[10px]">{new Date(review.createdAt).toLocaleDateString()}</p>
+                    <p className="text-[10px]">{new Date(review.created_at).toLocaleDateString()}</p>
                   </div>
                 </div>
               ))

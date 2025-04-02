@@ -13,6 +13,7 @@ import { EarningService } from "~/services/earnings.service";
 import { Toast } from "~/utils/notificationManager";
 
 export const AddBankModal = ({ service }: { service: EarningService }) => {
+  const [isOpen, setIsOpen] = useState(false);
   const [banks, setBanks] = useState<any>([]);
   const methods = useForm<BankFormData>({
     resolver: zodResolver(bankFormSchema),
@@ -37,6 +38,8 @@ export const AddBankModal = ({ service }: { service: EarningService }) => {
         description: `Account ${response.data.bank_name} was registerd successfully`,
         variant: "default",
       });
+      reset();
+      setIsOpen(false); // Close the dialog
     }
   };
 
@@ -60,6 +63,8 @@ export const AddBankModal = ({ service }: { service: EarningService }) => {
 
   return (
     <ReusableDialog
+      open={isOpen}
+      onOpenChange={setIsOpen}
       className={`sm:max-w-[499px]`}
       trigger={
         <div

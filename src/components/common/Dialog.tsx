@@ -16,6 +16,8 @@ interface ReusableDialogProperties extends HTMLAttributes<HTMLDivElement> {
   description?: string;
   children?: ReactNode;
   headerClassName?: string;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
 export function ReusableDialog({
@@ -25,9 +27,11 @@ export function ReusableDialog({
   children,
   headerClassName,
   className,
+  open,
+  onOpenChange,
 }: ReusableDialogProperties) {
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent className={cn(`sm:max-w-[425px]`, className)}>
         <DialogHeader>

@@ -18,6 +18,7 @@ interface SearchProperties extends HTMLAttributes<HTMLDivElement> {
 }
 
 const BaseSearchInput: FC<SearchProperties> = ({ appService, inputBackgroundColor, className, ...properties }) => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
   const searchParameters = useSearchParams();
@@ -62,6 +63,7 @@ const BaseSearchInput: FC<SearchProperties> = ({ appService, inputBackgroundColo
         productName={result.title}
         author={result.publisher || ""}
         productLink={result.slug}
+        onProductClick={() => setIsDialogOpen(false)}
       />
     );
   });
@@ -69,6 +71,8 @@ const BaseSearchInput: FC<SearchProperties> = ({ appService, inputBackgroundColo
   return (
     <ReusableDialog
       className={cn(`lg:min-w-[780px]`)}
+      open={isDialogOpen}
+      onOpenChange={setIsDialogOpen}
       trigger={
         <div
           className={cn(

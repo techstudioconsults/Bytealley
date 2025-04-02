@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import CustomButton from "~/components/common/common-button/common-button";
@@ -17,6 +18,7 @@ const BaseReviewModal = ({
   downloadService: DownloadService;
   downloadedProductID: string;
 }) => {
+  const [isOpen, setIsOpen] = useState(false);
   const methods = useForm<ReviewFormData>({
     resolver: zodResolver(reviewSchema),
     defaultValues: {
@@ -39,11 +41,15 @@ const BaseReviewModal = ({
         description: "Review has been submitted successfully.",
         variant: "success",
       });
+      reset();
+      setIsOpen(false);
     }
   };
 
   return (
     <ReusableDialog
+      open={isOpen}
+      onOpenChange={setIsOpen}
       trigger={
         <CustomButton variant={`outline`} size={`lg`} className={`border-mid-purple text-mid-purple`}>
           Rate Product

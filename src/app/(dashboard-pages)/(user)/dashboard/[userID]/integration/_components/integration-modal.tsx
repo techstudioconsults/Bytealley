@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import CustomButton from "~/components/common/common-button/common-button";
@@ -22,6 +22,7 @@ const BaseIntegrationModal = ({
   appService: AppService;
   type: string;
 }) => {
+  const [isOpen, setIsOpen] = useState(false);
   const methods = useForm<EmailIntegrationFormData>({
     resolver: zodResolver(emailIntegrationSchema),
     defaultValues: {
@@ -45,11 +46,14 @@ const BaseIntegrationModal = ({
         variant: "default",
       });
       reset();
+      setIsOpen(false);
     }
   };
 
   return (
     <ReusableDialog
+      open={isOpen}
+      onOpenChange={setIsOpen}
       trigger={trigger}
       title={"Connect Your Account"}
       description={`Enter your API key to connect your ${type} account.`}
