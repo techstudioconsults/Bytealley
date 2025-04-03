@@ -52,7 +52,7 @@ export const BestSellingProduct = ({ appService }: { appService: AppService }) =
         image={typeof product.thumbnail === "string" ? product.thumbnail : ""}
         heading={product.title}
         price={product.price}
-        publisher={product.publisher || "Unknown Publisher"}
+        publisher={product.publisher?.name || "Unknown Publisher"}
         aggrRating={product.avg_rating}
         discountPrice={product.discount_price}
       />
