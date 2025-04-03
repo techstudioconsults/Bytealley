@@ -6,6 +6,7 @@ import { CopyAction } from "~/app/(dashboard-pages)/_components/copy-action";
 import Loading from "~/app/Loading";
 import { BlurImage } from "~/components/miscellaneous/blur-image";
 import { ProductService } from "~/services/product.service";
+import { cn } from "~/utils/utils";
 
 type ShareProductViewProperties = {
   productId: string;
@@ -60,12 +61,21 @@ export const ShareProductView = ({ productId, productService }: ShareProductView
 
         {/* Success Message */}
         <div className="space-y-3 text-center">
-          <h2 className="text-lg font-bold md:text-2xl">Product Published Successfully!</h2>
-          <p className={`text-mid-grey-III`}>Share this link with others to let them purchase your product</p>
+          <h2 className="text-lg font-bold md:text-2xl">
+            Product {product.status === `published` ? `published` : `unpublished`} Successfully!
+          </h2>
+          <p hidden={product.status !== `published`} className={`text-mid-grey-III`}>
+            Share this link with others to let them purchase your product
+          </p>
         </div>
 
         {/* Link Container */}
-        <div className="flex w-full flex-col gap-4 rounded-lg border bg-low-grey-III p-2 md:flex-row md:items-center md:justify-between">
+        <div
+          className={cn(
+            "flex w-full flex-col gap-4 rounded-lg border bg-low-grey-III p-2 md:flex-row md:items-center md:justify-between",
+            product.status !== `published` && "hidden",
+          )}
+        >
           <p className="flex-1 truncate text-sm text-foreground/80">{product.link}</p>
           <CopyAction textToCopy={product.link} className="w-full md:w-auto" />
         </div>

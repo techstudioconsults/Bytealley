@@ -1,11 +1,17 @@
 import { TrashIcon } from "lucide-react";
 
 import CustomButton from "~/components/common/common-button/common-button";
+import { ConfirmationDialog } from "~/components/common/dialog/confirmation-dialog";
 import { BlurImage } from "~/components/miscellaneous/blur-image";
 import { useCart } from "~/hooks/use-cart";
 
 export const ProductCard = ({ product }: { product: CartedProduct }) => {
   const { removeFromCart, isRemoveFromCartPending } = useCart();
+
+  const handleRemove = () => {
+    removeFromCart(product.id);
+  };
+
   return (
     <div className="flex flex-col items-center gap-4 p-4 sm:flex-row">
       <div className="relative h-32 w-32 flex-shrink-0 sm:w-48">
@@ -23,16 +29,25 @@ export const ProductCard = ({ product }: { product: CartedProduct }) => {
         </div>
         <div className="mt-4 flex items-center justify-between">
           <p className="text-sm">Qty: {product.quantity}</p>
-          <CustomButton
-            // isLoading={isRemoveFromCartPending}
-            isIconOnly
-            isDisabled={isRemoveFromCartPending}
-            className={`border-mid-danger text-mid-danger`}
-            variant={`ghost`}
-            size={`icon`}
-            onClick={() => removeFromCart(product.id)}
-            icon={<TrashIcon />}
-          />
+
+          <ConfirmationDialog
+            action={{
+              pending: isRemoveFromCartPending,
+              onOpenChange: () => {},
+              title: "Remove Item",
+              description: "Are you sure you want to remove this item from your cart?",
+              onConfirm: handleRemove,
+              buttonName: "Remove",
+            }}
+          >
+            <CustomButton
+              isIconOnly
+              className="border-mid-danger text-mid-danger"
+              variant="ghost"
+              size="icon"
+              icon={<TrashIcon />}
+            />
+          </ConfirmationDialog>
         </div>
       </div>
     </div>

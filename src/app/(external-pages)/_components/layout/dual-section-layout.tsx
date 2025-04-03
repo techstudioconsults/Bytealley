@@ -61,7 +61,13 @@ export const DualSectionLayoutList: React.FC<DualSectionLayoutListProperties> = 
       )}
       {!user && shouldShowButton && (
         <div className="mt-10">
-          <CustomButton size={`xl`} className={cn(buttonClassName)} variant="primary" onClick={onButtonClick}>
+          <CustomButton
+            href={`/auth/login`}
+            size={`xl`}
+            className={cn(buttonClassName)}
+            variant="primary"
+            onClick={onButtonClick}
+          >
             {buttonText}
           </CustomButton>
         </div>

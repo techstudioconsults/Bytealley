@@ -3,7 +3,9 @@ import { useNotifications } from "../../hooks/use-notification";
 import { PushNotification } from "../../types";
 
 const NotificationTime = ({ time }: { time: string }) => (
-  <p className="text-[10px] text-muted-foreground">{new Date(time).toLocaleTimeString()}</p>
+  <p className="text-[10px] text-muted-foreground">
+    {new Date(time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+  </p>
 );
 
 const NotificationMessage = ({ message }: { message: string }) => (

@@ -64,7 +64,11 @@ const BaseOrderDetailsPage = ({
       <section className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <AnalyticsCard title="Total Orders" value={order?.quantity} />
         <AnalyticsCard title="Total Sales" value={order?.product?.total_sales} />
-        <AnalyticsCard title="Total Value" value={`₦${order?.total_amount?.toLocaleString()}`} />
+        <AnalyticsCard
+          className={`text-mid-success`}
+          title="Total Value"
+          value={`₦${order?.total_amount?.toLocaleString()}`}
+        />
       </section>
     </section>
   );

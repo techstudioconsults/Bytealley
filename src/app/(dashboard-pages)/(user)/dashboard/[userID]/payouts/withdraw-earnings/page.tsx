@@ -101,7 +101,7 @@ const BaseWithdrawEarnings = ({ earningService }: { earningService: EarningServi
             </>
           )}
 
-          <AddBankModal service={earningService} />
+          <AddBankModal service={earningService} getAccounts={() => earningService.getAllRegisteredPaymentAccount()} />
         </section>
       </section>
       <section className={`space-y-2`}>
@@ -121,7 +121,7 @@ const BaseWithdrawEarnings = ({ earningService }: { earningService: EarningServi
                   onClick={() => {
                     methods.setValue("amount", availableEarnings);
                   }}
-                  className={`text-mid-purple`}
+                  className={`cursor-pointer text-mid-purple`}
                 >
                   Max
                 </p>

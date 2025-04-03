@@ -147,7 +147,10 @@ declare global {
     deleted_at: string | null;
     resource_link?: string[];
     portfolio_link?: string;
-    publisher?: string;
+    publisher?: {
+      name: string;
+      avatar?: string;
+    };
   }
 
   interface IPaginationLink {
@@ -231,6 +234,7 @@ declare global {
     total_transactions: string;
     latest_purchase_title: string;
     latest_purchase_price: number;
+    latest_purchase_discount_price: number;
     latest_purchase_date: string;
     joined: string;
     latest_purchases: ILatestPurchase[];

@@ -6,7 +6,7 @@ import { WithDependency } from "~/HOC/withDependencies";
 import { AppService } from "~/services/app.service";
 import { dependencies } from "~/utils/dependencies";
 import CustomButton from "../common-button/common-button";
-import { ReusableDialog } from "../Dialog";
+import { ReusableDialog } from "../dialog/Dialog";
 
 export const SubscriptionModal = ({ triggerStyle }: { triggerStyle?: string }) => {
   return (

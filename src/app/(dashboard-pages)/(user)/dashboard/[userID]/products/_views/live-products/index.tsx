@@ -10,7 +10,7 @@ import { DateRange } from "react-day-picker";
 import { DashboardTable } from "~/app/(dashboard-pages)/_components/dashboard-table";
 import { productColumns, ProductRowActions } from "~/app/(dashboard-pages)/_components/dashboard-table/table-data";
 import { DateRangePicker } from "~/app/(dashboard-pages)/_components/date-range-picker";
-import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
+import { EmptyState, FilteredEmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import Loading from "~/app/Loading";
 import { useSession } from "~/hooks/use-session";
 import { ProductService } from "~/services/product.service";
@@ -81,13 +81,20 @@ export const LiveProducts = ({ productService }: { productService: ProductServic
                   showPagination
                 />
               </section>
+            ) : dateRange?.from || dateRange?.to ? (
+              <FilteredEmptyState
+                onReset={() => {
+                  setDateRange(undefined);
+                  setCurrentPage(1);
+                }}
+              />
             ) : (
               <EmptyState
                 images={[{ src: empty4.src, alt: "Empty published product", width: 1136, height: 220 }]}
                 title="You’re yet to publish a product."
                 description="it looks like you're yet to publish a product on our platform. Don't miss out on the opportunity to share your talents with the world. Get started today and showcase your creations to a global audience. Your digital journey begins now!"
                 button={{
-                  text: "Publish New Product",
+                  text: "Add New Product",
                   onClick: () => {
                     router.push(`/dashboard/${user?.id}/products/new`);
                   },
