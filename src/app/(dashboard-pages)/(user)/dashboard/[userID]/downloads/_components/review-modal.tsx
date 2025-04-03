@@ -3,7 +3,7 @@ import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import CustomButton from "~/components/common/common-button/common-button";
-import { ReusableDialog } from "~/components/common/Dialog";
+import { ReusableDialog } from "~/components/common/dialog/Dialog";
 import { FormField, StarRatingField } from "~/components/common/FormFields";
 import { WithDependency } from "~/HOC/withDependencies";
 import { ReviewFormData, reviewSchema } from "~/schemas";

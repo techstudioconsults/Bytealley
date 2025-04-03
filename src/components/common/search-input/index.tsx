@@ -9,7 +9,7 @@ import { WithDependency } from "~/HOC/withDependencies";
 import { AppService } from "~/services/app.service";
 import { dependencies } from "~/utils/dependencies";
 import { cn } from "~/utils/utils";
-import { ReusableDialog } from "../Dialog";
+import { ReusableDialog } from "../dialog/Dialog";
 import { SearchProductCard } from "./search-product-card";
 
 interface SearchProperties extends HTMLAttributes<HTMLDivElement> {

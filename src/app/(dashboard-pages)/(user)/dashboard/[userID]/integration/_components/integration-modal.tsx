@@ -5,7 +5,7 @@ import { ReactNode, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import CustomButton from "~/components/common/common-button/common-button";
-import { ReusableDialog } from "~/components/common/Dialog";
+import { ReusableDialog } from "~/components/common/dialog/Dialog";
 import { FormField } from "~/components/common/FormFields";
 import { WithDependency } from "~/HOC/withDependencies";
 import { EmailIntegrationFormData, emailIntegrationSchema } from "~/schemas";

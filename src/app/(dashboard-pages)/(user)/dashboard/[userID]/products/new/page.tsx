@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import CustomButton from "~/components/common/common-button/common-button";
@@ -13,6 +13,7 @@ import { ProductFormSchema } from "~/schemas";
 import { ProductService } from "~/services/product.service";
 import { dependencies } from "~/utils/dependencies";
 import { Toast } from "~/utils/notificationManager";
+import { cn } from "~/utils/utils";
 import { ProductForm } from "./_views/product-form";
 import { ShareProductView } from "./_views/share-product";
 
@@ -21,10 +22,10 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
   const pathname = usePathname();
   const searchParameters = useSearchParams();
   const [isPublishing, startTransition] = useTransition();
-  const [isPublished, setIsPublished] = useState(false);
 
   const currentTab = searchParameters.get("tab") || "product-details";
   const productID = searchParameters.get("product_id") || "";
+  const productStatus = searchParameters.get("status") || "";
 
   const methods = useForm<IProduct>({
     resolver: zodResolver(ProductFormSchema),
@@ -138,25 +139,26 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
   const handlePublish = () => {
     startTransition(async () => {
       const product = await productService.publishProduct(productID);
-      setIsPublished(true); // Set publish state to true
       Toast.getInstance().showToast({
         title: "Success",
         description: `Product "${product?.title}" published successfully!`,
         variant: "success",
       });
-      router.push(`/dashboard/${params.userID}/products/new?tab=share&product_id=${product?.id}`);
+      router.push(
+        `/dashboard/${params.userID}/products/new?tab=share&product_id=${product?.id}&status=${product?.status}`,
+      );
     });
   };
 
   const handleUnpublish = () => {
     startTransition(async () => {
       const product = await productService.publishProduct(productID);
-      setIsPublished(false); // Set publish state to false
       Toast.getInstance().showToast({
         title: "Success",
         description: `Product "${product?.title}" unpublished successfully!`,
         variant: "success",
       });
+      router.push(`/dashboard/${params.userID}/products?tab=all-products`);
     });
   };
 
@@ -208,7 +210,6 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
                   className="w-full border-destructive text-destructive sm:w-auto"
                   onClick={() => {
                     methods.reset();
-                    // router.push(`/dashboard/${params.userID}/products?tab=drafts`);
                   }}
                   isDisabled={isSubmitting}
                 >
@@ -252,16 +253,29 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
                 >
                   Cancel
                 </CustomButton>
-                <CustomButton
-                  variant="primary"
-                  size="lg"
-                  className="w-full sm:w-auto"
-                  onClick={handlePublish}
-                  isDisabled={isPublishing}
-                  isLoading={isPublishing}
-                >
-                  Publish & Continue
-                </CustomButton>
+                {productStatus === "published" ? (
+                  <CustomButton
+                    variant="primary"
+                    size="lg"
+                    className="w-full sm:w-auto"
+                    onClick={handleUnpublish}
+                    isDisabled={isPublishing}
+                    isLoading={isPublishing}
+                  >
+                    Unpublish & Continue
+                  </CustomButton>
+                ) : (
+                  <CustomButton
+                    variant="primary"
+                    size="lg"
+                    className="w-full sm:w-auto"
+                    onClick={handlePublish}
+                    isDisabled={isPublishing}
+                    isLoading={isPublishing}
+                  >
+                    Publish & Continue
+                  </CustomButton>
+                )}
               </>
             )}
             {currentTab === "share" && (
@@ -269,12 +283,16 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
                 <CustomButton
                   variant="outline"
                   size="lg"
-                  className="w-full border-primary text-primary sm:w-auto"
-                  onClick={isPublished ? handleUnpublish : handlePublish}
+                  className={cn(
+                    "w-full sm:w-auto",
+                    productStatus === `published` && "border-danger text-danger",
+                    productStatus === `unpublished` && "border-primary text-primary",
+                  )}
+                  onClick={productStatus === `published` ? handleUnpublish : handlePublish}
                   isDisabled={isSubmitting}
                   isLoading={isPublishing}
                 >
-                  {isPublished ? "Unpublish" : "Publish"}
+                  {productStatus === `published` ? "Unpublish" : "Publish"}
                 </CustomButton>
                 <CustomButton
                   variant="primary"

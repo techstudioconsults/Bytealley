@@ -1,18 +1,15 @@
 import { TrashIcon } from "lucide-react";
-import { useState } from "react";
 
 import CustomButton from "~/components/common/common-button/common-button";
-import { ReusableDialog } from "~/components/common/Dialog";
+import { ConfirmationDialog } from "~/components/common/dialog/confirmation-dialog";
 import { BlurImage } from "~/components/miscellaneous/blur-image";
 import { useCart } from "~/hooks/use-cart";
 
 export const ProductCard = ({ product }: { product: CartedProduct }) => {
   const { removeFromCart, isRemoveFromCartPending } = useCart();
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleRemove = () => {
     removeFromCart(product.id);
-    setIsDialogOpen(false);
   };
 
   return (
@@ -33,35 +30,24 @@ export const ProductCard = ({ product }: { product: CartedProduct }) => {
         <div className="mt-4 flex items-center justify-between">
           <p className="text-sm">Qty: {product.quantity}</p>
 
-          <ReusableDialog
-            open={isDialogOpen}
-            onOpenChange={setIsDialogOpen}
-            trigger={
-              <CustomButton
-                isIconOnly
-                className="border-mid-danger text-mid-danger"
-                variant="ghost"
-                size="icon"
-                icon={<TrashIcon />}
-              />
-            }
-            title="Remove Item"
-            description="Are you sure you want to remove this item from your cart?"
+          <ConfirmationDialog
+            action={{
+              pending: isRemoveFromCartPending,
+              onOpenChange: () => {},
+              title: "Remove Item",
+              description: "Are you sure you want to remove this item from your cart?",
+              onConfirm: handleRemove,
+              buttonName: "Remove",
+            }}
           >
-            <div className="flex justify-end gap-4 pt-4">
-              <CustomButton variant="outline" onClick={() => setIsDialogOpen(false)}>
-                Cancel
-              </CustomButton>
-              <CustomButton
-                isDisabled={isRemoveFromCartPending}
-                isLoading={isRemoveFromCartPending}
-                variant="destructive"
-                onClick={handleRemove}
-              >
-                Remove
-              </CustomButton>
-            </div>
-          </ReusableDialog>
+            <CustomButton
+              isIconOnly
+              className="border-mid-danger text-mid-danger"
+              variant="ghost"
+              size="icon"
+              icon={<TrashIcon />}
+            />
+          </ConfirmationDialog>
         </div>
       </div>
     </div>

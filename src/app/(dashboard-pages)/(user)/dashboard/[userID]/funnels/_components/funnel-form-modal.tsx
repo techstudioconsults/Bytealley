@@ -4,7 +4,7 @@
 import { LucidePlusCircle } from "lucide-react";
 
 import CustomButton from "~/components/common/common-button/common-button";
-import { ReusableDialog } from "~/components/common/Dialog";
+import { ReusableDialog } from "~/components/common/dialog/Dialog";
 import { FunnelForm } from "./funnel-form";
 
 export const FunnelFormModal = ({ editor }: { editor: any }) => {

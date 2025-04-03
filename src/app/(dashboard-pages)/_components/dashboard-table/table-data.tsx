@@ -53,7 +53,9 @@ export const ProductRowActions: (product: IProduct, service: any) => IRowAction<
         {
           label: "Preview",
           onClick: () => {
-            router.push(`/dashboard/${product.user_id}/products/new?product_id=${product.id}&tab=preview`);
+            router.push(
+              `/dashboard/${product.user_id}/products/new?product_id=${product.id}&tab=preview&status=published`,
+            );
           },
           icon: <Eye className={`text-high-primary`} />,
         },
