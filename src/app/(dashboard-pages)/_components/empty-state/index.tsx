@@ -78,7 +78,7 @@ export const EmptyState = ({
 export const FilteredEmptyState = ({ onReset }: { onReset: () => void }) => (
   <EmptyState
     images={[{ src: empty1.src, alt: "No filtered results", width: 322, height: 220 }]}
-    title="No products match your filters"
+    title="No matching results found"
     description="Try adjusting your date range or status filter to find what you're looking for."
     button={{
       text: "Reset Filters",

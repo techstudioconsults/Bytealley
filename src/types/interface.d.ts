@@ -234,6 +234,7 @@ declare global {
     total_transactions: string;
     latest_purchase_title: string;
     latest_purchase_price: number;
+    latest_purchase_discount_price: number;
     latest_purchase_date: string;
     joined: string;
     latest_purchases: ILatestPurchase[];

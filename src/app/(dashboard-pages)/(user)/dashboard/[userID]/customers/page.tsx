@@ -12,7 +12,7 @@ import { DateRange } from "react-day-picker";
 import { DashboardTable } from "~/app/(dashboard-pages)/_components/dashboard-table";
 import { customerColumns } from "~/app/(dashboard-pages)/_components/dashboard-table/table-data";
 import { DateRangePicker } from "~/app/(dashboard-pages)/_components/date-range-picker";
-import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
+import { EmptyState, FilteredEmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import ExportAction from "~/app/(dashboard-pages)/_components/export-action";
 import Loading from "~/app/Loading";
 // import CustomButton from "~/components/common/common-button/common-button";
@@ -101,6 +101,13 @@ const BaseCustomerPage = ({ customerService }: { customerService: CustomerServic
                 itemsPerPage={paginationMeta?.per_page}
                 onRowClick={(customer) => {
                   router.push(`/dashboard/${user?.id}/customers/${customer.id}`);
+                }}
+              />
+            ) : dateRange?.from || dateRange?.to ? (
+              <FilteredEmptyState
+                onReset={() => {
+                  setDateRange(undefined);
+                  setCurrentPage(1);
                 }}
               />
             ) : (

@@ -107,7 +107,20 @@ export const productColumns: IColumnDefinition<IProduct>[] = [
   {
     header: "Price",
     accessorKey: "price",
-    render: (_, product: IProduct) => <span>₦{product.price?.toLocaleString()}</span>,
+    render: (_, product: IProduct) => (
+      <span className={cn(product.discount_price ? `text-mid-danger` : `text-mid-success`)}>
+        ₦{product.price?.toLocaleString()}
+      </span>
+    ),
+  },
+  {
+    header: "Discount Price",
+    accessorKey: "discount_price",
+    render: (_, product: IProduct) => (
+      <span className={cn(product.discount_price ? `text-mid-success` : `text-mid-danger`)}>
+        {product.discount_price ? `₦${product.discount_price?.toLocaleString()}` : `N/A`}
+      </span>
+    ),
   },
   {
     header: "Sales",
@@ -177,10 +190,24 @@ export const orderColumns: IColumnDefinition<IOrder>[] = [
       </div>
     ),
   },
+
   {
     header: "Price",
     accessorKey: "product",
-    render: (_, order: IOrder) => <span>₦{order?.product?.price?.toLocaleString()}</span>,
+    render: (_, order: IOrder) => (
+      <span className={cn(order?.product.discount_price ? `text-mid-danger` : `text-mid-success`)}>
+        ₦{order?.product?.price?.toLocaleString()}
+      </span>
+    ),
+  },
+  {
+    header: "Discount Price",
+    accessorKey: "product",
+    render: (_, order: IOrder) => (
+      <span className={cn(order?.product.discount_price ? `text-mid-success` : `text-mid-danger`)}>
+        ₦{order?.product?.discount_price?.toLocaleString()}
+      </span>
+    ),
   },
   {
     header: "Customer Email",
@@ -220,7 +247,20 @@ export const customerColumns: IColumnDefinition<ICustomer>[] = [
   {
     header: "Latest Purchase Price",
     accessorKey: "latest_purchase_price",
-    render: (_, customer: ICustomer) => <span>₦{customer?.latest_purchase_price?.toLocaleString()}</span>,
+    render: (_, customer: ICustomer) => (
+      <span className={cn(customer?.latest_purchase_price ? `text-mid-danger` : `text-mid-success`)}>
+        ₦{customer?.latest_purchase_price?.toLocaleString()}
+      </span>
+    ),
+  },
+  {
+    header: "Latest Purchase Discount Price",
+    accessorKey: "latest_purchase_discount_price",
+    render: (_, customer: ICustomer) => (
+      <span className={cn(customer?.latest_purchase_discount_price ? `text-mid-success` : `text-mid-danger`)}>
+        ₦{customer?.latest_purchase_discount_price?.toLocaleString()}
+      </span>
+    ),
   },
   {
     header: "Date",
@@ -253,7 +293,14 @@ export const latestPurchaseColumns: IColumnDefinition<IOrder>[] = [
   {
     header: "Price",
     accessorKey: "product",
-    render: (_, order: IOrder) => <span>₦{order?.product.price?.toLocaleString()}</span>,
+    render: (_, order: IOrder) => (
+      <span>
+        ₦
+        {order?.product.discount_price
+          ? order.product.discount_price.toLocaleString()
+          : order?.product.price?.toLocaleString()}
+      </span>
+    ),
   },
   {
     header: "Date",

@@ -98,6 +98,7 @@ export const AllProducts = ({ productService }: { productService: ProductService
         />
         <AnalyticsCard
           title={"Total Revenue"}
+          className={`text-mid-success`}
           value={isPendingAnalytics ? <LoadingSpinner /> : `₦${analytics?.total_revenues?.toLocaleString()}`}
         />
       </section>

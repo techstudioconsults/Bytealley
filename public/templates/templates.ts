@@ -20,7 +20,7 @@ export const templatesMetadata = [
     thumbnail: "/images/template-3.png",
     pages: [
       { id: "page-1", name: "Sales", file: "sales.html" },
-      { id: "page-2", name: "Feedback", file: "feedback.html" },
+      // { id: "page-2", name: "Feedback", file: "feedback.html" },
     ],
   },
 ];
