@@ -61,7 +61,7 @@ const BaseSearchInput: FC<SearchProperties> = ({ appService, inputBackgroundColo
         imageUrl={typeof result.thumbnail === "string" ? result.thumbnail : ""}
         imageAlt={result.title}
         productName={result.title}
-        author={result.publisher || ""}
+        author={result.publisher?.name || ""}
         productLink={result.slug}
         onProductClick={() => setIsDialogOpen(false)}
       />
