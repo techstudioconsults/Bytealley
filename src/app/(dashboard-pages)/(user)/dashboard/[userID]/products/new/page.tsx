@@ -47,7 +47,7 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
 
   const {
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { isSubmitting, isValid },
   } = methods;
 
   const onSubmit = async (data: IProduct) => {
@@ -231,7 +231,7 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
                     size="lg"
                     className="w-full sm:w-auto"
                     onClick={handleSubmit(onSubmit)}
-                    isDisabled={isSubmitting}
+                    isDisabled={isSubmitting || !isValid}
                     isLoading={isSubmitting}
                   >
                     Save & Continue

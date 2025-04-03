@@ -94,7 +94,7 @@ export const ProductForm = ({ methods, service }: { methods: UseFormReturn<IProd
           className="h-[129px]"
         />
       </section>
-      <section className="grid gap-4 lg:grid-cols-2">
+      <section className="grid gap-4 sm:grid-cols-2">
         <FormField
           label="Title"
           name="title"
@@ -145,7 +145,7 @@ export const ProductForm = ({ methods, service }: { methods: UseFormReturn<IProd
             label="Product Files"
             required
             maxFiles={4}
-            acceptedFormats="application/pdf, video/mp4"
+            acceptedFormats="application/pdf, video/mp4, image/jpeg, image/png, image/webp, image/gif, audio/mpeg, audio/wav"
             maxFileSize={100 * 1024 * 1024}
             initialValue={
               methods.getValues("assets") as unknown as {
@@ -164,7 +164,7 @@ export const ProductForm = ({ methods, service }: { methods: UseFormReturn<IProd
           label="Cover Photo"
           required
           maxFiles={4}
-          acceptedFormats="image/jpeg, image/png"
+          acceptedFormats="image/jpeg, image/png, image/webp, image/gif"
           maxFileSize={2 * 1024 * 1024}
           initialValue={methods.getValues("cover_photos")}
         />
@@ -186,7 +186,7 @@ export const ProductForm = ({ methods, service }: { methods: UseFormReturn<IProd
           name="thumbnail"
           label="Thumbnail"
           required
-          acceptedFormats="image/jpeg, image/png"
+          acceptedFormats="image/jpeg, image/png, image/webp, image/gif"
           maxFileSize={2 * 1024 * 1024}
           initialValue={methods.getValues("thumbnail")}
         />
