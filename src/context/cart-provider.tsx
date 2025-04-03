@@ -14,6 +14,7 @@ const BaseCartProvider = ({ children, appService }: { children: React.ReactNode;
   const [cart, setCart] = useState<CartedProduct[]>([]);
   const [isPending, startTransition] = useTransition();
   const [isAddToCartPending, startAddToCartTransition] = useTransition();
+  const [isAddToCartWithRoutePending, startAddToCartWithRouteTransition] = useTransition();
   const [isRemoveFromCartPending, startRemoveFromCartTransition] = useTransition();
   const [isUpdateQuantityPending, startUpdateQuantityTransition] = useTransition();
   const [isPurchaseProductFromCartPending, startPurchaseProductFromCartTransition] = useTransition();
@@ -30,6 +31,20 @@ const BaseCartProvider = ({ children, appService }: { children: React.ReactNode;
 
   const addToCart = (productSlug: string, quantity: number) => {
     startAddToCartTransition(async () => {
+      const response = await appService.storeProductsInCart({ product_slug: productSlug, quantity });
+      if (response) {
+        setCart((previousCart) => [...previousCart, response.data]);
+        Toast.getInstance().showToast({
+          title: "Success",
+          description: `Product added to cart successfully`,
+          variant: "success",
+        });
+      }
+    });
+  };
+
+  const addToCartWithRoute = (productSlug: string, quantity: number) => {
+    startAddToCartWithRouteTransition(async () => {
       const response = await appService.storeProductsInCart({ product_slug: productSlug, quantity });
       if (response) {
         setCart((previousCart) => [...previousCart, response.data]);
@@ -113,10 +128,12 @@ const BaseCartProvider = ({ children, appService }: { children: React.ReactNode;
         cart,
         isPending,
         isAddToCartPending,
+        isAddToCartWithRoutePending,
         isRemoveFromCartPending,
         isUpdateQuantityPending,
         isPurchaseProductFromCartPending,
         addToCart,
+        addToCartWithRoute,
         removeFromCart,
         updateQuantity,
         purchaseProductInCart,

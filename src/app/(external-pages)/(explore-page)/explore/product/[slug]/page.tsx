@@ -27,7 +27,7 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
   const [product, setProduct] = useState<IProduct | null>(null);
   const [productReview, setProductReview] = useState<any[]>([]);
   const { user } = useSession();
-  const { addToCart, isAddToCartPending } = useCart();
+  const { addToCart, isAddToCartPending, isAddToCartWithRoutePending, addToCartWithRoute } = useCart();
   const router = useRouter();
 
   useEffect(() => {
@@ -135,7 +135,7 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
             <div className="flex flex-col gap-2">
               <SetToolTip content={"You need to be logged in to purchase product"}>
                 <CustomButton
-                  // isLoading={isAddToCartPending}
+                  isLoading={isAddToCartPending}
                   isDisabled={user?.name === product?.publisher || isAddToCartPending}
                   variant="primary"
                   className={cn({ "cursor-not-allowed": user?.name === product?.publisher })}
@@ -146,10 +146,10 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
               </SetToolTip>
               <SetToolTip content={"You need to be logged in to purchase product"}>
                 <CustomButton
-                  // isLoading={isAddToCartPending}
+                  isLoading={isAddToCartWithRoutePending}
                   isDisabled={user?.name === product?.publisher || isAddToCartPending}
                   onClick={() => {
-                    addToCart(slug, 1);
+                    addToCartWithRoute(slug, 1);
                     router.push(`/explore/cart`);
                   }}
                   variant="outline"

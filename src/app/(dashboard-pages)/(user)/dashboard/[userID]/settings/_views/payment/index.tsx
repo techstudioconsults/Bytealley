@@ -1,4 +1,4 @@
-import { useEffect, useState, useTransition } from "react";
+import { useCallback, useEffect, useState, useTransition } from "react";
 
 import { AddBankModal } from "~/app/(dashboard-pages)/_components/add-bank-modal";
 import { BankCard } from "~/app/(dashboard-pages)/_components/bank-card";
@@ -11,12 +11,16 @@ const BasePayment = ({ earningService }: { earningService: EarningService }) => 
   const [isPending, startTransition] = useTransition();
   const [listOfRegisteredAccounts, setListOfRegisteredAccounts] = useState<IPaymentAccount[]>([]);
 
-  useEffect(() => {
+  const getAccounts = useCallback(() => {
     startTransition(async () => {
       const registeredAccounts = await earningService.getAllRegisteredPaymentAccount();
       setListOfRegisteredAccounts(registeredAccounts?.data || []);
     });
   }, [earningService]);
+
+  useEffect(() => {
+    getAccounts();
+  }, [getAccounts]);
 
   return (
     <section className={`space-y-10`}>
@@ -51,7 +55,7 @@ const BasePayment = ({ earningService }: { earningService: EarningService }) => 
               </>
             )}
 
-            <AddBankModal service={earningService} />
+            <AddBankModal getAccounts={getAccounts} service={earningService} />
           </section>
         </div>
       </section>
