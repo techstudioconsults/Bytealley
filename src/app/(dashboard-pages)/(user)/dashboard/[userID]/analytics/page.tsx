@@ -15,7 +15,7 @@ import { Bar_Chart } from "~/app/(dashboard-pages)/_components/chart/bar-chart";
 import { DashboardTable } from "~/app/(dashboard-pages)/_components/dashboard-table";
 import { orderColumns } from "~/app/(dashboard-pages)/_components/dashboard-table/table-data";
 import { DateRangePicker } from "~/app/(dashboard-pages)/_components/date-range-picker";
-import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
+import { EmptyState, FilteredEmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 // import { SelectDropdown } from "~/app/(dashboard-pages)/_components/select-dropdown";
 // import CustomButton from "~/components/common/common-button/common-button";
 import { LoadingSpinner } from "~/components/miscellaneous/loading-spinner";
@@ -150,7 +150,7 @@ const Analytics = ({
           <AnalyticsCard
             title="Revenue"
             value={isPendingAnalytics ? <LoadingSpinner /> : `₦${analytics?.total_revenues?.toLocaleString()}`}
-            className={`col-span-1 lg:col-span-4`}
+            className={`col-span-1 text-mid-success lg:col-span-4`}
           />
         </section>
       </section>
@@ -173,6 +173,13 @@ const Analytics = ({
               onRowClick={(row) => console.log("Row clicked:", row)}
             />
           </>
+        ) : dateRange?.from || dateRange?.to ? (
+          <FilteredEmptyState
+            onReset={() => {
+              setDateRange(undefined);
+              setCurrentPage(1);
+            }}
+          />
         ) : (
           <EmptyState
             images={[{ src: productImage.src, alt: "Empty product", width: 102, height: 60 }]}

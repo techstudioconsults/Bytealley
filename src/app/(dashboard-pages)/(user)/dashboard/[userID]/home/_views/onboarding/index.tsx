@@ -2,6 +2,7 @@
 
 import onboardingImage from "@/images/home_banner_illustration.svg";
 
+import { cn } from "~/utils/utils";
 import { ActionBanner } from "../../_components/action-banner";
 import { DashboardBanner } from "../../_components/home-banner";
 import { OnboardingHeader } from "./onboarding-header";
@@ -35,6 +36,7 @@ export const Onboarding = ({ steps }: OnboardingProperties) => {
             }}
             icon={step.icon}
             isCompleted={step.isCompleted}
+            className={cn(step.isCompleted && "hidden")}
           />
         ))}
       </div>

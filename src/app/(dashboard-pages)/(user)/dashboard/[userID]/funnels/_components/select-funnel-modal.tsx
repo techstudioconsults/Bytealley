@@ -7,7 +7,7 @@ import { useEffect, useState, useTransition } from "react";
 
 import Loading from "~/app/Loading";
 import CustomButton from "~/components/common/common-button/common-button";
-import { ReusableDialog } from "~/components/common/Dialog";
+import { ReusableDialog } from "~/components/common/dialog/Dialog";
 import { template } from "~/features/funnel";
 import { WithDependency } from "~/HOC/withDependencies";
 import { useSession } from "~/hooks/use-session";

@@ -17,7 +17,7 @@ export const SubFooter = () => {
         </div>
         {user && (
           <div>
-            <CustomButton variant={`primary`} size={`xl`}>
+            <CustomButton href={`/dashboard/${user.id}/products/new`} variant={`primary`} size={`xl`}>
               Create Product
             </CustomButton>
           </div>

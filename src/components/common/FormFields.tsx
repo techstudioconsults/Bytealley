@@ -195,7 +195,7 @@ export function RadioCardGroup({
         </Label>
       )}
 
-      <div className="flex flex-col gap-4 lg:flex-row">
+      <div className="flex flex-col gap-4 sm:flex-row">
         <Controller
           name={name}
           control={control}
@@ -510,24 +510,25 @@ export function ImageUpload({
                   </div>
                 </div>
               )}
-
-              {previews.map((preview, index) => (
-                <div key={index} className="relative h-[200px] w-[368px]">
-                  <Image src={preview} alt={`Preview ${index + 1}`} fill className="rounded-lg object-cover" />
-                  <CustomButton
-                    isIconOnly
-                    icon={<MdCancel className="h-4 w-4" />}
-                    variant="ghost"
-                    type="button"
-                    size="icon"
-                    className="absolute right-2 top-2 bg-background/80 backdrop-blur-sm"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      handleRemoveFile(index, field);
-                    }}
-                  />
-                </div>
-              ))}
+              <section className={`grid w-full grid-cols-2 gap-4 md:grid-cols-3`}>
+                {previews.map((preview, index) => (
+                  <div key={index} className="relative h-[200px]">
+                    <Image src={preview} alt={`Preview ${index + 1}`} fill className="rounded-lg object-cover" />
+                    <CustomButton
+                      isIconOnly
+                      icon={<MdCancel className="h-4 w-4" />}
+                      variant="ghost"
+                      type="button"
+                      size="icon"
+                      className="absolute right-2 top-2 bg-background/80 backdrop-blur-sm"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        handleRemoveFile(index, field);
+                      }}
+                    />
+                  </div>
+                ))}
+              </section>
             </div>
           </div>
         )}
@@ -685,31 +686,32 @@ export function FileUpload({
                   </div>
                 </div>
               )}
-
-              {previews.map((preview, index) => (
-                <section
-                  key={index}
-                  className="relative flex min-h-[94px] max-w-[560px] items-center gap-4 rounded-md bg-low-purple p-6"
-                >
-                  <Image src={fileIcon} alt={`Preview ${index + 1}`} width={72} height={72} />
-                  <div className="flex flex-col gap-1">
-                    <span className="text-sm font-bold">{preview.name}</span>
-                    <span className="text-xs text-mid-grey-II">{preview.size}</span>
-                  </div>
-                  <CustomButton
-                    isIconOnly
-                    icon={<MdCancel className="h-4 w-4" />}
-                    variant="ghost"
-                    type="button"
-                    size="icon"
-                    className="absolute right-2 top-2 bg-background/80 backdrop-blur-sm"
-                    onClick={(event) => {
-                      event.preventDefault();
-                      handleRemoveFile(index, field);
-                    }}
-                  />
-                </section>
-              ))}
+              <section className={`grid w-full grid-cols-2 gap-4`}>
+                {previews.map((preview, index) => (
+                  <section
+                    key={index}
+                    className="relative flex min-h-[94px] items-center gap-4 rounded-md bg-low-purple p-6"
+                  >
+                    <Image src={fileIcon} alt={`Preview ${index + 1}`} width={72} height={72} />
+                    <div className="flex flex-col gap-1">
+                      <span className="text-sm font-bold">{preview.name}</span>
+                      <span className="text-xs text-mid-grey-II">{preview.size}</span>
+                    </div>
+                    <CustomButton
+                      isIconOnly
+                      icon={<MdCancel className="h-4 w-4" />}
+                      variant="ghost"
+                      type="button"
+                      size="icon"
+                      className="absolute right-2 top-2 bg-background/80 backdrop-blur-sm"
+                      onClick={(event) => {
+                        event.preventDefault();
+                        handleRemoveFile(index, field);
+                      }}
+                    />
+                  </section>
+                ))}
+              </section>
             </div>
           </div>
         )}

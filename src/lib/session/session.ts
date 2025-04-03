@@ -20,7 +20,7 @@ export async function encrypt(payload: ISessionData): Promise<string> {
   return await new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
-    .setExpirationTime("2h")
+    .setExpirationTime("1h")
     .sign(key);
 }
 

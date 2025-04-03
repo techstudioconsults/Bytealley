@@ -51,7 +51,8 @@ export const BaseNotificationProvider = ({
   const markAllAsRead = async () => {
     try {
       await pushService.readAllNotification();
-      setNotifications((previous) => previous.map((notification) => ({ ...notification, read: true })));
+      setNotifications([]);
+      // setNotifications((previous) => previous.map((notification) => ({ ...notification, read: true })));
     } catch (error) {
       console.error("Failed to mark notifications as read:", error);
     }

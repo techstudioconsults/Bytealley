@@ -10,6 +10,7 @@ import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import { TableHeaderInfo } from "~/app/(dashboard-pages)/_components/table-header-info";
 import Loading from "~/app/Loading";
 import CustomButton from "~/components/common/common-button/common-button";
+import { ConfirmationDialog } from "~/components/common/dialog/confirmation-dialog";
 import { WithDependency } from "~/HOC/withDependencies";
 import { ProductService } from "~/services/product.service";
 import { dependencies } from "~/utils/dependencies";
@@ -101,16 +102,20 @@ const BasePreviewProductDetailsPage = ({
       <section className="flex flex-col justify-between space-y-4 md:flex-row md:space-y-0 lg:items-center">
         <BackNavigator text="Products Details" />
         <div className="flex items-center space-x-4">
-          <CustomButton
-            onClick={handleDelete}
-            isDisabled={isDeletePending}
-            isLoading={isDeletePending}
-            variant="outline"
-            size="lg"
-            className="w-full border-destructive text-destructive lg:w-auto"
+          <ConfirmationDialog
+            action={{
+              pending: isDeletePending,
+              onOpenChange: () => {},
+              title: "Delete Product",
+              description: "Are you sure you want to delete this product?",
+              onConfirm: handleDelete,
+              buttonName: "Delete",
+            }}
           >
-            Delete
-          </CustomButton>
+            <CustomButton variant="outline" size="lg" className="w-full border-destructive text-destructive lg:w-auto">
+              Delete
+            </CustomButton>
+          </ConfirmationDialog>
           {product.status === "published" ? (
             <CustomButton
               isDisabled={isPublishPending}

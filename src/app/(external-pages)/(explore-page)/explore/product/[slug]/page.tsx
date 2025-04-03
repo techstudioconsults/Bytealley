@@ -27,7 +27,7 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
   const [product, setProduct] = useState<IProduct | null>(null);
   const [productReview, setProductReview] = useState<any[]>([]);
   const { user } = useSession();
-  const { addToCart, isAddToCartPending } = useCart();
+  const { addToCart, isAddToCartPending, isAddToCartWithRoutePending, addToCartWithRoute } = useCart();
   const router = useRouter();
 
   useEffect(() => {
@@ -70,10 +70,10 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
             <h1 className="mb-2 text-2xl font-bold text-gray-900 md:text-3xl">{product?.title}</h1>
             <div className="flex items-center gap-2">
               <Avatar className="relative z-[-1] h-6 w-6">
-                <AvatarImage src={typeof product?.thumbnail === "string" ? product.thumbnail : ""} />
-                <AvatarFallback>{product?.publisher?.charAt(0)}</AvatarFallback>
+                <AvatarImage src={typeof product?.publisher?.avatar === "string" ? product.publisher?.avatar : ""} />
+                <AvatarFallback>{product?.publisher?.name?.charAt(0)}</AvatarFallback>
               </Avatar>
-              <span className="text-xs font-bold lg:text-[16px]">{product?.publisher}</span>
+              <span className="text-xs font-bold lg:text-[16px]">{product?.publisher?.name}</span>
               <StarRating size={`md:text-4xl`} rating={product?.avg_rating} />
               <span className="text-xs font-bold lg:text-[16px]">{product?.avg_rating} ratings</span>
             </div>
@@ -84,7 +84,7 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
         <section className="mb-4 rounded-md border p-4">
           <h2 className="mb-4 border-b py-4 text-xl font-bold text-gray-900">Features</h2>
           <ul className="list-inside list-disc space-y-4 text-gray-700">
-            {product?.highlights.map((highlight, index) => <li key={index}>✔️ {highlight}</li>)}
+            {product?.highlights.map((highlight, index) => <p key={index}>✔️ {highlight}</p>)}
           </ul>
         </section>
 
@@ -119,7 +119,7 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
           <div className="mb-8">
             <div className="flex items-center justify-between rounded-md bg-low-purple p-2">
               <p className="font-semibold">Sold</p>
-              <p className="text-sm font-semibold">{product?.total_order}</p>
+              <p className="text-sm font-semibold">{product?.total_sales}</p>
             </div>
             <div className="mb-7 mt-4 flex items-center gap-2">
               <span className="text-2xl font-bold">
@@ -135,7 +135,7 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
             <div className="flex flex-col gap-2">
               <SetToolTip content={"You need to be logged in to purchase product"}>
                 <CustomButton
-                  // isLoading={isAddToCartPending}
+                  isLoading={isAddToCartPending}
                   isDisabled={user?.name === product?.publisher || isAddToCartPending}
                   variant="primary"
                   className={cn({ "cursor-not-allowed": user?.name === product?.publisher })}
@@ -146,10 +146,10 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
               </SetToolTip>
               <SetToolTip content={"You need to be logged in to purchase product"}>
                 <CustomButton
-                  // isLoading={isAddToCartPending}
+                  isLoading={isAddToCartWithRoutePending}
                   isDisabled={user?.name === product?.publisher || isAddToCartPending}
                   onClick={() => {
-                    addToCart(slug, 1);
+                    addToCartWithRoute(slug, 1);
                     router.push(`/explore/cart`);
                   }}
                   variant="outline"
@@ -193,10 +193,10 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
                 <span>{product?.assets?.length}</span>
               </div>
             </div>
-            <div className="mt-4 flex items-center gap-4">
+            {/* <div className="mt-4 flex items-center gap-4">
               <p className="text-sm font-semibold">Share</p>
-              {/* <p className="text-sm font-semibold">Give as Gift</p> */}
-            </div>
+              <p className="text-sm font-semibold">Give as Gift</p>
+            </div> */}
           </div>
         </section>
 
@@ -214,13 +214,13 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
                   <div className="mt-2 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Avatar className="h-4 w-4">
-                        <AvatarImage src={review.user.avatar} />
+                        <AvatarImage src={review.user.logo} />
                         <AvatarFallback>{review.user.name.charAt(0)}</AvatarFallback>
                       </Avatar>
                       <p className="text-[10px] font-semibold">{review.user.name}</p>
                     </div>
                     <StarRating size="text-xs" rating={review.rating} />
-                    <p className="text-[10px]">{new Date(review.createdAt).toLocaleDateString()}</p>
+                    <p className="text-[10px]">{new Date(review.created_at).toLocaleDateString()}</p>
                   </div>
                 </div>
               ))

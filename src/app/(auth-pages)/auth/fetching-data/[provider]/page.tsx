@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -17,14 +18,12 @@ const PreLoader = () => {
         return;
       }
 
-      const data = {
+      await handleGoogleCallback({
         provider: "google",
         code: code,
-      };
-
-      await handleGoogleCallback(data);
+      });
     },
-    [handleGoogleCallback, router, user],
+    [router, user],
   );
 
   useEffect(() => {

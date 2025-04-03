@@ -6,13 +6,14 @@ import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import CustomButton from "~/components/common/common-button/common-button";
-import { ReusableDialog } from "~/components/common/Dialog";
+import { ReusableDialog } from "~/components/common/dialog/Dialog";
 import { FormField } from "~/components/common/FormFields";
 import { BankFormData, bankFormSchema } from "~/schemas";
 import { EarningService } from "~/services/earnings.service";
 import { Toast } from "~/utils/notificationManager";
 
-export const AddBankModal = ({ service }: { service: EarningService }) => {
+export const AddBankModal = ({ getAccounts, service }: { getAccounts: () => void; service: EarningService }) => {
+  const [isOpen, setIsOpen] = useState(false);
   const [banks, setBanks] = useState<any>([]);
   const methods = useForm<BankFormData>({
     resolver: zodResolver(bankFormSchema),
@@ -37,6 +38,9 @@ export const AddBankModal = ({ service }: { service: EarningService }) => {
         description: `Account ${response.data.bank_name} was registerd successfully`,
         variant: "default",
       });
+      reset();
+      getAccounts();
+      setIsOpen(false);
     }
   };
 
@@ -60,6 +64,8 @@ export const AddBankModal = ({ service }: { service: EarningService }) => {
 
   return (
     <ReusableDialog
+      open={isOpen}
+      onOpenChange={setIsOpen}
       className={`sm:max-w-[499px]`}
       trigger={
         <div

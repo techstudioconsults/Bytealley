@@ -10,7 +10,7 @@ import { DateRange } from "react-day-picker";
 import { DashboardTable } from "~/app/(dashboard-pages)/_components/dashboard-table";
 import { productColumns, ProductRowActions } from "~/app/(dashboard-pages)/_components/dashboard-table/table-data";
 import { DateRangePicker } from "~/app/(dashboard-pages)/_components/date-range-picker";
-import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
+import { EmptyState, FilteredEmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import Loading from "~/app/Loading";
 import { useSession } from "~/hooks/use-session";
 import { ProductService } from "~/services/product.service";
@@ -81,6 +81,13 @@ export const DraftProducts = ({ productService }: { productService: ProductServi
                   showPagination
                 />
               </section>
+            ) : dateRange?.from || dateRange?.to ? (
+              <FilteredEmptyState
+                onReset={() => {
+                  setDateRange(undefined);
+                  setCurrentPage(1);
+                }}
+              />
             ) : (
               <EmptyState
                 images={[{ src: empty4.src, alt: "Empty published product", width: 1136, height: 220 }]}
