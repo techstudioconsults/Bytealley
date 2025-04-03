@@ -10,7 +10,7 @@ import { AnalyticsCard } from "~/app/(dashboard-pages)/_components/analytics-car
 import { DashboardTable } from "~/app/(dashboard-pages)/_components/dashboard-table";
 import { productColumns, ProductRowActions } from "~/app/(dashboard-pages)/_components/dashboard-table/table-data";
 import { DateRangePicker } from "~/app/(dashboard-pages)/_components/date-range-picker";
-import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
+import { EmptyState, FilteredEmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import ExportAction from "~/app/(dashboard-pages)/_components/export-action";
 import { SelectDropdown } from "~/app/(dashboard-pages)/_components/select-dropdown";
 import Loading from "~/app/Loading";
@@ -142,6 +142,14 @@ export const AllProducts = ({ productService }: { productService: ProductService
                     }}
                   />
                 </section>
+              ) : dateRange?.from || dateRange?.to || status !== "all" ? (
+                <FilteredEmptyState
+                  onReset={() => {
+                    setDateRange(undefined);
+                    setStatus("all");
+                    setCurrentPage(1);
+                  }}
+                />
               ) : (
                 <EmptyState
                   images={[
@@ -150,7 +158,7 @@ export const AllProducts = ({ productService }: { productService: ProductService
                     { src: empty1.src, alt: "Empty product", width: 322, height: 220 },
                   ]}
                   title="Create your first product."
-                  description="Unlock your creative potential and take the first step towards success on our platform. Create your first product today and join our vibrant community of digital creators. Your masterpiece is just a click away!"
+                  description="Unlock your creative potential and take the first step towards success on our platform..."
                   button={{
                     text: "Add New Product",
                     onClick: () => {

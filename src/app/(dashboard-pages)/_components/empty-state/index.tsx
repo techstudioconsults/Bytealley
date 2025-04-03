@@ -1,5 +1,6 @@
 "use client";
 
+import empty1 from "@/images/empty_img_1.svg";
 import Image from "next/image";
 
 import CustomButton from "~/components/common/common-button/common-button";
@@ -73,3 +74,15 @@ export const EmptyState = ({
     </div>
   );
 };
+
+export const FilteredEmptyState = ({ onReset }: { onReset: () => void }) => (
+  <EmptyState
+    images={[{ src: empty1.src, alt: "No filtered results", width: 322, height: 220 }]}
+    title="No products match your filters"
+    description="Try adjusting your date range or status filter to find what you're looking for."
+    button={{
+      text: "Reset Filters",
+      onClick: onReset,
+    }}
+  />
+);
