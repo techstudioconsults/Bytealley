@@ -13,7 +13,7 @@ import { PDBanner } from "~/app/(dashboard-pages)/_components/banner/pd-banner";
 import { DashboardTable } from "~/app/(dashboard-pages)/_components/dashboard-table";
 import { payoutColumns } from "~/app/(dashboard-pages)/_components/dashboard-table/table-data";
 import { DateRangePicker } from "~/app/(dashboard-pages)/_components/date-range-picker";
-import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
+import { EmptyState, FilteredEmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import ExportAction from "~/app/(dashboard-pages)/_components/export-action";
 import Loading from "~/app/Loading";
 import CustomButton from "~/components/common/common-button/common-button";
@@ -150,6 +150,13 @@ const BasePayoutsPage = ({
                   itemsPerPage={paginationMeta?.per_page}
                   onRowClick={(payout) => {
                     router.push(`/dashboard/${user?.id}/payouts/${payout.id}`);
+                  }}
+                />
+              ) : dateRange?.from || dateRange?.to ? (
+                <FilteredEmptyState
+                  onReset={() => {
+                    setDateRange(undefined);
+                    setCurrentPage(1);
                   }}
                 />
               ) : (

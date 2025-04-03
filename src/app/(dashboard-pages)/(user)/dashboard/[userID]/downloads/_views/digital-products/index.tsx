@@ -1,14 +1,14 @@
 import downloadBox from "@/images/download_box.svg";
 import emptyCart from "@/images/empty-cart.svg";
 import { format } from "date-fns";
-import debounce from "lodash.debounce";
+// import debounce from "lodash.debounce";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useRef, useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { DateRange } from "react-day-picker";
 
 import { PDBanner } from "~/app/(dashboard-pages)/_components/banner/pd-banner";
-import { DateRangePicker } from "~/app/(dashboard-pages)/_components/date-range-picker";
-import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
+// import { DateRangePicker } from "~/app/(dashboard-pages)/_components/date-range-picker";
+import { EmptyState, FilteredEmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import Loading from "~/app/Loading";
 import { useSession } from "~/hooks/use-session";
 import { ProductService } from "~/services/product.service";
@@ -21,15 +21,15 @@ export const DigitalProducts = ({ service }: { service: ProductService }) => {
   const router = useRouter();
   const { user } = useSession();
 
-  const debounceDateRangeReference = useRef(
-    debounce((value: DateRange) => {
-      setDateRange(value);
-    }, 300),
-  );
+  // const debounceDateRangeReference = useRef(
+  //   debounce((value: DateRange) => {
+  //     setDateRange(value);
+  //   }, 300),
+  // );
 
-  const handleDateRangeChange = useCallback((value: DateRange) => {
-    debounceDateRangeReference.current(value);
-  }, []);
+  // const handleDateRangeChange = useCallback((value: DateRange) => {
+  //   debounceDateRangeReference.current(value);
+  // }, []);
 
   useEffect(() => {
     const parameters: IFilters = {
@@ -46,9 +46,9 @@ export const DigitalProducts = ({ service }: { service: ProductService }) => {
 
   return (
     <section className={`space-y-8`}>
-      <section className="flex w-full flex-col gap-2 sm:flex-row md:w-auto">
+      {/* <section className="flex w-full flex-col gap-2 sm:flex-row md:w-auto">
         <DateRangePicker onDateChange={handleDateRangeChange} />
-      </section>
+      </section> */}
       {isDownloadPending ? (
         <Loading text={`Loading purchased products...`} className={`w-fill h-fit p-20`} />
       ) : (
@@ -70,6 +70,12 @@ export const DigitalProducts = ({ service }: { service: ProductService }) => {
                 />
               ))}
             </section>
+          ) : dateRange?.from || dateRange?.to ? (
+            <FilteredEmptyState
+              onReset={() => {
+                setDateRange(undefined);
+              }}
+            />
           ) : (
             <section className={`space-y-8`}>
               <PDBanner
@@ -83,7 +89,7 @@ export const DigitalProducts = ({ service }: { service: ProductService }) => {
               <EmptyState
                 images={[{ src: emptyCart.src, alt: "Empty download", width: 100, height: 50 }]}
                 description="You do not have any download yet"
-                button={{ text: "Add New Product", onClick: () => {} }}
+                // button={{ text: "Add New Product", onClick: () => {} }}
                 className={`min-h-[273px] rounded-lg bg-low-grey-III`}
               />
             </section>

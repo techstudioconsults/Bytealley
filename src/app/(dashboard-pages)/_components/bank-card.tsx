@@ -10,7 +10,6 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { WithDependency } from "~/HOC/withDependencies";
-import { useSession } from "~/hooks/use-session";
 import { SettingsService } from "~/services/settings.service";
 import { dependencies } from "~/utils/dependencies";
 import { Toast } from "~/utils/notificationManager";
@@ -34,7 +33,6 @@ const BaseBankCard = ({
   settingsService: SettingsService;
 }) => {
   const [active, setActive] = useState(initialActive);
-  const { fetchCurrentUser } = useSession();
 
   const handleAccountStatus = async () => {
     const newStatus = !active;
@@ -53,7 +51,6 @@ const BaseBankCard = ({
         description: `Account ${accountName} has been ${newStatus ? "enabled" : "disabled"}`,
         variant: "default",
       });
-      await fetchCurrentUser();
     }
   };
 

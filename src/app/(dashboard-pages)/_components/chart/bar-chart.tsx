@@ -18,7 +18,8 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export function Base_Bar_Chart({ analyticsService }: { analyticsService: AnalyticsService }) {
-  const [selectedMonth, setSelectedMonth] = useState<string>((new Date().getMonth() + 1).toString());
+  const currentMonth = (new Date().getMonth() + 1).toString();
+  const [selectedMonth, setSelectedMonth] = useState<string>(currentMonth);
   const [filteredData, setFilteredData] = useState<{ day: number; revenue: number }[]>([]);
 
   const handleMonthChange = useCallback((value: string) => {
@@ -44,6 +45,7 @@ export function Base_Bar_Chart({ analyticsService }: { analyticsService: Analyti
         <SelectDropdown
           triggerClassName={`w-[100%]`}
           options={months}
+          value={selectedMonth}
           placeholder={`Select month`}
           onValueChange={handleMonthChange}
         />

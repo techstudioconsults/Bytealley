@@ -118,10 +118,12 @@ declare global {
     cart: CartedProduct[];
     isPending: boolean;
     isAddToCartPending: boolean;
+    isAddToCartWithRoutePending: boolean;
     isRemoveFromCartPending: boolean;
     isUpdateQuantityPending: boolean;
     isPurchaseProductFromCartPending: boolean;
     addToCart: (productSlug: string, quantity: number) => void;
+    addToCartWithRoute: (productSlug: string, quantity: number) => void;
     removeFromCart: (productId: string) => void;
     updateQuantity: (productId: string, quantity: number) => void;
     purchaseProductInCart: (cart: CartedProduct[]) => void;

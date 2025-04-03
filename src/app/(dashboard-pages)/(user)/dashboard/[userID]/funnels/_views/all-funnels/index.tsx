@@ -7,7 +7,7 @@ import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { DateRange } from "react-day-picker";
 
 import { DateRangePicker } from "~/app/(dashboard-pages)/_components/date-range-picker";
-import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
+import { EmptyState, FilteredEmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import Loading from "~/app/Loading";
 import { FunnelService } from "~/features/funnel";
 // import { useSession } from "~/hooks/use-session";
@@ -100,6 +100,13 @@ export const AllFunnels = ({ service }: { service: FunnelService }) => {
                     );
                   })}
                 </section>
+              ) : dateRange?.from || dateRange?.to ? (
+                <FilteredEmptyState
+                  onReset={() => {
+                    setDateRange(undefined);
+                    setCurrentPage(1);
+                  }}
+                />
               ) : (
                 <EmptyState
                   images={[

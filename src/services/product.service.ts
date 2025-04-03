@@ -103,7 +103,10 @@ export class ProductService {
 
   async downloadProducts(filters: IFilters = Object.create({ page: 1 })) {
     const queryParameters = this.buildQueryParameters(filters);
-    await this.http.get(`/products/records?${queryParameters}`);
+    const response = await this.http.get(`/products/records?${queryParameters}`);
+    if (response?.status === 200) {
+      return response.data;
+    }
   }
 
   async softDeleteProduct(productId: string) {
