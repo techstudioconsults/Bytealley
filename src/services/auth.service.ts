@@ -36,8 +36,7 @@ export class AuthService {
   }
 
   async handleGoogleCallback(credentials: { code: string; provider: string }) {
-    const queryString = this.buildQueryParameters(credentials);
-    const response = await this.http.get<ILoginResponse>(`/auth/oauth/callback?${queryString}`);
+    const response = await this.http.get<ILoginResponse>("/auth/oauth/callback", credentials);
     if (response?.status === 200) {
       const user = this.mapUserResponse(response.data);
       await this.createUserSession(user);
@@ -82,15 +81,5 @@ export class AuthService {
       user,
       expires: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
     });
-  }
-
-  private buildQueryParameters(filters: object): string {
-    const queryParameters = new URLSearchParams();
-    for (const [key, value] of Object.entries(filters)) {
-      if (value !== undefined) {
-        queryParameters.append(key, value.toString());
-      }
-    }
-    return queryParameters.toString();
   }
 }

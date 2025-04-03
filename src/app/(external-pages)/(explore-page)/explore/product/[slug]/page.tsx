@@ -70,10 +70,10 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
             <h1 className="mb-2 text-2xl font-bold text-gray-900 md:text-3xl">{product?.title}</h1>
             <div className="flex items-center gap-2">
               <Avatar className="relative z-[-1] h-6 w-6">
-                <AvatarImage src={typeof product?.publisher_avatar === "string" ? product.publisher_avatar : ""} />
-                <AvatarFallback>{product?.publisher?.charAt(0)}</AvatarFallback>
+                <AvatarImage src={typeof product?.publisher?.avatar === "string" ? product.publisher?.avatar : ""} />
+                <AvatarFallback>{product?.publisher?.name?.charAt(0)}</AvatarFallback>
               </Avatar>
-              <span className="text-xs font-bold lg:text-[16px]">{product?.publisher}</span>
+              <span className="text-xs font-bold lg:text-[16px]">{product?.publisher?.name}</span>
               <StarRating size={`md:text-4xl`} rating={product?.avg_rating} />
               <span className="text-xs font-bold lg:text-[16px]">{product?.avg_rating} ratings</span>
             </div>

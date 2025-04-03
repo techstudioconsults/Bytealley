@@ -147,8 +147,10 @@ declare global {
     deleted_at: string | null;
     resource_link?: string[];
     portfolio_link?: string;
-    publisher?: string;
-    publisher_avatar?: string;
+    publisher?: {
+      name: string;
+      avatar?: string;
+    };
   }
 
   interface IPaginationLink {
