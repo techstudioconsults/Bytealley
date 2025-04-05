@@ -40,22 +40,26 @@ const BaseProfile = ({ appService }: { appService: AppService }) => {
   const handleSubmitForm = async (data: ProfileFormData) => {
     if (data.logo instanceof File) {
       const response = await appService.updateUser(data);
-      Toast.getInstance().showToast({
-        title: "Profile updated successfully",
-        description: "Your profile information has been updated.",
-        variant: "default",
-      });
+      if (response) {
+        Toast.getInstance().showToast({
+          title: "Profile updated successfully",
+          description: "Your profile information has been updated.",
+          variant: "default",
+        });
+      }
     } else {
       const formData = {
         ...data,
         logo: null,
       };
       const response = await appService.updateUser(formData);
-      Toast.getInstance().showToast({
-        title: "Profile updated successfully",
-        description: "Your profile information has been updated.",
-        variant: "default",
-      });
+      if (response) {
+        Toast.getInstance().showToast({
+          title: "Profile updated successfully",
+          description: "Your profile information has been updated.",
+          variant: "default",
+        });
+      }
     }
   };
   return (
