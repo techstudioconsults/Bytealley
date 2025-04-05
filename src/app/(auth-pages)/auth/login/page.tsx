@@ -2,27 +2,20 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 
+import { googleSignInAction, loginAction } from "~/actions/auth";
 import CustomButton from "~/components/common/common-button/common-button";
 import { FormField } from "~/components/common/FormFields";
 import { Logo } from "~/components/common/logo";
-import { withDependency } from "~/HOC/withDependencies";
 import { LoginFormData, loginSchema } from "~/schemas";
-import type { AuthService } from "~/services/auth.service";
-import { dependencies } from "~/utils/dependencies";
+import { Toast } from "~/utils/notificationManager";
 
-interface LoginPageProperties {
-  authService: AuthService;
-}
-
-const BaseLoginPage = ({ authService }: LoginPageProperties) => {
-  const [isPending, startTransition] = useTransition();
+const LoginPage = () => {
   const [isGooglePending, startGoogleTransition] = useTransition();
-  const router = useRouter();
+
   const methods = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -31,41 +24,48 @@ const BaseLoginPage = ({ authService }: LoginPageProperties) => {
     },
   });
 
-  const handleSubmit = async (data: LoginFormData) => {
-    startTransition(async () => {
-      await authService.login(data, router);
-    });
+  const {
+    handleSubmit,
+    formState: { isSubmitting },
+  } = methods;
+
+  const handleSubmitForm = async (data: LoginFormData) => {
+    const result = await loginAction(data);
+    if (result?.error) {
+      Toast.getInstance().showToast({
+        title: "Login Failed",
+        description: result.error,
+        variant: "error",
+      });
+    }
+    if (result?.success && result.redirectUrl) {
+      Toast.getInstance().showToast({
+        title: "Login Successful",
+        description: result.message ?? "Welcome back!",
+        variant: "success",
+      });
+      window.location.href = result.redirectUrl;
+    }
   };
 
   const handleGoogleSignIn = () => {
     startGoogleTransition(async () => {
-      await authService.googleSignIn();
+      await googleSignInAction();
     });
   };
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-4">
-      <div className="w-full max-w-[440px] rounded-xl bg-white p-8 shadow-lg">
+      <div className="w-full max-w-[547px] rounded-xl bg-white p-6 shadow-lg lg:p-12">
         <div className="mb-8 flex justify-center">
           <Logo />
         </div>
 
         <h1 className="mb-2 text-[32px] font-semibold">Sign in</h1>
-        <p className="mb-8 text-muted-foreground">
-          Enter your email and password to continue managing your ideas
-        </p>
+        <p className="mb-8 text-muted-foreground">Enter your email and password to continue managing your ideas</p>
 
         <FormProvider {...methods}>
-          <form
-            onSubmit={methods.handleSubmit(handleSubmit)}
-            className="space-y-4"
-          >
-            {methods.formState.errors.root && (
-              <p className="text-sm text-red-500">
-                {methods.formState.errors.root.message}
-              </p>
-            )}
-
+          <form onSubmit={handleSubmit(handleSubmitForm)} className="space-y-4">
             <FormField
               label="Email"
               name="email"
@@ -85,10 +85,7 @@ const BaseLoginPage = ({ authService }: LoginPageProperties) => {
                 required
               />
               <div className="flex justify-end">
-                <Link
-                  href="/auth/forgot-password"
-                  className="text-sm text-primary hover:underline"
-                >
+                <Link href="/auth/forgot-password" className="text-sm text-primary hover:underline">
                   Forgot Password?
                 </Link>
               </div>
@@ -100,8 +97,8 @@ const BaseLoginPage = ({ authService }: LoginPageProperties) => {
                 variant={`primary`}
                 type="submit"
                 className="w-full"
-                isDisabled={isPending}
-                isLoading={isPending}
+                isDisabled={isSubmitting}
+                isLoading={isSubmitting}
               >
                 Sign in
               </CustomButton>
@@ -114,9 +111,7 @@ const BaseLoginPage = ({ authService }: LoginPageProperties) => {
             <div className="w-full border-t"></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="bg-white px-2 text-muted-foreground">
-              or continue with
-            </span>
+            <span className="bg-white px-2 text-muted-foreground">or continue with</span>
           </div>
         </div>
 
@@ -144,9 +139,5 @@ const BaseLoginPage = ({ authService }: LoginPageProperties) => {
     </div>
   );
 };
-
-const LoginPage = withDependency(BaseLoginPage, {
-  authService: dependencies.AUTH_SERVICE,
-});
 
 export default LoginPage;

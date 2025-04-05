@@ -2,25 +2,52 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
 
+import { resetPasswordAction } from "~/actions/auth";
 import CustomButton from "~/components/common/common-button/common-button";
 import { FormField } from "~/components/common/FormFields";
 import { Logo } from "~/components/common/logo";
 import { ResetPasswordData, resetPasswordSchema } from "~/schemas";
+import { Toast } from "~/utils/notificationManager";
 
 const ResetPasswordPage = () => {
+  const searchParameters = useSearchParams();
+  const token = searchParameters.get("token");
+  const email = searchParameters.get("email");
+
   const methods = useForm<ResetPasswordData>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
+      token: token || "",
+      email: email || "",
       password: "",
-      confirmPassword: "",
+      password_confirmation: "",
     },
   });
 
-  const handleSubmit = async (data: ResetPasswordData) => {
-    // TODO: Implement login logic
-    console.log(data);
+  const {
+    handleSubmit,
+    formState: { isSubmitting },
+  } = methods;
+
+  const handleSubmitForm = async (data: ResetPasswordData) => {
+    const result = await resetPasswordAction(data);
+    if (result?.error) {
+      Toast.getInstance().showToast({
+        title: "Reset Password Failed",
+        description: result.error,
+        variant: "error",
+      });
+    }
+    if (result?.success) {
+      Toast.getInstance().showToast({
+        title: "Password Reset Successful",
+        description: result.message ?? "Your password has been reset successfully.",
+        variant: "success",
+      });
+    }
   };
 
   return (
@@ -31,15 +58,10 @@ const ResetPasswordPage = () => {
         </div>
 
         <h1 className="mb-2 text-[32px] font-semibold">Reset password</h1>
-        <p className="mb-8 text-muted-foreground">
-          Enter your new password to reset your password.
-        </p>
+        <p className="mb-8 text-muted-foreground">Enter your new password to reset your password.</p>
 
         <FormProvider {...methods}>
-          <form
-            onSubmit={methods.handleSubmit(handleSubmit)}
-            className="space-y-4"
-          >
+          <form onSubmit={handleSubmit(handleSubmitForm)} className="space-y-4">
             <FormField
               label="New Password"
               name="password"
@@ -51,7 +73,7 @@ const ResetPasswordPage = () => {
 
             <FormField
               label="Confirm New Password"
-              name="confirmPassword"
+              name="password_confirmation"
               type="password"
               placeholder="Enter new password"
               className={`h-12 w-full bg-low-grey-III`}
@@ -60,6 +82,8 @@ const ResetPasswordPage = () => {
 
             <div className={`pt-[32px]`}>
               <CustomButton
+                isLoading={isSubmitting}
+                isDisabled={isSubmitting}
                 size={`xl`}
                 variant={`primary`}
                 type="submit"
@@ -72,10 +96,7 @@ const ResetPasswordPage = () => {
         </FormProvider>
 
         <div className="mt-4 text-center text-sm">
-          <Link
-            href="/auth/login"
-            className="inline-flex items-center text-primary hover:underline"
-          >
+          <Link href="/auth/login" className="inline-flex items-center text-primary hover:underline">
             <span className="mr-2">←</span>
             Back to Sign In
           </Link>

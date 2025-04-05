@@ -11,9 +11,7 @@ const secretKey =
     : undefined);
 
 if (!secretKey) {
-  throw new Error(
-    "NEXTAUTH_SECRET environment variable is required in production",
-  );
+  throw new Error("NEXTAUTH_SECRET environment variable is required in production");
 }
 
 const key = new TextEncoder().encode(secretKey);
@@ -27,22 +25,49 @@ export async function encrypt(payload: ISessionData): Promise<string> {
 }
 
 export async function decrypt(input: string): Promise<ISessionData> {
-  const { payload } = await jwtVerify(input, key, {
-    algorithms: ["HS256"],
-  });
+  try {
+    const { payload } = await jwtVerify(input, key, {
+      algorithms: ["HS256"],
+    });
 
-  // Validate the payload has the required properties
-  if (!payload.user || !payload.expires) {
-    throw new Error("Invalid session data");
+    // Validate the payload has the required properties
+    if (!payload.user || !payload.expires) {
+      throw new Error("Invalid session data");
+    }
+
+    return payload as ISessionData;
+  } catch (error) {
+    // Handle JWT verification errors (including expiration)
+    deleteSession(); // Clear the invalid cookie
+    throw error; // Re-throw to be handled by caller
   }
-
-  return payload as ISessionData;
 }
 
 export async function getSession(): Promise<ISessionData | null> {
   const bytealley = cookies().get("bytealley")?.value;
   if (!bytealley) return null;
-  return await decrypt(bytealley);
+
+  try {
+    const { payload } = await jwtVerify(bytealley, key, {
+      algorithms: ["HS256"],
+    });
+
+    // Validate the payload has the required properties
+    if (!payload.user || !payload.expires) {
+      throw new Error("Invalid session data");
+    }
+
+    // Check if the token has expired
+    const now = Math.floor(Date.now() / 1000); // Current time in seconds
+    if (payload.exp && payload.exp < now) {
+      throw new Error("Token has expired");
+    }
+
+    return payload as ISessionData;
+  } catch {
+    await deleteSession();
+    return null;
+  }
 }
 
 export async function setCookie(data: string, metaData: ICookieMetadata) {
@@ -58,15 +83,7 @@ export async function setCookie(data: string, metaData: ICookieMetadata) {
 }
 
 export async function deleteSession() {
-  cookies().set({
-    name: "bytealley",
-    value: "",
-    expires: new Date(0), // Expire immediately
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
-    path: "/",
-  });
+  cookies().delete("bytealley");
 }
 
 export async function createSession(sessionData: ISessionData) {

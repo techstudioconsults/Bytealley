@@ -7,16 +7,14 @@ interface HttpResponse<T> {
 }
 
 type QueryParameters = Record<string, string | number | boolean>;
+type Headers = Record<string, string>;
 
 export class HttpAdapter {
   private buildQueryString(query: QueryParameters): string {
     if (Object.keys(query).length === 0) return "";
 
     return Object.entries(query)
-      .map(
-        ([key, value]) =>
-          `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`,
-      )
+      .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(String(value))}`)
       .join("&");
   }
 
@@ -34,34 +32,22 @@ export class HttpAdapter {
     return result;
   }
 
-  async get<T>(
-    endpoint: string,
-    query: QueryParameters = {},
-  ): Promise<HttpResponse<T> | undefined> {
+  async get<T>(endpoint: string, query: QueryParameters = {}, headers?: Headers): Promise<HttpResponse<T> | undefined> {
     const queryString = this.buildQueryString(query);
     const url = queryString ? `${endpoint}?${queryString}` : endpoint;
 
-    return this.handleRequest<T>(() => http.get(url));
+    return this.handleRequest<T>(() => http.get(url, { headers }));
   }
 
-  async post<T>(
-    url: string,
-    data: unknown,
-  ): Promise<HttpResponse<T> | undefined> {
-    return this.handleRequest<T>(() => http.post(url, data));
+  async post<T>(url: string, data: unknown, headers?: Headers): Promise<HttpResponse<T> | undefined> {
+    return this.handleRequest<T>(() => http.post(url, data, { headers }));
   }
 
-  async patch<T>(
-    url: string,
-    data: unknown,
-  ): Promise<HttpResponse<T> | undefined> {
-    return this.handleRequest<T>(() => http.patch(url, data));
+  async patch<T>(url: string, data?: unknown, headers?: Headers): Promise<HttpResponse<T> | undefined> {
+    return this.handleRequest<T>(() => http.patch(url, data, { headers }));
   }
 
-  async delete<T>(
-    url: string,
-    data?: unknown,
-  ): Promise<HttpResponse<T> | undefined> {
-    return this.handleRequest<T>(() => http.delete(url, { data }));
+  async delete<T>(url: string, data?: unknown, headers?: Headers): Promise<HttpResponse<T> | undefined> {
+    return this.handleRequest<T>(() => http.delete(url, { data, headers }));
   }
 }

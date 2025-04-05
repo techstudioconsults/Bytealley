@@ -2,17 +2,16 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
+import { forgotPasswordAction } from "~/actions/auth";
 import CustomButton from "~/components/common/common-button/common-button";
 import { FormField } from "~/components/common/FormFields";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { ForgotPasswordData, forgotPasswordSchema } from "~/schemas";
+import { Toast } from "~/utils/notificationManager";
 
 const ForgotPasswordPage = () => {
-  const [isLoading, setIsLoading] = useState(false);
-
   const methods = useForm<ForgotPasswordData>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
@@ -20,15 +19,26 @@ const ForgotPasswordPage = () => {
     },
   });
 
-  const onSubmit = async (values: ForgotPasswordData) => {
-    setIsLoading(true);
-    try {
-      // TODO: Implement password reset logic
-      console.log(values);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
+  const {
+    handleSubmit,
+    formState: { isSubmitting },
+  } = methods;
+
+  const handleSubmitForm = async (data: ForgotPasswordData) => {
+    const result = await forgotPasswordAction(data);
+    if (result?.error) {
+      Toast.getInstance().showToast({
+        title: "Forgot Password Failed",
+        description: result.error,
+        variant: "error",
+      });
+    }
+    if (result?.success) {
+      Toast.getInstance().showToast({
+        title: "Email Sent",
+        description: result.message ?? "Please check your email for password reset instructions.",
+        variant: "success",
+      });
     }
   };
 
@@ -37,31 +47,26 @@ const ForgotPasswordPage = () => {
       <Card className="w-full max-w-[400px]">
         <CardHeader>
           <CardTitle className="text-[32px]">Forgot password</CardTitle>
-          <p className="text-muted-foreground">
-            Enter your email address to reset your password.
-          </p>
+          <p className="text-muted-foreground">Enter your email address to reset your password.</p>
         </CardHeader>
         <CardContent>
           <FormProvider {...methods}>
-            <form
-              onSubmit={methods.handleSubmit(onSubmit)}
-              className="space-y-6"
-            >
+            <form onSubmit={handleSubmit(handleSubmitForm)} className="space-y-6">
               <FormField
                 name="email"
                 type="email"
                 label="Email"
                 placeholder="sarah.williams@gmail.com"
                 required
-                disabled={isLoading}
+                disabled={isSubmitting}
               />
               <CustomButton
                 type="submit"
                 className="w-full"
                 size={`xl`}
                 variant={`primary`}
-                isDisabled={isLoading}
-                isLoading={isLoading}
+                isDisabled={isSubmitting}
+                isLoading={isSubmitting}
               >
                 Reset password
               </CustomButton>
@@ -69,10 +74,7 @@ const ForgotPasswordPage = () => {
           </FormProvider>
 
           <div className="mt-4 text-center text-sm">
-            <Link
-              href="/auth/login"
-              className="inline-flex items-center text-primary hover:underline"
-            >
+            <Link href="/auth/login" className="inline-flex items-center text-primary hover:underline">
               <span className="mr-2">←</span>
               Back to Sign In
             </Link>

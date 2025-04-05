@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thank You</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Karla:ital,wght@0,200..800;1,200..800&family=Kumbh+Sans:wght@100..900&family=League+Spartan:wght@100..900&family=Lexend+Deca:wght@100..900&display=swap");
+
+      :root {
+        --primary-color: #17b6ba;
+        --text-color: #333;
+        --bg-color: #f9f9f9;
+        --white: #ffffff;
+        --footer-bg: #333;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        text-decoration: none;
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+      }
+
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      .t3_container {
+        max-width: 1230px;
+        margin: 0 auto;
+        padding-inline: 1rem;
+      }
+
+      /* Navbar styles */
+      .t3_nav {
+        background: var(--white);
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .t3_nav-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-block: 1rem;
+      }
+
+      .t3_logo h1 {
+        font-size: 1.5rem;
+        color: var(--primary-color);
+      }
+
+      .t3_nav-menu {
+        position: fixed;
+        top: 60px;
+        left: -100%;
+        background: var(--white);
+        width: 100%;
+        height: calc(100vh - 60px);
+        padding: 2rem;
+        transition: 0.3s ease-in-out;
+      }
+
+      .t3_nav-menu.t3_active {
+        left: 0;
+      }
+
+      .t3_nav-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      .t3_nav-item {
+        cursor: pointer;
+      }
+
+      .t3_nav-link {
+        color: var(--text-color);
+        font-weight: 500;
+      }
+
+      .t3_nav-link:hover {
+        color: var(--primary-color);
+      }
+
+      .t3_hamburger {
+        display: block;
+        cursor: pointer;
+        padding: 0.5rem;
+      }
+
+      .t3_bar {
+        display: block;
+        width: 25px;
+        height: 3px;
+        margin: 5px auto;
+        transition: all 0.3s ease-in-out;
+        background-color: var(--text-color);
+      }
+
+      .t3_button {
+        background-color: var(--primary-color);
+        color: var(--white);
+        padding: 12px 28px;
+        border-radius: 4px;
+        border: none;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .t3_button:hover {
+        background-color: #149598;
+      }
+
+      /* Footer styles */
+      .t3_footer {
+        background: var(--footer-bg);
+        color: var(--white);
+        padding-block: 2rem;
+        margin-top: 4rem;
+      }
+
+      .t3_footer-wrapper {
+        display: grid;
+        gap: 2rem;
+      }
+
+      .t3_footer-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .t3_footer-link {
+        color: var(--white);
+        opacity: 0.8;
+        transition: opacity 0.3s ease;
+      }
+
+      .t3_footer-link:hover {
+        opacity: 1;
+      }
+
+      .t3_social-links {
+        display: flex;
+        gap: 1rem;
+      }
+
+      .t3_heading {
+        font-size: 30px;
+      }
+
+      /* Responsive styles */
+      @media (min-width: 768px) {
+        .t3_heading {
+          font-size: 70px;
+        }
+
+        .t3_heading-desc {
+          font-size: 24px;
+        }
+
+        .t3_hamburger {
+          display: none;
+        }
+
+        .t3_nav-menu {
+          position: static;
+          width: auto;
+          height: auto;
+          padding: 0;
+          background: none;
+        }
+
+        .t3_nav-list {
+          flex-direction: row;
+          gap: 2rem;
+        }
+
+        .t3_footer-wrapper {
+          grid-template-columns: repeat(3, 1fr);
+          align-items: center;
+        }
+
+        .t3_footer-nav {
+          flex-direction: row;
+          justify-content: center;
+        }
+      }
+
+      /* Animation classes for hamburger */
+      .t3_hamburger.t3_active .t3_bar:nth-child(2) {
+        opacity: 0;
+      }
+
+      .t3_hamburger.t3_active .t3_bar:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+      }
+
+      .t3_hamburger.t3_active .t3_bar:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="t3_nav">
+      <div class="t3_container t3_nav-container">
+        <div class="t3_logo">
+          <h1>Logo</h1>
+        </div>
+
+        <div class="t3_nav-menu">
+          <ul class="t3_nav-list">
+            <li class="t3_nav-item">
+              <a href="#" class="t3_nav-link">Home</a>
+            </li>
+            <li class="t3_nav-item">
+              <a href="#" class="t3_nav-link">About</a>
+            </li>
+            <li class="t3_nav-item">
+              <a href="#" class="t3_nav-link">Services</a>
+            </li>
+            <li class="t3_nav-item">
+              <a href="#" class="t3_nav-link">Contact</a>
+            </li>
+          </ul>
+        </div>
+
+        <a href="#">
+          <button class="t3_button">Get Started</button>
+        </a>
+
+        <div class="t3_hamburger">
+          <span class="t3_bar"></span>
+          <span class="t3_bar"></span>
+          <span class="t3_bar"></span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content Section -->
+    <main class="t3_container" style="margin-top: 10rem; text-align: center">
+      <h1 class="t3_heading">Your Headline Goes Right Here</h1>
+      <p class="t3_heading-desc">
+        Lorem ipsum dolor sit amet consectetur. Posuere in etiam turpis arcu et neque quis. Eget nisl semper orci
+        pellentesque faucibus praesent id.
+      </p>
+      <div style="margin-block: 4rem">
+        <img
+          style="width: 100%; height: auto; max-width: 100%; display: block"
+          src="https://res.cloudinary.com/kingsleysolomon/image/upload/v1733566356/grape.js/vjeys6u1ybqilbsusbiq.png"
+          alt="img"
+        />
+      </div>
+      <p class="t3_heading-desc">
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corporis, pariatur asperiores labore dolores nam,
+        inventore rem sed non itaque aperiam saepe reprehenderit ea accusamus quaerat beatae eligendi exercitationem
+        minima eum.
+      </p>
+    </main>
+
+    <!-- Footer -->
+    <footer class="t3_footer">
+      <div class="t3_container t3_footer-wrapper">
+        <div class="t3_footer-logo">
+          <img
+            src="https://res.cloudinary.com/kingsleysolomon/image/upload/v1733480713/grape.js/jh9cqqkwpesa6aixtjgp.png"
+            alt="Logo"
+          />
+        </div>
+
+        <div class="t3_footer-nav">
+          <a href="#" class="t3_footer-link">About</a>
+          <a href="#" class="t3_footer-link">Services</a>
+          <a href="#" class="t3_footer-link">Contact</a>
+        </div>
+
+        <div class="t3_social-links">
+          <a href="#" class="t3_footer-link">Twitter</a>
+          <a href="#" class="t3_footer-link">LinkedIn</a>
+          <a href="#" class="t3_footer-link">Instagram</a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+      // Navbar toggle
+      const hamburger = document.querySelector(".t3_hamburger");
+      const navMenu = document.querySelector(".t3_nav-menu");
+      const body = document.querySelector("body");
+
+      hamburger.addEventListener("click", () => {
+        hamburger.classList.toggle("t3_active");
+        navMenu.classList.toggle("t3_active");
+        body.style.overflow = navMenu.classList.contains("t3_active") ? "hidden" : "auto";
+      });
+
+      document.querySelectorAll(".t3_nav-link").forEach((link) => {
+        link.addEventListener("click", () => {
+          hamburger.classList.remove("t3_active");
+          navMenu.classList.remove("t3_active");
+          body.style.overflow = "auto";
+        });
+      });
+    </script>
+  </body>
+</html>

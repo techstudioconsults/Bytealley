@@ -1,39 +1,31 @@
-/* eslint-disable no-console */
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import { createContext, ReactNode, useEffect, useState } from "react";
+// import { usePathname } from "next/navigation";
+import { createContext, useEffect, useState } from "react";
 
-import { getSession } from "~/lib/session/session"; // Adjust the path to your getSession function
+import Loading from "~/app/Loading";
+import { useLoading } from "~/hooks/use-loading";
 
-const SessionContext = createContext<ISessionContextType | undefined>(undefined);
+export const SessionContext = createContext<ISessionContextType | undefined>(undefined);
 
-const SessionProvider = ({ children }: { children: ReactNode }) => {
-  const [session, setSession] = useState<ISessionData | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+const SessionProvider = ({ children, initialUser }: { children: React.ReactNode; initialUser: IUser | null }) => {
+  const [user, setUser] = useState<IUser | null>(initialUser);
+  const { isLoading, setLoading } = useLoading();
 
-  const fetchSession = async () => {
-    setLoading(true);
+  useEffect(() => {
     try {
-      const fetchedSession = await getSession();
-      setSession(fetchedSession);
-    } catch (error) {
-      console.error("Failed to fetch session:", error);
-      setSession(null); // Reset session on error
+      setUser(initialUser);
     } finally {
       setLoading(false);
     }
-  };
+  }, [initialUser]);
 
-  useEffect(() => {
-    fetchSession();
-  }, []);
+  if (isLoading) {
+    return <Loading />;
+  }
 
-  const refreshSession = async () => {
-    await fetchSession();
-  };
-
-  return <SessionContext.Provider value={{ session, loading, refreshSession }}>{children}</SessionContext.Provider>;
+  return <SessionContext.Provider value={{ user, setUser }}>{children}</SessionContext.Provider>;
 };
 
 export default SessionProvider;
-export { SessionContext };

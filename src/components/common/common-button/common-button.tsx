@@ -1,11 +1,5 @@
 import Link from "next/link";
-import {
-  cloneElement,
-  FC,
-  MouseEventHandler,
-  ReactElement,
-  ReactNode,
-} from "react";
+import { cloneElement, forwardRef, MouseEventHandler, ReactElement, ReactNode } from "react";
 import { LuLoader, LuPlus } from "react-icons/lu";
 
 import { Button } from "~/components/ui/button";
@@ -58,64 +52,76 @@ interface ButtonProperties {
  * @param {ButtonProps} props - Properties to configure the button.
  * @returns {JSX.Element} The rendered button component.
  */
-const CustomButton: FC<ButtonProperties> = ({
-  type = "button",
-  variant,
-  size,
-  children,
-  isLoading = false,
-  isLeftIconVisible = false,
-  isRightIconVisible = false,
-  icon,
-  isDisabled = false,
-  isIconOnly = false,
-  ariaLabel,
-  href,
-  className,
-  onClick,
-}) => {
-  const modifiedIcon = icon ? (
-    cloneElement(icon as ReactElement, {
-      className: "w-[1rem] h-[1rem]",
-      "data-testid": "icon",
-    })
-  ) : (
-    <LuPlus className="h-[1rem] w-[1rem]" data-testid="icon" />
-  );
+const CustomButton = forwardRef<HTMLButtonElement, ButtonProperties>(
+  (
+    {
+      type = "button",
+      variant,
+      size,
+      children,
+      isLoading = false,
+      isLeftIconVisible = false,
+      isRightIconVisible = false,
+      icon,
+      isDisabled = false,
+      isIconOnly = false,
+      ariaLabel,
+      href,
+      className,
+      onClick,
+    },
+    reference,
+  ) => {
+    const modifiedIcon = icon ? (
+      cloneElement(icon as ReactElement, {
+        className: "w-[1rem] h-[1rem]",
+        "data-testid": "icon",
+      })
+    ) : (
+      <LuPlus className="h-[1rem] w-[1rem]" data-testid="icon" />
+    );
 
-  const buttonContent = (
-    <>
-      {isLeftIconVisible && !isLoading && modifiedIcon}
-      {isLoading && (
-        <LuLoader
-          className="h-[1rem] w-[1rem] animate-spin"
-          data-testid="loading-spinner"
-        />
-      )}
-      {isIconOnly && !isLoading && modifiedIcon}
-      {!isIconOnly && children}
-      {!isIconOnly && !children && isLoading && "Loading"}
-      {isRightIconVisible && !isLoading && modifiedIcon}
-    </>
-  );
+    const buttonContent = (
+      <>
+        {isLeftIconVisible && !isLoading && modifiedIcon}
+        {isLoading && <LuLoader className="h-[1rem] w-[1rem] animate-spin" data-testid="loading-spinner" />}
+        {isIconOnly && !isLoading && modifiedIcon}
+        {!isIconOnly && children}
+        {!isIconOnly && !children && isLoading && "Loading"}
+        {isRightIconVisible && !isLoading && modifiedIcon}
+      </>
+    );
 
-  const buttonClasses = `transition-transform duration-300 ease-in-out ${
-    isDisabled ? "opacity-50 cursor-not-allowed" : "hover:scale-105"
-  } ${className}`;
+    const buttonClasses = `transition-transform duration-300 ease-in-out ${
+      isDisabled ? "opacity-50 cursor-not-allowed" : "hover:scale-105"
+    } ${className}`;
 
-  if (href) {
-    const isExternal = /^https?:\/\//.test(href);
+    if (href) {
+      const isExternal = /^https?:\/\//.test(href);
 
-    if (isExternal) {
+      if (isExternal) {
+        return (
+          <a href={href} target="_blank" rel="noopener noreferrer" aria-label={ariaLabel}>
+            <Button
+              type={type}
+              variant={variant}
+              size={size}
+              disabled={isDisabled}
+              aria-label={ariaLabel}
+              className={buttonClasses}
+              onClick={onClick}
+              role="button"
+              ref={reference}
+            >
+              {buttonContent}
+            </Button>
+          </a>
+        );
+      }
+
       return (
-        <a
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={ariaLabel}
-        >
+        <Link href={isDisabled ? "" : href} passHref aria-label={ariaLabel}>
           <Button
-            type={type}
             variant={variant}
             size={size}
             disabled={isDisabled}
@@ -123,43 +129,31 @@ const CustomButton: FC<ButtonProperties> = ({
             className={buttonClasses}
             onClick={onClick}
             role="button"
+            ref={reference}
           >
             {buttonContent}
           </Button>
-        </a>
+        </Link>
       );
     }
 
     return (
-      <Link href={href} passHref aria-label={ariaLabel}>
-        <Button
-          variant={variant}
-          size={size}
-          disabled={isDisabled}
-          aria-label={ariaLabel}
-          className={buttonClasses}
-          onClick={onClick}
-          role="button"
-        >
-          {buttonContent}
-        </Button>
-      </Link>
+      <Button
+        variant={variant}
+        size={size}
+        disabled={isDisabled}
+        aria-label={ariaLabel}
+        className={buttonClasses}
+        onClick={onClick}
+        role="button"
+        ref={reference}
+      >
+        {buttonContent}
+      </Button>
     );
-  }
+  },
+);
 
-  return (
-    <Button
-      variant={variant}
-      size={size}
-      disabled={isDisabled}
-      aria-label={ariaLabel}
-      className={buttonClasses}
-      onClick={onClick}
-      role="button"
-    >
-      {buttonContent}
-    </Button>
-  );
-};
+CustomButton.displayName = "CustomButton"; // This is useful for debugging in React DevTools
 
 export default CustomButton;

@@ -9,17 +9,14 @@ interface WrapperProperties extends HtmlHTMLAttributes<HTMLDivElement> {
 }
 
 export const Wrapper: FC<WrapperProperties> = ({
-  width = `max-w-[1240px]`,
+  width = `max-w-[1120px]`,
   height = `h-full`,
   children,
   className,
   ...rest
 }) => {
   return (
-    <section
-      {...rest}
-      className={cn(`mx-auto ${width} ${height} px-[1rem] xl:px-0`, className)}
-    >
+    <section {...rest} className={cn(`mx-auto ${width} ${height} px-[1rem] xl:px-0`, className)}>
       {children}
     </section>
   );

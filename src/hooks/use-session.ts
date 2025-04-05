@@ -1,11 +1,18 @@
+// hooks/use-session.ts
+"use client";
+
 import { useContext } from "react";
 
 import { SessionContext } from "~/context/session-provider";
 
-export const useSession = (): ISessionContextType => {
+export const useSession = () => {
   const context = useContext(SessionContext);
   if (!context) {
     throw new Error("useSession must be used within a SessionProvider");
   }
-  return context;
+
+  return {
+    user: context.user,
+    setUser: context.setUser,
+  };
 };
