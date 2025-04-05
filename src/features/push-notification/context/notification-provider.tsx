@@ -6,6 +6,7 @@ import Pusher from "pusher-js";
 import { createContext, ReactNode, useCallback, useEffect, useState } from "react";
 
 import { WithDependency } from "~/HOC/withDependencies";
+import { getSession } from "~/lib/session/session";
 import { dependencies } from "~/utils/dependencies";
 import { Toast } from "~/utils/notificationManager";
 import { PushService } from "../services/notification.service";
@@ -16,12 +17,13 @@ export const NotificationContext = createContext<NotificationContextType | undef
 export const BaseNotificationProvider = ({
   pushService,
   children,
-  session,
+  // session,
 }: {
   children: ReactNode;
   pushService: PushService;
-  session: any;
+  // session: any;
 }) => {
+  const [session, setSession] = useState<ISessionData | null>(null);
   const [notifications, setNotifications] = useState<PushNotification[]>([]);
 
   // Fetch notifications from the backend
@@ -57,6 +59,14 @@ export const BaseNotificationProvider = ({
       console.error("Failed to mark notifications as read:", error);
     }
   };
+
+  useEffect(() => {
+    const getSessionData = async () => {
+      const session = await getSession();
+      setSession(session);
+    };
+    getSessionData();
+  }, []);
 
   // Initialize Pusher and bind events
   useEffect(() => {

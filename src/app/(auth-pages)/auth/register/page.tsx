@@ -6,15 +6,14 @@ import { useState, useTransition } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 
+import { googleSignInAction, registerAction } from "~/actions/auth";
 import CustomButton from "~/components/common/common-button/common-button";
 import { FormField, PasswordValidation } from "~/components/common/FormFields";
 import { Logo } from "~/components/common/logo";
-import { useSession } from "~/hooks/use-session";
 import { RegisterFormData, registerSchema } from "~/schemas";
 
 const RegisterPage = () => {
   const [isGooglePending, startGoogleTransition] = useTransition();
-  const { register: registerUser, googleSignIn } = useSession();
   const [, setPassword] = useState("");
 
   const methods = useForm<RegisterFormData>({
@@ -34,12 +33,12 @@ const RegisterPage = () => {
   } = methods;
 
   const handleSubmitForm = async (data: RegisterFormData) => {
-    await registerUser(data);
+    await registerAction(data);
   };
 
   const handleGoogleSignIn = () => {
     startGoogleTransition(async () => {
-      await googleSignIn();
+      await googleSignInAction();
     });
   };
 

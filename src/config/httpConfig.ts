@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import axios from "axios";
+// import { cookies } from "next/headers";
 import Cookies from "js-cookie";
 
 import { getSession } from "~/lib/session/session";

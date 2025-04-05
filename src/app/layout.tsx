@@ -36,16 +36,14 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getSession();
-
   return (
     <html lang="en">
       <body className={`${montserrat.className} ${newsreader.variable}`}>
         <ReduxProvider>
           <LoadingProvider>
             <TooltipProvider>
-              <SessionProvider session={session}>
-                <NotificationProvider session={session}>
+              <SessionProvider>
+                <NotificationProvider>
                   <ToastProvider>
                     <GotoTop />
                     <LenisProvider>

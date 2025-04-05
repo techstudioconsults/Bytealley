@@ -1,6 +1,8 @@
+/* eslint-disable unicorn/consistent-function-scoping */
 import Link from "next/link";
 import { LuChevronDown } from "react-icons/lu";
 
+import { logoutAction } from "~/actions/auth";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import {
   DropdownMenu,
@@ -13,10 +15,11 @@ import {
 import { useSession } from "~/hooks/use-session";
 
 export const Profile = () => {
-  const { user, logout } = useSession();
+  const { user } = useSession();
 
   const handleLogOut = async () => {
-    await logout();
+    await logoutAction();
+    window.location.href = "/auth/login";
   };
   return (
     <div className="flex items-center gap-[10px]">

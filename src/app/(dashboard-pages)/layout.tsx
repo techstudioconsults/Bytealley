@@ -4,6 +4,7 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import { getUser } from "~/actions/auth";
 import { Toaster } from "~/components/ui/sonner";
 import { useSession } from "~/hooks/use-session";
 import { cn } from "~/utils/utils";
@@ -12,17 +13,12 @@ import { DashboardNavbar } from "./_components/layout/navbar";
 import { Sidebar } from "./_components/layout/sidebar/sidebar";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const { user } = useSession();
   const pathName = usePathname();
   const [isEditor, setIsEditor] = useState(false);
 
   useEffect(() => {
     setIsEditor(pathName.includes("editor"));
   }, [pathName]);
-
-  if (!user) {
-    return <Loading />;
-  }
 
   return (
     <main className="flex min-h-screen">

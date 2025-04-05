@@ -1,5 +1,5 @@
 import { HttpAdapter } from "~/adapters/http-adapter";
-import { createSession, deleteSession } from "~/lib/session/session";
+import { createSession, deleteSession, getSession } from "~/lib/session/session";
 import { ForgotPasswordData, LoginFormData, RegisterFormData, ResetPasswordData } from "~/schemas";
 import { Toast } from "~/utils/notificationManager";
 
@@ -19,7 +19,6 @@ export class AuthService {
     const response = await this.http.post<ILoginResponse>(`/auth/login`, data);
     if (response?.status === 200) {
       const user: IUser = this.mapUserResponse(response.data);
-      await this.createUserSession(user);
       return user;
     }
   }
@@ -39,7 +38,6 @@ export class AuthService {
     const response = await this.http.get<ILoginResponse>("/auth/oauth/callback", credentials);
     if (response?.status === 200) {
       const user = this.mapUserResponse(response.data);
-      await this.createUserSession(user);
       return user;
     }
   }
@@ -81,5 +79,15 @@ export class AuthService {
       user,
       expires: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
     });
+  }
+
+  async getUser() {
+    const session = getSession();
+    if (!session) return null;
+
+    const response = await this.http.get<{ data: IUser }>("/users/me");
+    if (response?.status === 200) {
+      return response.data.data;
+    }
   }
 }
