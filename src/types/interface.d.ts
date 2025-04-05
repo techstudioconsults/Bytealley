@@ -2,7 +2,8 @@ import { JWTPayload } from "jose";
 
 declare global {
   interface ISessionContextType {
-    user: IUser | undefined;
+    user: IUser | null;
+    setUser: (user: IUser | null) => void;
   }
 
   interface IAuthState {

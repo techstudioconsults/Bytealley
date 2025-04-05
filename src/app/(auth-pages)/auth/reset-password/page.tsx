@@ -41,7 +41,7 @@ const ResetPasswordPage = () => {
         variant: "error",
       });
     }
-    if (result?.success && result.redirectUrl) {
+    if (result?.success) {
       Toast.getInstance().showToast({
         title: "Password Reset Successful",
         description: result.message ?? "Your password has been reset successfully.",
