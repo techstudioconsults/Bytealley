@@ -4,11 +4,8 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { getUser } from "~/actions/auth";
 import { Toaster } from "~/components/ui/sonner";
-import { useSession } from "~/hooks/use-session";
 import { cn } from "~/utils/utils";
-import Loading from "../Loading";
 import { DashboardNavbar } from "./_components/layout/navbar";
 import { Sidebar } from "./_components/layout/sidebar/sidebar";
 
