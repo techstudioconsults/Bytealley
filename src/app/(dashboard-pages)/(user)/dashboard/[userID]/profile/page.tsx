@@ -15,12 +15,12 @@ import { ProfilePicture } from "./_views/profile-picture";
 import { SocialLink } from "./_views/social-link";
 
 const BaseProfile = ({ appService }: { appService: AppService }) => {
-  const { user } = useSession();
+  const { user, setUser } = useSession();
   const methods = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
       full_name: user?.name,
-      username: user?.username || "",
+      username: user?.username,
       email: user?.email || "",
       phone_number: user?.phone_number || "",
       bio: user?.bio || "",
@@ -46,6 +46,7 @@ const BaseProfile = ({ appService }: { appService: AppService }) => {
           description: "Your profile information has been updated.",
           variant: "default",
         });
+        setUser(response);
       }
     } else {
       const formData = {
@@ -59,6 +60,7 @@ const BaseProfile = ({ appService }: { appService: AppService }) => {
           description: "Your profile information has been updated.",
           variant: "default",
         });
+        setUser(response);
       }
     }
   };

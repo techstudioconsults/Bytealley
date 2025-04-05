@@ -5,7 +5,6 @@ import CustomButton from "~/components/common/common-button/common-button";
 import { BlurImage } from "~/components/miscellaneous/blur-image";
 import { Card, CardContent } from "~/components/ui/card";
 import { useSession } from "~/hooks/use-session";
-import { FadeIn } from "~/lib/animations";
 import { cards } from "~/utils/constants";
 
 export const SectionOne = () => {
@@ -18,12 +17,10 @@ export const SectionOne = () => {
           {/* Left Section */}
           <div className="flex flex-col justify-between text-center lg:w-[40%] lg:text-left">
             <h1 className="nr-font text-5xl font-black text-high-warning xl:text-7xl">You can monetize everything</h1>
-            <FadeIn>
-              <p className="mb-8 mt-8 text-lg font-light xl:text-2xl">
-                Are you a digital artist, designer, writer, or developer looking to share your creations with the world
-                and earn from your passion? Look no further! ByteAlley is the ultimate platform for creators like you.
-              </p>
-            </FadeIn>
+            <p className="mb-8 mt-8 text-lg font-light xl:text-2xl">
+              Are you a digital artist, designer, writer, or developer looking to share your creations with the world
+              and earn from your passion? Look no further! ByteAlley is the ultimate platform for creators like you.
+            </p>
             {!user && (
               <div className="hidden lg:block">
                 <CustomButton href="/auth" className={`w-full`} size={`xl`} variant={`primary`}>
