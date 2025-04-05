@@ -33,11 +33,18 @@ const ResetPasswordPage = () => {
   } = methods;
 
   const handleSubmitForm = async (data: ResetPasswordData) => {
-    const response = await resetPasswordAction(data);
-    if (response) {
+    const result = await resetPasswordAction(data);
+    if (result?.error) {
       Toast.getInstance().showToast({
-        title: "Success",
-        description: response.message,
+        title: "Reset Password Failed",
+        description: result.error,
+        variant: "error",
+      });
+    }
+    if (result?.success && result.redirectUrl) {
+      Toast.getInstance().showToast({
+        title: "Password Reset Successful",
+        description: result.message ?? "Your password has been reset successfully.",
         variant: "success",
       });
     }
