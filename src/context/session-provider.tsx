@@ -5,9 +5,7 @@ import { createContext, ReactNode, useEffect, useState } from "react";
 
 import { getSession } from "~/lib/session/session"; // Adjust the path to your getSession function
 
-const SessionContext = createContext<ISessionContextType | undefined>(
-  undefined,
-);
+const SessionContext = createContext<ISessionContextType | undefined>(undefined);
 
 const SessionProvider = ({ children }: { children: ReactNode }) => {
   const [session, setSession] = useState<ISessionData | null>(null);
@@ -34,11 +32,7 @@ const SessionProvider = ({ children }: { children: ReactNode }) => {
     await fetchSession();
   };
 
-  return (
-    <SessionContext.Provider value={{ session, loading, refreshSession }}>
-      {children}
-    </SessionContext.Provider>
-  );
+  return <SessionContext.Provider value={{ session, loading, refreshSession }}>{children}</SessionContext.Provider>;
 };
 
 export default SessionProvider;
