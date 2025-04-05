@@ -5,14 +5,14 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { FormProvider, useForm } from "react-hook-form";
 
+import { resetPasswordAction } from "~/actions/auth";
 import CustomButton from "~/components/common/common-button/common-button";
 import { FormField } from "~/components/common/FormFields";
 import { Logo } from "~/components/common/logo";
-import { useSession } from "~/hooks/use-session";
 import { ResetPasswordData, resetPasswordSchema } from "~/schemas";
+import { Toast } from "~/utils/notificationManager";
 
 const ResetPasswordPage = () => {
-  const { resetPassword } = useSession();
   const searchParameters = useSearchParams();
   const token = searchParameters.get("token");
   const email = searchParameters.get("email");
@@ -33,7 +33,14 @@ const ResetPasswordPage = () => {
   } = methods;
 
   const handleSubmitForm = async (data: ResetPasswordData) => {
-    await resetPassword(data);
+    const response = await resetPasswordAction(data);
+    if (response) {
+      Toast.getInstance().showToast({
+        title: "Success",
+        description: response.message,
+        variant: "success",
+      });
+    }
   };
 
   return (

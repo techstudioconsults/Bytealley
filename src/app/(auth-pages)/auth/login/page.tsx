@@ -6,15 +6,14 @@ import { useTransition } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 
+import { googleSignInAction, loginAction } from "~/actions/auth";
 import CustomButton from "~/components/common/common-button/common-button";
 import { FormField } from "~/components/common/FormFields";
 import { Logo } from "~/components/common/logo";
-import { useSession } from "~/hooks/use-session";
 import { LoginFormData, loginSchema } from "~/schemas";
 
 const LoginPage = () => {
   const [isGooglePending, startGoogleTransition] = useTransition();
-  const { login, googleSignIn } = useSession();
 
   const methods = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -30,12 +29,12 @@ const LoginPage = () => {
   } = methods;
 
   const handleSubmitForm = async (data: LoginFormData) => {
-    await login(data);
+    await loginAction(data);
   };
 
   const handleGoogleSignIn = () => {
     startGoogleTransition(async () => {
-      await googleSignIn();
+      await googleSignInAction();
     });
   };
 
