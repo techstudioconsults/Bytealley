@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { usePathname } from "next/navigation";
@@ -19,8 +20,7 @@ const SessionProvider = ({ children }: { children: React.ReactNode }) => {
       try {
         const session = await getSession();
         setUser(session?.user);
-      } catch (error) {
-        console.error("Failed to fetch session:", error);
+      } catch {
         setUser(undefined);
       } finally {
         setLoading(false);
