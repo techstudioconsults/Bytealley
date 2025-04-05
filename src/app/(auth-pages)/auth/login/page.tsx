@@ -11,6 +11,7 @@ import CustomButton from "~/components/common/common-button/common-button";
 import { FormField } from "~/components/common/FormFields";
 import { Logo } from "~/components/common/logo";
 import { LoginFormData, loginSchema } from "~/schemas";
+import { Toast } from "~/utils/notificationManager";
 
 const LoginPage = () => {
   const [isGooglePending, startGoogleTransition] = useTransition();
@@ -29,7 +30,22 @@ const LoginPage = () => {
   } = methods;
 
   const handleSubmitForm = async (data: LoginFormData) => {
-    await loginAction(data);
+    const result = await loginAction(data);
+    if (result?.error) {
+      Toast.getInstance().showToast({
+        title: "Login Failed",
+        description: result.error,
+        variant: "error",
+      });
+    }
+    if (result?.success && result.redirectUrl) {
+      Toast.getInstance().showToast({
+        title: "Login Successful",
+        description: result.message ?? "Welcome back!",
+        variant: "success",
+      });
+      window.location.href = result.redirectUrl;
+    }
   };
 
   const handleGoogleSignIn = () => {
@@ -50,10 +66,6 @@ const LoginPage = () => {
 
         <FormProvider {...methods}>
           <form onSubmit={handleSubmit(handleSubmitForm)} className="space-y-4">
-            {methods.formState.errors.root && (
-              <p className="text-sm text-red-500">{methods.formState.errors.root.message}</p>
-            )}
-
             <FormField
               label="Email"
               name="email"
