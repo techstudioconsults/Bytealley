@@ -14,7 +14,6 @@ import SessionProvider from "~/context/session-provider";
 import ToastProvider from "~/context/toast-provider";
 import NotificationProvider from "~/features/push-notification/context/notification-provider";
 import { PageTransition } from "~/lib/animations";
-import { getSession } from "~/lib/session/session";
 import { ReduxProvider } from "~/store/provider";
 
 // Configure fonts
@@ -36,16 +35,14 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getSession();
-
   return (
     <html lang="en">
       <body className={`${montserrat.className} ${newsreader.variable}`}>
         <ReduxProvider>
           <LoadingProvider>
             <TooltipProvider>
-              <SessionProvider session={session}>
-                <NotificationProvider session={session}>
+              <SessionProvider>
+                <NotificationProvider>
                   <ToastProvider>
                     <GotoTop />
                     <LenisProvider>

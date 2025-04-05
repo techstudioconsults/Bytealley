@@ -1,15 +1,15 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect } from "react";
 
+import { handleGoogleCallbackAction } from "~/actions/auth";
 import Loading from "~/app/Loading";
 import { useSession } from "~/hooks/use-session";
 
 const PreLoader = () => {
   const router = useRouter();
-  const { handleGoogleCallback, user } = useSession();
+  const { user } = useSession();
 
   const googleRedirect = useCallback(
     async (code: string) => {
@@ -18,7 +18,7 @@ const PreLoader = () => {
         return;
       }
 
-      await handleGoogleCallback({
+      await handleGoogleCallbackAction({
         provider: "google",
         code: code,
       });
