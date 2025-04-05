@@ -4,14 +4,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { FormProvider, useForm } from "react-hook-form";
 
+import { forgotPasswordAction } from "~/actions/auth";
 import CustomButton from "~/components/common/common-button/common-button";
 import { FormField } from "~/components/common/FormFields";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-import { useSession } from "~/hooks/use-session";
 import { ForgotPasswordData, forgotPasswordSchema } from "~/schemas";
+import { Toast } from "~/utils/notificationManager";
 
 const ForgotPasswordPage = () => {
-  const { forgotPassword } = useSession();
   const methods = useForm<ForgotPasswordData>({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
@@ -25,7 +25,14 @@ const ForgotPasswordPage = () => {
   } = methods;
 
   const handleSubmitForm = async (data: ForgotPasswordData) => {
-    await forgotPassword(data);
+    const response = await forgotPasswordAction(data);
+    if (response) {
+      Toast.getInstance().showToast({
+        title: "Success",
+        description: response.message,
+        variant: "success",
+      });
+    }
   };
 
   return (

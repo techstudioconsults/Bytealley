@@ -9,13 +9,6 @@ export class AppService {
     this.http = httpAdapter;
   }
 
-  async getCurrentUser() {
-    const response = await this.http.get<{ data: IUser }>("/users/me");
-    if (response?.status === 200) {
-      return response.data.data;
-    }
-  }
-
   async getProductCategory() {
     const response = await this.http.get<{ data: CategoryItem[] }>("/products/types");
     if (response?.status === 200) {

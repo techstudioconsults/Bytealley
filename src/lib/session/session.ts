@@ -65,9 +65,8 @@ export async function getSession(): Promise<ISessionData | null> {
 
     return payload as ISessionData;
   } catch {
-    // Handle JWT verification errors (including expiration)
-    await deleteSession(); // Clear the invalid cookie
-    return null; // Return null to indicate no valid session
+    await deleteSession();
+    return null;
   }
 }
 
@@ -84,15 +83,7 @@ export async function setCookie(data: string, metaData: ICookieMetadata) {
 }
 
 export async function deleteSession() {
-  cookies().set({
-    name: "bytealley",
-    value: "",
-    expires: new Date(0), // Expire immediately
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
-    path: "/",
-  });
+  cookies().delete("bytealley");
 }
 
 export async function createSession(sessionData: ISessionData) {

@@ -4,14 +4,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 
 import CustomButton from "~/components/common/common-button/common-button";
+import { WithDependency } from "~/HOC/withDependencies";
 import { useSession } from "~/hooks/use-session";
 import { ProfileFormData, profileSchema } from "~/schemas";
+import { AppService } from "~/services/app.service";
+import { dependencies } from "~/utils/dependencies";
+import { Toast } from "~/utils/notificationManager";
 import { ProfileInformation } from "./_views/profile-infomation";
 import { ProfilePicture } from "./_views/profile-picture";
 import { SocialLink } from "./_views/social-link";
 
-const Profile = () => {
-  const { user, updateUserInfo } = useSession();
+const BaseProfile = ({ appService }: { appService: AppService }) => {
+  const { user } = useSession();
   const methods = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
@@ -35,13 +39,23 @@ const Profile = () => {
 
   const handleSubmitForm = async (data: ProfileFormData) => {
     if (data.logo instanceof File) {
-      await updateUserInfo(data);
+      const response = await appService.updateUser(data);
+      Toast.getInstance().showToast({
+        title: "Profile updated successfully",
+        description: "Your profile information has been updated.",
+        variant: "default",
+      });
     } else {
       const formData = {
         ...data,
         logo: null,
       };
-      await updateUserInfo(formData);
+      const response = await appService.updateUser(formData);
+      Toast.getInstance().showToast({
+        title: "Profile updated successfully",
+        description: "Your profile information has been updated.",
+        variant: "default",
+      });
     }
   };
   return (
@@ -110,5 +124,9 @@ const Profile = () => {
     </FormProvider>
   );
 };
+
+const Profile = WithDependency(BaseProfile, {
+  appService: dependencies.APP_SERVICE,
+});
 
 export default Profile;

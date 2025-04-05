@@ -1,147 +1,128 @@
-8067504592
+import { NextResponse } from "next/server";
 
+import { adminRoutes, authRoutes, publicRoutes, superAdminRoutes, userRoutes } from "./lib/session/routes";
+import { getSession } from "./lib/session/session";
 
+export async function middleware(request: Request) {
+  const url = new URL(request.url);
+  const { pathname } = url;
 
-import NextAuth from "next-auth";
-import Credentials from "next-auth/providers/credentials";
-import Google from "next-auth/providers/google";
+  // Skip middleware for all OAuth callback related routes
+  if (
+    pathname.startsWith("/auth/callback") ||
+    pathname.startsWith("/auth/fetching-data") ||
+    pathname.includes("oauth")
+  ) {
+    return NextResponse.next();
+  }
 
-import { HttpAdapter } from "~/adapters/http-adapter";
-import { AuthService } from "~/services/auth.service";
+  // Allow public routes and any route under /explore
+  if (publicRoutes.includes(pathname) || pathname.startsWith("/explore")) {
+    return NextResponse.next();
+  }
 
-const httpAdapter = new HttpAdapter();
-const authService = new AuthService(httpAdapter);
+  try {
+    // Get session and user details
+    const session = await getSession();
 
-const authOptions = NextAuth({
-  providers: [
-
-    Credentials({
-      name: `Credentials`,
-
-      credentials: {
-        email: { label: `Email`, type: `email` },
-        password: { label: `Passcode`, type: `password` },
-      },
-
-      authorize: async (credentials) => {
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error("Please provide both email and passcode.");
+    // Handle auth routes (login, register, etc.)
+    if (authRoutes.includes(pathname)) {
+      if (session) {
+        // If user is already logged in, redirect based on their role
+        if (session.user.role === "SUPER_ADMIN") {
+          return NextResponse.redirect(new URL("/super-admin/dashboard", url));
+        } else if (session.user.role === "ADMIN") {
+          return NextResponse.redirect(new URL("/admin/home", url));
+        } else {
+          return NextResponse.redirect(new URL(`/dashboard/${session.user.id}/home`, url));
         }
-        const response = await authService.login({
-          email: credentials.email as string,
-          password: credentials.password as string,
-        });
-        return { user: response.user, token: response.token }; // This must match the structure { user, token }
-      },
-    }),
-  ],
-  pages: {
-    signIn: "/admin/login",
-  },
-  callbacks: {
-    async jwt({ token, user }) {
-      console.log(token, user);
+      }
+      return NextResponse.next();
+    }
 
-      const USER = {
-        ...user.user,
-        token: user.token,
-      };
+    // Check if user is authenticated
+    if (!session) {
+      // Delete the session cookie if it exists but is invalid
+      const response = NextResponse.redirect(new URL("/auth/login", url));
+      response.cookies.delete("bytealley");
+      return response;
+    }
 
-      if (USER) {
-        token.id = USER.id;
-        token.first_name = USER.first_name;
-        token.last_name = USER.last_name;
-        token.email = USER.email;
-        token.image = USER.avatar;
-        token.role = USER.role;
-        token.bearerToken = USER.token;
+    // Handle routes based on user role
+    switch (session.user.role) {
+      case "SUPER_ADMIN": {
+        // Super admin can access everything
+        if (
+          [...superAdminRoutes, ...adminRoutes, ...userRoutes].some((route) => pathname.startsWith(route.split(":")[0]))
+        ) {
+          return NextResponse.next();
+        }
+        break;
       }
 
-      return token;
-    },
-    async session({ session, token }) {
-      return {
-        ...session,
-        user: {
-          ...session.user,
-          id: token.id as string,
-          firstName: token.first_name as string,
-          lastName: token.last_name as string,
-          email: token.email as string,
-          image: token.image as string,
-          token: token.bearerToken as string,
-          role: token.role as string,
-        },
-      };
-    },
-  },
-  debug: true,
-});
+      case "ADMIN": {
+        // Admin can access admin routes and user routes
+        if ([...adminRoutes, ...userRoutes].some((route) => pathname.startsWith(route.split(":")[0]))) {
+          return NextResponse.next();
+        }
+        break;
+      }
 
-export const { handlers, signIn, signOut, auth } = authOptions;
+      case "USER": {
+        // Users can only access their own routes
+        const isUserRoute = userRoutes.some((route) => {
+          // Check if the route pattern contains :userID
+          if (route.includes(":userID")) {
+            // Replace :userID with the actual user ID to create the base path
+            const basePath = `/dashboard/${session.user.id}`;
+            // Check if the current pathname starts with the user's base path
+            return pathname.startsWith(basePath);
+          }
+          return pathname.startsWith(route);
+        });
 
+        if (isUserRoute) {
+          return NextResponse.next();
+        }
+        break;
+      }
 
-import { DefaultSession } from "next-auth";
+      default: {
+        // Invalid role or no role
+        return NextResponse.redirect(new URL("/auth/login", url));
+      }
+    }
 
-declare module "next-auth" {
-
-  interface Session {
-    user: User & DefaultSession["user"];
-    expires: string;
-    error: string;
+    // If none of the above conditions are met, redirect to appropriate homepage
+    if (session.user.role === "SUPER_ADMIN") {
+      return NextResponse.redirect(new URL("/super-admin/dashboard", url));
+    } else if (session.user.role === "ADMIN") {
+      return NextResponse.redirect(new URL("/admin/home", url));
+    } else {
+      return NextResponse.redirect(new URL(`/dashboard/${session.user.id}/home`, url));
+    }
+  } catch {
+    // Handle any session errors (including expired tokens)
+    if (pathname !== "/auth/login") {
+      const response = NextResponse.redirect(new URL("/auth/login", url));
+      response.cookies.delete("bytealley");
+      return response;
+    }
+    return NextResponse.next();
   }
 }
 
-
-
-
-
-
-
-// export async function updateSession(request: NextRequest) {
-//   const skicom = request.cookies.get("skicom")?.value;
-//   if (!skicom) return;
-
-//   const parsed = await decrypt(skicom);
-
-//   // Ensure no update occurs after logout
-//   if (
-//     !parsed ||
-//     !parsed.expires ||
-//     Date.now() >= new Date(parsed.expires).getTime()
-//   ) {
-//     return;
-//   }
-
-//   parsed.expires = new Date(Date.now() + 60 * 60 * 1000);
-//   const response = NextResponse.next();
-//   response.cookies.set({
-//     name: "skicom",
-//     value: await encrypt(parsed),
-//     httpOnly: true,
-//     expires: parsed.expires,
-//   });
-//   return response;
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export const config = {
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next (Next.js internals)
+     * - static (static files)
+     * - images (image files)
+     * - favicon.ico (favicon file)
+     * - public (public assets)
+     */
+    "/((?!api|_next|static|images|favicon.ico|public).*)",
+  ],
+};
