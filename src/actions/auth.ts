@@ -3,7 +3,9 @@
 
 import { redirect } from "next/navigation";
 
+import { getSession } from "~/lib/session/session";
 import { ForgotPasswordData, LoginFormData, RegisterFormData, ResetPasswordData } from "~/schemas";
+import { AppService } from "~/services/app.service";
 import { HttpAdapter } from "../adapters/http-adapter";
 import { AuthService } from "../services/auth.service";
 
@@ -18,6 +20,7 @@ type ActionResult = {
 // Initialize services
 const httpAdapter = new HttpAdapter();
 const authService = new AuthService(httpAdapter);
+const appService = new AppService(httpAdapter);
 
 export async function loginAction(data: LoginFormData): Promise<ActionResult> {
   try {
@@ -132,13 +135,13 @@ export async function resetPasswordAction(data: ResetPasswordData): Promise<Acti
 
 export async function getUser(): Promise<IUser | null> {
   try {
-    const user = await authService.getUser();
-
+    const session = await getSession();
+    if (!session) return null;
+    const user = await appService.getUser();
     if (!user) {
       redirect("/auth/login");
       return null;
     }
-
     return user;
   } catch {
     redirect("/auth/login");

@@ -33,7 +33,7 @@ const ForgotPasswordPage = () => {
         variant: "error",
       });
     }
-    if (result?.success && result.redirectUrl) {
+    if (result?.success) {
       Toast.getInstance().showToast({
         title: "Email Sent",
         description: result.message ?? "Please check your email for password reset instructions.",

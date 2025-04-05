@@ -46,6 +46,13 @@ export class AppService {
     }
   }
 
+  async getUser() {
+    const response = await this.http.get<{ data: IUser }>("/users/me");
+    if (response?.status === 200) {
+      return response.data.data;
+    }
+  }
+
   async updateUser(data: ProfileFormData) {
     const headers = { "Content-Type": "multipart/form-data" };
     const response = await this.http.post<{ data: IUser }>(`/users/me`, data, headers);
