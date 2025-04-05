@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
 import { redirect } from "next/navigation";
@@ -7,33 +7,74 @@ import { ForgotPasswordData, LoginFormData, RegisterFormData, ResetPasswordData 
 import { HttpAdapter } from "../adapters/http-adapter";
 import { AuthService } from "../services/auth.service";
 
-// Initialize dependencies
-const httpAdapter = new HttpAdapter();
-const authService = new AuthService(httpAdapter);
-
+// Types
 type ActionResult = {
   success?: boolean;
   message?: string;
   error?: string;
+  redirectUrl?: string;
 };
 
+// Initialize services
+const httpAdapter = new HttpAdapter();
+const authService = new AuthService(httpAdapter);
+
 export async function loginAction(data: LoginFormData): Promise<ActionResult> {
-  const user = await authService.login(data);
-  if (!user) {
-    throw new Error("Invalid email or password");
+  try {
+    const user = await authService.login(data);
+
+    if (!user) {
+      return {
+        error: "Invalid email or password. Please try again.",
+      };
+    }
+
+    await authService.createUserSession(user);
+
+    return {
+      success: true,
+      message: `Welcome back, ${user.name}!`,
+      redirectUrl: `/dashboard/${user.id}/home`,
+    };
+  } catch (error: any) {
+    return {
+      error: error?.message ?? "An unexpected error occurred. Please try again.",
+    };
   }
-  await authService.createUserSession(user);
-  redirect(`/dashboard/${user.id}/home`);
 }
 
-export async function logoutAction() {
-  await authService.logout();
+export async function logoutAction(): Promise<ActionResult> {
+  try {
+    await authService.logout();
+    return {
+      success: true,
+      message: "You’ve been logged out successfully.",
+    };
+  } catch (error: any) {
+    return {
+      error: error?.message ?? "Failed to logout. Please try again.",
+    };
+  }
 }
 
 export async function registerAction(data: RegisterFormData) {
-  const success = await authService.register(data);
-  if (success) {
-    redirect("/auth/login");
+  try {
+    const success = await authService.register(data);
+    if (success) {
+      return {
+        success: true,
+        message: "Account created successfully. Please log in.",
+        redirectUrl: "/auth/login",
+      };
+    }
+
+    return {
+      error: "Email already exists. Please use a different email.",
+    };
+  } catch (error: any) {
+    return {
+      error: error?.message ?? "An unexpected error occurred during registration.",
+    };
   }
 }
 
@@ -53,32 +94,54 @@ export async function handleGoogleCallbackAction(credentials: { code: string; pr
   redirect(`/dashboard/${user.id}/home`);
 }
 
-export async function forgotPasswordAction(data: ForgotPasswordData) {
-  const response = await authService.forgotPassword(data);
-  if (response) {
-    return response;
+export async function forgotPasswordAction(data: ForgotPasswordData): Promise<ActionResult> {
+  try {
+    const response = await authService.forgotPassword(data);
+    return {
+      success: true,
+      message: response?.message ?? "Password reset email sent successfully.",
+    };
+  } catch (error: any) {
+    return {
+      error: error?.message ?? "Failed to send password reset email. Please try again.",
+    };
   }
-  throw new Error("Failed to send password reset email");
 }
 
-export async function resetPasswordAction(data: ResetPasswordData) {
-  const response = await authService.resetPassword(data);
-  if (response) {
-    redirect(`/auth/login`);
-    return response;
+export async function resetPasswordAction(data: ResetPasswordData): Promise<ActionResult> {
+  try {
+    const response = await authService.resetPassword(data);
+
+    if (response) {
+      return {
+        success: true,
+        message: "Your password has been reset successfully. Please log in.",
+        redirectUrl: "/auth/login",
+      };
+    }
+
+    return {
+      error: "Password reset failed. Please try again.",
+    };
+  } catch (error: any) {
+    return {
+      error: error?.message ?? "Failed to reset password. Please try again.",
+    };
   }
-  throw new Error("Failed to send password reset email");
 }
 
-export async function getUser(): Promise<IUser> {
-  const user = await authService.getUser();
-  console.log(user);
-  if (!user) {
+export async function getUser(): Promise<IUser | null> {
+  try {
+    const user = await authService.getUser();
+
+    if (!user) {
+      redirect("/auth/login");
+      return null;
+    }
+
+    return user;
+  } catch {
     redirect("/auth/login");
+    return null;
   }
-  return user;
 }
-
-// export async function deleteSession() {
-//   cookies().delete("bytealley");
-// }

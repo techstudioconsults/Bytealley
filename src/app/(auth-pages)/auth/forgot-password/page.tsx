@@ -25,11 +25,18 @@ const ForgotPasswordPage = () => {
   } = methods;
 
   const handleSubmitForm = async (data: ForgotPasswordData) => {
-    const response = await forgotPasswordAction(data);
-    if (response) {
+    const result = await forgotPasswordAction(data);
+    if (result?.error) {
       Toast.getInstance().showToast({
-        title: "Success",
-        description: response.message,
+        title: "Forgot Password Failed",
+        description: result.error,
+        variant: "error",
+      });
+    }
+    if (result?.success && result.redirectUrl) {
+      Toast.getInstance().showToast({
+        title: "Email Sent",
+        description: result.message ?? "Please check your email for password reset instructions.",
         variant: "success",
       });
     }

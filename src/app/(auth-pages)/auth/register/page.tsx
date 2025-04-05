@@ -11,6 +11,7 @@ import CustomButton from "~/components/common/common-button/common-button";
 import { FormField, PasswordValidation } from "~/components/common/FormFields";
 import { Logo } from "~/components/common/logo";
 import { RegisterFormData, registerSchema } from "~/schemas";
+import { Toast } from "~/utils/notificationManager";
 
 const RegisterPage = () => {
   const [isGooglePending, startGoogleTransition] = useTransition();
@@ -33,7 +34,22 @@ const RegisterPage = () => {
   } = methods;
 
   const handleSubmitForm = async (data: RegisterFormData) => {
-    await registerAction(data);
+    const result = await registerAction(data);
+    if (result?.error) {
+      Toast.getInstance().showToast({
+        title: "Login Failed",
+        description: result.error,
+        variant: "error",
+      });
+    }
+    if (result?.success && result.redirectUrl) {
+      Toast.getInstance().showToast({
+        title: "Registration Successful",
+        description: "Welcome to bytealley! please login",
+        variant: "success",
+      });
+      window.location.href = result.redirectUrl;
+    }
   };
 
   const handleGoogleSignIn = () => {
