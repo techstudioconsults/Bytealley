@@ -5,7 +5,6 @@ import "./globals.scss";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
-import { getUser } from "~/actions/auth";
 import { LenisProvider } from "~/components/lenis-provider";
 import { GotoTop } from "~/components/miscellaneous/goto-top";
 import { TooltipProvider } from "~/components/ui/tooltip";
@@ -36,15 +35,13 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const user = await getUser();
-
   return (
     <html lang="en">
       <body className={`${montserrat.className} ${newsreader.variable}`}>
         <ReduxProvider>
           <LoadingProvider>
             <TooltipProvider>
-              <SessionProvider initialUser={user}>
+              <SessionProvider>
                 <NotificationProvider>
                   <ToastProvider>
                     <GotoTop />

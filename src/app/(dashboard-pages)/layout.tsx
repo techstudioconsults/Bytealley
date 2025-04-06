@@ -3,7 +3,7 @@
 // import DarkModeToggle from "~/components/common/theme-toggle";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-
+;
 import { Toaster } from "~/components/ui/sonner";
 import { cn } from "~/utils/utils";
 import { DashboardNavbar } from "./_components/layout/navbar";
@@ -14,7 +14,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [isEditor, setIsEditor] = useState(false);
 
   useEffect(() => {
-    setIsEditor(pathName.includes("editor"));
+    const init = () => {
+      setIsEditor(pathName.includes("editor"));
+    };
+    init();
   }, [pathName]);
 
   return (
