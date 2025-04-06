@@ -4,7 +4,6 @@
 import emptyCart from "@/images/empty-cart.svg";
 import { format } from "date-fns";
 import debounce from "lodash.debounce";
-// import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { DateRange } from "react-day-picker";
@@ -15,7 +14,6 @@ import { DateRangePicker } from "~/app/(dashboard-pages)/_components/date-range-
 import { EmptyState, FilteredEmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import ExportAction from "~/app/(dashboard-pages)/_components/export-action";
 import Loading from "~/app/Loading";
-// import CustomButton from "~/components/common/common-button/common-button";
 import { WithDependency } from "~/HOC/withDependencies";
 import { useSession } from "~/hooks/use-session";
 import { CustomerService } from "~/services/customer.service";
@@ -61,7 +59,7 @@ const BaseCustomerPage = ({ customerService }: { customerService: CustomerServic
   return (
     <section className={`space-y-10`}>
       <p className={`text-2xl font-medium`}>{customers?.length} Customers</p>
-      <section className="flex w-full flex-col gap-4 sm:items-center md:flex-row md:justify-between">
+      <section className="flex w-full flex-col-reverse gap-4 sm:items-center md:flex-row md:justify-between">
         <div className="flex w-full flex-col gap-2 sm:flex-row md:w-auto">
           <DateRangePicker onDateChange={handleDateRangeChange} />
         </div>
@@ -74,15 +72,6 @@ const BaseCustomerPage = ({ customerService }: { customerService: CustomerServic
             fileName="customer"
             size={`xl`}
           />
-          {/* <CustomButton
-            className="w-full border-primary text-[16px] text-primary sm:w-auto"
-            variant="outline"
-            size="xl"
-            isLeftIconVisible
-            icon={<Image src={refreshIcon} width={16} height={16} alt="export" />}
-          >
-            Refresh
-          </CustomButton> */}
         </div>
       </section>
       <section>

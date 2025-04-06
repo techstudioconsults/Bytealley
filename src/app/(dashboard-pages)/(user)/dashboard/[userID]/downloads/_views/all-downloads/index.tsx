@@ -53,7 +53,7 @@ export const AllDownloads = ({ service }: { service: ProductService }) => {
       ) : (
         <>
           {downloads.length > 0 ? (
-            <section className={`grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4`}>
+            <section className={`grid grid-cols-2 gap-8 lg:grid-cols-4`}>
               {downloads?.map((download) => (
                 <DownloadCard
                   key={download?.id}
