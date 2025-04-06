@@ -1,5 +1,6 @@
 "use client";
 
+import empty1 from "@/images/alert.png";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 
@@ -110,6 +111,7 @@ const BasePreviewProductDetailsPage = ({
               description: "Are you sure you want to delete this product?",
               onConfirm: handleDelete,
               buttonName: "Delete",
+              img: empty1.src,
             }}
           >
             <CustomButton variant="outline" size="lg" className="w-full border-destructive text-destructive lg:w-auto">

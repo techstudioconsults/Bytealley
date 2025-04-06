@@ -15,7 +15,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <AppSidebar />
       <main className={`h-fit w-full`}>
         <DashboardNavbar />
-        <section className={cn(isEditor ? "p-0" : "p-4 py-8")}>
+        <section className={cn(isEditor ? "p-0" : "p-4 lg:p-8")}>
           {children}
           <Toaster />
         </section>
