@@ -9,13 +9,14 @@ import { Logo } from "~/components/common/logo";
 import { useSidebarItems } from "~/utils/constants";
 import { cn } from "~/utils/utils";
 
-interface ISidebarProperties {
+interface ISidebarProperties extends React.HTMLAttributes<HTMLDivElement> {
+  className?: string;
   sideNavitems?: SidebarItem[];
   logoComponent?: React.ReactNode;
   onClose?: () => void;
 }
 
-export const Sidebar: FC<ISidebarProperties> = ({ sideNavitems, logoComponent, onClose }) => {
+export const Sidebar: FC<ISidebarProperties> = ({ sideNavitems, logoComponent, className, onClose }) => {
   const pathname = usePathname();
   const userID = pathname.split("/")[2];
 
@@ -80,7 +81,7 @@ export const Sidebar: FC<ISidebarProperties> = ({ sideNavitems, logoComponent, o
   };
 
   return (
-    <div>
+    <div className={cn(className)}>
       <div className="flex items-center justify-center py-8">{logoComponent || <Logo width={140} height={47} />}</div>
       <nav className="flex-1 space-y-2 overflow-y-auto p-4">
         {items.map((item) => (
