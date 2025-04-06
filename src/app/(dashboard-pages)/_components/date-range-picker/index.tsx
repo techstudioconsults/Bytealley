@@ -29,7 +29,7 @@ export const DateRangePicker = ({
   };
 
   return (
-    <div className={cn("grid gap-2", className)}>
+    <div className={cn("flex gap-2", className)}>
       <Popover>
         <PopoverTrigger asChild>
           <Button

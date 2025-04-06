@@ -21,20 +21,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }, [pathName]);
 
   return (
-    <main className="flex min-h-screen">
+    <main className={`flex`}>
       {/* Sidebar */}
-      <aside
+      <Sidebar
         className={cn(
-          "fixed inset-y-0 z-30 hidden w-64 flex-shrink-0 overflow-y-auto border-r bg-white xl:block",
+          "sticky top-0 z-30 hidden h-screen w-[15%] flex-shrink-0 overflow-y-auto border-r bg-white xl:block",
           isEditor && "xl:hidden",
         )}
-      >
-        <Sidebar />
-        {/* <DarkModeToggle /> */}
-      </aside>
-
+      />
       {/* Main Content */}
-      <div className={cn("flex flex-1 flex-col", isEditor ? "xl:pl-0" : "xl:pl-64")}>
+      <div className={cn("flex w-full flex-col")}>
         {/* Navbar */}
         <header className="sticky top-0 z-20 bg-white">
           <DashboardNavbar />

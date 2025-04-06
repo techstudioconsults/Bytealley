@@ -104,14 +104,15 @@ export const AllProducts = ({ productService }: { productService: ProductService
       </section>
       <section className={`space-y-4`}>
         <>
-          <section className={`flex flex-col justify-between lg:flex-row lg:items-center`}>
-            <div className={`flex flex-col gap-4 lg:flex-row lg:items-center`}>
+          <section className={`flex flex-col-reverse justify-between gap-4 lg:flex-row lg:items-center`}>
+            <div className={`flex flex-row gap-4 lg:items-center`}>
               <DateRangePicker className={`w-full lg:w-auto`} onDateChange={handleDateRangeChange} />
               <SelectDropdown
                 options={statusOptions}
                 value={status}
                 onValueChange={handleStatusChange}
                 placeholder="Filter by status"
+                triggerClassName={`w-full lg:w-auto h-[48px] rounded-sm`}
               />
             </div>
             <ExportAction
@@ -121,6 +122,7 @@ export const AllProducts = ({ productService }: { productService: ProductService
               status={status}
               buttonText="Export"
               fileName="Product"
+              size={`xl`}
             />
           </section>
           {isPendingProducts ? (

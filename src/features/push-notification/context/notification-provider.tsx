@@ -18,16 +18,13 @@ export const NotificationContext = createContext<NotificationContextType | undef
 export const BaseNotificationProvider = ({
   pushService,
   children,
-  // session,
 }: {
   children: ReactNode;
   pushService: PushService;
-  // session: any;
 }) => {
   const [session, setSession] = useState<ISessionData | null>(null);
   const [notifications, setNotifications] = useState<PushNotification[]>([]);
 
-  // Fetch notifications from the backend
   const fetchNotifications = useCallback(async () => {
     try {
       const response = await pushService.getNotification();
