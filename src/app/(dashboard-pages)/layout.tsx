@@ -1,47 +1,25 @@
 "use client";
 
 // import DarkModeToggle from "~/components/common/theme-toggle";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-
+import { SidebarProvider } from "~/components/ui/sidebar";
 import { Toaster } from "~/components/ui/sonner";
+import { UseEditor } from "~/hooks/use-editor";
 import { cn } from "~/utils/utils";
 import { DashboardNavbar } from "./_components/layout/navbar";
-import { Sidebar } from "./_components/layout/sidebar/sidebar";
+import { AppSidebar } from "./_components/layout/sidebar/app-sidebar";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const pathName = usePathname();
-  const [isEditor, setIsEditor] = useState(false);
-
-  useEffect(() => {
-    const init = () => {
-      setIsEditor(pathName.includes("editor"));
-    };
-    init();
-  }, [pathName]);
-
+  const { isEditor } = UseEditor();
   return (
-    <main className={`flex`}>
-      {/* Sidebar */}
-      <Sidebar
-        className={cn(
-          "sticky top-0 z-30 hidden h-screen w-[15%] flex-shrink-0 overflow-y-auto border-r bg-white xl:block",
-          isEditor && "xl:hidden",
-        )}
-      />
-      {/* Main Content */}
-      <div className={cn("flex w-full flex-col")}>
-        {/* Navbar */}
-        <header className="sticky top-0 z-20 bg-white">
-          <DashboardNavbar />
-        </header>
-
-        {/* Page Content */}
-        <section className={cn(isEditor ? "p-0" : "container mx-auto p-4 py-8")}>
+    <SidebarProvider>
+      <AppSidebar />
+      <main className={`h-fit w-full`}>
+        <DashboardNavbar />
+        <section className={cn(isEditor ? "p-0" : "p-4 lg:p-8")}>
           {children}
           <Toaster />
         </section>
-      </div>
-    </main>
+      </main>
+    </SidebarProvider>
   );
 }
