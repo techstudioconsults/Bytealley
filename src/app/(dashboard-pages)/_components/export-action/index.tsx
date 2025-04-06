@@ -63,6 +63,7 @@ const ExportAction = <T extends object>({
       icon={<Image src={uploadIcon} width={16} height={16} alt="export" />}
       onClick={handleDownload}
       isLoading={isPending}
+      // isIconOnly={true}
     >
       {buttonText}
     </CustomButton>

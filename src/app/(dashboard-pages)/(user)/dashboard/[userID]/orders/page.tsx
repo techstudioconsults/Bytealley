@@ -62,7 +62,7 @@ const BaseOrderPage = ({ orderService }: { orderService: OrderService }) => {
 
   return (
     <section className={`space-y-10`}>
-      <section className="flex w-full flex-col gap-4 sm:items-center md:flex-row md:justify-between">
+      <section className="flex w-full flex-col-reverse gap-4 sm:items-center md:flex-row md:justify-between">
         <div className="flex w-full flex-col gap-2 sm:flex-row md:w-auto">
           <DateRangePicker onDateChange={handleDateRangeChange} />
         </div>
@@ -75,18 +75,6 @@ const BaseOrderPage = ({ orderService }: { orderService: OrderService }) => {
             fileName="orders"
             size={`xl`}
           />
-          {/* <CustomButton
-            className="w-full border-primary text-[16px] text-primary sm:w-auto"
-            variant="outline"
-            size="xl"
-            isLeftIconVisible
-            icon={<Image src={refreshIcon} width={16} height={16} alt="export" />}
-            // onClick={handleRefresh}
-            isLoading={isPendingRefresh}
-            isDisabled={isPendingRefresh}
-          >
-            Refresh
-          </CustomButton> */}
         </div>
       </section>
       <section>

@@ -89,18 +89,18 @@ const BasePayoutsPage = ({
       {/* views */}
       <section className="space-y-4">
         <section className="flex w-full flex-col gap-4 sm:items-center md:flex-row md:justify-between">
-          <div className="flex w-full flex-col gap-2 sm:flex-row md:w-auto">
+          <div className="flex w-full flex-col-reverse gap-2 sm:flex-row md:w-auto">
             <DateRangePicker onDateChange={handleDateRangeChange} />
             <ExportAction
               serviceMethod={(filters) => payoutService.downloadPayoutAsCSV(filters)}
               currentPage={currentPage}
               dateRange={dateRange}
-              buttonText="Export"
+              buttonText="Export Table Info"
               fileName="payout"
               size={`xl`}
             />
           </div>
-          <div className="flex w-full flex-row gap-2 sm:w-auto sm:justify-start">
+          <div className="flex w-full flex-row gap-2 sm:w-auto justify-end mt-4 md:mt-0">
             <CustomButton
               className="w-full text-[16px] sm:w-auto"
               variant="primary"
