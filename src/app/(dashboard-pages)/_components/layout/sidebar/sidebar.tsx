@@ -81,9 +81,11 @@ export const SidebarNav: FC<ISidebarProperties> = ({ sideNavitems, logoComponent
   };
 
   return (
-    <div className={cn("flex-col", "xl:block", className)}>
-      <div className="flex items-center justify-center py-6">{logoComponent || <Logo width={140} height={47} />}</div>
-      <nav className="space-y-2 p-4">
+    <div className={cn("h-screen flex-col", "xl:block", className)}>
+      <div className="flex h-[10.9%] items-center justify-center">
+        {logoComponent || <Logo width={140} height={47} />}
+      </div>
+      <nav className="h-[89.9%] space-y-2 overflow-auto p-4">
         {items.map((item) => (
           <div key={item.id}>{renderSidebarItem(item)}</div>
         ))}
