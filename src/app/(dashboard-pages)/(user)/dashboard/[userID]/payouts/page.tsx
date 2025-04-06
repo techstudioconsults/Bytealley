@@ -100,7 +100,7 @@ const BasePayoutsPage = ({
               size={`xl`}
             />
           </div>
-          <div className="flex w-full flex-row gap-2 sm:w-auto justify-end mt-4 md:mt-0">
+          <div className="mt-4 flex w-full flex-row justify-end gap-2 sm:w-auto md:mt-0">
             <CustomButton
               className="w-full text-[16px] sm:w-auto"
               variant="primary"
