@@ -16,7 +16,7 @@ const renderCellContent = (header: string, product: any) => {
       return formatDate(product.updated_at);
     }
     case "price": {
-      return product.price?.toLocaleString();
+      return <span>₦{product.price?.toLocaleString()}</span>;
     }
     case "product link": {
       return (

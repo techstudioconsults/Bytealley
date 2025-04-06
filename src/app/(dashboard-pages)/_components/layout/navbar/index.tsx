@@ -8,9 +8,9 @@ import { useEffect } from "react";
 import { Profile } from "~/components/common/profile";
 import { SearchInput } from "~/components/common/search-input";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
+import { SidebarTrigger } from "~/components/ui/sidebar";
 import { UnreadNotificationCard, useNotifications } from "~/features/push-notification";
 import { cn } from "~/utils/utils";
-import { Drawer } from "../drawer/drawer";
 
 export const DashboardNavbar = () => {
   const pathname = usePathname();
@@ -25,7 +25,7 @@ export const DashboardNavbar = () => {
     <nav className="sticky top-0 z-[5] border-b-[0.5px] border-border" role="navbar">
       <section className="flex w-full items-center justify-between gap-[20px] bg-white px-[16px] py-[20px] lg:px-[32px]">
         <div className={`flex items-center gap-4`}>
-          <Drawer />
+          <SidebarTrigger className={`h-10 w-10`} />
           <h6 className="font-semibold">{title}</h6>
         </div>
         <section className="flex items-center justify-between gap-1 md:gap-2 lg:gap-6">
