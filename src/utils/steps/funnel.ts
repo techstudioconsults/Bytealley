@@ -1,22 +1,36 @@
 export const funnelSteps = [
   {
     target: ".funnel-step-1",
-    content: "This is the header section, where custom action can be performed",
+    content: "ACTION TAB: Here, you can perform custom actions once you are done creating or modifing your Funnel.",
   },
   {
     target: ".gs-cmp-editor-topbar",
-    content: "The funnel internal tool bar, this tool bar holds the ",
+    content:
+      "TOOLBAR: This is the internal funnel toolbar. It provides essential tools and extra actions during funnel creation.",
   },
   {
-    target: ".gs-sidebar-left",
-    content: "This is the second step of the tour!",
+    target: ".gs-cmp-accordion",
+    content:
+      "PAGES: The funnel supports multipage functionality, making it easy to manage pages in your project. Check the documentation for detailed instructions.",
   },
   {
-    target: ".gs-utl-h-full",
-    content: "This is the second step of the tour!",
+    target: ".gs-cmp-tooltip-target .gs-utl-block",
+    content:
+      "BLOCKS: Use the Block button to access a list of reusable components (tag, forms, images, etc...) or elements for your project. Customize blocks with individual components or complex layouts.",
+  },
+  {
+    target: ".gs-sidebar-right",
+    content:
+      "STYLE & PROPERTIES: Manage funnel styles and tag properties to ensure a consistent design across all pages.",
+  },
+  {
+    target: ".gs-layer-manager",
+    content:
+      "PAGE TREE: This is the page tree, which allows you to manage all elements on the page. You can select, edit, and delete elements from here.",
   },
   {
     target: ".gs-canvas",
-    content: "This is the second step of the tour!",
+    content:
+      "CANVAS: This is the main area where you can drag and drop elements to create your funnel. Use the toolbar for additional options.",
   },
 ];
