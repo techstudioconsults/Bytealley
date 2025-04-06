@@ -9,21 +9,20 @@ import { useSession } from "~/hooks/use-session";
 
 const PreLoader = () => {
   const router = useRouter();
-  const { user } = useSession();
+  const { setUser } = useSession();
 
   const googleRedirect = useCallback(
     async (code: string) => {
-      if (user) {
-        router.push(`/dashboard/${user.id}/home`);
-        return;
-      }
-
-      await handleGoogleCallbackAction({
+      const user = await handleGoogleCallbackAction({
         provider: "google",
         code: code,
       });
+      if (user) {
+        setUser(user);
+        router.push(`/dashboard/${user.id}/home`);
+      }
     },
-    [router, user],
+    [router, setUser],
   );
 
   useEffect(() => {

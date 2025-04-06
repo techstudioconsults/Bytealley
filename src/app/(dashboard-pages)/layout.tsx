@@ -14,7 +14,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [isEditor, setIsEditor] = useState(false);
 
   useEffect(() => {
-    setIsEditor(pathName.includes("editor"));
+    const init = () => {
+      setIsEditor(pathName.includes("editor"));
+    };
+    init();
   }, [pathName]);
 
   return (

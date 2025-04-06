@@ -4,11 +4,12 @@
 
 import Pusher from "pusher-js";
 import { createContext, ReactNode, useCallback, useEffect, useState } from "react";
+import { toast } from "sonner";
 
+import CustomButton from "~/components/common/common-button/common-button";
 import { WithDependency } from "~/HOC/withDependencies";
 import { getSession } from "~/lib/session/session";
 import { dependencies } from "~/utils/dependencies";
-import { Toast } from "~/utils/notificationManager";
 import { PushService } from "../services/notification.service";
 import { NotificationContextType, PushNotification } from "../types";
 
@@ -42,11 +43,26 @@ export const BaseNotificationProvider = ({
 
   const addNotification = (notification: PushNotification) => {
     setNotifications((previous) => [{ ...notification }, ...previous]);
-    Toast.getInstance().showToast({
-      title: "New Notification",
-      description: notification.data.message,
-      variant: "success",
-    });
+    toast(
+      <div className="flex flex-col gap-2">
+        <div>
+          <p className={`font-semibold`}>New Notification</p>
+          <p>{notification.data.message}</p>
+        </div>
+        <div className="flex justify-end gap-2">
+          <CustomButton size={`sm`} variant="outline" onClick={() => toast.dismiss()}>
+            Close
+          </CustomButton>
+          <CustomButton size={`sm`} variant="outline">
+            View
+          </CustomButton>
+        </div>
+      </div>,
+      {
+        duration: 10,
+        position: "bottom-right",
+      },
+    );
   };
 
   // Mark all notifications as read
@@ -81,7 +97,7 @@ export const BaseNotificationProvider = ({
           },
         },
       });
-      Pusher.logToConsole = true;
+      // Pusher.logToConsole = true;
 
       pusher.connection.bind("error", (error: Error) => {
         console.error("Pusher connection error:", error);
@@ -108,7 +124,6 @@ export const BaseNotificationProvider = ({
 
       for (const event of events) {
         channel.bind(event, (data: any) => {
-          console.log("Received event:", event, data);
           const formattedNotication = {
             id: data.id,
             type: event,
