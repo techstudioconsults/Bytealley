@@ -4,7 +4,6 @@ import { format } from "date-fns";
 import { ChevronDown } from "lucide-react";
 import * as React from "react";
 import { DateRange } from "react-day-picker";
-import { AiOutlineQuestionCircle } from "react-icons/ai";
 
 import { Button } from "~/components/ui/button";
 import { Calendar } from "~/components/ui/calendar";
