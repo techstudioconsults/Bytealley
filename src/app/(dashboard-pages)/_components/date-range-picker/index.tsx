@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { ChevronDown } from "lucide-react";
 import * as React from "react";
 import { DateRange } from "react-day-picker";
+import { AiOutlineQuestionCircle } from "react-icons/ai";
 
 import { Button } from "~/components/ui/button";
 import { Calendar } from "~/components/ui/calendar";
@@ -29,7 +30,7 @@ export const DateRangePicker = ({
   };
 
   return (
-    <div className={cn("grid gap-2", className)}>
+    <div className={cn("flex gap-2", className)}>
       <Popover>
         <PopoverTrigger asChild>
           <Button
