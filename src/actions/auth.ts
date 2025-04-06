@@ -94,7 +94,7 @@ export async function handleGoogleCallbackAction(credentials: { code: string; pr
     throw new Error("Invalid email or password");
   }
   await authService.createUserSession(user);
-  redirect(`/dashboard/${user.id}/home`);
+  return user;
 }
 
 export async function forgotPasswordAction(data: ForgotPasswordData): Promise<ActionResult> {
