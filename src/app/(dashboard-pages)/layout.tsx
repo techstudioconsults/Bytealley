@@ -3,7 +3,7 @@
 // import DarkModeToggle from "~/components/common/theme-toggle";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-;
+
 import { Toaster } from "~/components/ui/sonner";
 import { cn } from "~/utils/utils";
 import { DashboardNavbar } from "./_components/layout/navbar";
