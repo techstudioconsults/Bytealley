@@ -18,6 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { WithDependency } from "~/HOC/withDependencies";
+import { useNavbarVisibility } from "~/hooks/use-navbar-visibility";
 import { useProductCategories } from "~/hooks/use-product-categories";
 import { useSession } from "~/hooks/use-session";
 import { AppService } from "~/services/app.service";
@@ -28,7 +29,7 @@ import { cn } from "~/utils/utils";
 const BaseNavbar = ({ appService }: { appService: AppService }) => {
   const { user } = useSession();
   const pathname = usePathname();
-  const [isNavbarVisible, setIsNavbarVisible] = useState(true);
+  const { isNavbarVisible } = useNavbarVisibility();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [navlinks, setNavlinks] = useState<any[]>(externalNavlinks);
 
@@ -48,25 +49,6 @@ const BaseNavbar = ({ appService }: { appService: AppService }) => {
       setNavlinks(modifiedLinks);
     }
   }, [categories]);
-
-  // Handle scroll event
-  useEffect(() => {
-    let lastScrollY = window.scrollY;
-
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setIsNavbarVisible(false);
-      } else if (currentScrollY < lastScrollY) {
-        setIsNavbarVisible(true);
-      }
-      lastScrollY = currentScrollY;
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const getRouteTheme = (): string => {
     const colorMap: { [key: string]: string } = {

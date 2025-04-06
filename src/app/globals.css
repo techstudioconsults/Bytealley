@@ -66,6 +66,15 @@
     --neutralColor-dark-1: 252, 67%, 26%;
     --neutralColor-dark-2: 0, 0%, 16%;
 
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+
     /* byte-alley design system */
     --white: 0, 0%, 100%;
     --black: 222.2 84% 4.9%;
@@ -101,6 +110,15 @@
     --low-grey-III: 0, 0%, 95%;
     --low-grey-II: 0, 0%, 98%;
     --low-grey-I: 0, 0%, 100%;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
@@ -196,6 +214,15 @@
     --low-grey-III: 210 40% 98%;
     --low-grey-II: 217.2 32.6% 17.5%;
     --low-grey-I: 222.2 84% 4.9%;
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
 
@@ -385,4 +412,13 @@ body {
   background: white;
   width: 20px;
   border-radius: 4px;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }

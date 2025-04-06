@@ -44,7 +44,7 @@ export const UnreadNotificationCard: FC<CardProperties> = ({ className, ...prope
         </div> */}
         <div className={`max-h-[50vh] overflow-y-auto`} data-testid="previewBody">
           {isPending ? (
-            <Loading text={`Loading notifications...`} className={`w-fill h-[40vh] p-20`} />
+            <Loading text={`Loading notifications...`} className={`w-fill h-fit p-4`} />
           ) : unreadCount > 0 ? (
             <NotificationDataFormat />
           ) : (

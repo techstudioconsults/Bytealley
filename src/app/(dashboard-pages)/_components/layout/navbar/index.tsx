@@ -8,12 +8,16 @@ import { useEffect } from "react";
 import { Profile } from "~/components/common/profile";
 import { SearchInput } from "~/components/common/search-input";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
+import { SidebarTrigger } from "~/components/ui/sidebar";
 import { UnreadNotificationCard, useNotifications } from "~/features/push-notification";
+import { UseEditor } from "~/hooks/use-editor";
+import { useNavbarVisibility } from "~/hooks/use-navbar-visibility";
 import { cn } from "~/utils/utils";
-import { Drawer } from "../drawer/drawer";
 
 export const DashboardNavbar = () => {
   const pathname = usePathname();
+  const { isNavbarVisible } = useNavbarVisibility();
+  const { isEditor } = UseEditor();
   const title = pathname.split("/")[3].charAt(0).toUpperCase() + pathname.split("/")[3].slice(1);
   const { unreadCount, fetchNotifications } = useNotifications();
 
@@ -22,10 +26,16 @@ export const DashboardNavbar = () => {
   }, [fetchNotifications]);
 
   return (
-    <nav className="sticky top-0 z-[5] border-b-[0.5px] border-border" role="navbar">
+    <nav
+      className={cn(
+        `sticky top-0 z-[5] w-full border-b-[0.5px] border-border backdrop-blur-sm transition-transform duration-300`,
+        isNavbarVisible ? "translate-y-0" : "-translate-y-full",
+      )}
+      role="navbar"
+    >
       <section className="flex w-full items-center justify-between gap-[20px] bg-white px-[16px] py-[20px] lg:px-[32px]">
         <div className={`flex items-center gap-4`}>
-          <Drawer />
+          <SidebarTrigger className={cn(`h-10 w-10`, !isEditor && `lg:hidden`)} />
           <h6 className="font-semibold">{title}</h6>
         </div>
         <section className="flex items-center justify-between gap-1 md:gap-2 lg:gap-6">

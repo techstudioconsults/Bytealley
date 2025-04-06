@@ -120,7 +120,7 @@ const BaseProfile = ({ appService }: { appService: AppService }) => {
                   isDisabled={isSubmitting}
                   isLoading={isSubmitting}
                 >
-                  Send Message
+                  Update Profile
                 </CustomButton>
               </div>
             </div>

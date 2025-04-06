@@ -25,7 +25,7 @@ const BaseProductCart = () => {
         <BackNavigator text={`Go back to product page`} />
       </div>
       {user ? (
-        cart.length > 0 ? (
+        cart?.length > 0 ? (
           <div className="shadow-NB rounded-lg border border-black p-6">
             {cart.map((item, index) => (
               <div key={index}>

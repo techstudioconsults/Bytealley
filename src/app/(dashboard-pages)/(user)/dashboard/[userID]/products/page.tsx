@@ -76,7 +76,7 @@ const Page = ({ productService, params }: { productService: ProductService; para
             isLeftIconVisible
             icon={<LucidePlusCircle />}
             variant="primary"
-            size="lg"
+            size="xl"
             className="w-full sm:w-auto"
             href={`/dashboard/${params.userID}/products/new`}
           >

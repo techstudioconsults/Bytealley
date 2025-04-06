@@ -15,6 +15,7 @@ export const ConfirmationDialog = ({
     description: string;
     onConfirm: () => void;
     buttonName: string;
+    img?: string;
   };
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -25,8 +26,11 @@ export const ConfirmationDialog = ({
       trigger={children}
       title={action.title}
       description={action.description}
+      img={action.img}
+      headerClassName={`text-center  font-semibold`}
+      wrapperClassName={`flex flex-col items-center justify-center text-center`}
     >
-      <div className="flex justify-end gap-4 pt-4">
+      <div className="flex justify-center gap-4 pt-4">
         <CustomButton variant="outline" onClick={() => setIsDialogOpen(false)}>
           Cancel
         </CustomButton>

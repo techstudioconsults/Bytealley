@@ -16,7 +16,7 @@ interface ISidebarProperties extends React.HTMLAttributes<HTMLDivElement> {
   onClose?: () => void;
 }
 
-export const Sidebar: FC<ISidebarProperties> = ({ sideNavitems, logoComponent, className, onClose }) => {
+export const SidebarNav: FC<ISidebarProperties> = ({ sideNavitems, logoComponent, className, onClose }) => {
   const pathname = usePathname();
   const userID = pathname.split("/")[2];
 
@@ -81,9 +81,11 @@ export const Sidebar: FC<ISidebarProperties> = ({ sideNavitems, logoComponent, c
   };
 
   return (
-    <div className={cn(className)}>
-      <div className="flex items-center justify-center py-8">{logoComponent || <Logo width={140} height={47} />}</div>
-      <nav className="flex-1 space-y-2 overflow-y-auto p-4">
+    <div className={cn("h-screen flex-col", "xl:block", className)}>
+      <div className="flex h-[10.9%] items-center justify-center">
+        {logoComponent || <Logo width={140} height={47} />}
+      </div>
+      <nav className="h-[89.9%] space-y-2 overflow-auto p-4">
         {items.map((item) => (
           <div key={item.id}>{renderSidebarItem(item)}</div>
         ))}

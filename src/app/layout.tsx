@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Montserrat, Newsreader } from "next/font/google";
 
-import "./globals.scss";
+import "./globals.css";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
 

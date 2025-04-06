@@ -95,7 +95,7 @@ export const productColumns: IColumnDefinition<IProduct>[] = [
         <div className="flex flex-col space-y-2">
           <span className="text-sm font-medium lg:text-[16px]">{product.title}</span>
           <span className="space-x-1 text-[10px] text-mid-grey-II lg:text-sm">
-            {`PDF-55.MB • `}
+            {/* {`PDF-55.MB • `} */}
             {formatDate(product.created_at)}
             <span>•</span>
             <span>{formatTime(product.created_at)}</span>
