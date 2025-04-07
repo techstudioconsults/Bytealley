@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
+import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { useSession } from "~/hooks/use-session";
 import { cn } from "~/utils/utils";
-import { ProductImageCarousel } from "../carousel";
+import { UniversalSwiper } from "../carousel";
 import CustomButton from "../common-button/common-button";
 import { StarRating } from "../rating/star";
 
@@ -47,7 +48,27 @@ export function ViewProductLayout({ productService }: { productService: any }) {
       <main className="md:col-span-8">
         {/* Product Image and Header */}
         <header className="mb-4">
-          <ProductImageCarousel images={product?.cover_photos || []} />
+          <UniversalSwiper
+            className={`mb-4 h-48 w-full rounded-md border bg-gray-100 md:h-[263px]`}
+            items={product?.cover_photos || []}
+            renderItem={(image, index) => (
+              <div className="relative h-48 w-full md:h-[263px]">
+                <Image
+                  src={image}
+                  alt={`Product image ${index + 1}`}
+                  fill
+                  className="rounded-md object-cover"
+                  priority={index === 0}
+                />
+              </div>
+            )}
+            swiperOptions={{
+              loop: true,
+              autoplay: { delay: 5000 },
+            }}
+            showNavigation
+            navigationVariant="minimal"
+          />
           <div className={`rounded-md border p-4`}>
             <h1 className="mb-2 text-2xl font-bold text-gray-900 md:text-3xl">{product?.title}</h1>
             <div className="flex items-center gap-2">
