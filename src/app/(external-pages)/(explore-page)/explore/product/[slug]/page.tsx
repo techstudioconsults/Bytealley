@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 
 import { BackNavigator } from "~/app/(dashboard-pages)/_components/back-navigator";
 import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import Loading from "~/app/Loading";
-import { ProductImageCarousel } from "~/components/common/carousel";
+import { UniversalSwiper } from "~/components/common/carousel";
 import CustomButton from "~/components/common/common-button/common-button";
 import { StarRating } from "~/components/common/rating/star";
 import { SetToolTip } from "~/components/common/tool-tip";
@@ -65,7 +66,27 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
         </section>
         {/* Product Image and Header */}
         <header className="mb-4">
-          <ProductImageCarousel images={product?.cover_photos || []} />
+          <UniversalSwiper
+            className={`mb-4 h-48 w-full rounded-md border bg-gray-100 md:h-[263px]`}
+            items={product?.cover_photos || []}
+            renderItem={(image, index) => (
+              <div className="relative h-48 w-full md:h-[263px]">
+                <Image
+                  src={image}
+                  alt={`Product image ${index + 1}`}
+                  fill
+                  className="rounded-md object-cover"
+                  priority={index === 0}
+                />
+              </div>
+            )}
+            swiperOptions={{
+              loop: true,
+              autoplay: { delay: 5000 },
+            }}
+            showNavigation
+            navigationVariant="minimal"
+          />
           <div className="rounded-md border p-4">
             <h1 className="mb-2 text-2xl font-bold text-gray-900 md:text-3xl">{product?.title}</h1>
             <div className="flex items-center gap-2">
@@ -135,6 +156,7 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
             <div className="flex flex-col gap-2">
               <SetToolTip content={"You need to be logged in to purchase product"}>
                 <CustomButton
+                  size={`xl`}
                   isLoading={isAddToCartPending}
                   isDisabled={user?.name === product?.publisher || isAddToCartPending}
                   variant="primary"
@@ -146,6 +168,7 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
               </SetToolTip>
               <SetToolTip content={"You need to be logged in to purchase product"}>
                 <CustomButton
+                  size={`xl`}
                   isLoading={isAddToCartWithRoutePending}
                   isDisabled={user?.name === product?.publisher || isAddToCartPending}
                   onClick={() => {
