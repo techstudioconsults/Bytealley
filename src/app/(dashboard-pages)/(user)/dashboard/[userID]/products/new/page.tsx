@@ -165,7 +165,7 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
   return (
     <FormProvider {...methods}>
       <Tabs value={currentTab} onValueChange={onTabChange} className="w-full">
-        <TabsList className="sticky top-[154px] z-10 mb-8 flex h-fit w-full flex-col-reverse gap-4 rounded-none border-b bg-white p-0 sm:flex-row sm:items-center sm:justify-between lg:top-[80px] lg:h-[58px]">
+        <TabsList className="sticky top-[0px] z-10 mb-8 flex h-fit w-full flex-col-reverse gap-4 rounded-none border-b bg-white p-0 sm:flex-row sm:items-center sm:justify-between lg:h-[58px]">
           <section className="flex h-full w-full flex-wrap items-center gap-2 sm:w-auto sm:flex-nowrap sm:gap-0">
             <TabsTrigger
               disabled
@@ -201,7 +201,7 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
               />
             </TabsTrigger>
           </section>
-          <section className="flex w-full items-center justify-end gap-4 sm:w-auto">
+          <section className="flex w-full items-center justify-end gap-4 py-4 sm:w-auto">
             {currentTab === "product-details" && (
               <>
                 <CustomButton
