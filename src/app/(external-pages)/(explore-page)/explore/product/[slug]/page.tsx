@@ -170,22 +170,28 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <span>Format</span>
-                <span>
-                  {typeof product?.assets?.[0] === "object" && "extension" in product.assets[0]
-                    ? product.assets[0].extension
-                    : "N/A"}
+                <span className={"space-x-1"}>
+                  {product?.assets?.map((asset, index) => {
+                    if (typeof asset === "object" && "extension" in asset) {
+                      return <span key={index}>{asset.extension} |</span>;
+                    }
+                    return null;
+                  })}
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span>File Type</span>
+                <span>Product Type</span>
                 <span>{product?.product_type.replace("_", " ")}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span>File Size</span>
-                <span>
-                  {typeof product?.assets?.[0] === "object" && "size" in product.assets[0]
-                    ? product.assets[0].size
-                    : "N/A"}
+                <span className={"space-x-1"}>
+                  {product?.assets?.map((asset, index) => {
+                    if (typeof asset === "object" && "size" in asset) {
+                      return <span key={index}>{asset.size} |</span>;
+                    }
+                    return null;
+                  })}
                 </span>
               </div>
               <div className="flex items-center justify-between">

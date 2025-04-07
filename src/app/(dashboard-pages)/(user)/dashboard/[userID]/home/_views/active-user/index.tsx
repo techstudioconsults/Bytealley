@@ -1,7 +1,6 @@
 "use client";
 
 import nairaIcon from "@/icons/naira.svg";
-// import refreshIcon from "@/icons/Property_2_Update_ojnsf7.svg";
 import emptyCart from "@/images/empty-cart.svg";
 import { format } from "date-fns";
 import debounce from "lodash.debounce";
@@ -14,9 +13,8 @@ import { AnalyticsCard } from "~/app/(dashboard-pages)/_components/analytics-car
 import { DashboardTable } from "~/app/(dashboard-pages)/_components/dashboard-table";
 import { orderColumns } from "~/app/(dashboard-pages)/_components/dashboard-table/table-data";
 import { DateRangePicker } from "~/app/(dashboard-pages)/_components/date-range-picker";
-import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
+import { EmptyState, FilteredEmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import ExportAction from "~/app/(dashboard-pages)/_components/export-action";
-// import { SelectDropdown } from "~/app/(dashboard-pages)/_components/select-dropdown";
 import Loading from "~/app/Loading";
 import { LoadingSpinner } from "~/components/miscellaneous/loading-spinner";
 import { useSession } from "~/hooks/use-session";
@@ -93,15 +91,6 @@ export const ActiveUser = ({
               fileName="orders"
               size={`xl`}
             />
-            {/* <CustomButton
-              className="w-full border-primary text-[16px] text-primary sm:w-auto"
-              variant="outline"
-              size="xl"
-              isLeftIconVisible
-              icon={<Image src={refreshIcon} width={16} height={16} alt="export" />}
-            >
-              Refresh
-            </CustomButton> */}
           </div>
         </section>
 
@@ -154,6 +143,13 @@ export const ActiveUser = ({
                   currentPage={paginationMeta?.current_page}
                   totalPages={paginationMeta?.last_page}
                   itemsPerPage={paginationMeta?.per_page}
+                />
+              ) : dateRange?.from || dateRange?.to ? (
+                <FilteredEmptyState
+                  onReset={() => {
+                    setDateRange(undefined);
+                    setCurrentPage(1);
+                  }}
                 />
               ) : (
                 <EmptyState
