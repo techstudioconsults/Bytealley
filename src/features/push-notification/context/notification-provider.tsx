@@ -56,7 +56,7 @@ export const BaseNotificationProvider = ({
         </div>
       </div>,
       {
-        duration: 10,
+        duration: Infinity,
         position: "bottom-right",
       },
     );

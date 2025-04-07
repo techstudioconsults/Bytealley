@@ -1,86 +1,141 @@
 "use client";
 
-import Image from "next/image";
-import { Autoplay, Navigation, Pagination } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { useEffect, useState } from "react";
+import { A11y, Autoplay, FreeMode, Navigation, Pagination, Scrollbar, Thumbs } from "swiper/modules";
+import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
+import type { Swiper as SwiperType } from "swiper/types";
 
 // Import Swiper styles
 import "swiper/css";
-import "swiper/css/navigation";
 import "swiper/css/pagination";
-import "swiper/css/autoplay";
+import "swiper/css/navigation";
+import "swiper/css/scrollbar";
+import "swiper/css/free-mode";
+import "swiper/css/thumbs";
 
-export const ProductImageCarousel = ({ images }: { images: string[] }) => {
+import { ChevronLeftCircle, ChevronRightCircle } from "lucide-react";
+
+import { cn } from "~/utils/utils";
+import CustomButton from "../common-button/common-button";
+
+export const UniversalSwiper = ({
+  items,
+  renderItem,
+  swiperOptions = {},
+  showNavigation = false,
+  showPagination = false,
+  showScrollbar = false,
+  navigationSize = 24,
+  navigationOffset = 0,
+  className,
+  swiperClassName,
+  slideClassName,
+  thumbsSwiper,
+  breakpoints,
+  freeMode = false,
+  onSwiperInit,
+}: UniversalSwiperProperties) => {
+  const [isMounted, setIsMounted] = useState(false);
+  const [swiperInstance, setSwiperInstance] = useState<SwiperType | null>(null);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted || !items?.length) return null;
+
+  const modules = [
+    ...(showNavigation ? [Navigation] : []),
+    ...(showPagination ? [Pagination] : []),
+    ...(showScrollbar ? [Scrollbar] : []),
+    ...(freeMode ? [FreeMode] : []),
+    ...(thumbsSwiper ? [Thumbs] : []),
+    Autoplay,
+    A11y,
+  ];
+
   return (
-    <div className="relative z-0 mb-4 h-48 w-full rounded-md border bg-gray-100 md:h-[263px]">
+    <div className={cn(className)}>
       <Swiper
-        modules={[Navigation, Pagination, Autoplay]}
-        spaceBetween={10}
-        slidesPerView={1}
-        navigation={{
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev",
+        {...swiperOptions}
+        modules={modules}
+        thumbs={{ swiper: thumbsSwiper }}
+        breakpoints={breakpoints}
+        freeMode={freeMode}
+        className={cn(swiperClassName)}
+        onSwiper={(swiper) => {
+          setSwiperInstance(swiper);
+          onSwiperInit?.(swiper);
         }}
-        pagination={{
-          clickable: true,
-          bulletClass: "swiper-pagination-bullet",
-          bulletActiveClass: "swiper-pagination-bullet-active",
-        }}
-        autoplay={{ delay: 3000, disableOnInteraction: false }}
-        className="h-full w-full"
       >
-        {images.map((image, index) => (
-          <SwiperSlide key={index}>
-            <div className="relative h-48 w-full rounded-md md:h-[263px]">
-              <Image
-                src={image || "/placeholder-image.jpg"}
-                alt={`Product Image ${index + 1}`}
-                fill
-                className="rounded-md object-cover"
-                priority={index === 0}
-              />
-            </div>
+        {items.map((item, index) => (
+          <SwiperSlide key={index} className={cn(slideClassName)}>
+            {renderItem(item, index)}
           </SwiperSlide>
         ))}
-
-        {/* Add custom navigation */}
-        <CustomNavigation />
+        {/* <div className={`py-5`}></div> */}
+        {showNavigation && swiperInstance && <CustomNavigation iconSize={navigationSize} offset={navigationOffset} />}
       </Swiper>
     </div>
   );
 };
 
-const CustomNavigation = () => {
+type CustomNavigationProperties = {
+  variant?: "default" | "minimal";
+  iconSize?: number;
+  offset?: number;
+  className?: string;
+};
+
+const CustomNavigation = ({ iconSize = 24, className }: CustomNavigationProperties) => {
+  const swiper = useSwiper();
+  const [isBeginning, setIsBeginning] = useState(true);
+  const [isEnd, setIsEnd] = useState(false);
+
+  useEffect(() => {
+    const handleSlideChange = (swiper: SwiperType) => {
+      setIsBeginning(swiper.isBeginning);
+      setIsEnd(swiper.isEnd);
+    };
+
+    swiper.on("slideChange", handleSlideChange);
+
+    return () => {
+      swiper.off("slideChange", handleSlideChange);
+    };
+  }, [swiper]);
+
   return (
-    <>
-      <button className="swiper-button-prev absolute left-2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white/80 shadow-md transition-all hover:bg-white">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          className="h-5 w-5 text-gray-800"
-        >
-          <path
-            fillRule="evenodd"
-            d="M11.03 3.97a.75.75 0 010 1.06l-6.22 6.22H21a.75.75 0 010 1.5H4.81l6.22 6.22a.75.75 0 11-1.06 1.06l-7.5-7.5a.75.75 0 010-1.06l7.5-7.5a.75.75 0 011.06 0z"
-            clipRule="evenodd"
-          />
-        </svg>
-      </button>
-      <button className="swiper-button-next absolute right-2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white/80 shadow-md transition-all hover:bg-white">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          className="h-5 w-5 text-gray-800"
-        >
-          <path
-            fillRule="evenodd"
-            d="M12.97 3.97a.75.75 0 011.06 0l7.5 7.5a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 11-1.06-1.06l6.22-6.22H3a.75.75 0 010-1.5h16.19l-6.22-6.22a.75.75 0 010-1.06z"
-            clipRule="evenodd"
-          />
-        </svg>
-      </button>
-    </>
+    <div className={cn("absolute inset-0 flex items-center justify-between p-2", className)}>
+      <CustomButton
+        onClick={(event) => {
+          event.stopPropagation();
+          swiper.slidePrev();
+        }}
+        isDisabled={isBeginning}
+        isIconOnly
+        icon={<ChevronLeftCircle size={iconSize} />}
+        variant="ghost"
+        size="circle"
+        aria-label="Previous slide"
+        className={cn(
+          "z-10 bg-black/50 text-white hover:bg-primary hover:text-white",
+          isBeginning ? "hidden" : "block",
+        )}
+      />
+      <CustomButton
+        onClick={(event) => {
+          event.stopPropagation();
+          swiper.slideNext();
+        }}
+        isDisabled={isEnd}
+        isIconOnly
+        icon={<ChevronRightCircle size={iconSize} />}
+        variant="ghost"
+        size="circle"
+        aria-label="Next slide"
+        className={cn("z-10 bg-black/50 text-white hover:bg-primary hover:text-white", isEnd ? "hidden" : "block")}
+      />
+    </div>
   );
 };
