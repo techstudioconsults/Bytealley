@@ -401,19 +401,6 @@ body {
   box-shadow: 8px 8px 0px 0px #000000;
 }
 
-.swiper-pagination-bullet {
-  width: 8px;
-  height: 8px;
-  background: rgba(255, 255, 255, 0.5);
-  opacity: 1;
-}
-
-.swiper-pagination-bullet-active {
-  background: white;
-  width: 20px;
-  border-radius: 4px;
-}
-
 @layer base {
   * {
     @apply border-border;
