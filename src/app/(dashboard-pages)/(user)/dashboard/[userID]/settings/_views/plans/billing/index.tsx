@@ -23,7 +23,6 @@ const Billing = ({ settingsService }: { settingsService: SettingsService }) => {
     const fetchProductData = async () => {
       startTransition(async () => {
         const billingData = await settingsService.getSubscriptionBillingCycle();
-        console.log(billingData);
         setBillingCycle(billingData || null);
       });
     };
