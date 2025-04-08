@@ -25,6 +25,7 @@ import { AppService } from "~/services/app.service";
 import { externalNavlinks } from "~/utils/constants";
 import { dependencies } from "~/utils/dependencies";
 import { cn } from "~/utils/utils";
+import { ActivePage } from "./active-page";
 
 const BaseNavbar = ({ appService }: { appService: AppService }) => {
   const { user } = useSession();
@@ -32,7 +33,6 @@ const BaseNavbar = ({ appService }: { appService: AppService }) => {
   const { isNavbarVisible } = useNavbarVisibility();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [navlinks, setNavlinks] = useState<any[]>(externalNavlinks);
-
   const categories = useProductCategories(appService);
 
   useEffect(() => {
@@ -83,7 +83,13 @@ const BaseNavbar = ({ appService }: { appService: AppService }) => {
                 link.type === "dropdown" ? (
                   <DropdownMenu key={index}>
                     <DropdownMenuTrigger className={`cursor-pointer`} asChild>
-                      <p className={cn(getRouteTheme(), "flex items-center gap-1 text-sm font-bold")}>
+                      <p
+                        className={cn(
+                          getRouteTheme(),
+                          "flex items-center gap-1 text-sm font-bold",
+                          ActivePage(link.name) && `text-mid-danger`,
+                        )}
+                      >
                         <span>{link.name}</span>
                         <ChevronDown className="h-4 w-4" />
                       </p>
@@ -102,7 +108,11 @@ const BaseNavbar = ({ appService }: { appService: AppService }) => {
                   <Link
                     key={index}
                     href={link.path}
-                    className={cn(getRouteTheme(), "text-sm font-bold transition-colors")}
+                    className={cn(
+                      getRouteTheme(),
+                      "text-sm font-bold transition-colors",
+                      ActivePage(link.name) && `text-mid-danger`,
+                    )}
                   >
                     {link.name}
                   </Link>

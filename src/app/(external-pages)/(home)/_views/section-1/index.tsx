@@ -33,7 +33,7 @@ export const SectionOne = () => {
           {/* Right Section - Cards */}
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:w-[60%]">
             {cards.map((card, index) => (
-              <Card key={index} className="shadow-NB h-full rounded-xl border border-black bg-white">
+              <Card key={index} className="h-full rounded-xl border border-black bg-white shadow-neob">
                 <CardContent className="p-6">
                   <BlurImage
                     src={card.image}

@@ -42,7 +42,7 @@ export const BaseContactUsForm = ({ appService }: { appService: AppService }) =>
   };
 
   return (
-    <section className={`shadow-NB rounded-lg border border-black bg-white p-8`}>
+    <section className={`rounded-lg border border-black bg-white p-8 shadow-neob`}>
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(handleSubmitForm)} className="space-y-4">
           <div className={`grid grid-cols-2 gap-4`}>
