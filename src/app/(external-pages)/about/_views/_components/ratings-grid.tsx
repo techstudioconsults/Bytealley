@@ -12,7 +12,7 @@ const StatsGrid = () => {
       {stats.map((stat, index) => (
         <section key={index} className="flex w-fit flex-col items-center justify-center">
           <div>
-            <h2 className="nr-font text-5xl font-black">{stat.value}</h2>
+            <h2 className="font-nr text-5xl font-black">{stat.value}</h2>
           </div>
           <div>
             <p className="text-center text-lg">{stat.label}</p>

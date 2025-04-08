@@ -5,7 +5,7 @@ export const TermsAndConditionsHero = () => {
   return (
     <Hero height="h-fit" bgColor="bg-mid-purple">
       <Wrapper className={`max-w-4xl space-y-8 py-16 text-center`}>
-        <h1 className="nr-font text-5xl font-black text-white lg:text-7xl">Privacy Policy</h1>
+        <h1 className="font-nr text-h1 text-white sm:text-h1-sm md:text-h1-md">Privacy Policy</h1>
       </Wrapper>
     </Hero>
   );

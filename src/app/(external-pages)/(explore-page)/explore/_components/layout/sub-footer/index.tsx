@@ -11,8 +11,8 @@ export const SubFooter = () => {
       <Wrapper
         className={`flex flex-col items-center justify-between gap-4 py-4 text-center lg:flex-row lg:text-start`}
       >
-        <div>
-          <h5>Share knowledge online</h5>
+        <div className={`space-y-2`}>
+          <h5 className={`text-h3`}>Share knowledge online</h5>
           <p>Create an online video course, reach your community, and earn money</p>
         </div>
         {user && (
