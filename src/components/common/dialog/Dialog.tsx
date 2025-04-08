@@ -44,7 +44,7 @@ export function ReusableDialog({
             {img && (
               <Image width={100} height={100} src={img || ""} alt={`dangerous`} className={`h-[100px] w-[100px]`} />
             )}
-            <DialogTitle className={headerClassName}>{title}</DialogTitle>
+            <DialogTitle className={cn(`text-2xl`, headerClassName)}>{title}</DialogTitle>
             <DialogDescription>{description}</DialogDescription>
           </DialogHeader>
           {children}

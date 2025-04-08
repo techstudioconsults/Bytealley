@@ -134,7 +134,7 @@ const BasePayoutsPage = ({
           />
         </section>
         <section className="space-y-4">
-          <h4 className="mt-10 text-[24px] font-semibold">Payout History</h4>
+          <h4 className="mt-10 text-h4">Payout History</h4>
           {isPayoutPending ? (
             <Loading text={`Loading payout table...`} className={`w-fill h-fit p-20`} />
           ) : (

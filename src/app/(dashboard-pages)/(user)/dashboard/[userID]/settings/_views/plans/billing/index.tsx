@@ -1,3 +1,4 @@
+import empty from "@/images/info.svg";
 import { useEffect, useState, useTransition } from "react";
 
 import { AnalyticsCard } from "~/app/(dashboard-pages)/_components/analytics-card";
@@ -7,19 +8,22 @@ import { plansColumns } from "~/app/(dashboard-pages)/_components/dashboard-tabl
 import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import Loading from "~/app/Loading";
 import { SubscriptionModal } from "~/components/common/subscription-modal";
+import { LoadingSpinner } from "~/components/miscellaneous/loading-spinner";
 import { WithDependency } from "~/HOC/withDependencies";
 import { SettingsService } from "~/services/settings.service";
 import { dependencies } from "~/utils/dependencies";
-import { formatDate } from "~/utils/utils";
+import { cn, formatDate } from "~/utils/utils";
 
 const Billing = ({ settingsService }: { settingsService: SettingsService }) => {
   const [isPending, startTransition] = useTransition();
+  const [isDeactivationPending, startDeactivationTransition] = useTransition();
   const [billingCycle, setBillingCycle] = useState<IBillingCycle | null>(null);
 
   useEffect(() => {
     const fetchProductData = async () => {
       startTransition(async () => {
         const billingData = await settingsService.getSubscriptionBillingCycle();
+        console.log(billingData);
         setBillingCycle(billingData || null);
       });
     };
@@ -27,10 +31,12 @@ const Billing = ({ settingsService }: { settingsService: SettingsService }) => {
   }, [settingsService]);
 
   const handleSubscriptionDeactivation = async () => {
-    const response = await settingsService.manageSubscriptionPlan(billingCycle?.id || "");
-    if (response) {
-      window.location.href = response.data.link;
-    }
+    startDeactivationTransition(async () => {
+      const response = await settingsService.manageSubscriptionPlan(billingCycle?.id || "");
+      if (response) {
+        window.location.href = response.data.link;
+      }
+    });
   };
 
   if (isPending) {
@@ -45,8 +51,11 @@ const Billing = ({ settingsService }: { settingsService: SettingsService }) => {
       <section className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <AnalyticsCard
           action={
-            <p onClick={handleSubscriptionDeactivation} className={`cursor-pointer font-semibold text-mid-danger`}>
-              Deactivate Plan
+            <p
+              onClick={handleSubscriptionDeactivation}
+              className={cn(`cursor-pointer font-semibold text-mid-danger`, !billingCycle?.id && `hidden`)}
+            >
+              {isDeactivationPending ? <LoadingSpinner /> : `Deactivate Plan`}
             </p>
           }
           title="Renewal Date"
@@ -62,7 +71,11 @@ const Billing = ({ settingsService }: { settingsService: SettingsService }) => {
       {(billingCycle?.plans?.length ?? 0 > 0) ? (
         <DashboardTable data={billingCycle?.plans || []} columns={plansColumns} />
       ) : (
-        <EmptyState title="Billing cycle Not Found" description="" images={[]} className="h-full" />
+        <EmptyState
+          images={[{ src: empty.src, alt: "Empty product", width: 100, height: 100 }]}
+          title="30 days free trial!"
+          description="You have no subscription plan at the moment"
+        />
       )}
     </section>
   );

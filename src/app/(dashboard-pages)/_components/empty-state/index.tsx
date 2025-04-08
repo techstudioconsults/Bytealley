@@ -51,6 +51,7 @@ export const EmptyState = ({
               width={image.width || 240}
               height={image.height || 160}
               className="object-contain"
+              priority
             />
           </div>
         ))}

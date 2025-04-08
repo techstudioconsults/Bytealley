@@ -121,36 +121,22 @@ const Analytics = ({
           </div> */}
         </section>
 
-        <section className={`grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-12`}>
-          <AnalyticsCard
-            title="Total Orders"
-            value={isPendingAnalytics ? <LoadingSpinner /> : analytics?.new_orders}
-            className={`col-span-1 lg:col-span-4`}
-          />
-          <AnalyticsCard
-            title="Views"
-            value={isPendingAnalytics ? <LoadingSpinner /> : analytics?.views}
-            className={`col-span-1 lg:col-span-4`}
-          />
+        <section className={`grid grid-cols-2 gap-4 lg:grid-cols-3`}>
+          <AnalyticsCard title="Total Orders" value={isPendingAnalytics ? <LoadingSpinner /> : analytics?.new_orders} />
+          <AnalyticsCard title="Views" value={isPendingAnalytics ? <LoadingSpinner /> : analytics?.views} />
           <AnalyticsCard
             title="Total Products"
             value={isPendingAnalytics ? <LoadingSpinner /> : analytics?.total_products}
-            className={`col-span-1 lg:col-span-4`}
           />
-          <AnalyticsCard
-            title="New Orders"
-            value={isPendingAnalytics ? <LoadingSpinner /> : analytics?.new_orders}
-            className={`col-span-1 lg:col-span-4`}
-          />
+          <AnalyticsCard title="New Orders" value={isPendingAnalytics ? <LoadingSpinner /> : analytics?.new_orders} />
           <AnalyticsCard
             title="Customers"
             value={isPendingAnalytics ? <LoadingSpinner /> : analytics?.total_customers}
-            className={`col-span-1 lg:col-span-4`}
           />
           <AnalyticsCard
             title="Revenue"
             value={isPendingAnalytics ? <LoadingSpinner /> : `₦${analytics?.total_revenues?.toLocaleString()}`}
-            className={`col-span-1 text-mid-success lg:col-span-4`}
+            className={`text-mid-success`}
           />
         </section>
       </section>
@@ -160,7 +146,7 @@ const Analytics = ({
       <section className={`mt-10`}>
         {topProducts.length > 0 ? (
           <>
-            <h6 className="mb-4 text-lg font-semibold">Top Products</h6>
+            <h5 className="mb-4 text-h5 font-semibold">Top Products</h5>
             <DashboardTable
               data={topProducts}
               columns={orderColumns}
