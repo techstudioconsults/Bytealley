@@ -166,7 +166,7 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
     <FormProvider {...methods}>
       <Tabs value={currentTab} onValueChange={onTabChange} className="w-full">
         <TabsList className="sticky top-[0px] z-10 mb-8 flex h-fit w-full flex-col-reverse gap-4 rounded-none border-b bg-white p-0 sm:flex-row sm:items-center sm:justify-between lg:h-[58px]">
-          <section className="flex h-full w-full flex-wrap items-center gap-2 sm:w-auto sm:flex-nowrap sm:gap-0">
+          <section className="flex w-full flex-wrap items-center gap-2 sm:h-[5rem] sm:w-auto sm:flex-nowrap sm:gap-0 xl:h-full">
             <TabsTrigger
               disabled
               value="product-details"
@@ -205,8 +205,8 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
             {currentTab === "product-details" && (
               <>
                 <CustomButton
+                  size="xl"
                   variant="outline"
-                  size="lg"
                   className="w-full border-destructive text-destructive sm:w-auto"
                   onClick={() => {
                     methods.reset();
@@ -218,7 +218,7 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
                 {productID ? (
                   <CustomButton
                     variant="primary"
-                    size="lg"
+                    size="xl"
                     className="w-full sm:w-auto"
                     onClick={handleSubmit(updateProduct)}
                     isDisabled={isSubmitting}
@@ -229,7 +229,7 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
                 ) : (
                   <CustomButton
                     variant="primary"
-                    size="lg"
+                    size="xl"
                     className="w-full sm:w-auto"
                     onClick={handleSubmit(onSubmit)}
                     isDisabled={isSubmitting || !isValid}
@@ -244,7 +244,7 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
               <>
                 <CustomButton
                   variant="outline"
-                  size="lg"
+                  size="xl"
                   className="w-full border-destructive text-destructive sm:w-auto"
                   onClick={() => {
                     router.push(`/dashboard/${params.userID}/products?tab=drafts`);
@@ -256,7 +256,7 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
                 {productStatus === "published" ? (
                   <CustomButton
                     variant="primary"
-                    size="lg"
+                    size="xl"
                     className="w-full sm:w-auto"
                     onClick={handleUnpublish}
                     isDisabled={isPublishing}
@@ -267,7 +267,7 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
                 ) : (
                   <CustomButton
                     variant="primary"
-                    size="lg"
+                    size="xl"
                     className="w-full sm:w-auto"
                     onClick={handlePublish}
                     isDisabled={isPublishing}
@@ -282,7 +282,7 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
               <>
                 <CustomButton
                   variant="outline"
-                  size="lg"
+                  size="xl"
                   className={cn(
                     "w-full sm:w-auto",
                     productStatus === `published` && "border-danger text-danger",
@@ -296,7 +296,7 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
                 </CustomButton>
                 <CustomButton
                   variant="primary"
-                  size="lg"
+                  size="xl"
                   className="w-full sm:w-auto"
                   isDisabled={isSubmitting}
                   isLoading={isSubmitting}

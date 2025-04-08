@@ -23,6 +23,7 @@ import { MdCancel } from "react-icons/md";
 
 import { BlurImage } from "../miscellaneous/blur-image";
 import { Badge } from "../ui/badge";
+import { Card } from "../ui/card";
 import { Checkbox } from "../ui/checkbox";
 import { Switch } from "../ui/switch";
 import CustomButton from "./common-button/common-button";
@@ -78,7 +79,7 @@ export function FormField({
     <div className="space-y-2">
       {label && (
         <div>
-          <Label className="text-sm font-medium">
+          <Label className="text-[16px] font-medium">
             {label}
             {required && <span className="ml-1 text-destructive">*</span>}
           </Label>
@@ -266,7 +267,7 @@ export function RichTextEditor({
   return (
     <div className="space-y-2">
       {label && (
-        <Label className="text-sm font-medium">
+        <Label className="text-[16px] font-medium">
           {label}
           {required && <span className="ml-1 text-destructive">*</span>}
         </Label>
@@ -313,7 +314,7 @@ export function Highlights({
 
   return (
     <div className={`max-w-[552px] space-y-4 ${className}`}>
-      <Label className="text-sm font-medium">
+      <Label className="text-[16px] font-medium">
         {label}
         <div className="flex items-center gap-1 text-mid-grey-II">
           <InfoIcon className="h-4 w-4" />
@@ -445,9 +446,9 @@ export function ImageUpload({
   return (
     <div className={cn("space-y-2", className)}>
       {label && (
-        <section className="flex flex-col justify-between lg:flex-row lg:items-center">
+        <section className="flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
           <div className="">
-            <Label className="text-sm font-medium">
+            <Label className="text-[16px] font-medium">
               {label}
               {required && <span className="ml-1 text-destructive">*</span>}
             </Label>
@@ -457,6 +458,7 @@ export function ImageUpload({
           </div>
           {previews.length > 0 && previews.length < maxFiles && (
             <CustomButton
+              size="xl"
               variant="outline"
               className="border-primary text-primary"
               isLeftIconVisible
@@ -495,6 +497,7 @@ export function ImageUpload({
               {previews.length === 0 && (
                 <div className="flex h-[200px] w-full flex-col items-center justify-center gap-2 rounded-md border bg-low-purple">
                   <CustomButton
+                    size="xl"
                     variant="outline"
                     className="border-primary text-primary"
                     isLeftIconVisible
@@ -506,7 +509,7 @@ export function ImageUpload({
                   </CustomButton>
                   <div className="flex items-center gap-1 text-mid-grey-II">
                     <InfoIcon className="h-4 w-4" />
-                    <span className="text-xs font-semibold">Upload images (jpg, png)</span>
+                    <span className="text-xs font-semibold">Upload images (jpg, png, webp)</span>
                   </div>
                 </div>
               )}
@@ -619,9 +622,9 @@ export function FileUpload({
   return (
     <div className={cn("space-y-2", className)}>
       {label && (
-        <section className="flex flex-col justify-between lg:flex-row lg:items-center">
+        <section className="flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
           <div className="">
-            <Label className="text-sm font-medium">
+            <Label className="text-[16px] font-medium">
               {label}
               {required && <span className="ml-1 text-destructive">*</span>}
             </Label>
@@ -637,6 +640,7 @@ export function FileUpload({
               icon={<Image src={uploadIcon} alt="upload" width={16} height={16} />}
               type="button"
               onClick={handleButtonClick}
+              size="xl"
             >
               Upload Files
             </CustomButton>
@@ -669,6 +673,7 @@ export function FileUpload({
               {previews.length === 0 && (
                 <div className="flex h-[200px] w-full flex-col items-center justify-center gap-2 rounded-md border bg-low-purple">
                   <CustomButton
+                    size="xl"
                     variant="outline"
                     className="border-primary text-primary"
                     isLeftIconVisible
@@ -679,8 +684,8 @@ export function FileUpload({
                     Upload Files
                   </CustomButton>
                   <div className="flex items-center gap-1 text-mid-grey-II">
-                    <InfoIcon className="h-4 w-4" />
-                    <span className="text-xs font-semibold">
+                    <InfoIcon className="hidden h-4 w-4 lg:block" />
+                    <span className="px-4 text-center text-xs font-semibold">
                       File can be an image, video, document in various formats (jpg, png, mp4, pdf etc). Min: 100MB
                     </span>
                   </div>
@@ -688,14 +693,14 @@ export function FileUpload({
               )}
               <section className={`grid w-full grid-cols-2 gap-4`}>
                 {previews.map((preview, index) => (
-                  <section
+                  <Card
                     key={index}
                     className="relative flex min-h-[94px] items-center gap-4 rounded-md bg-low-purple p-6"
                   >
-                    <Image src={fileIcon} alt={`Preview ${index + 1}`} width={72} height={72} />
+                    <Image src={fileIcon} alt={`Preview ${index + 1}`} className={`h-10 w-10`} width={72} height={72} />
                     <div className="flex flex-col gap-1">
-                      <span className="text-sm font-bold">{preview.name}</span>
-                      <span className="text-xs text-mid-grey-II">{preview.size}</span>
+                      <p className="text-wrap break-all text-sm font-bold">{preview.name}</p>
+                      <span className="text-xs text-mid-grey-II">{preview.size}KB</span>
                     </div>
                     <CustomButton
                       isIconOnly
@@ -709,7 +714,7 @@ export function FileUpload({
                         handleRemoveFile(index, field);
                       }}
                     />
-                  </section>
+                  </Card>
                 ))}
               </section>
             </div>
@@ -787,9 +792,9 @@ export function ThumbNailUpload({
   return (
     <div className={cn("space-y-2", className)}>
       {label && (
-        <section className="flex flex-col justify-between lg:flex-row lg:items-center">
+        <section className="flex flex-col justify-between gap-4 lg:flex-row lg:items-center">
           <div className="">
-            <Label className="text-sm font-medium">
+            <Label className="text-[16px] font-medium">
               {label}
               {required && <span className="ml-1 text-destructive">*</span>}
             </Label>
@@ -797,6 +802,7 @@ export function ThumbNailUpload({
           </div>
           {preview && (
             <CustomButton
+              size="xl"
               variant="outline"
               className="border-primary text-primary"
               isLeftIconVisible
@@ -834,6 +840,7 @@ export function ThumbNailUpload({
               {!preview && (
                 <div className="flex h-[200px] w-full flex-col items-center justify-center gap-2 rounded-md border bg-low-purple">
                   <CustomButton
+                    size="xl"
                     variant="outline"
                     className="border-primary text-primary"
                     isLeftIconVisible
@@ -895,7 +902,7 @@ export function MultiSelect({
   return (
     <div className="space-y-2">
       {label && (
-        <Label className="text-sm font-medium">
+        <Label className="text-[16px] font-medium">
           {label}
           {required && <span className="ml-1 text-destructive">*</span>}
         </Label>
@@ -1002,7 +1009,7 @@ export function StarRatingField({ label, size, name, required = false, className
   return (
     <div className="space-y-2">
       {label && (
-        <Label className="text-sm font-medium">
+        <Label className="text-[16px] font-medium">
           {label}
           {required && <span className="ml-1 text-destructive">*</span>}
         </Label>

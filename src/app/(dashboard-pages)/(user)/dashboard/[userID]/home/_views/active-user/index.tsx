@@ -128,7 +128,7 @@ export const ActiveUser = ({
         </section>
       </section>
       <section className={`mt-10 space-y-4`}>
-        <h6 className="text-lg font-semibold">Sales</h6>
+        <h4 className="text-h4">Sales</h4>
         <section>
           {isPendingOrders ? (
             <Loading text={`Loading sales table...`} className={`w-fill h-fit p-20`} />

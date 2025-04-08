@@ -6,7 +6,7 @@ import { SidebarNav } from "./sidebar";
 export function AppSidebar() {
   const { isEditor } = UseEditor();
   return (
-    <Sidebar className={cn(!isEditor && `sticky left-0 top-0`)}>
+    <Sidebar className={cn(!isEditor && `left-0 top-0 lg:sticky`)}>
       <SidebarContent className={`overflow-hidden bg-white`}>
         <SidebarNav />
       </SidebarContent>
