@@ -9,7 +9,7 @@ export const FeatureHero = () => {
   return (
     <Hero height="h-fit md:h-[544px]" bgColor="bg-low-coral">
       <Wrapper className={`max-w-3xl space-y-8 py-8 text-center`}>
-        <h1 className="nr-font text-5xl font-black text-high-warning lg:text-7xl">
+        <h1 className="font-nr text-h1 sm:text-h1-sm md:text-h1-md text-high-warning">
           You customize your <br /> <span className={`text-mid-purple`}>product.</span>
         </h1>
         <FadeIn>

@@ -10,7 +10,7 @@ export const SectionOne = () => {
       leftChild={
         <DualSectionLayoutList
           title="Our Story"
-          headerClassName={`text-high-purple nr-font text-5xl xl:text-7xl`}
+          headerClassName={`font-nr text-high-warning text-h1 sm:text-h1-sm md:text-h1-md`}
           subHeaderClassName={`text-high-purple xl:text-2xl`}
           subTitle={
             <div className={`space-y-3`}>

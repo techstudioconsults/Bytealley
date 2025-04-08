@@ -241,73 +241,8 @@
   h4,
   h5,
   h6 {
-    color: hsl(var(--high-purple));
-  }
-
-  h1 {
-    font-size: 2.25rem; /* 36px */
-    font-weight: 700;
-    @screen sm {
-      font-size: 2.5rem; /* 40px */
-    }
-    @screen md {
-      font-size: 2.75rem; /* 44px */
-    }
-  }
-
-  h2 {
-    font-size: 2rem; /* 32px */
-    font-weight: 700; /* Consistent weight for headings */
-    @screen sm {
-      font-size: 2.25rem; /* 36px */
-    }
-    @screen md {
-      font-size: 2.5rem; /* 40px */
-    }
-  }
-
-  h3 {
-    font-size: 1.75rem; /* 28px */
-    font-weight: 600; /* Consistent weight for headings */
-    @screen sm {
-      font-size: 2rem; /* 32px */
-    }
-    @screen md {
-      font-size: 2.25rem; /* 36px */
-    }
-  }
-
-  h4 {
-    font-size: 1.5rem; /* 24px */
-    font-weight: 600; /* Consistent weight for headings */
-    @screen sm {
-      font-size: 1.75rem; /* 28px */
-    }
-    @screen md {
-      font-size: 2rem; /* 32px */
-    }
-  }
-
-  h5 {
-    font-size: 1.25rem; /* 20px */
-    font-weight: 500; /* Consistent weight for headings */
-    @screen sm {
-      font-size: 1.5rem; /* 24px */
-    }
-    @screen md {
-      font-size: 1.75rem; /* 28px */
-    }
-  }
-
-  h6 {
-    font-size: 1rem; /* 16px */
-    font-weight: 500; /* Consistent weight for headings */
-    @screen sm {
-      font-size: 1.25rem; /* 20px */
-    }
-    @screen md {
-      font-size: 1.5rem; /* 24px */
-    }
+    /* border: 1px solid red; */
+    line-height: 1;
   }
 }
 
@@ -317,46 +252,6 @@
   transform: translateX(-120%);
 
   animation: shimmer 1s ease-in-out infinite;
-}
-
-@keyframes shimmer {
-  0% {
-    transform: translateX(-120%);
-  }
-  50% {
-    transform: translateX(-120%);
-  }
-  100% {
-    transform: translateX(100%);
-  }
-}
-.spinner_V8m1 {
-  transform-origin: center;
-  animation: spinner_zKoa 2s linear infinite;
-}
-.spinner_V8m1 circle {
-  stroke-linecap: round;
-  animation: spinner_YpZS 1.5s ease-in-out infinite;
-}
-@keyframes spinner_zKoa {
-  100% {
-    transform: rotate(360deg);
-  }
-}
-@keyframes spinner_YpZS {
-  0% {
-    stroke-dasharray: 0 150;
-    stroke-dashoffset: 0;
-  }
-  47.5% {
-    stroke-dasharray: 42 150;
-    stroke-dashoffset: -16;
-  }
-  95%,
-  100% {
-    stroke-dasharray: 42 150;
-    stroke-dashoffset: -59;
-  }
 }
 
 /* Custom Scrollbar Styling */
@@ -391,17 +286,4 @@
 /* For Internet Explorer and Legacy Edge */
 body {
   -ms-overflow-style: scrollbar; /* Standard scrollbar */
-}
-
-.nr-font {
-  font-family: var(--font-newsreader);
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
 }

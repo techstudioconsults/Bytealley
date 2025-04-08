@@ -1,5 +1,3 @@
-// @ts-check
-
 /**
  * To use this configuration, you need to install the following dependencies:
  *

@@ -42,7 +42,7 @@ export const BestSellingProduct = ({ appService }: { appService: AppService }) =
   return (
     <Wrapper>
       <section className={`mb-6`}>
-        <h1 className="text-xl lg:text-3xl">Trending Products</h1>
+        <h1 className="text-h3 sm:text-h3-sm md:text-h3-md">Trending Products</h1>
       </section>
 
       <UniversalSwiper

@@ -31,7 +31,7 @@ export const FeaturedProducts = ({ appService }: { appService: AppService }) => 
   return (
     <Wrapper>
       <section>
-        <h1 className="text-xl lg:text-3xl">Featured</h1>
+        <h1 className="text-h3 sm:text-h3-sm md:text-h3-md">Featured</h1>
       </section>
       <section>
         {isPendingProducts ? (

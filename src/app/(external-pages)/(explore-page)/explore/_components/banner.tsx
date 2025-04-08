@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import lines from "@/images/external/lines.svg";
 import Image from "next/image";
 import React from "react";
@@ -9,7 +10,7 @@ export const ExploreBanner: React.FC = () => {
   return (
     <Wrapper className={`my-14`}>
       <Card
-        className="flex h-[164px] items-center justify-between overflow-hidden rounded-lg bg-low-warning p-4 shadow-neob lg:p-8"
+        className="shadow-neob flex h-[164px] items-center justify-between overflow-hidden rounded-lg bg-low-warning p-4 lg:p-8"
         style={{
           backgroundImage: `url(${lines.src})`,
           backgroundSize: "contain",
@@ -19,7 +20,7 @@ export const ExploreBanner: React.FC = () => {
       >
         {/* Text Section */}
         <div className="max-w-[35rem] text-left">
-          <h3 className="font-bold text-high-grey-III lg:leading-10">
+          <h3 className="text-h3 sm:text-h3-sm md:text-h3-md leading-normal text-high-grey-III">
             Unlock your potential with creator’s curated course.
           </h3>
         </div>

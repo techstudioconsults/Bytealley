@@ -26,7 +26,7 @@ const BaseProductCart = () => {
       </div>
       {user ? (
         cart?.length > 0 ? (
-          <div className="rounded-lg border border-black p-6 shadow-neob">
+          <div className="shadow-neob rounded-lg border border-black p-6">
             {cart.map((item, index) => (
               <div key={index}>
                 <ProductCard product={item} />
@@ -51,14 +51,14 @@ const BaseProductCart = () => {
           </div>
         ) : (
           <EmptyState
-            className={`h-fit rounded-md border border-black bg-low-purple p-4 shadow-neob md:p-5`}
+            className={`shadow-neob h-fit rounded-md border border-black bg-low-purple p-4 md:p-5`}
             title="Empty Cart"
             description="There are no products in your cart."
             images={[]}
           />
         )
       ) : (
-        <div className="rounded-md border border-black bg-low-purple p-5 text-center shadow-neob md:p-20">
+        <div className="shadow-neob rounded-md border border-black bg-low-purple p-5 text-center md:p-20">
           <h2 className="mb-2 text-lg font-bold sm:text-2xl">Please log in to view your cart</h2>
           <p className="mb-6 text-sm">
             To see the items in your cart, you need to log in. Click the button below to go to the login page.

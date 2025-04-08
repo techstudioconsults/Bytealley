@@ -10,7 +10,7 @@ export const SectionThree = () => {
       leftChild={
         <DualSectionLayoutList
           title="Our Mission"
-          headerClassName={`text-white nr-font text-5xl xl:text-7xl`}
+          headerClassName={`text-white font-nr text-h1 sm:text-h1-sm md:text-h1-md`}
           subHeaderClassName={`text-white xl:text-2xl`}
           subTitle="At ByteAlley, our mission is to empower creators and entrepreneurs to transform their ideas into successful digital products."
           iconColor="text-blue-500"
