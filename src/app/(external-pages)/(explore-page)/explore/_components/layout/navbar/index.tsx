@@ -173,7 +173,7 @@ const BaseExploreNavBar = ({ appService }: { appService: AppService }) => {
                   variant="ghost"
                   size="sm"
                   onClick={() => handleTagClick(tag)}
-                  className={cn(`rounded-full font-semibold`, isActive && "shadow-SNB bg-white")}
+                  className={cn(`rounded-full font-semibold`, isActive && "bg-white shadow-sneob")}
                 >
                   {tag.toUpperCase()}
                 </CustomButton>
