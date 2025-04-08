@@ -9,7 +9,7 @@ export const ProgressBar = ({ current, total }: ProgressBarProperties) => {
   const percentage = (current / total) * 100;
 
   return (
-    <div className="flex w-full flex-col items-end gap-2 lg:w-[216px]">
+    <div className="flex w-full flex-col items-end gap-2 sm:w-[216px]">
       <div className="text-sm">
         <span className="text-mid-grey-III">
           {current} of {total} tasks completed

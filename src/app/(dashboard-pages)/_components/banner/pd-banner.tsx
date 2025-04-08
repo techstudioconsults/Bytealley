@@ -10,8 +10,8 @@ interface PayoutBannerProperties {
 export const PDBanner = ({ title, description, imageSrc, imageAlt }: PayoutBannerProperties) => {
   return (
     <section className="flex flex-col items-center justify-between rounded-md bg-primary px-[32px] text-white lg:flex-row">
-      <div className="flex flex-col gap-2 p-[32px]">
-        <h3 className="text-white">{title}</h3>
+      <div className="flex flex-col gap-2 p-[32px] text-center lg:text-left">
+        <h3 className="text-h3 text-white sm:text-h3-sm md:text-h3-md">{title}</h3>
         <p>{description}</p>
       </div>
       <div>

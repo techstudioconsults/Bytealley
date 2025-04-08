@@ -36,7 +36,7 @@ export const DashboardNavbar = () => {
       <section className="flex w-full items-center justify-between gap-[20px] bg-white px-[16px] py-[20px] lg:px-[32px]">
         <div className={`flex items-center gap-4`}>
           <SidebarTrigger className={cn(`h-10 w-10`, !isEditor && `lg:hidden`)} />
-          <h6 className="font-semibold">{title}</h6>
+          <h4 className="text-h4 sm:text-h4-sm md:text-h4-md">{title}</h4>
         </div>
         <section className="flex items-center justify-between gap-1 md:gap-2 lg:gap-6">
           <SearchInput inputBackgroundColor="bg-low-grey-III" className="hidden w-[100%] lg:flex lg:w-[270px]" />

@@ -78,7 +78,7 @@ const BaseWithdrawEarnings = ({ earningService }: { earningService: EarningServi
         />
       </section>
       <section className={`space-y-2`}>
-        <h5 className={`text-lg font-semibold`}>Bank Accounts</h5>
+        <h5 className={`text-h5 font-semibold`}>Bank Accounts</h5>
         <section className={`grid grid-cols-1 gap-4 lg:grid-cols-3`}>
           {isPending ? (
             <div className={`flex min-h-[120px] max-w-[357px] items-center justify-center rounded-lg bg-low-grey-III`}>
@@ -101,11 +101,11 @@ const BaseWithdrawEarnings = ({ earningService }: { earningService: EarningServi
             </>
           )}
 
-          <AddBankModal service={earningService} getAccounts={() => earningService.getAllRegisteredPaymentAccount()} />
+          <AddBankModal service={earningService} />
         </section>
       </section>
       <section className={`space-y-2`}>
-        <h5 className={`text-lg font-semibold`}>Bank Accounts</h5>
+        <h5 className={`text-h5 font-semibold`}>Withdraw earnings</h5>
         <FormProvider {...methods}>
           <form onSubmit={handleSubmit(handleSubmitForm)} className="space-y-10">
             <FormField

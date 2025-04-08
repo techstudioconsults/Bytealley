@@ -12,7 +12,7 @@ import { BankFormData, bankFormSchema } from "~/schemas";
 import { EarningService } from "~/services/earnings.service";
 import { Toast } from "~/utils/notificationManager";
 
-export const AddBankModal = ({ getAccounts, service }: { getAccounts: () => void; service: EarningService }) => {
+export const AddBankModal = ({ getAccounts, service }: { getAccounts?: () => void; service: EarningService }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [banks, setBanks] = useState<any>([]);
   const methods = useForm<BankFormData>({
@@ -39,7 +39,9 @@ export const AddBankModal = ({ getAccounts, service }: { getAccounts: () => void
         variant: "default",
       });
       reset();
-      getAccounts();
+      if (getAccounts) {
+        getAccounts();
+      }
       setIsOpen(false);
     }
   };
@@ -67,6 +69,7 @@ export const AddBankModal = ({ getAccounts, service }: { getAccounts: () => void
       open={isOpen}
       onOpenChange={setIsOpen}
       className={`sm:max-w-[499px]`}
+      wrapperClassName={`mb-8`}
       trigger={
         <div
           className={`flex min-h-[120px] items-center justify-center gap-4 rounded-md border p-6 text-mid-purple lg:max-w-[357px]`}

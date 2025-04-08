@@ -77,7 +77,7 @@ const Page = ({ funnelService }: { funnelService: FunnelService }) => {
 
   return (
     <div>
-      <h5 className="mb-4 text-lg font-bold md:text-2xl">
+      <h5 className="mb-4 text-h4 sm:text-h4-sm md:text-h4-md">
         {funnel ? `Edit ${funnel.title} Funnel` : "Create New Funnel"}
       </h5>
       <p className="mb-6 text-base text-gray-600">

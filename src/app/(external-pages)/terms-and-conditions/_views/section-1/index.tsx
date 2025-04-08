@@ -13,7 +13,7 @@ export const TermsAndConditions: React.FC = () => {
           {termsandconditions.map((term, index) => (
             <FadeIn key={index}>
               <div className="mb-6">
-                <h3 className="text-2xl font-bold">{term.title}</h3>
+                <h4 className="text-h4">{term.title}</h4>
                 <p className="mt-2">{term.text}</p>
                 {term.points && (
                   <div className="mt-2 list-outside list-disc space-y-2 pl-6">

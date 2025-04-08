@@ -6,7 +6,7 @@ export const ProfilePicture = ({ initialValue }: { initialValue: string }) => {
       <ThumbNailUpload
         initialValue={initialValue}
         name="logo"
-        acceptedFormats="image/jpeg, image/png"
+        acceptedFormats="image/jpeg, image/png image/webp"
         maxFileSize={2 * 1024 * 1024}
       />
     </>

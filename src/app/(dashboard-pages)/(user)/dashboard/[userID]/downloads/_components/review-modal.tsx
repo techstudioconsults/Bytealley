@@ -35,12 +35,17 @@ const BaseReviewModal = ({
 
   const handleSubmitForm = async (data: ReviewFormData) => {
     const response = await downloadService.reviewDownloadedProduct(downloadedProductID, data);
-    if (response) {
-      Toast.getInstance().showToast({
-        title: "Thanks for reviewing this product!",
-        description: "Review has been submitted successfully.",
-        variant: "success",
-      });
+    try {
+      if (response) {
+        Toast.getInstance().showToast({
+          title: "Thanks for reviewing this product!",
+          description: "Review has been submitted successfully.",
+          variant: "success",
+        });
+        reset();
+        setIsOpen(false);
+      }
+    } finally {
       reset();
       setIsOpen(false);
     }
@@ -57,12 +62,12 @@ const BaseReviewModal = ({
       }
       title={"How was the product ?"}
       description={""}
-      className={`min-w-[817px] p-10`}
+      className={`p-10 sm:max-w-[600px]`}
       headerClassName={`text-2xl text-center`}
     >
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(handleSubmitForm)} className="space-y-4">
-          <section className={`flex flex-col items-center space-y-4`}>
+          <section className={`flex flex-col items-center space-y-4 text-center`}>
             <StarRatingField name={"rating"} size={`text-[4rem]`} className={`h-fit`} />
             <p>Whats your opinion about this product (optional)</p>
           </section>

@@ -5,11 +5,13 @@ import { ContactUsForm } from "../../_components/contact-form";
 
 export const ContactSection = () => {
   return (
-    <div className="bg-yellow-100 py-20">
+    <div className="bg-low-warning py-20">
       <Wrapper className="px-4">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           <div className="my-auto space-y-8">
-            <h1 className="nr-font font-bold leading-tight">Reach Out To Us</h1>
+            <h2 className="font-nr text-h2 leading-tight text-high-warning sm:text-h2-sm md:text-h2-md">
+              Reach Out To Us
+            </h2>
             <p className="text-xl">
               Reach out to us for any queries or support. Our team is here to help you with your shopping experience and
               ensure your satisfaction.

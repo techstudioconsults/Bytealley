@@ -40,7 +40,7 @@ export function Base_Bar_Chart({ analyticsService }: { analyticsService: Analyti
 
   return (
     <section className="rounded-[8px] border bg-white p-[24px]">
-      <h6 className="text-[14px] font-[700] text-high-grey-III lg:text-[18px]">Revenue Overview</h6>
+      <h5 className="text-h5 font-semibold text-high-grey-III">Revenue Overview</h5>
       <section className={`mb-8 mt-4 flex items-center justify-between gap-4`}>
         <SelectDropdown
           triggerClassName={`w-[100%]`}

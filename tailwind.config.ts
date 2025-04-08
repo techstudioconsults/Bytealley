@@ -96,6 +96,34 @@ const config = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      fontFamily: {
+        nr: ["var(--font-newsreader)"],
+      },
+      fontSize: {
+        h1: ["2.25rem", { fontWeight: "900" }], // 36px
+        "h1-sm": ["2.5rem", { fontWeight: "900" }], // 40px
+        "h1-md": ["4.5rem", { fontWeight: "900" }], // 72px
+
+        h2: ["2rem", { fontWeight: "900" }], // 32px
+        "h2-sm": ["2.25rem", { fontWeight: "900" }], // 36px
+        "h2-md": ["2.5rem", { fontWeight: "900" }], // 40px
+
+        h3: ["1.75rem", { fontWeight: "700" }], // 28px
+        "h3-sm": ["2rem", { fontWeight: "700" }], // 32px
+        "h3-md": ["2.25rem", { fontWeight: "700" }], // 36px
+
+        h4: ["1.5rem", { fontWeight: "700" }], // 24px
+        "h4-sm": ["1.75rem", { fontWeight: "700" }], // 28px
+        "h4-md": ["2rem", { fontWeight: "700" }], // 32px
+
+        h5: ["1.25rem", { fontWeight: "600" }], // 20px
+        "h5-sm": ["1.5rem", { fontWeight: "600" }], // 24px
+        "h5-md": ["1.75rem", { fontWeight: "500" }], // 28px
+
+        h6: ["1rem", { fontWeight: "500" }], // 16px
+        "h6-sm": ["1.25rem", { fontWeight: "500" }], // 20px
+        "h6-md": ["1.5rem", { fontWeight: "600" }], // 24px
+      },
       keyframes: {
         "accordion-down": {
           from: {
@@ -133,16 +161,24 @@ const config = {
             transform: "translateY(-10px)",
           },
         },
+        shimmer: {
+          from: {
+            transform: "translateX(-120%)",
+          },
+          to: {
+            transform: "translateX(120%)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-in": "fade-in 0.3s ease-in-out",
         "fade-out": "fade-out 0.3s ease-in-out",
+        shimmer: "shimmer 1s ease-in-out infinite",
       },
     },
   },
-
   plugins: [require("tailwindcss-animate"), require("@mertasan/tailwindcss-variables")],
 } satisfies Config;
 

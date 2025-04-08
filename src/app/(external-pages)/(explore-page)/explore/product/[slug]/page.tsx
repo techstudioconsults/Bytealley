@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
+import empty1 from "@/images/bad.svg";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
@@ -88,7 +89,7 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
             navigationVariant="minimal"
           />
           <div className="rounded-md border p-4">
-            <h1 className="mb-2 text-2xl font-bold text-gray-900 md:text-3xl">{product?.title}</h1>
+            <h4 className="mb-2 text-h4 sm:text-h3-sm md:text-h3-md">{product?.title}</h4>
             <div className="flex items-center gap-2">
               <Avatar className="relative z-[-1] h-6 w-6">
                 <AvatarImage src={typeof product?.publisher?.avatar === "string" ? product.publisher?.avatar : ""} />
@@ -103,7 +104,7 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
 
         {/* Features Section */}
         <section className="mb-4 rounded-md border p-4">
-          <h2 className="mb-4 border-b py-4 text-xl font-bold text-gray-900">Features</h2>
+          <h5 className="mb-4 border-b py-4 text-h5 font-bold text-high-grey-III">Features</h5>
           <ul className="list-inside list-disc space-y-4 text-gray-700">
             {product?.highlights.map((highlight, index) => <p key={index}>✔️ {highlight}</p>)}
           </ul>
@@ -111,7 +112,7 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
 
         {/* Description Section */}
         <section className="mb-4 rounded-md border p-4">
-          <h2 className="mb-4 border-b py-4 text-xl font-bold text-gray-900">Description</h2>
+          <h5 className="mb-4 border-b py-4 text-h5 font-bold text-high-grey-III">Description</h5>
           <div>
             <p
               className={cn("text-gray-700 transition-all duration-300", {
@@ -189,7 +190,7 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
 
           {/* Product Includes Section */}
           <div>
-            <p className="mb-4 border-b py-4 font-bold">The Product Includes</p>
+            <h5 className="mb-4 border-b py-4 text-h5 font-bold text-high-grey-III">The Product Includes</h5>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <span>Format</span>
@@ -232,8 +233,8 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
         {/* Product Reviews Section */}
         <section className="mt-4 rounded-md border p-4">
           <div className="mb-4 flex items-center justify-between border-b pb-4">
-            <p className="font-bold">Product Reviews</p>
-            <p className="text-sm font-semibold text-mid-grey-II">{productReview.length} reviews</p>
+            <h5 className="text-h5 font-bold text-high-grey-III">Product Reviews</h5>
+            <p className="text-sm font-semibold text-mid-grey-II">{productReview?.length} reviews</p>
           </div>
           <div className="space-y-4">
             {productReview?.length > 0 ? (
@@ -257,7 +258,7 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
               <EmptyState
                 title="No Comments yet."
                 description="There are no reviews available for this product."
-                images={[]}
+                images={[{ src: empty1.src, alt: "Empty product", width: 50, height: 50 }]}
               />
             )}
           </div>

@@ -10,7 +10,7 @@ export const SectionFour = () => {
       leftChild={
         <DualSectionLayoutList
           title="Helpful Information at your fingertips"
-          headerClassName={`text-high-warning nr-font text-5xl xl:text-7xl`}
+          headerClassName={`text-high-warning font-nr text-h1 sm:text-h1-sm md:text-h1-md`}
           subHeaderClassName={`text-high-warning xl:text-2xl`}
           subTitle="You can find out your best customers and what products sell better from your dashboard with ease. This can help you plan better."
           className={`px-4 lg:w-[530px] xl:px-0`}

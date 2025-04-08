@@ -15,7 +15,7 @@ export const SubscriptionModal = ({ triggerStyle }: { triggerStyle?: string }) =
         triggerStyle ? (
           <p className={triggerStyle}>Subscribe Now</p>
         ) : (
-          <CustomButton variant={`primary`} size={`lg`}>
+          <CustomButton variant={`primary`} size={`xl`}>
             Subscribe Now
           </CustomButton>
         )
@@ -42,7 +42,7 @@ const BaseSubscriptionCard = ({ appService }: { appService: AppService }) => {
     <section className={`w-full rounded-xl border border-black bg-low-purple p-10 shadow-neob`}>
       <div className={`space-y-2 text-center`}>
         <p className={`text-lg font-semibold text-mid-coral`}>Subscription Plan</p>
-        <h2 className={`nr-font text-2xl md:text-4xl`}>
+        <h2 className={`font-nr text-h2 sm:text-h2-sm md:text-h2-md`}>
           NGN 5000<span className={`text-sm text-mid-grey-II`}>/Per Month</span>
         </h2>
       </div>

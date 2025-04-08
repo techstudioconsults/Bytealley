@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
+import empty1 from "@/images/alert.png";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { useSession } from "~/hooks/use-session";
 import { cn } from "~/utils/utils";
@@ -15,6 +17,7 @@ import { StarRating } from "../rating/star";
 export function ViewProductLayout({ productService }: { productService: any }) {
   const searchParameters = useSearchParams();
   const productID = searchParameters.get("product_id");
+  const router = useRouter();
   const [product, setProduct] = useState<IProduct>();
   const { user } = useSession();
 
@@ -41,6 +44,22 @@ export function ViewProductLayout({ productService }: { productService: any }) {
 	aperiam sunt sint accusantium doloremque, itaque asperiores ab excepturi blanditiis veniam, minima debitis impedit, reiciendis eligendi id. Lorem ipsum`;
 
   const isLongDescription = description.trim().split(" ").length > 10;
+
+  if (!product) {
+    return (
+      <EmptyState
+        images={[{ src: empty1.src, alt: "Empty product", width: 100, height: 100 }]}
+        title="Ops!"
+        description="No product found."
+        button={{
+          text: "Add New Product",
+          onClick: () => {
+            router.push(`/dashboard/${user?.id}/products/new`);
+          },
+        }}
+      />
+    );
+  }
 
   return (
     <section className="mx-auto grid max-w-[990px] grid-cols-1 gap-6 rounded-lg md:grid-cols-12">
@@ -70,7 +89,7 @@ export function ViewProductLayout({ productService }: { productService: any }) {
             navigationVariant="minimal"
           />
           <div className={`rounded-md border p-4`}>
-            <h1 className="mb-2 text-2xl font-bold text-gray-900 md:text-3xl">{product?.title}</h1>
+            <h4 className="mb-2 text-h4 sm:text-h3-sm md:text-h3-md">{product?.title}</h4>
             <div className="flex items-center gap-2">
               <p className="flex items-center gap-2">
                 <Avatar className="relative z-[-1] h-6 w-6">
@@ -89,7 +108,7 @@ export function ViewProductLayout({ productService }: { productService: any }) {
 
         {/* Features Section */}
         <section className={`mb-4 rounded-md border p-4`}>
-          <h2 className="mb-4 border-b py-4 text-xl font-bold text-gray-900">Features</h2>
+          <h5 className="mb-4 border-b py-4 text-h5 font-bold text-high-grey-III">Features</h5>
           <ul className="list-inside list-disc space-y-4 text-gray-700">
             {product?.highlights.map((highlight, index) => <p key={index}>✔️ {highlight}</p>)}
           </ul>
@@ -97,7 +116,7 @@ export function ViewProductLayout({ productService }: { productService: any }) {
 
         {/* Description Section */}
         <section className="mb-4 rounded-md border p-4">
-          <h2 className="mb-4 border-b py-4 text-xl font-bold text-gray-900">Description</h2>
+          <h5 className="mb-4 border-b py-4 text-h5 font-bold text-high-grey-III">Description</h5>
           <div>
             <p
               className={cn("text-gray-700 transition-all duration-300", {
@@ -158,7 +177,7 @@ export function ViewProductLayout({ productService }: { productService: any }) {
 
           {/* Product Includes Section */}
           <div className="">
-            <p className="mb-4 border-b py-4 font-bold">The Product Includes</p>
+            <h5 className="mb-4 border-b py-4 text-h5 font-bold text-high-grey-III">The Product Includes</h5>
             <div className="list-disc space-y-4">
               <div className="flex items-center justify-between">
                 <span>Format</span>
@@ -187,8 +206,8 @@ export function ViewProductLayout({ productService }: { productService: any }) {
         {/* Product Reviews Section */}
         <section className="mt-4 rounded-md border p-4">
           <div className="mb-4 flex items-center justify-between border-b pb-4">
-            <p className="font-bold">Product Reviews</p>
-            <p className="text-sm font-semibold text-mid-grey-II">24 reviews</p>
+            <h5 className="text-h5 font-bold text-high-grey-III">Product Reviews</h5>
+            <p className="text-sm font-semibold text-mid-grey-II">10 reviews</p>
           </div>
           <div className="space-y-4">
             {Array.from({ length: 6 }).map((_, index) => (
