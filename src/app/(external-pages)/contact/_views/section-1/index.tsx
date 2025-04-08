@@ -9,7 +9,7 @@ export const ContactSection = () => {
       <Wrapper className="px-4">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           <div className="my-auto space-y-8">
-            <h2 className="text-h2 sm:text-h2-sm md:text-h2-md font-nr leading-tight text-high-warning">
+            <h2 className="font-nr text-h2 leading-tight text-high-warning sm:text-h2-sm md:text-h2-md">
               Reach Out To Us
             </h2>
             <p className="text-xl">

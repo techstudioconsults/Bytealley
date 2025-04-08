@@ -11,7 +11,7 @@ export const SectionFour: React.FC = () => {
     <section className="py-24">
       <Wrapper className={`max-w-[1240px]`}>
         <Wrapper className={`max-w-[800px] text-center`}>
-          <h1 className="font-nr text-h1 sm:text-h1-sm md:text-h1-md mb-4 leading-tight">Why Choose ByteAlley</h1>
+          <h1 className="mb-4 font-nr text-h1 leading-tight sm:text-h1-sm md:text-h1-md">Why Choose ByteAlley</h1>
         </Wrapper>
         <Wrapper className="px-4 py-20 xl:px-0">
           <div className="grid grid-cols-1 gap-10 sm:grid-cols-2">

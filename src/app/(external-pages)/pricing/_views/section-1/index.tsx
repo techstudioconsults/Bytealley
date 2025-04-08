@@ -14,7 +14,7 @@ const BaseSectionOne = ({ helpService }: { helpService: HelpService }) => {
     <SectionLayout>
       <Wrapper className="grid gap-4 space-y-4 py-16 lg:grid-cols-2 lg:space-y-0 lg:py-32">
         <section className={`space-y-4`}>
-          <h2 className="font-nr text-h2 sm:text-h2-sm md:text-h2-md text-center text-high-warning lg:text-left">
+          <h2 className="text-center font-nr text-h2 text-high-warning sm:text-h2-sm md:text-h2-md lg:text-left">
             Frequently asked questions
           </h2>
           <div className={`hidden lg:block`}>

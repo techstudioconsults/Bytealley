@@ -11,7 +11,7 @@ export const SectionThree: React.FC = () => {
     <section className="bg-mid-coral py-24">
       <Wrapper>
         <Wrapper className={`max-w-[800px] text-center`}>
-          <h1 className="font-nr text-h1 sm:text-h1-sm md:text-h1-md mb-4 text-white">
+          <h1 className="mb-4 font-nr text-h1 text-white sm:text-h1-sm md:text-h1-md">
             Start monetizing in 4 simple steps
           </h1>
 

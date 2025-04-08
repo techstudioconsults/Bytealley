@@ -16,7 +16,7 @@ export const SectionOne = () => {
         <div className="flex flex-col gap-10 sm:gap-20 lg:flex-row">
           {/* Left Section */}
           <div className="flex flex-col justify-between text-center lg:w-[40%] lg:text-left">
-            <h1 className="font-nr text-h1 sm:text-h1-sm md:text-h1-md text-high-warning">
+            <h1 className="font-nr text-h1 text-high-warning sm:text-h1-sm md:text-h1-md">
               You can monetize everything
             </h1>
             <p className="mb-8 mt-8 text-lg font-light xl:text-2xl">
@@ -35,7 +35,7 @@ export const SectionOne = () => {
           {/* Right Section - Cards */}
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:w-[60%]">
             {cards.map((card, index) => (
-              <Card key={index} className="shadow-neob h-full rounded-xl border border-black bg-white">
+              <Card key={index} className="h-full rounded-xl border border-black bg-white shadow-neob">
                 <CardContent className="p-6">
                   <BlurImage
                     src={card.image}
@@ -44,7 +44,7 @@ export const SectionOne = () => {
                     height={100}
                     className="h-auto w-auto rounded-lg"
                   />
-                  <h2 className="text-h4 mt-4 font-semibold">{card.title}</h2>
+                  <h2 className="mt-4 text-h4 font-semibold">{card.title}</h2>
                   <p className="mt-2 text-gray-500">{card.description}</p>
                 </CardContent>
               </Card>

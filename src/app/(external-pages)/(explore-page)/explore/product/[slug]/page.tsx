@@ -88,7 +88,7 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
             navigationVariant="minimal"
           />
           <div className="rounded-md border p-4">
-            <h1 className="text-h4 sm:text-h3-sm md:text-h3-md mb-2">{product?.title}</h1>
+            <h1 className="mb-2 text-h4 sm:text-h3-sm md:text-h3-md">{product?.title}</h1>
             <div className="flex items-center gap-2">
               <Avatar className="relative z-[-1] h-6 w-6">
                 <AvatarImage src={typeof product?.publisher?.avatar === "string" ? product.publisher?.avatar : ""} />
@@ -103,7 +103,7 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
 
         {/* Features Section */}
         <section className="mb-4 rounded-md border p-4">
-          <h5 className="text-h5 mb-4 border-b py-4 font-bold text-high-grey-III">Features</h5>
+          <h5 className="mb-4 border-b py-4 text-h5 font-bold text-high-grey-III">Features</h5>
           <ul className="list-inside list-disc space-y-4 text-gray-700">
             {product?.highlights.map((highlight, index) => <p key={index}>✔️ {highlight}</p>)}
           </ul>
@@ -111,7 +111,7 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
 
         {/* Description Section */}
         <section className="mb-4 rounded-md border p-4">
-          <h5 className="text-h5 mb-4 border-b py-4 font-bold text-high-grey-III">Description</h5>
+          <h5 className="mb-4 border-b py-4 text-h5 font-bold text-high-grey-III">Description</h5>
           <div>
             <p
               className={cn("text-gray-700 transition-all duration-300", {
@@ -189,7 +189,7 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
 
           {/* Product Includes Section */}
           <div>
-            <h5 className="text-h5 mb-4 border-b py-4 font-bold text-high-grey-III">The Product Includes</h5>
+            <h5 className="mb-4 border-b py-4 text-h5 font-bold text-high-grey-III">The Product Includes</h5>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <span>Format</span>

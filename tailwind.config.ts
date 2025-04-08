@@ -100,7 +100,6 @@ const config = {
         nr: ["var(--font-newsreader)"],
       },
       fontSize: {
-        // Adding heading font sizes with responsive variants
         h1: ["2.25rem", { fontWeight: "900" }], // 36px
         "h1-sm": ["2.5rem", { fontWeight: "900" }], // 40px
         "h1-md": ["4.5rem", { fontWeight: "900" }], // 72px
