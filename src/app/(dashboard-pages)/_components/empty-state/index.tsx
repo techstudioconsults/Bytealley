@@ -58,7 +58,7 @@ export const EmptyState = ({
 
       {/* Content container */}
       <div className="flex flex-col items-center space-y-4">
-        {title && <h3 className="text-2xl font-semibold text-primary">{title}</h3>}
+        {title && <h3 className="text-h3 font-semibold text-primary">{title}</h3>}
 
         <p className="max-w-[500px] text-base text-muted-foreground">{description}</p>
 
