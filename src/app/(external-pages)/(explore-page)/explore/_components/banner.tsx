@@ -9,7 +9,7 @@ export const ExploreBanner: React.FC = () => {
   return (
     <Wrapper className={`my-14`}>
       <Card
-        className="shadow-NB flex h-[164px] items-center justify-between overflow-hidden rounded-lg bg-low-warning p-4 lg:p-8"
+        className="flex h-[164px] items-center justify-between overflow-hidden rounded-lg bg-low-warning p-4 shadow-neob lg:p-8"
         style={{
           backgroundImage: `url(${lines.src})`,
           backgroundSize: "contain",

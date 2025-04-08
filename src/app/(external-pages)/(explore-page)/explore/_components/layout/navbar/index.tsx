@@ -162,7 +162,7 @@ const BaseExploreNavBar = ({ appService }: { appService: AppService }) => {
       </nav>
       {!productRoute && (
         <section className={cn("sticky top-0 z-[4] bg-mid-coral py-4")}>
-          <div className="flex flex-wrap justify-center gap-2">
+          <div className="flex flex-wrap justify-center gap-4">
             {tags.map((tag, index) => {
               const tagParameter = tag.toLowerCase() === "all" ? "all" : tag.toLowerCase().replaceAll(/\s+/g, "-");
               const isActive = currentCategory === tagParameter;
@@ -170,10 +170,10 @@ const BaseExploreNavBar = ({ appService }: { appService: AppService }) => {
               return (
                 <CustomButton
                   key={index}
-                  variant="outline"
+                  variant="ghost"
                   size="sm"
                   onClick={() => handleTagClick(tag)}
-                  className={cn(isActive && "bg-mid-warning")}
+                  className={cn(`rounded-full font-semibold`, isActive && "bg-white shadow-sneob")}
                 >
                   {tag.toUpperCase()}
                 </CustomButton>
