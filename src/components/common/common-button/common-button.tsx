@@ -93,7 +93,7 @@ const CustomButton = forwardRef<HTMLButtonElement, ButtonProperties>(
     );
 
     const buttonClasses = `transition-transform duration-300 ease-in-out ${
-      isDisabled ? "opacity-50 cursor-not-allowed" : "hover:scale-105"
+      isDisabled ? "opacity-50 cursor-not-allowed" : "hover:shadow-sm-NB"
     } ${className}`;
 
     if (href) {
