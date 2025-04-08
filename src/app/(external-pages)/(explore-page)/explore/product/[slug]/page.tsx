@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
+import empty1 from "@/images/bad.svg";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
@@ -88,7 +89,7 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
             navigationVariant="minimal"
           />
           <div className="rounded-md border p-4">
-            <h1 className="mb-2 text-h4 sm:text-h3-sm md:text-h3-md">{product?.title}</h1>
+            <h4 className="mb-2 text-h4 sm:text-h3-sm md:text-h3-md">{product?.title}</h4>
             <div className="flex items-center gap-2">
               <Avatar className="relative z-[-1] h-6 w-6">
                 <AvatarImage src={typeof product?.publisher?.avatar === "string" ? product.publisher?.avatar : ""} />
@@ -233,7 +234,7 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
         <section className="mt-4 rounded-md border p-4">
           <div className="mb-4 flex items-center justify-between border-b pb-4">
             <h5 className="text-h5 font-bold text-high-grey-III">Product Reviews</h5>
-            <p className="text-sm font-semibold text-mid-grey-II">{productReview.length} reviews</p>
+            <p className="text-sm font-semibold text-mid-grey-II">{productReview?.length} reviews</p>
           </div>
           <div className="space-y-4">
             {productReview?.length > 0 ? (
@@ -257,7 +258,7 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
               <EmptyState
                 title="No Comments yet."
                 description="There are no reviews available for this product."
-                images={[]}
+                images={[{ src: empty1.src, alt: "Empty product", width: 50, height: 50 }]}
               />
             )}
           </div>

@@ -19,8 +19,8 @@ const BaseProfile = ({ appService }: { appService: AppService }) => {
   const methods = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      full_name: user?.name,
-      username: user?.username,
+      full_name: user?.name || "",
+      username: user?.username || "",
       email: user?.email || "",
       phone_number: user?.phone_number || "",
       bio: user?.bio || "",
@@ -70,7 +70,7 @@ const BaseProfile = ({ appService }: { appService: AppService }) => {
         <section className={`space-y-8`}>
           <section className={`grid grid-cols-1 gap-4 lg:grid-cols-5 lg:gap-16`}>
             <div className={`col-span-2 space-y-4`}>
-              <h4 className={`text-lg lg:text-2xl`}>Profile Information</h4>
+              <h5 className={`text-h5 font-semibold sm:text-h5-sm`}>Profile Information</h5>
               <p className={`text-sm text-mid-grey-II lg:text-[16px]`}>
                 Update your profile info with the correct details.
               </p>
@@ -81,7 +81,7 @@ const BaseProfile = ({ appService }: { appService: AppService }) => {
           </section>
           <section className={`grid grid-cols-1 gap-4 lg:grid-cols-5 lg:gap-16`}>
             <div className={`col-span-2 space-y-4`}>
-              <h4 className={`text-lg lg:text-2xl`}>Logo</h4>
+              <h5 className={`text-h5 font-semibold sm:text-h5-sm`}>Logo</h5>
               <p className={`text-sm text-mid-grey-II lg:text-[16px]`}>Update your profile picture.</p>
             </div>
             <div className={`col-span-3`}>
@@ -90,7 +90,7 @@ const BaseProfile = ({ appService }: { appService: AppService }) => {
           </section>
           <section className={`grid grid-cols-1 gap-4 lg:grid-cols-5 lg:gap-16`}>
             <div className={`col-span-2 space-y-4`}>
-              <h4 className={`text-lg lg:text-2xl`}>Social Link</h4>
+              <h5 className={`text-h5 font-semibold sm:text-h5-sm`}>Social Link</h5>
               <p className={`text-sm text-mid-grey-II lg:text-[16px]`}>Update your social presence online.</p>
             </div>
             <div className={`col-span-3 space-y-4`}>

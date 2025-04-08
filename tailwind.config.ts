@@ -116,13 +116,13 @@ const config = {
         "h4-sm": ["1.75rem", { fontWeight: "700" }], // 28px
         "h4-md": ["2rem", { fontWeight: "700" }], // 32px
 
-        h5: ["1.25rem", { fontWeight: "500" }], // 20px
-        "h5-sm": ["1.5rem", { fontWeight: "500" }], // 24px
+        h5: ["1.25rem", { fontWeight: "600" }], // 20px
+        "h5-sm": ["1.5rem", { fontWeight: "600" }], // 24px
         "h5-md": ["1.75rem", { fontWeight: "500" }], // 28px
 
         h6: ["1rem", { fontWeight: "500" }], // 16px
         "h6-sm": ["1.25rem", { fontWeight: "500" }], // 20px
-        "h6-md": ["1.5rem", { fontWeight: "500" }], // 24px
+        "h6-md": ["1.5rem", { fontWeight: "600" }], // 24px
       },
       keyframes: {
         "accordion-down": {

@@ -56,7 +56,7 @@ const BaseSelectFunnelModal = ({ productService }: { productService: ProductServ
         </CustomButton>
       }
       className="lg:min-w-[817px] lg:p-8"
-      headerClassName="text-4xl"
+      headerClassName="text-3xl"
       title={isProduct ? `Choose a Template` : ""}
       description={isProduct ? `Select a template to continue` : ""}
     >
@@ -76,7 +76,7 @@ const BaseSelectFunnelModal = ({ productService }: { productService: ProductServ
       ) : (
         <section className="text-center">
           <Image className="mx-auto" src="/images/alert.png" alt="alert" width={70} height={70} />
-          <h4>You Haven’t Created any Product yet</h4>
+          <h4 className={`text-h3`}>You Haven’t Created any Product yet</h4>
           <p className="my-3 text-mid-grey-II">You must create a product in order to create a funnel</p>
           <CustomButton
             href={`/dashboard/${user?.id}/products/new`}

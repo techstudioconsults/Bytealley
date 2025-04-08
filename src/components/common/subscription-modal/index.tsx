@@ -15,7 +15,7 @@ export const SubscriptionModal = ({ triggerStyle }: { triggerStyle?: string }) =
         triggerStyle ? (
           <p className={triggerStyle}>Subscribe Now</p>
         ) : (
-          <CustomButton variant={`primary`} size={`lg`}>
+          <CustomButton variant={`primary`} size={`xl`}>
             Subscribe Now
           </CustomButton>
         )

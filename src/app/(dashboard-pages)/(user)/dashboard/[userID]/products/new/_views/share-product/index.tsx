@@ -61,7 +61,7 @@ export const ShareProductView = ({ productId, productService }: ShareProductView
 
         {/* Success Message */}
         <div className="space-y-3 text-center">
-          <h2 className="text-lg font-bold md:text-2xl">
+          <h2 className="text-h4 font-bold sm:text-h4-sm">
             Product {product.status === `published` ? `published` : `unpublished`} Successfully!
           </h2>
           <p hidden={product.status !== `published`} className={`text-mid-grey-III`}>

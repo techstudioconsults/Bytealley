@@ -38,15 +38,17 @@ export function ReusableDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className={cn(`sm:max-w-[425px]`, className)}>
-        <DialogHeader className={cn(wrapperClassName)}>
-          {img && (
-            <Image width={100} height={100} src={img || ""} alt={`dangerous`} className={`h-[100px] w-[100px]`} />
-          )}
-          <DialogTitle className={headerClassName}>{title}</DialogTitle>
-          <DialogDescription>{description}</DialogDescription>
-        </DialogHeader>
-        {children}
+      <DialogContent className={cn(`h-full items-center sm:max-w-[425px] md:h-fit`, className)}>
+        <section>
+          <DialogHeader className={cn(`h-fit`, wrapperClassName)}>
+            {img && (
+              <Image width={100} height={100} src={img || ""} alt={`dangerous`} className={`h-[100px] w-[100px]`} />
+            )}
+            <DialogTitle className={cn(`text-2xl`, headerClassName)}>{title}</DialogTitle>
+            <DialogDescription>{description}</DialogDescription>
+          </DialogHeader>
+          {children}
+        </section>
       </DialogContent>
     </Dialog>
   );

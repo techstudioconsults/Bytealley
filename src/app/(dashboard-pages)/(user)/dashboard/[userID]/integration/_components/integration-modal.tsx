@@ -57,8 +57,9 @@ const BaseIntegrationModal = ({
       trigger={trigger}
       title={"Connect Your Account"}
       description={`Enter your API key to connect your ${type} account.`}
+      wrapperClassName={`mb-8`}
       className={`p-5 lg:min-w-[555px]`}
-      headerClassName={`lg:text-3xl text-xl text-start`}
+      headerClassName={`lg:text-3xl text-xl md:text-start text-center`}
     >
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(handleSubmitForm)} className="space-y-4">
