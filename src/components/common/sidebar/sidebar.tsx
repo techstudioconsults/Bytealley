@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import {
   Sidebar,
@@ -11,16 +12,16 @@ import {
   SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "~/components/ui/sidebar";
 import { cn } from "~/utils/utils";
 import { Logo } from "../logo";
 
 export function DashboardSidebar({ navItems }: { navItems: any }) {
   const currentYear = new Date().getFullYear();
-  const router = useRouter();
   const pathname = usePathname();
   const userID = pathname.split("/")[2];
-  // const isMobile = useMediaQuery("(max-width: 768px)");
+  const { setOpenMobile } = useSidebar();
 
   const renderIcon = (item: SidebarItem) => {
     if (item.icon) {
@@ -36,6 +37,10 @@ export function DashboardSidebar({ navItems }: { navItems: any }) {
       );
     }
     return null;
+  };
+
+  const handleCloseOnMobile = () => {
+    setOpenMobile(false);
   };
 
   return (
@@ -55,39 +60,37 @@ export function DashboardSidebar({ navItems }: { navItems: any }) {
             return (
               <SidebarMenuItem key={item.id}>
                 <SidebarMenuButton
+                  asChild
                   className={cn(
                     "flex h-[48px] items-center gap-3 rounded-lg text-[16px] font-medium transition-all duration-200",
                     isActive
                       ? "border-2 border-primary text-primary shadow-active"
                       : "text-mid-grey-II hover:bg-low-grey-I",
                   )}
-                  onClick={() => {
-                    router.push(link);
-                  }}
                 >
-                  {renderIcon(item)}
-                  <span>{item.route}</span>
-                  {item.badge && (
-                    <SidebarMenuBadge
-                      className={cn(
-                        "absolute right-2 flex h-5 w-5 items-center justify-center rounded-full text-xs",
-                        item.badge.variant === "danger" ? "bg-mid-danger text-white" : "bg-gray-200",
-                        item.badge.count === 0 && "hidden",
-                      )}
-                    >
-                      {item.badge.count}
-                    </SidebarMenuBadge>
-                  )}
+                  <Link onClick={handleCloseOnMobile} href={link} data-testid={item.id} role="sidebar-link">
+                    {renderIcon(item)}
+                    <span>{item.route}</span>
+                    {item.badge && (
+                      <SidebarMenuBadge
+                        className={cn(
+                          "absolute right-2 flex h-5 w-5 items-center justify-center rounded-full text-xs",
+                          item.badge.variant === "danger" ? "bg-mid-danger text-white" : "bg-gray-200",
+                          item.badge.count === 0 && "hidden",
+                        )}
+                      >
+                        {item.badge.count}
+                      </SidebarMenuBadge>
+                    )}
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             );
           })}
         </SidebarMenu>
       </SidebarContent>
-      <SidebarFooter className={`h-20 items-center justify-center bg-low-purple`}>
-        <span className={`text-xs font-semibold text-primary`}>
-          ByteAlley &copy; {currentYear}. All rights reserved.
-        </span>
+      <SidebarFooter className={`h-10 items-center justify-center bg-black`}>
+        <span className={`text-xs font-semibold text-white`}>ByteAlley &copy; {currentYear}. All rights reserved.</span>
         {/* <span> {currentYear} Powered By Strategic Dot.</span> */}
       </SidebarFooter>
     </Sidebar>
