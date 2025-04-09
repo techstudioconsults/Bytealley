@@ -19,6 +19,7 @@ export function DashboardSidebar({ navItems }: { navItems: any }) {
   const router = useRouter();
   const pathname = usePathname();
   const userID = pathname.split("/")[2];
+  // const isMobile = useMediaQuery("(max-width: 768px)");
 
   const renderIcon = (item: SidebarItem) => {
     if (item.icon) {
