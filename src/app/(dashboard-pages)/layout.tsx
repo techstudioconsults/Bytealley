@@ -1,9 +1,8 @@
 "use client";
 
 import { DashboardSidebar } from "~/components/common/sidebar/sidebar";
-import { SidebarInset, SidebarProvider } from "~/components/ui/sidebar";
+import { SidebarInset } from "~/components/ui/sidebar";
 import { Toaster } from "~/components/ui/sonner";
-import { UseEditor } from "~/hooks/use-editor";
 import { sideItems } from "~/utils/constants";
 import { cn } from "~/utils/utils";
 import { DashboardNavbar } from "./_components/layout/navbar";
