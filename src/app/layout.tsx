@@ -7,6 +7,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { LenisProvider } from "~/components/lenis-provider";
 import { GotoTop } from "~/components/miscellaneous/goto-top";
+import { SidebarProvider } from "~/components/ui/sidebar";
 import { TooltipProvider } from "~/components/ui/tooltip";
 import { LoadingProvider } from "~/context/loading-provider";
 import { ProgressProviders } from "~/context/progress-provider";
@@ -47,7 +48,9 @@ export default async function RootLayout({
                     <GotoTop />
                     <LenisProvider>
                       <PageTransition>
-                        <ProgressProviders>{children}</ProgressProviders>
+                        <ProgressProviders>
+                          <SidebarProvider className={`block`}>{children}</SidebarProvider>
+                        </ProgressProviders>
                         <SpeedInsights />
                       </PageTransition>
                     </LenisProvider>
