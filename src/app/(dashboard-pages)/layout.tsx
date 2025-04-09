@@ -1,25 +1,25 @@
 "use client";
 
-// import DarkModeToggle from "~/components/common/theme-toggle";
-import { SidebarProvider } from "~/components/ui/sidebar";
+import { DashboardSidebar } from "~/components/common/sidebar/sidebar";
+import { SidebarInset } from "~/components/ui/sidebar";
 import { Toaster } from "~/components/ui/sonner";
-import { UseEditor } from "~/hooks/use-editor";
+import { sideItems } from "~/utils/constants";
 import { cn } from "~/utils/utils";
 import { DashboardNavbar } from "./_components/layout/navbar";
-import { AppSidebar } from "./_components/layout/sidebar/app-sidebar";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const { isEditor } = UseEditor();
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <main className={`h-fit w-full`}>
-        <DashboardNavbar />
-        <section className={cn(isEditor ? "p-0" : "p-4 lg:p-8")}>
-          {children}
-          <Toaster />
-        </section>
-      </main>
-    </SidebarProvider>
+    <main className="h-screen w-screen overflow-auto">
+      <div className="flex flex-1 overflow-hidden">
+        {/* Sidebar */}
+        <DashboardSidebar navItems={sideItems} />
+        {/* Main content */}
+        <SidebarInset className={cn("flex-1 overflow-auto")}>
+          <DashboardNavbar />
+          <section className={`p-8`}>{children}</section>
+        </SidebarInset>
+        <Toaster />
+      </div>
+    </main>
   );
 }
