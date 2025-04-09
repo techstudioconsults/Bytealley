@@ -21,6 +21,11 @@ export async function middleware(request: Request) {
     return NextResponse.next();
   }
 
+  // Skip Paystack return URLs (downloads after payment)
+  if (/^\/dashboard\/[^/]+\/downloads$/.test(pathname)) {
+    return NextResponse.next();
+  }
+
   try {
     // Get session and user details
     const session = await getSession();
