@@ -122,7 +122,7 @@ const BaseNavbar = ({ appService }: { appService: AppService }) => {
           </div>
 
           {/* Auth Buttons */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-8">
             {user ? (
               <Profile />
             ) : (
@@ -141,10 +141,10 @@ const BaseNavbar = ({ appService }: { appService: AppService }) => {
             )}
             <CustomButton
               size={`icon`}
-              variant={`ghost`}
+              variant={`primary`}
               isIconOnly
               icon={isMobileMenuOpen ? <X /> : <Menu />}
-              className="lg:hidden"
+              className="bg-white text-black shadow-sneob lg:hidden"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle mobile menu"
             />
