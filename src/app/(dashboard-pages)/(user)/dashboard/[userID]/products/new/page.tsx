@@ -165,7 +165,7 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
     <section>
       <FormProvider {...methods}>
         <Tabs value={currentTab} className="w-full">
-          <TabsList className="z-10 mb-8 flex h-fit w-full flex-col-reverse gap-4 rounded-none border-b bg-white p-0 sm:flex-row sm:items-center sm:justify-between lg:h-[58px]">
+          <TabsList className="z-10 mb-8 flex h-fit w-full flex-col-reverse gap-4 rounded-none border-b p-0 sm:flex-row sm:items-center sm:justify-between lg:h-[58px]">
             <section className="flex w-full flex-wrap items-center gap-2 sm:h-[5rem] sm:w-auto sm:flex-nowrap sm:gap-0 xl:h-full">
               <TabsTrigger
                 value="product-details"

@@ -122,107 +122,132 @@
   }
 
   .dark {
-    /* Dark mode colors */
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    /* Base colors - Vercel-inspired dark theme */
+    --background: 0, 0%, 0%;
+    --foreground: 0, 0%, 98%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    /* Card colors */
+    --card: 240, 5%, 15%;
+    --card-foreground: 0, 0%, 98%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    /* Popover */
+    --popover: 240, 5%, 15%;
+    --popover-foreground: 0, 0%, 98%;
 
-    --default: 222.2 84% 4.9%;
-    --default-foreground: 210 40% 98%;
+    /* Default surfaces */
+    --default: 240, 5%, 15%;
+    --default-foreground: 0, 0%, 98%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    /* Primary brand colors (kept your purple) */
+    --primary: 250, 53%, 60%;
+    --primary-foreground: 0, 0%, 100%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    /* Secondary - deeper purple */
+    --secondary: 252, 67%, 26%;
+    --secondary-foreground: 0, 0%, 98%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    /* Muted colors */
+    --muted: 240, 4%, 20%;
+    --muted-foreground: 240, 5%, 65%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    /* Accent - subtle blue like Vercel */
+    --accent: 210, 100%, 37%;
+    --accent-foreground: 0, 0%, 98%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    /* Destructive */
+    --destructive: 0, 71%, 55%;
+    --destructive-hover: 0, 71%, 45%;
+    --destructive-foreground: 0, 0%, 100%;
 
-    --subtle: 217.2 32.6% 17.5%;
-    --subtle-hover: 210 40% 98%;
-    --subtle-foreground: 210 40% 98%;
+    /* Subtle surfaces */
+    --subtle: 240, 4%, 20%;
+    --subtle-hover: 240, 4%, 25%;
+    --subtle-foreground: 0, 0%, 98%;
 
-    --loading: 210 40% 98%;
-    --loading-hover: 217.2 32.6% 17.5%;
-    --loading-foreground: 222.2 84% 4.9%;
+    /* Loading states */
+    --loading: 250, 53%, 60%;
+    --loading-hover: 250, 53%, 50%;
+    --loading-foreground: 0, 0%, 100%;
 
-    --outline: 217.2 32.6% 17.5%;
-    --outline-hover: 210 40% 98%;
-    --outline-foreground: 210 40% 98%;
+    /* Outlines */
+    --outline: 240, 4%, 25%;
+    --outline-hover: 240, 4%, 35%;
+    --outline-foreground: 0, 0%, 98%;
 
-    --link: 210 40% 98%;
+    /* Links */
+    --link: 250, 53%, 60%;
 
-    --error: 0 62.8% 30.6%;
-    --success: 143 79% 32%;
-    --warning: 45 92% 54%;
+    /* Status colors */
+    --error: 0, 71%, 55%;
+    --success: 143, 79%, 42%; /* Slightly brighter for dark mode */
+    --warning: 38, 92%, 54%; /* Adjusted hue to match Vercel's yellow */
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    /* Borders and inputs */
+    --border: 240, 4%, 25%;
+    --input: 240, 5%, 15%;
+    --ring: 250, 53%, 60%;
 
+    /* Radius */
     --radius: 0.5rem;
 
-    --stroke-colors-stroke: 217.2 32.6% 17.5%;
+    /* Strokes */
+    --stroke-colors-stroke: 240, 4%, 25%;
 
-    --neutralColor-dark-1: 210 40% 98%;
-    --neutralColor-dark-2: 222.2 84% 4.9%;
+    /* Neutral colors */
+    --neutralColor-dark-1: 252, 67%, 26%;
+    --neutralColor-dark-2: 240, 5%, 15%;
 
-    /* byte-alley design system */
-    --white: 222.2 84% 4.9%;
-    --black: 210 40% 98%;
+    /* Design system - adjusted for Vercel's aesthetic */
+    --white: 0, 0%, 98%;
+    --black: 240, 6%, 10%;
 
-    --high-purple: 210 40% 98%;
-    --mid-purple: 217.2 32.6% 17.5%;
-    --low-purple: 222.2 84% 4.9%;
+    /* Purple scale */
+    --high-purple: 251, 50%, 90%; /* Lightest for highlights */
+    --mid-purple: 250, 53%, 60%; /* Your brand purple */
+    --low-purple: 252, 63%, 11%; /* Darkest */
 
-    --high-coral: 210 40% 98%;
-    --mid-coral: 217.2 32.6% 17.5%;
-    --low-coral: 222.2 84% 4.9%;
+    /* Coral scale */
+    --high-coral: 182, 78%, 65%; /* Brighter for dark mode */
+    --mid-coral: 182, 78%, 41%;
+    --low-coral: 180, 9%, 13%;
 
-    --high-danger: 210 40% 98%;
-    --mid-danger: 217.2 32.6% 17.5%;
-    --low-danger: 222.2 84% 4.9%;
+    /* Danger scale */
+    --high-danger: 0, 85%, 85%;
+    --mid-danger: 0, 71%, 55%;
+    --low-danger: 0, 84%, 22%;
 
-    --high-warning: 210 40% 98%;
-    --mid-warning: 217.2 32.6% 17.5%;
-    --low-warning: 222.2 84% 4.9%;
+    /* Warning scale */
+    --high-warning: 38, 92%, 75%;
+    --mid-warning: 38, 92%, 54%;
+    --low-warning: 39, 32%, 17%;
 
-    --high-success: 210 40% 98%;
-    --mid-success: 217.2 32.6% 17.5%;
-    --low-success: 222.2 84% 4.9%;
+    /* Success scale */
+    --high-success: 143, 79%, 65%;
+    --mid-success: 143, 79%, 42%;
+    --low-success: 150, 13%, 10%;
 
-    --high-grey-III: 210 40% 98%;
-    --high-grey-II: 217.2 32.6% 17.5%;
-    --high-grey-I: 222.2 84% 4.9%;
+    /* Grey scale - Vercel-inspired stepped contrast */
+    --high-grey-III: 0, 0%, 95%;
+    --high-grey-II: 0, 0%, 85%;
+    --high-grey-I: 0, 0%, 75%;
 
-    --mid-grey-III: 210 40% 98%;
-    --mid-grey-II: 217.2 32.6% 17.5%;
-    --mid-grey-I: 222.2 84% 4.9%;
+    --mid-grey-III: 240, 2%, 55%;
+    --mid-grey-II: 240, 3%, 40%;
+    --mid-grey-I: 240, 4%, 25%;
 
-    --low-grey-III: 210 40% 98%;
-    --low-grey-II: 217.2 32.6% 17.5%;
-    --low-grey-I: 222.2 84% 4.9%;
+    --low-grey-III: 240, 5%, 15%;
+    --low-grey-II: 240, 6%, 12%;
+    --low-grey-I: 240, 7%, 8%;
 
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Sidebar - Vercel-style dark sidebar */
+    --sidebar-background: 0, 0%, 0%;
+    --sidebar-foreground: 0, 0%, 90%;
+    --sidebar-primary: 250, 53%, 60%;
+    --sidebar-primary-foreground: 0, 0%, 100%;
+    --sidebar-accent: 240, 5%, 20%;
+    --sidebar-accent-foreground: 0, 0%, 90%;
+    --sidebar-border: 240, 5%, 20%;
+    --sidebar-ring: 250, 53%, 60%;
   }
 }
 

@@ -31,7 +31,7 @@ export const DashboardNavbar = () => {
       )}
       role="navbar"
     >
-      <section className="flex w-full items-center justify-between gap-[20px] bg-white px-[16px] py-[20px] lg:px-[32px]">
+      <section className="flex w-full items-center justify-between gap-[20px] px-[16px] py-[20px] lg:px-[32px]">
         <div className={`flex items-center gap-4`}>
           <SidebarTrigger className={cn(`h-10 w-10`)} />
           <h4 className="text-h4 sm:text-h4-sm md:text-h4-md">{title}</h4>
@@ -41,7 +41,7 @@ export const DashboardNavbar = () => {
           <div className="relative flex items-center justify-center">
             <Popover>
               <PopoverTrigger>
-                <Image src={bell} alt="bell" className={"h-[32px] w-[32px]"} />
+                <Image src={bell} alt="bell" className={"h-[32px] w-[32px] dark:invert dark:filter"} />
               </PopoverTrigger>
               <PopoverContent
                 data-testid="notificationContent"
@@ -61,7 +61,7 @@ export const DashboardNavbar = () => {
           <Profile />
         </section>
       </section>
-      <section className="relative z-[5] flex items-center justify-center bg-white p-4 lg:hidden">
+      <section className="relative z-[5] flex items-center justify-center p-4 lg:hidden">
         <SearchInput inputBackgroundColor="bg-low-grey-III" className="w-[100%]" />
       </section>
     </nav>

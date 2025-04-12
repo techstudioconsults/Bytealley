@@ -60,7 +60,7 @@ const ExportAction = <T extends object>({
       className={cn("w-full border-primary text-primary lg:w-auto", className)}
       size={size as "lg" | "xl"}
       isLeftIconVisible={true}
-      icon={<Image src={uploadIcon} width={16} height={16} alt="export" />}
+      icon={<Image src={uploadIcon} width={16} height={16} alt="export" className={`dark:invert dark:filter`} />}
       onClick={handleDownload}
       isLoading={isPending}
       // isIconOnly={true}
