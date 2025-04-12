@@ -176,7 +176,7 @@ export function ViewProductLayout({ productService }: { productService: any }) {
           </div>
 
           {/* Product Includes Section */}
-          <div className="">
+          <div>
             <h5 className="mb-4 border-b py-4 text-h5 font-bold text-high-grey-III">The Product Includes</h5>
             <div className="list-disc space-y-4">
               <div className="flex items-center justify-between">

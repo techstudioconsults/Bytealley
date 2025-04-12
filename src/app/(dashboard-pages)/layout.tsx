@@ -9,7 +9,7 @@ import { DashboardNavbar } from "./_components/layout/navbar";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <main>
+    <main className={`overflow-hidden`}>
       <Toaster />
       <SidebarProvider>
         <DashboardSidebar navItems={sideItems} />

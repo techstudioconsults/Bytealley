@@ -73,7 +73,7 @@ export const AnalyticsCard: React.FC<AnalyticsCardProperties> = ({
       <div className="relative">
         <p className="font-medium">{title}</p>
         <div className={`flex items-end justify-between`}>
-          <p className="mt-2 text-2xl font-semibold">
+          <p className="mt-2 text-2xl font-semibold capitalize">
             {valuePrefix}
             {value}
             {valueSuffix}

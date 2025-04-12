@@ -250,6 +250,12 @@
     line-height: 1;
   }
 
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+
   [data-placeholder="true"] {
     background: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.129) 50%, rgba(7, 7, 7, 0) 100%);
     background-size: cover;
