@@ -56,7 +56,7 @@ const Page = ({ productService }: { productService: ProductService }) => {
             <TabsTrigger
               key={productType.name}
               value={productType.name}
-              className="relative h-full min-w-[100px] shrink-0 rounded-none border-transparent px-3 text-sm data-[state=active]:bg-transparent data-[state=active]:shadow-none sm:px-4"
+              className="relative h-full min-w-[100px] shrink-0 rounded-none border-transparent px-3 text-sm capitalize data-[state=active]:bg-transparent data-[state=active]:shadow-none sm:px-4"
             >
               {productType.name.replace("_", " ")}
               <span

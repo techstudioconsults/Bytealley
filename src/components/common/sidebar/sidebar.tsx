@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -16,6 +18,7 @@ import {
 } from "~/components/ui/sidebar";
 import { cn } from "~/utils/utils";
 import { Logo } from "../logo";
+import { ThemeToggle } from "../theme-toggle";
 
 export function DashboardSidebar({ navItems }: { navItems: any }) {
   const currentYear = new Date().getFullYear();
@@ -32,7 +35,13 @@ export function DashboardSidebar({ navItems }: { navItems: any }) {
     if (item.iconUrl) {
       return (
         <div className="relative h-6 w-6">
-          <Image src={item.iconUrl} alt={item.route} fill className="object-contain" sizes="24px" />
+          <Image
+            src={item.iconUrl}
+            alt={item.route}
+            fill
+            className="object-contain dark:invert dark:filter"
+            sizes="24px"
+          />
         </div>
       );
     }
@@ -70,7 +79,7 @@ export function DashboardSidebar({ navItems }: { navItems: any }) {
                 >
                   <Link onClick={handleCloseOnMobile} href={link} data-testid={item.id} role="sidebar-link">
                     {renderIcon(item)}
-                    <span>{item.route}</span>
+                    <span className={`dark:text-white`}>{item.route}</span>
                     {item.badge && (
                       <SidebarMenuBadge
                         className={cn(
@@ -89,9 +98,9 @@ export function DashboardSidebar({ navItems }: { navItems: any }) {
           })}
         </SidebarMenu>
       </SidebarContent>
-      <SidebarFooter className={`h-10 items-center justify-center bg-black`}>
-        <span className={`text-xs font-semibold text-white`}>ByteAlley &copy; {currentYear}. All rights reserved.</span>
-        {/* <span> {currentYear} Powered By Strategic Dot.</span> */}
+      <ThemeToggle />
+      <SidebarFooter className={`h-fit items-center justify-center bg-black`}>
+        <span className={`text-xs font-semibold text-white`}>ByteAlley &copy; {currentYear}.</span>
       </SidebarFooter>
     </Sidebar>
   );

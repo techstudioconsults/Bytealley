@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FC } from "react";
@@ -29,13 +28,19 @@ export const SidebarNav: FC<ISidebarProperties> = ({ sideNavitems, logoComponent
   const renderIcon = (item: SidebarItem) => {
     if (item.icon) {
       const Icon = item.icon;
-      return <Icon className="h-5 w-5" />;
+      return <Icon className="h-5 w-5 dark:invert dark:filter" />;
     }
 
     if (item.iconUrl) {
       return (
         <div className="relative h-6 w-6">
-          <Image src={item.iconUrl} alt={item.route} fill className="object-contain" sizes="24px" />
+          {/* <Image
+            src={item.iconUrl}
+            alt={item.route}
+            fill
+            className="object-contain dark:invert dark:filter"
+            sizes="24px"
+          /> */}
         </div>
       );
     }

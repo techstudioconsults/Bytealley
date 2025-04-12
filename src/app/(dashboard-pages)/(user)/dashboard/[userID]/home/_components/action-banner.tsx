@@ -39,7 +39,7 @@ export const ActionBanner = ({
   };
 
   return (
-    <div className={cn("flex items-center rounded-[9px] bg-white p-6", "border border-low-grey-III", className)}>
+    <div className={cn("flex items-center rounded-[9px] p-6", "border border-low-grey-III", className)}>
       <div className="flex w-full items-center justify-between gap-4">
         <div className="flex items-start gap-4">
           <Checkbox

@@ -97,7 +97,7 @@ const BaseNavbar = ({ appService }: { appService: AppService }) => {
                     <DropdownMenuContent className={cn("w-48 rounded-md bg-white p-2 shadow-lg")}>
                       {link.subLinks?.map((subLink: any, index: number) => (
                         <DropdownMenuItem key={index} asChild>
-                          <Link href={subLink.path} className="block px-4 py-2 text-sm hover:bg-gray-100">
+                          <Link href={subLink.path} className="block px-4 py-2 text-sm capitalize hover:bg-gray-100">
                             {subLink.name}
                           </Link>
                         </DropdownMenuItem>
@@ -174,7 +174,7 @@ const BaseNavbar = ({ appService }: { appService: AppService }) => {
                   <DropdownMenuContent className={cn("w-48 rounded-md bg-white p-2 shadow-lg")}>
                     {link.subLinks?.map((subLink: any, index: number) => (
                       <DropdownMenuItem key={index} asChild>
-                        <Link href={subLink.path} className="block px-4 py-2 text-sm hover:bg-gray-100">
+                        <Link href={subLink.path} className="block px-4 py-2 text-sm capitalize hover:bg-gray-100">
                           {subLink.name}
                         </Link>
                       </DropdownMenuItem>

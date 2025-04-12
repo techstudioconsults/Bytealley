@@ -73,7 +73,7 @@ const BaseWithdrawEarnings = ({ earningService }: { earningService: EarningServi
           title="Available Earnings"
           value={isPending ? <LoadingSpinner /> : `₦${availableEarnings.toLocaleString()}`}
           icon={<Image src={nairaIcon} alt="naira" width={40} height={40} />}
-          backgroundImage={"/images/analytic_bg_0.svg"}
+          backgroundImage={"/images/naira.svg"}
           className={`shadow-none`}
         />
       </section>
@@ -121,7 +121,7 @@ const BaseWithdrawEarnings = ({ earningService }: { earningService: EarningServi
                   onClick={() => {
                     methods.setValue("amount", availableEarnings);
                   }}
-                  className={`cursor-pointer text-mid-purple`}
+                  className={`cursor-pointer text-mid-purple dark:text-white`}
                 >
                   Max
                 </p>

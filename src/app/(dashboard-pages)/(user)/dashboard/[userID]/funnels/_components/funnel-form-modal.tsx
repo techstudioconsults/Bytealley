@@ -18,7 +18,7 @@ export const FunnelFormModal = ({ editor }: { editor: any }) => {
           isLeftIconVisible
           icon={<LucidePlusCircle />}
           variant="primary"
-          className="SE w-full sm:w-auto"
+          className="w-full sm:w-auto"
         >
           Save and Continue
         </CustomButton>

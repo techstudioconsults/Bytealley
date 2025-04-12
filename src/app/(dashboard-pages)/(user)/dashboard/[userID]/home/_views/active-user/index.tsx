@@ -99,7 +99,7 @@ export const ActiveUser = ({
             title="Total Sales"
             value={isPendingAnalytics ? <LoadingSpinner /> : analytics?.total_sales?.toLocaleString()}
             icon={<Image src={nairaIcon} alt="naira" width={40} height={40} />}
-            backgroundImage={"/images/analytic_bg_0.svg"}
+            backgroundImage={"/images/naira.svg"}
             className={`col-span-1 sm:col-span-2 lg:col-span-6`}
           />
           <AnalyticsCard
@@ -107,7 +107,7 @@ export const ActiveUser = ({
             value={isPendingAnalytics ? <LoadingSpinner /> : analytics?.total_revenues?.toLocaleString()}
             valuePrefix={`NGN`}
             icon={<Image src={nairaIcon} alt="naira" width={40} height={40} />}
-            backgroundImage={"/images/analytic_bg_1.svg"}
+            backgroundImage={"/images/hook.svg"}
             className={`col-span-1 sm:col-span-2 lg:col-span-6`}
           />
           <AnalyticsCard

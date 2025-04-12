@@ -162,163 +162,165 @@ const Page = ({ params, productService }: { params: { userID: string }; productS
   };
 
   return (
-    <FormProvider {...methods}>
-      <Tabs value={currentTab} className="w-full">
-        <TabsList className="sticky top-[0px] z-10 mb-8 flex h-fit w-full flex-col-reverse gap-4 rounded-none border-b bg-white p-0 sm:flex-row sm:items-center sm:justify-between lg:h-[58px]">
-          <section className="flex w-full flex-wrap items-center gap-2 sm:h-[5rem] sm:w-auto sm:flex-nowrap sm:gap-0 xl:h-full">
-            <TabsTrigger
-              value="product-details"
-              className="relative h-full min-w-[100px] shrink-0 rounded-none border-transparent px-3 text-sm disabled:text-black data-[state=active]:bg-transparent data-[state=active]:shadow-none sm:px-4"
-            >
-              Product Details
-              <span
-                className="absolute bottom-0 left-0 right-0 h-[2px] scale-x-0 bg-primary transition-transform duration-200 data-[state=active]:scale-x-100"
-                data-state={currentTab === "product-details" ? "active" : "inactive"}
-              />
-            </TabsTrigger>
-            <TabsTrigger
-              value="preview"
-              className="relative h-full min-w-[80px] shrink-0 rounded-none border-transparent px-3 text-sm data-[state=active]:bg-transparent data-[state=active]:shadow-none sm:px-4"
-            >
-              Preview
-              <span
-                className="absolute bottom-0 left-0 right-0 h-[2px] scale-x-0 bg-primary transition-transform duration-200 data-[state=active]:scale-x-100"
-                data-state={currentTab === "preview" ? "active" : "inactive"}
-              />
-            </TabsTrigger>
-            <TabsTrigger
-              value="share"
-              className="relative h-full min-w-[80px] shrink-0 rounded-none border-transparent px-3 text-sm data-[state=active]:bg-transparent data-[state=active]:shadow-none sm:px-4"
-            >
-              Share
-              <span
-                className="absolute bottom-0 left-0 right-0 h-[2px] scale-x-0 bg-primary transition-transform duration-200 data-[state=active]:scale-x-100"
-                data-state={currentTab === "share" ? "active" : "inactive"}
-              />
-            </TabsTrigger>
-          </section>
-          <section className="flex w-full items-center justify-end gap-4 py-4 sm:w-auto">
-            {currentTab === "product-details" && (
-              <>
-                <CustomButton
-                  size="xl"
-                  variant="outline"
-                  className="w-full border-destructive text-destructive sm:w-auto"
-                  onClick={() => {
-                    methods.reset();
-                  }}
-                  isDisabled={isSubmitting}
-                >
-                  Cancel
-                </CustomButton>
-                {productID ? (
+    <section>
+      <FormProvider {...methods}>
+        <Tabs value={currentTab} className="w-full">
+          <TabsList className="z-10 mb-8 flex h-fit w-full flex-col-reverse gap-4 rounded-none border-b p-0 sm:flex-row sm:items-center sm:justify-between lg:h-[58px]">
+            <section className="flex w-full flex-wrap items-center gap-2 sm:h-[5rem] sm:w-auto sm:flex-nowrap sm:gap-0 xl:h-full">
+              <TabsTrigger
+                value="product-details"
+                className="relative h-full min-w-[100px] shrink-0 rounded-none border-transparent px-3 text-sm disabled:text-black data-[state=active]:bg-transparent data-[state=active]:shadow-none sm:px-4"
+              >
+                Product Details
+                <span
+                  className="absolute bottom-0 left-0 right-0 h-[2px] scale-x-0 bg-primary transition-transform duration-200 data-[state=active]:scale-x-100"
+                  data-state={currentTab === "product-details" ? "active" : "inactive"}
+                />
+              </TabsTrigger>
+              <TabsTrigger
+                value="preview"
+                className="relative h-full min-w-[80px] shrink-0 rounded-none border-transparent px-3 text-sm data-[state=active]:bg-transparent data-[state=active]:shadow-none sm:px-4"
+              >
+                Preview
+                <span
+                  className="absolute bottom-0 left-0 right-0 h-[2px] scale-x-0 bg-primary transition-transform duration-200 data-[state=active]:scale-x-100"
+                  data-state={currentTab === "preview" ? "active" : "inactive"}
+                />
+              </TabsTrigger>
+              <TabsTrigger
+                value="share"
+                className="relative h-full min-w-[80px] shrink-0 rounded-none border-transparent px-3 text-sm data-[state=active]:bg-transparent data-[state=active]:shadow-none sm:px-4"
+              >
+                Share
+                <span
+                  className="absolute bottom-0 left-0 right-0 h-[2px] scale-x-0 bg-primary transition-transform duration-200 data-[state=active]:scale-x-100"
+                  data-state={currentTab === "share" ? "active" : "inactive"}
+                />
+              </TabsTrigger>
+            </section>
+            <section className="flex w-full items-center justify-end gap-4 sm:w-auto">
+              {currentTab === "product-details" && (
+                <>
+                  <CustomButton
+                    size="xl"
+                    variant="outline"
+                    className="w-full border-destructive text-destructive sm:w-auto"
+                    onClick={() => {
+                      methods.reset();
+                    }}
+                    isDisabled={isSubmitting}
+                  >
+                    Cancel
+                  </CustomButton>
+                  {productID ? (
+                    <CustomButton
+                      variant="primary"
+                      size="xl"
+                      className="w-full sm:w-auto"
+                      onClick={handleSubmit(updateProduct)}
+                      isDisabled={isSubmitting}
+                      isLoading={isSubmitting}
+                    >
+                      Update & Continue
+                    </CustomButton>
+                  ) : (
+                    <CustomButton
+                      variant="primary"
+                      size="xl"
+                      className="w-full sm:w-auto"
+                      onClick={handleSubmit(onSubmit)}
+                      isDisabled={isSubmitting || !isValid}
+                      isLoading={isSubmitting}
+                    >
+                      Save & Continue
+                    </CustomButton>
+                  )}
+                </>
+              )}
+              {currentTab === "preview" && (
+                <>
+                  <CustomButton
+                    variant="outline"
+                    size="xl"
+                    className="w-full border-destructive text-destructive sm:w-auto"
+                    onClick={() => {
+                      router.push(`/dashboard/${params.userID}/products?tab=drafts`);
+                    }}
+                    isDisabled={isSubmitting}
+                  >
+                    Cancel
+                  </CustomButton>
+                  {productStatus === "published" ? (
+                    <CustomButton
+                      variant="primary"
+                      size="xl"
+                      className="w-full sm:w-auto"
+                      onClick={handleUnpublish}
+                      isDisabled={isPublishing}
+                      isLoading={isPublishing}
+                    >
+                      Unpublish & Continue
+                    </CustomButton>
+                  ) : (
+                    <CustomButton
+                      variant="primary"
+                      size="xl"
+                      className="w-full sm:w-auto"
+                      onClick={handlePublish}
+                      isDisabled={isPublishing || !productID}
+                      isLoading={isPublishing}
+                    >
+                      Publish & Continue
+                    </CustomButton>
+                  )}
+                </>
+              )}
+              {currentTab === "share" && (
+                <>
+                  <CustomButton
+                    variant="outline"
+                    size="xl"
+                    className={cn(
+                      "w-full sm:w-auto",
+                      productStatus === `published` && "border-danger text-danger",
+                      productStatus === `unpublished` && "border-primary text-primary",
+                    )}
+                    onClick={productStatus === `published` ? handleUnpublish : handlePublish}
+                    isDisabled={isSubmitting}
+                    isLoading={isPublishing}
+                  >
+                    {productStatus === `published` ? "Unpublish" : "Publish"}
+                  </CustomButton>
                   <CustomButton
                     variant="primary"
                     size="xl"
                     className="w-full sm:w-auto"
-                    onClick={handleSubmit(updateProduct)}
                     isDisabled={isSubmitting}
                     isLoading={isSubmitting}
+                    onClick={() => {
+                      router.push(`/dashboard/${params.userID}/products?tab=all-products`);
+                    }}
                   >
-                    Update & Continue
+                    Close
                   </CustomButton>
-                ) : (
-                  <CustomButton
-                    variant="primary"
-                    size="xl"
-                    className="w-full sm:w-auto"
-                    onClick={handleSubmit(onSubmit)}
-                    isDisabled={isSubmitting || !isValid}
-                    isLoading={isSubmitting}
-                  >
-                    Save & Continue
-                  </CustomButton>
-                )}
-              </>
-            )}
-            {currentTab === "preview" && (
-              <>
-                <CustomButton
-                  variant="outline"
-                  size="xl"
-                  className="w-full border-destructive text-destructive sm:w-auto"
-                  onClick={() => {
-                    router.push(`/dashboard/${params.userID}/products?tab=drafts`);
-                  }}
-                  isDisabled={isSubmitting}
-                >
-                  Cancel
-                </CustomButton>
-                {productStatus === "published" ? (
-                  <CustomButton
-                    variant="primary"
-                    size="xl"
-                    className="w-full sm:w-auto"
-                    onClick={handleUnpublish}
-                    isDisabled={isPublishing}
-                    isLoading={isPublishing}
-                  >
-                    Unpublish & Continue
-                  </CustomButton>
-                ) : (
-                  <CustomButton
-                    variant="primary"
-                    size="xl"
-                    className="w-full sm:w-auto"
-                    onClick={handlePublish}
-                    isDisabled={isPublishing || !productID}
-                    isLoading={isPublishing}
-                  >
-                    Publish & Continue
-                  </CustomButton>
-                )}
-              </>
-            )}
-            {currentTab === "share" && (
-              <>
-                <CustomButton
-                  variant="outline"
-                  size="xl"
-                  className={cn(
-                    "w-full sm:w-auto",
-                    productStatus === `published` && "border-danger text-danger",
-                    productStatus === `unpublished` && "border-primary text-primary",
-                  )}
-                  onClick={productStatus === `published` ? handleUnpublish : handlePublish}
-                  isDisabled={isSubmitting}
-                  isLoading={isPublishing}
-                >
-                  {productStatus === `published` ? "Unpublish" : "Publish"}
-                </CustomButton>
-                <CustomButton
-                  variant="primary"
-                  size="xl"
-                  className="w-full sm:w-auto"
-                  isDisabled={isSubmitting}
-                  isLoading={isSubmitting}
-                  onClick={() => {
-                    router.push(`/dashboard/${params.userID}/products?tab=all-products`);
-                  }}
-                >
-                  Close
-                </CustomButton>
-              </>
-            )}
-          </section>
-        </TabsList>
+                </>
+              )}
+            </section>
+          </TabsList>
 
-        {/* Tab Content */}
-        <TabsContent value="product-details">
-          <ProductForm methods={methods} service={productService} />
-        </TabsContent>
-        <TabsContent value="preview">
-          <ViewProductLayout productService={productService} />
-        </TabsContent>
-        <TabsContent value="share">
-          <ShareProductView productId={productID} productService={productService} />
-        </TabsContent>
-      </Tabs>
-    </FormProvider>
+          {/* Tab Content */}
+          <TabsContent value="product-details">
+            <ProductForm methods={methods} service={productService} />
+          </TabsContent>
+          <TabsContent value="preview">
+            <ViewProductLayout productService={productService} />
+          </TabsContent>
+          <TabsContent value="share">
+            <ShareProductView productId={productID} productService={productService} />
+          </TabsContent>
+        </Tabs>
+      </FormProvider>
+    </section>
   );
 };
 

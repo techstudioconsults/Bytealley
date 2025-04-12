@@ -35,8 +35,8 @@ export const AnalyticsCard: React.FC<AnalyticsCardProperties> = ({
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-md border p-4 text-black transition-shadow duration-200",
-        !backgroundImage && "bg-white dark:bg-high-grey-II",
+        "relative overflow-hidden rounded-md border p-4 transition-shadow duration-200",
+        // !backgroundImage && "dark:bg-high-grey-II",
         "w-full min-w-[200px]",
         onClick && "cursor-pointer",
         className,
@@ -45,8 +45,8 @@ export const AnalyticsCard: React.FC<AnalyticsCardProperties> = ({
         backgroundImage
           ? {
               backgroundImage: `url(${backgroundImage})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
+              backgroundSize: "contain",
+              backgroundPosition: "right",
               backgroundRepeat: "no-repeat",
             }
           : undefined
@@ -73,7 +73,7 @@ export const AnalyticsCard: React.FC<AnalyticsCardProperties> = ({
       <div className="relative">
         <p className="font-medium">{title}</p>
         <div className={`flex items-end justify-between`}>
-          <p className="mt-2 text-2xl font-semibold">
+          <p className="mt-2 text-2xl font-semibold capitalize">
             {valuePrefix}
             {value}
             {valueSuffix}

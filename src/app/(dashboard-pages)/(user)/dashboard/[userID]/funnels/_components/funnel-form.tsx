@@ -141,7 +141,7 @@ const BaseFunnelForm = ({
     <section>
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(handleSubmitForm)}>
-          <section className={cn(`h-[40rem] space-y-6 overflow-y-auto p-2`)}>
+          <section className={cn(`space-y-6 overflow-y-auto p-2`)}>
             <FormField
               label="Title"
               name="title"

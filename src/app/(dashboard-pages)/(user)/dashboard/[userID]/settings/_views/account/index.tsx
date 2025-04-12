@@ -21,7 +21,7 @@ export const Account = ({ service }: { service: AppService }) => {
       <section className={`grid grid-cols-1 gap-4 lg:grid-cols-5 lg:gap-16`}>
         <div className={`col-span-2 space-y-4`}>
           <h5 className={`text-h5 font-semibold sm:text-h5-sm`}>Security</h5>
-          <p className={`text-sm text-mid-grey-II`}>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
+          {/* <p className={`text-sm text-mid-grey-II`}>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p> */}
         </div>
         <div className={`col-span-3`}>
           <ChangePasswordForm service={service} />
