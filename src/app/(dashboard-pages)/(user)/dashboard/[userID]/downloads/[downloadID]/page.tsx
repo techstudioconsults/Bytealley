@@ -153,7 +153,7 @@ const BaseDownloadDetailPage = ({
 
         {/* Sticky Asset Selector */}
         {download.length > 1 && (
-          <div className="absolute bottom-0 left-0 right-0 border-t border-border bg-white p-3 shadow-sm">
+          <div className="absolute bottom-0 left-0 right-0 z-10 border-t border-border bg-white p-3 shadow-sm">
             <div className="flex gap-2 overflow-x-auto pb-1">
               {download.map((item) => (
                 <button

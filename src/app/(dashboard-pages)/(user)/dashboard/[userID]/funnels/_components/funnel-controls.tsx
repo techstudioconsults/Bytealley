@@ -116,7 +116,7 @@ const BaseFunnelControls = ({ template, editor, funnelService }: BaseFunnelContr
   }, [funnelService, generateEditedFunnel, initialFunnel, router, user?.id]);
 
   return (
-    <section className="funnel-step-1 sticky top-[81px] flex items-center justify-between">
+    <section className="funnel-step-1 flex items-center justify-between">
       <h4 className="funnel-title text-2xl font-semibold">{template?.id || funnelTitle}</h4>
       {funnelTitle ? (
         <div className="flex items-center justify-between gap-4">

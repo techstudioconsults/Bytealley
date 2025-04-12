@@ -26,7 +26,7 @@ export const DashboardNavbar = () => {
   return (
     <nav
       className={cn(
-        `sticky top-0 z-[5] w-full border-b-[0.5px] border-border backdrop-blur-sm transition-transform duration-300`,
+        `z-[5] w-full border-b-[0.5px] border-border backdrop-blur-sm transition-transform duration-300`,
         isNavbarVisible ? "translate-y-0" : "-translate-y-full",
       )}
       role="navbar"

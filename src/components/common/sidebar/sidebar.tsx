@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -89,9 +91,8 @@ export function DashboardSidebar({ navItems }: { navItems: any }) {
           })}
         </SidebarMenu>
       </SidebarContent>
-      <SidebarFooter className={`h-10 items-center justify-center bg-black`}>
-        <span className={`text-xs font-semibold text-white`}>ByteAlley &copy; {currentYear}. All rights reserved.</span>
-        {/* <span> {currentYear} Powered By Strategic Dot.</span> */}
+      <SidebarFooter className={`h-fit items-center justify-center bg-black`}>
+        <span className={`text-xs font-semibold text-white`}>ByteAlley &copy; {currentYear}.</span>
       </SidebarFooter>
     </Sidebar>
   );
