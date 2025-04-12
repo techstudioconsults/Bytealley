@@ -1,9 +1,8 @@
-// components/theme-provider.tsx
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { ThemeProvider as NextThemesProvider } from "next-themes";
-import * as React from "react";
 
-export function ThemeProvider({ children, ...props }: any) {
-  return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
+export function ThemeProvider({ children, ...properties }: any) {
+  return <NextThemesProvider {...properties}>{children}</NextThemesProvider>;
 }
