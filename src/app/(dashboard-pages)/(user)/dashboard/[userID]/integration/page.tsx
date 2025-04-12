@@ -35,7 +35,7 @@ const IntegrationPage = () => {
               data-state={currentTab === "all-integrations" ? "active" : "inactive"}
             />
           </TabsTrigger>
-          <TabsTrigger
+          {/* <TabsTrigger
             value="linked"
             className="relative h-full min-w-[80px] shrink-0 rounded-none border-transparent px-3 text-sm data-[state=active]:bg-transparent data-[state=active]:shadow-none sm:px-4"
           >
@@ -44,7 +44,7 @@ const IntegrationPage = () => {
               className="absolute bottom-0 left-0 right-0 h-[2px] scale-x-0 bg-primary transition-transform duration-200 data-[state=active]:scale-x-100"
               data-state={currentTab === "linked" ? "active" : "inactive"}
             />
-          </TabsTrigger>
+          </TabsTrigger> */}
         </section>
       </TabsList>
 
@@ -72,10 +72,10 @@ const IntegrationPage = () => {
           />
         </section>
       </TabsContent>
-      <TabsContent value="linked">
+      {/* <TabsContent value="linked">
         Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eum odio veniam iusto, tempora aut delectus distinctio
         tenetur reprehenderit, sit nobis, sed numquam praesentium earum quo. Dolore eius accusantium enim illo.
-      </TabsContent>
+      </TabsContent> */}
     </Tabs>
   );
 };

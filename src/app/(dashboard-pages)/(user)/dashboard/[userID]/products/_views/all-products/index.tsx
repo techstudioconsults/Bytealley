@@ -120,7 +120,7 @@ export const AllProducts = ({ productService }: { productService: ProductService
               currentPage={currentPage}
               dateRange={dateRange}
               status={status}
-              buttonText="Export"
+              buttonText="Export Products"
               fileName="Product"
               size={`xl`}
             />

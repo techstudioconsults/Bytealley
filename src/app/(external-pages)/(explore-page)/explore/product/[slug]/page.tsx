@@ -247,7 +247,7 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
                         <AvatarImage src={review.user.logo} />
                         <AvatarFallback>{review.user.name.charAt(0)}</AvatarFallback>
                       </Avatar>
-                      <p className="text-[10px] font-semibold">{review.user.name}</p>
+                      <p className="text-[10px] font-semibold capitalize">{review.user.name}</p>
                     </div>
                     <StarRating size="text-xs" rating={review.rating} />
                     <p className="text-[10px]">{new Date(review.created_at).toLocaleDateString()}</p>

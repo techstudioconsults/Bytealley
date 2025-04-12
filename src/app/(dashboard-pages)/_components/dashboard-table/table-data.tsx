@@ -108,7 +108,7 @@ export const productColumns: IColumnDefinition<IProduct>[] = [
     header: "Price",
     accessorKey: "price",
     render: (_, product: IProduct) => (
-      <span className={cn(product.discount_price ? `text-mid-danger` : `text-mid-success`)}>
+      <span className={cn(`font-medium`, product.discount_price ? `text-mid-danger` : `text-mid-success`)}>
         ₦{product.price?.toLocaleString()}
       </span>
     ),
@@ -117,7 +117,7 @@ export const productColumns: IColumnDefinition<IProduct>[] = [
     header: "Discount Price",
     accessorKey: "discount_price",
     render: (_, product: IProduct) => (
-      <span className={cn(product.discount_price ? `text-mid-success` : `text-mid-danger`)}>
+      <span className={cn(`font-medium`, product.discount_price ? `text-mid-success` : `text-mid-danger`)}>
         {product.discount_price ? `₦${product.discount_price?.toLocaleString()}` : `N/A`}
       </span>
     ),
@@ -125,11 +125,14 @@ export const productColumns: IColumnDefinition<IProduct>[] = [
   {
     header: "Sales",
     accessorKey: "total_sales",
+    render: (_, product: IProduct) => <span className={`font-medium`}>{product.total_sales}</span>,
   },
   {
     header: "Type",
     accessorKey: "product_type",
-    render: (_, product: IProduct) => <span>{product.product_type.replace("_", " ")}</span>,
+    render: (_, product: IProduct) => (
+      <span className={`font-medium capitalize`}>{product.product_type.replace("_", " ")}</span>
+    ),
   },
   {
     header: "Status",
@@ -151,22 +154,23 @@ export const singleProductOrderColumns: IColumnDefinition<IOrder>[] = [
   {
     header: "Customer Name",
     accessorKey: "customer",
-    render: (_, product: IOrder) => <span>{product?.customer?.name}</span>,
+    render: (_, product: IOrder) => <span className={`font-medium`}>{product?.customer?.name}</span>,
   },
   {
     header: "Customer Email",
     accessorKey: "customer",
-    render: (_, product: IOrder) => <span>{product?.customer?.email}</span>,
+    render: (_, product: IOrder) => <span className={`font-medium`}>{product?.customer?.email}</span>,
   },
   {
     header: "Quantity",
     accessorKey: "quantity",
+    render: (_, product: IOrder) => <span className={`font-medium`}>{product?.quantity}</span>,
   },
   {
     header: "Date",
     accessorKey: "created_at",
     render: (_, order: IOrder) => (
-      <span>
+      <span className={`font-medium`}>
         {formatDate(order?.created_at)} {formatTime(order?.created_at)}
       </span>
     ),
@@ -195,7 +199,7 @@ export const orderColumns: IColumnDefinition<IOrder>[] = [
     header: "Price",
     accessorKey: "product",
     render: (_, order: IOrder) => (
-      <span className={cn(order?.product.discount_price ? `text-mid-danger` : `text-mid-success`)}>
+      <span className={cn(`font-medium`, order?.product.discount_price ? `text-mid-danger` : `text-mid-success`)}>
         ₦{order?.product?.price?.toLocaleString()}
       </span>
     ),
@@ -204,7 +208,7 @@ export const orderColumns: IColumnDefinition<IOrder>[] = [
     header: "Discount Price",
     accessorKey: "product",
     render: (_, order: IOrder) => (
-      <span className={cn(order?.product.discount_price ? `text-mid-success` : `text-mid-danger`)}>
+      <span className={cn(`font-medium`, order?.product.discount_price ? `text-mid-success` : `text-mid-danger`)}>
         ₦{order?.product?.discount_price?.toLocaleString()}
       </span>
     ),
@@ -212,13 +216,13 @@ export const orderColumns: IColumnDefinition<IOrder>[] = [
   {
     header: "Customer Email",
     accessorKey: "customer",
-    render: (_, order: IOrder) => <span>{order?.customer?.email}</span>,
+    render: (_, order: IOrder) => <span className={`font-medium`}>{order?.customer?.email}</span>,
   },
   {
     header: "Date",
     accessorKey: "created_at",
     render: (_, order: IOrder) => (
-      <span>
+      <span className={`font-medium`}>
         {formatDate(order?.created_at)} {formatTime(order?.created_at)}
       </span>
     ),
@@ -229,18 +233,20 @@ export const customerColumns: IColumnDefinition<ICustomer>[] = [
   {
     header: "Customer Name",
     accessorKey: "name",
+    render: (_, customer: ICustomer) => <span className={`font-medium`}>{customer.name}</span>,
   },
   {
     header: "Customer Email",
     accessorKey: "email",
+    render: (_, customer: ICustomer) => <span className={`font-medium`}>{customer.email}</span>,
   },
   {
     header: "Latest Purchase",
     accessorKey: "latest_purchases",
     render: (_, customer: ICustomer) => (
       <div className={`space-y-2`}>
-        <p>{customer?.latest_purchase_title}</p>
-        <p className={`text-sm text-mid-grey-II underline`}>{customer?.id}</p>
+        <p className={`font-medium`}>{customer?.latest_purchase_title}</p>
+        {/* <p className={`text-sm text-mid-grey-II underline`}>{customer?.id}</p> */}
       </div>
     ),
   },
@@ -248,7 +254,7 @@ export const customerColumns: IColumnDefinition<ICustomer>[] = [
     header: "Latest Purchase Price",
     accessorKey: "latest_purchase_price",
     render: (_, customer: ICustomer) => (
-      <span className={cn(customer?.latest_purchase_price ? `text-mid-danger` : `text-mid-success`)}>
+      <span className={cn(`font-medium`, customer?.latest_purchase_price ? `text-mid-danger` : `text-mid-success`)}>
         ₦{customer?.latest_purchase_price?.toLocaleString()}
       </span>
     ),
@@ -257,7 +263,9 @@ export const customerColumns: IColumnDefinition<ICustomer>[] = [
     header: "Latest Purchase Discount Price",
     accessorKey: "latest_purchase_discount_price",
     render: (_, customer: ICustomer) => (
-      <span className={cn(customer?.latest_purchase_discount_price ? `text-mid-success` : `text-mid-danger`)}>
+      <span
+        className={cn(`font-medium`, customer?.latest_purchase_discount_price ? `text-mid-success` : `text-mid-danger`)}
+      >
         ₦{customer?.latest_purchase_discount_price?.toLocaleString()}
       </span>
     ),
@@ -266,7 +274,7 @@ export const customerColumns: IColumnDefinition<ICustomer>[] = [
     header: "Date",
     accessorKey: "latest_purchase_date",
     render: (_, customer: ICustomer) => (
-      <span>
+      <span className={`font-medium`}>
         {formatDate(customer?.latest_purchase_date)} {formatTime(customer?.latest_purchase_date)}
       </span>
     ),
@@ -294,7 +302,7 @@ export const latestPurchaseColumns: IColumnDefinition<IOrder>[] = [
     header: "Price",
     accessorKey: "product",
     render: (_, order: IOrder) => (
-      <span>
+      <span className={`font-medium`}>
         ₦
         {order?.product.discount_price
           ? order.product.discount_price.toLocaleString()
@@ -306,7 +314,7 @@ export const latestPurchaseColumns: IColumnDefinition<IOrder>[] = [
     header: "Date",
     accessorKey: "created_at",
     render: (_, order: IOrder) => (
-      <span>
+      <span className={`font-medium`}>
         {formatDate(order?.created_at)} {formatTime(order?.created_at)}
       </span>
     ),
@@ -317,6 +325,7 @@ export const payoutColumns: IColumnDefinition<IPayout>[] = [
   {
     header: "Price",
     accessorKey: "amount",
+    render: (_, payout: IPayout) => <span className={`font-medium`}>{payout.amount}</span>,
   },
   {
     header: "Bank Account",
@@ -324,14 +333,14 @@ export const payoutColumns: IColumnDefinition<IPayout>[] = [
     render: (_, payout: IPayout) => {
       const accountNumber = payout?.account.number;
       const maskedAccountNumber = `${accountNumber.slice(0, 3)}****${accountNumber.slice(-3)}`;
-      return <span>{maskedAccountNumber}</span>;
+      return <span className={`font-medium`}>{maskedAccountNumber}</span>;
     },
   },
   {
     header: "Period",
     accessorKey: "created_at",
     render: (_, payout: IPayout) => (
-      <span>
+      <span className={`font-medium`}>
         {formatDate(payout?.created_at)} {formatTime(payout?.created_at)}
       </span>
     ),
@@ -360,17 +369,18 @@ export const plansColumns: IColumnDefinition<IPlan>[] = [
   {
     header: "Plan",
     accessorKey: "plan",
+    render: (_, plan: IPlan) => <span className={`font-medium`}>{plan.plan}</span>,
   },
   {
     header: "Price",
     accessorKey: "price",
-    render: (_, plan: IPlan) => <span>₦{plan.price?.toLocaleString()}</span>,
+    render: (_, plan: IPlan) => <span className={`font-medium`}>₦{plan.price?.toLocaleString()}</span>,
   },
   {
     header: "Date",
     accessorKey: "date",
     render: (_, plan: IPlan) => (
-      <span>
+      <span className={`font-medium`}>
         {formatDate(plan?.date)} {formatTime(plan?.date)}
       </span>
     ),
@@ -424,7 +434,7 @@ export const deletedProductColumns: IColumnDefinition<IProduct>[] = [
   {
     header: "Price",
     accessorKey: "price",
-    render: (_, product: IProduct) => <span>₦{product.price?.toLocaleString()}</span>,
+    render: (_, product: IProduct) => <span className={`font-medium`}>₦{product.price?.toLocaleString()}</span>,
   },
   {
     header: "Sales",
@@ -433,7 +443,7 @@ export const deletedProductColumns: IColumnDefinition<IProduct>[] = [
   {
     header: "Type",
     accessorKey: "product_type",
-    render: (_, product: IProduct) => <span>{product.product_type.replace("_", " ")}</span>,
+    render: (_, product: IProduct) => <span className={`font-medium`}>{product.product_type.replace("_", " ")}</span>,
   },
 ];
 

@@ -50,7 +50,7 @@ export const EmailNotificationSettingsForm = ({ service }: { service: AppService
           label={
             <div className={`space-y-2`}>
               <p className={`text-[16px] font-semibold text-high-purple`}>Purchase</p>
-              <p className={`text-xs text-mid-grey-II`}>Lorem ipsum dolor sit amet.</p>
+              {/* <p className={`text-xs text-mid-grey-II`}>Lorem ipsum dolor sit amet.</p> */}
             </div>
           }
           className={`flex items-center justify-between`}
@@ -62,7 +62,7 @@ export const EmailNotificationSettingsForm = ({ service }: { service: AppService
           label={
             <div className={`space-y-2`}>
               <p className={`text-[16px] font-semibold text-high-purple`}>News & Updates</p>
-              <p className={`text-xs text-mid-grey-II`}>Lorem ipsum dolor sit amet.</p>
+              {/* <p className={`text-xs text-mid-grey-II`}>Lorem ipsum dolor sit amet.</p> */}
             </div>
           }
           className={`flex items-center justify-between`}
@@ -74,7 +74,7 @@ export const EmailNotificationSettingsForm = ({ service }: { service: AppService
           label={
             <div className={`space-y-2`}>
               <p className={`text-[16px] font-semibold text-high-purple`}>Product Creation</p>
-              <p className={`text-xs text-mid-grey-II`}>Lorem ipsum dolor sit amet.</p>
+              {/* <p className={`text-xs text-mid-grey-II`}>Lorem ipsum dolor sit amet.</p> */}
             </div>
           }
           className={`flex items-center justify-between`}
@@ -86,7 +86,7 @@ export const EmailNotificationSettingsForm = ({ service }: { service: AppService
           label={
             <div className={`space-y-2`}>
               <p className={`text-[16px] font-semibold text-high-purple`}>Payout</p>
-              <p className={`text-xs text-mid-grey-II`}>Lorem ipsum dolor sit amet.</p>
+              {/* <p className={`text-xs text-mid-grey-II`}>Lorem ipsum dolor sit amet.</p> */}
             </div>
           }
           className={`flex items-center justify-between`}
