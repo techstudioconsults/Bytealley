@@ -285,4 +285,8 @@
   body {
     -ms-overflow-style: scrollbar; /* Standard scrollbar */
   }
+
+  .calculated-height {
+    height: calc(100vh - 144px);
+  }
 }

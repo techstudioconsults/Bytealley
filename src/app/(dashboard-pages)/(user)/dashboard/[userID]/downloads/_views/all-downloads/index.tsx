@@ -62,8 +62,11 @@ export const AllDownloads = ({ service }: { service: ProductService }) => {
                   image={download.thumbnail}
                   price={download.price}
                   onClick={() => {
+                    const author = encodeURIComponent(download.publisher);
+                    const title = encodeURIComponent(download.title || "");
+                    const type = encodeURIComponent(download.product_type);
                     router.push(
-                      `/dashboard/${user?.id}/downloads/${download?.id}?product_type=${download.product_type}`,
+                      `/dashboard/${user?.id}/downloads/${download.id}?author=${author}&title=${title}&product_type=${type}`,
                     );
                   }}
                 />

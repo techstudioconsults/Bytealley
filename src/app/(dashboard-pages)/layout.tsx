@@ -16,7 +16,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Main content */}
         <SidebarInset className={cn("flex-1 overflow-auto")}>
           <DashboardNavbar />
-          <section className={`p-8`}>{children}</section>
+          <section className={``}>{children}</section>
         </SidebarInset>
         <Toaster />
       </div>
