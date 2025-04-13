@@ -25,7 +25,7 @@ export const Profile = () => {
     <div className="flex items-center gap-[10px]">
       <DropdownMenu>
         <DropdownMenuTrigger className="flex items-center gap-[5px] focus:outline-none active:outline-none">
-          <Avatar className={`bg-mid-grey-III`}>
+          <Avatar className={`bg-low-purple`}>
             <AvatarImage src={user?.logo || "https://github.com/shadcn.png"} />
             <AvatarFallback>{user?.name[0]?.toUpperCase() || "U"}</AvatarFallback>
           </Avatar>

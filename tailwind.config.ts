@@ -18,6 +18,7 @@ const config = {
         spread: "0px 1px 18px 0px #0A39B01F",
         neob: "8px 8px 0px 0px #000000",
         sneob: "4px 4px 0px 0px #000000",
+        sneobw: "4px 4px 0px 0px #FFFFFF",
       },
       colors: {
         background: "hsl(var(--background))",

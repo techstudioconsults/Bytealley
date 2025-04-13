@@ -74,7 +74,7 @@ const CustomButton = forwardRef<HTMLButtonElement, ButtonProperties>(
   ) => {
     const modifiedIcon = icon ? (
       cloneElement(icon as ReactElement, {
-        className: "w-[1rem] h-[1rem]",
+        className: "w-[1rem] h-[1rem] dark:invert dark:filter",
         "data-testid": "icon",
       })
     ) : (
@@ -93,7 +93,7 @@ const CustomButton = forwardRef<HTMLButtonElement, ButtonProperties>(
     );
 
     const buttonClasses = `transition-all duration-300 ease-in-out ${
-      isDisabled ? "opacity-50 cursor-not-allowed" : "hover:shadow-sneob focus:shadow-none"
+      isDisabled ? "opacity-50 cursor-not-allowed" : "hover:shadow-sneob dark:hover:shadow-sneobw focus:shadow-none"
     } ${className}`;
 
     if (href) {

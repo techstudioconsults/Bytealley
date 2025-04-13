@@ -14,6 +14,9 @@ import ToastProvider from "~/context/toast-provider";
 import NotificationProvider from "~/features/push-notification/context/notification-provider";
 import { PageTransition } from "~/lib/animations";
 import { ReduxProvider } from "~/store/provider";
+import { applyPolyfills } from "~/utils/polyfills";
+
+applyPolyfills();
 
 // Configure fonts
 const montserrat = Montserrat({ subsets: ["latin"] });
@@ -44,12 +47,10 @@ export default async function RootLayout({
                 <NotificationProvider>
                   <ToastProvider>
                     <GotoTop />
-                    {/* <LenisProvider> */}
                     <PageTransition>
                       <ProgressProviders>{children}</ProgressProviders>
                       <SpeedInsights />
                     </PageTransition>
-                    {/* </LenisProvider> */}
                   </ToastProvider>
                 </NotificationProvider>
               </SessionProvider>
