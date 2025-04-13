@@ -72,8 +72,8 @@ const BaseNavbar = ({ appService }: { appService: AppService }) => {
       )}
     >
       <Wrapper>
-        <div className="mx-auto flex h-20 items-center justify-between">
-          <Logo width={100} height={50} className={`h-[50px] w-[100px] md:h-auto md:w-auto`} />
+        <div className="mx-auto flex h-24 items-center justify-between">
+          <Logo width={100} height={50} className={`h-fit w-[100px] md:h-auto md:w-auto`} />
           {/* Desktop Links */}
           <div className="hidden items-center gap-8 lg:flex">
             {navlinks.length === 0 ? (
@@ -159,16 +159,14 @@ const BaseNavbar = ({ appService }: { appService: AppService }) => {
             isMobileMenuOpen ? "h-auto opacity-100" : "h-0 opacity-0",
           )}
         >
-          <div className="flex flex-col gap-4 p-4">
+          <div className="flex items-center justify-center gap-8 p-4">
             {navlinks.map((link, index) =>
               link.type === "dropdown" ? (
                 <DropdownMenu key={index}>
                   <DropdownMenuTrigger asChild>
-                    <p
-                      className={cn(getRouteTheme(), "flex w-full items-center justify-start gap-1 text-sm font-bold")}
-                    >
+                    <p className={cn(getRouteTheme(), "flex items-center justify-start gap-1 text-sm font-bold")}>
                       <span>{link.name}</span>
-                      <ChevronDown className="h-4 w-4" />
+                      <ChevronDown className="h-4 w-4 font-medium" />
                     </p>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className={cn("w-48 rounded-md bg-white p-2 shadow-lg")}>

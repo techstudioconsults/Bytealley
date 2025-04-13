@@ -1,6 +1,7 @@
 import logo from "@/images/logo.svg";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { HTMLAttributes } from "react";
 
 import { Badge } from "~/components/ui/badge";
@@ -13,8 +14,23 @@ interface LogoProperties extends HTMLAttributes<HTMLImageElement> {
 }
 
 export const Logo = ({ width, height, className }: LogoProperties) => {
+  const pathname = usePathname();
+
+  const isDashboard = pathname.includes(`/dashboard`);
+
   return (
     <Link href="/" className="" data-testid="logo">
+      <div className={cn(`mt-1 flex w-full items-center justify-end`)}>
+        <Badge
+          variant={`outline`}
+          className={cn(
+            `border-mid-success bg-white text-mid-success`,
+            isDashboard && `border-mid-success text-[10px] text-mid-success`,
+          )}
+        >
+          Beta
+        </Badge>
+      </div>
       <Image
         priority
         src={logo}
@@ -23,11 +39,6 @@ export const Logo = ({ width, height, className }: LogoProperties) => {
         height={height}
         className={cn("object-contain", className)}
       />
-      <div className={`mt-1 flex w-full items-center justify-end`}>
-        <Badge variant={`outline`} className={`border-mid-success text-[10px] text-mid-success`}>
-          Beta
-        </Badge>
-      </div>
     </Link>
   );
 };
