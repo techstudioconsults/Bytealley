@@ -23,7 +23,7 @@ export const DownloadCard: React.FC<DownloadCardProperties> = ({
   return (
     <section
       {...properties}
-      className={cn(`mx-auto max-w-[265px] cursor-pointer overflow-hidden rounded-lg border`, className)}
+      className={cn(`border-default mx-auto max-w-[265px] cursor-pointer overflow-hidden rounded-lg`, className)}
     >
       <div className={`bg-low-grey-II`}>
         <BlurImage width={265} height={225} src={image} alt={title} className={`h-[225px] object-cover`} />

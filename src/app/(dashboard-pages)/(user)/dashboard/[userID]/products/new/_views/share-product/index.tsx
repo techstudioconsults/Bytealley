@@ -43,7 +43,7 @@ export const ShareProductView = ({ productId, productService }: ShareProductView
     <div className="flex flex-col items-center justify-center space-y-6 p-4 md:p-6">
       {/* Product Card */}
       <div className="w-full max-w-[542px] space-y-6">
-        <div className="space-y-2 rounded-md border p-2 transition-all">
+        <div className="border-default space-y-2 rounded-md p-2 transition-all">
           <div className="h-[197px] w-full rounded-md bg-muted">
             <BlurImage
               src={typeof product.thumbnail === "string" ? product.thumbnail : ""}
@@ -72,7 +72,7 @@ export const ShareProductView = ({ productId, productService }: ShareProductView
         {/* Link Container */}
         <div
           className={cn(
-            "flex w-full flex-col gap-4 rounded-lg border bg-low-grey-III p-2 md:flex-row md:items-center md:justify-between",
+            "border-default flex w-full flex-col gap-4 rounded-lg bg-low-grey-III p-2 md:flex-row md:items-center md:justify-between",
             product.status !== `published` && "hidden",
           )}
         >

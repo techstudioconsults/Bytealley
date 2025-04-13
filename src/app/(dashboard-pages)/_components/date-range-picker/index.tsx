@@ -55,7 +55,7 @@ export const DateRangePicker = ({
             <ChevronDown />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align={`start`}>
+        <PopoverContent className="border-default w-auto p-0" align={`start`}>
           <Calendar
             initialFocus
             mode="range"

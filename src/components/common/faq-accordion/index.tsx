@@ -35,7 +35,7 @@ export const FaqAccordion = ({ service }: { service: any }) => {
   return (
     <Accordion type="single" collapsible className="w-full max-w-3xl">
       {FAQ.map((item) => (
-        <AccordionItem key={item.id} value={item.id}>
+        <AccordionItem className="border-bottom" key={item.id} value={item.id}>
           <AccordionTrigger className="text-left text-xs lg:text-lg">{item.question}</AccordionTrigger>
           <AccordionContent>{item.answer}</AccordionContent>
         </AccordionItem>

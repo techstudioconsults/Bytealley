@@ -81,7 +81,7 @@ export const AllFunnels = ({ service }: { service: FunnelService }) => {
           ) : (
             <section>
               {funnels.length > 0 ? (
-                <section className={`grid grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-3`}>
+                <section className={`grid grid-cols-2 gap-4 md:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-5`}>
                   {funnels.map((funnel) => {
                     return (
                       <FunnelCard

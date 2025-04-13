@@ -328,3 +328,17 @@
     overflow: auto;
   }
 }
+
+@layer utilities {
+  .border-default {
+    @apply border-[0.5px] border-border;
+  }
+
+  .border-bottom {
+    @apply border-b-[0.5px] border-border;
+  }
+}
+.ql-container,
+.ql-toolbar {
+  border: 0.5px solid hsl(var(--border)) !important;
+}

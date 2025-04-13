@@ -337,6 +337,7 @@ export function Highlights({
             )}
           />
           <CustomButton
+            className={`dark:bg-white`}
             isIconOnly
             icon={<MdCancel className="h-4 w-4" />}
             variant="ghost"
@@ -495,7 +496,7 @@ export function ImageUpload({
               />
 
               {previews.length === 0 && (
-                <div className="flex h-[200px] w-full flex-col items-center justify-center gap-2 rounded-md border bg-low-purple">
+                <div className="border-default flex h-[200px] w-full flex-col items-center justify-center gap-2 rounded-md bg-low-purple">
                   <CustomButton
                     size="xl"
                     variant="outline"
@@ -671,7 +672,7 @@ export function FileUpload({
               />
 
               {previews.length === 0 && (
-                <div className="flex h-[200px] w-full flex-col items-center justify-center gap-2 rounded-md border bg-low-purple">
+                <div className="border-default flex h-[200px] w-full flex-col items-center justify-center gap-2 rounded-md bg-low-purple">
                   <CustomButton
                     size="xl"
                     variant="outline"
@@ -844,7 +845,7 @@ export function ThumbNailUpload({
               />
 
               {!preview && (
-                <div className="flex h-[200px] w-full flex-col items-center justify-center gap-2 rounded-md border bg-low-purple">
+                <div className="border-default flex h-[200px] w-full flex-col items-center justify-center gap-2 rounded-md bg-low-purple">
                   <CustomButton
                     size="xl"
                     variant="outline"

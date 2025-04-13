@@ -23,7 +23,7 @@ const IntegrationPage = () => {
 
   return (
     <Tabs value={currentTab} onValueChange={onTabChange} className="w-full">
-      <TabsList className="mb-8 flex h-fit w-full flex-col-reverse gap-4 rounded-none border-b bg-transparent p-0 sm:h-[58px] sm:flex-row sm:items-center sm:justify-between lg:h-[58px]">
+      <TabsList className="border-bottom mb-8 flex h-fit w-full flex-col-reverse gap-4 rounded-none bg-transparent p-0 sm:h-[58px] sm:flex-row sm:items-center sm:justify-between lg:h-[58px]">
         <section className="flex h-full w-full flex-wrap items-center gap-2 sm:w-auto sm:flex-nowrap sm:gap-0">
           <TabsTrigger
             value="all-integrations"
@@ -55,7 +55,9 @@ const IntegrationPage = () => {
           <IntegrationModal
             type={`MailerLite`}
             trigger={
-              <div className={`flex max-w-[190px] flex-col items-center justify-between gap-4 rounded-lg border p-3`}>
+              <div
+                className={`border-default flex max-w-[190px] flex-col items-center justify-between gap-4 rounded-lg p-3`}
+              >
                 <BlurImage src={mailerlite} alt={`mailerlite`} />
                 <p className={`text-mid-grey-II`}>Mailerlite</p>
               </div>
@@ -64,7 +66,9 @@ const IntegrationPage = () => {
           <IntegrationModal
             type={`MailChimp`}
             trigger={
-              <div className={`flex max-w-[190px] flex-col items-center justify-between gap-4 rounded-lg border p-3`}>
+              <div
+                className={`border-default flex max-w-[190px] flex-col items-center justify-between gap-4 rounded-lg p-3`}
+              >
                 <BlurImage src={mailchimp} alt={`mailchimp`} />
                 <p className={`text-mid-grey-II`}>Mailchimp</p>
               </div>

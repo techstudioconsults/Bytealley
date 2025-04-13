@@ -98,7 +98,7 @@ const BaseDownloadDetailPage = ({
       {/* Main Content Area with sticky footer */}
       <div className="relative flex-1 overflow-hidden">
         {/* Scrollable Content */}
-        <div className="h-full overflow-auto rounded-lg border border-border bg-mid-grey-I pb-16">
+        <div className="border-default h-full overflow-auto rounded-lg bg-mid-grey-I pb-16">
           <div className="p-4">
             {selectedAsset ? (
               <div className="relative h-full w-full">
@@ -153,7 +153,7 @@ const BaseDownloadDetailPage = ({
 
         {/* Sticky Asset Selector */}
         {download.length > 1 && (
-          <div className="absolute bottom-0 left-0 right-0 z-10 border-t border-border bg-white p-3 shadow-sm dark:bg-black">
+          <div className="border-default absolute bottom-0 left-0 right-0 z-10 bg-white p-3 shadow-sm dark:bg-black">
             <div className="flex gap-2 overflow-x-auto pb-1">
               {download.map((item) => (
                 <button

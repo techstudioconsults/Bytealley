@@ -29,7 +29,7 @@ export const SelectDropdown = ({
       <SelectTrigger className={triggerClassName}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent className={`border-default`}>
         <SelectGroup>
           {options.map((option) => (
             <SelectItem key={option.value} value={option.value}>

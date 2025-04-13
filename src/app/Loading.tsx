@@ -12,7 +12,7 @@ export default function Loading({ text, className }: { text?: string; className?
         <Logo width={100} height={47} />
         <div className="flex items-center gap-1">
           <LuLoader className="animate-spin text-xl text-primary" />
-          {<p className="text-sm">{text || "Loading..."}</p>}
+          {<p className="text-sm font-medium">{text || "Loading..."}</p>}
         </div>
       </div>
     </div>
