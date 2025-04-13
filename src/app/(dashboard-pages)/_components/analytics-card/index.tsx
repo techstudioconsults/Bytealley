@@ -55,7 +55,7 @@ export const AnalyticsCard: React.FC<AnalyticsCardProperties> = ({
     >
       {icon && (
         <div className="relative mb-4 flex items-start justify-between">
-          {icon && <div className="flex h-10 w-10 items-center justify-center">{icon}</div>}
+          {icon && <div className="flex h-10 w-10 items-center justify-center dark:invert dark:filter">{icon}</div>}
           {trend && (
             <div
               className={cn(

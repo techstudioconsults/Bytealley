@@ -15,7 +15,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <Toaster />
         <SidebarProvider>
           <DashboardSidebar navItems={sideItems} />
-          <SidebarInset>
+          <SidebarInset className={`border-none shadow-none`}>
             <DashboardNavbar />
             <section className={cn("calculated-height px-8 py-4")}>{children}</section>
           </SidebarInset>

@@ -697,7 +697,13 @@ export function FileUpload({
                     key={index}
                     className="relative flex min-h-[94px] items-center gap-4 rounded-md bg-low-purple p-6"
                   >
-                    <Image src={fileIcon} alt={`Preview ${index + 1}`} className={`h-10 w-10`} width={72} height={72} />
+                    <Image
+                      src={fileIcon}
+                      alt={`Preview ${index + 1}`}
+                      className={`h-10 w-10 dark:invert dark:filter`}
+                      width={72}
+                      height={72}
+                    />
                     <div className="flex flex-col gap-1">
                       <p className="text-wrap break-all text-sm font-bold">{preview.name}</p>
                       <span className="text-xs text-mid-grey-II">{preview.size}KB</span>
