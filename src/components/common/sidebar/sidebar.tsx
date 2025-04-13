@@ -8,7 +8,6 @@ import { usePathname } from "next/navigation";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuBadge,
@@ -21,7 +20,6 @@ import { Logo } from "../logo";
 import { ThemeToggle } from "../theme-toggle";
 
 export function DashboardSidebar({ navItems }: { navItems: any }) {
-  const currentYear = new Date().getFullYear();
   const pathname = usePathname();
   const userID = pathname.split("/")[2];
   const { setOpenMobile } = useSidebar();
@@ -53,8 +51,8 @@ export function DashboardSidebar({ navItems }: { navItems: any }) {
   };
 
   return (
-    <Sidebar>
-      <SidebarHeader className={`h-20 items-center justify-center`}>
+    <Sidebar className={`border-r-[0.5px] border-border shadow-none`}>
+      <SidebarHeader className={`h-28 items-center justify-center`}>
         <Logo width={140} height={47} />
       </SidebarHeader>
       <SidebarContent>
@@ -71,7 +69,7 @@ export function DashboardSidebar({ navItems }: { navItems: any }) {
                 <SidebarMenuButton
                   asChild
                   className={cn(
-                    "flex h-[48px] items-center gap-3 rounded-lg text-[16px] font-medium transition-all duration-200",
+                    "flex h-[40px] items-center gap-3 rounded-lg text-[16px] font-medium transition-all duration-200",
                     isActive
                       ? "border-2 border-primary text-primary shadow-active"
                       : "text-mid-grey-II hover:bg-low-grey-I",
@@ -79,7 +77,7 @@ export function DashboardSidebar({ navItems }: { navItems: any }) {
                 >
                   <Link onClick={handleCloseOnMobile} href={link} data-testid={item.id} role="sidebar-link">
                     {renderIcon(item)}
-                    <span className={`dark:text-white`}>{item.route}</span>
+                    <span className={`font-medium dark:text-white`}>{item.route}</span>
                     {item.badge && (
                       <SidebarMenuBadge
                         className={cn(
@@ -99,9 +97,6 @@ export function DashboardSidebar({ navItems }: { navItems: any }) {
         </SidebarMenu>
       </SidebarContent>
       <ThemeToggle />
-      <SidebarFooter className={`h-fit items-center justify-center bg-black`}>
-        <span className={`text-xs font-semibold text-white`}>ByteAlley &copy; {currentYear}.</span>
-      </SidebarFooter>
     </Sidebar>
   );
 }

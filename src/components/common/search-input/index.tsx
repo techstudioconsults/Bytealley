@@ -76,16 +76,16 @@ const BaseSearchInput: FC<SearchProperties> = ({ appService, inputBackgroundColo
       trigger={
         <div
           className={cn(
-            "flex h-10 items-center justify-between gap-2 rounded-[6px] border border-border px-3 text-sm font-normal placeholder:text-sm",
+            "flex h-10 items-center justify-between gap-2 rounded-[6px] border border-border bg-white pl-3 text-sm font-normal placeholder:text-sm dark:bg-black",
             inputBackgroundColor,
             className,
           )}
           {...properties}
         >
-          <LuSearch data-testid="search" className="text-neutral-dark-2 h-4 w-4" />
+          <LuSearch data-testid="search" className="text-neutral-dark-2 h-4 w-4 dark:bg-black" />
           <input
             className={cn(
-              `text-neutral-dark-2 placeholder:text-neutral-dark-1 h-full w-full border-none outline-none ring-0`,
+              `text-neutral-dark-2 placeholder:text-neutral-dark-1 h-full w-full border-none px-3 outline-none ring-0`,
               inputBackgroundColor,
             )}
             placeholder="Search..."
@@ -97,14 +97,14 @@ const BaseSearchInput: FC<SearchProperties> = ({ appService, inputBackgroundColo
       <section>
         <div
           className={cn(
-            "flex h-14 w-[100%] items-center justify-between gap-2 rounded-none border-b border-mid-grey-II text-sm font-normal placeholder:text-sm",
+            "flex h-14 w-[100%] items-center justify-between gap-2 rounded-none border-b border-mid-grey-II bg-white text-sm font-normal placeholder:text-sm dark:bg-transparent",
           )}
           {...properties}
         >
           <LuSearch data-testid="search" className="text-neutral-dark-2 h-10 w-10 border-none p-2" />
           <input
             className={cn(
-              `text-neutral-dark-2 placeholder:text-neutral-dark-1 h-full w-full border-none bg-transparent outline-none ring-0`,
+              `text-neutral-dark-2 placeholder:text-neutral-dark-1 h-full w-full border-none outline-none ring-0 dark:bg-transparent`,
             )}
             placeholder="Search..."
             data-testid="input"

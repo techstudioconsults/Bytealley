@@ -74,7 +74,7 @@ const BaseWithdrawEarnings = ({ earningService }: { earningService: EarningServi
           value={isPending ? <LoadingSpinner /> : `₦${availableEarnings.toLocaleString()}`}
           icon={<Image src={nairaIcon} alt="naira" width={40} height={40} />}
           backgroundImage={"/images/naira.svg"}
-          className={`shadow-none`}
+          className={`text-mid-success shadow-none`}
         />
       </section>
       <section className={`space-y-2`}>
