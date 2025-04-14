@@ -52,7 +52,7 @@ export const DashboardTable = <T extends DataItem>({
                 }}
                 className={cn(
                   "border-bottom",
-                  onRowClick ? "cursor-pointer hover:bg-muted/50" : "",
+                  onRowClick ? "cursor-pointer hover:bg-muted/50 dark:hover:bg-low-purple" : "",
                   "text-[16px] hover:bg-muted/50",
                 )}
               >

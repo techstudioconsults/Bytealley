@@ -23,7 +23,7 @@ export const FunnelFormModal = ({ editor }: { editor: any }) => {
           Save and Continue
         </CustomButton>
       }
-      className={`lg:min-w-[600px] lg:p-8`}
+      className={`scale-[90%] overflow-y-auto lg:min-w-[600px] lg:p-8`}
       headerClassName={`text-2xl`}
       title={`Final Steps Before Publishing...`}
       description={`Fill the form below to complete your funnel creation`}

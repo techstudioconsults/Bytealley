@@ -56,7 +56,7 @@ const BaseReviewModal = ({
       open={isOpen}
       onOpenChange={setIsOpen}
       trigger={
-        <CustomButton variant={`outline`} size={`lg`} className={`border-mid-purple text-mid-purple`}>
+        <CustomButton variant={`outline`} size={`xl`} className={`border-mid-purple text-mid-purple`}>
           Rate Product
         </CustomButton>
       }

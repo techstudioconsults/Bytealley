@@ -4,32 +4,31 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { HTMLAttributes } from "react";
 
-import { Badge } from "~/components/ui/badge";
 import { cn } from "~/utils/utils";
 
 interface LogoProperties extends HTMLAttributes<HTMLImageElement> {
   width?: number;
   height?: number;
   className?: string;
+  link?: string;
 }
 
-export const Logo = ({ width, height, className }: LogoProperties) => {
+export const Logo = ({ width, height, className, link = "/seller" }: LogoProperties) => {
   const pathname = usePathname();
 
   const isDashboard = pathname.includes(`/dashboard`);
 
   return (
-    <Link href="/" className="" data-testid="logo">
+    <Link href={link} className="" data-testid="logo">
       <div className={cn(`mt-1 flex w-full items-center justify-end`)}>
-        <Badge
-          variant={`outline`}
+        <span
           className={cn(
-            `-3 border-[0.5px] border-mid-success bg-white text-[8.5px] tracking-widest text-mid-success`,
-            isDashboard && `border-mid-success text-mid-success`,
+            `text-[10px] tracking-widest text-mid-success`,
+            isDashboard ? `text-mid-success` : `text-white`,
           )}
         >
-          Beta
-        </Badge>
+          Beta-0.0.1
+        </span>
       </div>
       <Image
         priority

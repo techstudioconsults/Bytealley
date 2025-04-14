@@ -17,7 +17,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <DashboardSidebar navItems={sideItems} />
           <SidebarInset className={`border-none shadow-none`}>
             <DashboardNavbar />
-            <section className={cn("calculated-height px-8 py-4")}>{children}</section>
+            <section className={cn("calculated-height px-4 py-4 lg:px-8")}>{children}</section>
           </SidebarInset>
         </SidebarProvider>
       </main>

@@ -58,7 +58,7 @@ const LoginPage = () => {
     <div className="flex min-h-screen flex-col items-center justify-center p-4">
       <div className="w-full max-w-[547px] rounded-xl bg-white p-6 shadow-lg lg:p-12">
         <div className="mb-8 flex justify-center">
-          <Logo />
+          <Logo link={`/`} />
         </div>
 
         <h1 className="mb-2 text-[32px] font-semibold">Sign in</h1>
