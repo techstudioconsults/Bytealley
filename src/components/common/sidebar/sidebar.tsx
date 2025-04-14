@@ -18,7 +18,6 @@ import {
 import { cn } from "~/utils/utils";
 import { Logo } from "../logo";
 import { SearchInput } from "../search-input";
-import { ThemeToggle } from "../theme-toggle";
 
 export function DashboardSidebar({ navItems }: { navItems: any }) {
   const pathname = usePathname();
@@ -100,7 +99,6 @@ export function DashboardSidebar({ navItems }: { navItems: any }) {
           })}
         </SidebarMenu>
       </SidebarContent>
-      <ThemeToggle />
     </Sidebar>
   );
 }

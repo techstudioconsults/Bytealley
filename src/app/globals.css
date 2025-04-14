@@ -257,6 +257,9 @@
   body {
     height: 100%;
     overflow-x: hidden;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease !important;
   }
 
   /* Body text */
@@ -315,6 +318,7 @@
   /* For Firefox */
   .html {
     @apply bg-primary;
+
     scrollbar-width: thin; /* Options are 'auto', 'thin', 'none' */
   }
 
