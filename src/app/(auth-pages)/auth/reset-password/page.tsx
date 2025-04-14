@@ -54,7 +54,7 @@ const ResetPasswordPage = () => {
     <div className="flex min-h-screen flex-col items-center justify-center p-4">
       <div className="w-full max-w-[440px] rounded-xl bg-white p-8 shadow-lg">
         <div className="mb-8 flex justify-center">
-          <Logo />
+          <Logo link={`/`} />
         </div>
 
         <h1 className="mb-2 text-[32px] font-semibold">Reset password</h1>

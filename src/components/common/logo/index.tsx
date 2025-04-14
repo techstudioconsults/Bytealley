@@ -10,15 +10,16 @@ interface LogoProperties extends HTMLAttributes<HTMLImageElement> {
   width?: number;
   height?: number;
   className?: string;
+  link?: string;
 }
 
-export const Logo = ({ width, height, className }: LogoProperties) => {
+export const Logo = ({ width, height, className, link = "/seller" }: LogoProperties) => {
   const pathname = usePathname();
 
   const isDashboard = pathname.includes(`/dashboard`);
 
   return (
-    <Link href="/" className="" data-testid="logo">
+    <Link href={link} className="" data-testid="logo">
       <div className={cn(`mt-1 flex w-full items-center justify-end`)}>
         <span
           className={cn(

@@ -1,5 +1,6 @@
 export const publicRoutes: string[] = [
   "/",
+  "/seller",
   "/features",
   "/explore/*",
   "/pricing",
@@ -7,7 +8,6 @@ export const publicRoutes: string[] = [
   "/privacy-policy",
   "/about",
   "/contact",
-  // "/cart",
 ];
 
 export const authRoutes: string[] = [
