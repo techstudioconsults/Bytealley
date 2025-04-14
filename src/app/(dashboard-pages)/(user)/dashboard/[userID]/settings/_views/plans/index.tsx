@@ -1,15 +1,12 @@
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 
-
-
 import { SubscriptionModal } from "~/components/common/subscription-modal";
 import { Badge } from "~/components/ui/badge";
 import { WithDependency } from "~/HOC/withDependencies";
 import { useSession } from "~/hooks/use-session";
 import { dependencies } from "~/utils/dependencies";
 import { cn } from "~/utils/utils";
-
 
 const BasePlans = ({ userID }: { userID: string }) => {
   const { user } = useSession();

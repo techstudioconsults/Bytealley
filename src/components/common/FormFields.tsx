@@ -496,7 +496,7 @@ export function ImageUpload({
               />
 
               {previews.length === 0 && (
-                <div className="border-default flex h-[200px] w-full flex-col items-center justify-center gap-2 rounded-md bg-low-purple">
+                <div className="flex h-[200px] w-full flex-col items-center justify-center gap-2 rounded-md border-default bg-low-purple">
                   <CustomButton
                     size="xl"
                     variant="outline"
@@ -672,7 +672,7 @@ export function FileUpload({
               />
 
               {previews.length === 0 && (
-                <div className="border-default flex h-[200px] w-full flex-col items-center justify-center gap-2 rounded-md bg-low-purple">
+                <div className="flex h-[200px] w-full flex-col items-center justify-center gap-2 rounded-md border-default bg-low-purple">
                   <CustomButton
                     size="xl"
                     variant="outline"
@@ -845,7 +845,7 @@ export function ThumbNailUpload({
               />
 
               {!preview && (
-                <div className="border-default flex h-[200px] w-full flex-col items-center justify-center gap-2 rounded-md bg-low-purple">
+                <div className="flex h-[200px] w-full flex-col items-center justify-center gap-2 rounded-md border-default bg-low-purple">
                   <CustomButton
                     size="xl"
                     variant="outline"

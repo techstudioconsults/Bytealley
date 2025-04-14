@@ -56,7 +56,7 @@ const IntegrationPage = () => {
             type={`MailerLite`}
             trigger={
               <div
-                className={`border-default flex max-w-[190px] flex-col items-center justify-between gap-4 rounded-lg p-3`}
+                className={`flex max-w-[190px] flex-col items-center justify-between gap-4 rounded-lg border-default p-3`}
               >
                 <BlurImage src={mailerlite} alt={`mailerlite`} />
                 <p className={`text-mid-grey-II`}>Mailerlite</p>
@@ -67,7 +67,7 @@ const IntegrationPage = () => {
             type={`MailChimp`}
             trigger={
               <div
-                className={`border-default flex max-w-[190px] flex-col items-center justify-between gap-4 rounded-lg p-3`}
+                className={`flex max-w-[190px] flex-col items-center justify-between gap-4 rounded-lg border-default p-3`}
               >
                 <BlurImage src={mailchimp} alt={`mailchimp`} />
                 <p className={`text-mid-grey-II`}>Mailchimp</p>

@@ -68,7 +68,7 @@ export function ViewProductLayout({ productService }: { productService: any }) {
         {/* Product Image and Header */}
         <header className="mb-4">
           <UniversalSwiper
-            className={`border-default mb-4 h-48 w-full rounded-md bg-gray-100 md:h-[263px]`}
+            className={`mb-4 h-48 w-full rounded-md border-default bg-gray-100 md:h-[263px]`}
             items={product?.cover_photos || []}
             renderItem={(image, index) => (
               <div className="relative h-48 w-full md:h-[263px]">
@@ -88,11 +88,11 @@ export function ViewProductLayout({ productService }: { productService: any }) {
             showNavigation
             navigationVariant="minimal"
           />
-          <div className={`border-default rounded-md p-4`}>
+          <div className={`rounded-md border-default p-4`}>
             <h4 className="mb-2 text-h4 sm:text-h3-sm md:text-h3-md">{product?.title}</h4>
             <div className="flex items-center gap-2">
               <p className="flex items-center gap-2">
-                <Avatar className="border-default relative z-[-1] h-6 w-6">
+                <Avatar className="relative z-[-1] h-6 w-6 border-default">
                   <AvatarImage src={user?.logo || ""} />
                   <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
                 </Avatar>
@@ -107,7 +107,7 @@ export function ViewProductLayout({ productService }: { productService: any }) {
         </header>
 
         {/* Features Section */}
-        <section className={`border-default mb-4 rounded-md p-4`}>
+        <section className={`mb-4 rounded-md border-default p-4`}>
           <h5 className="border-bottom mb-4 py-4 text-h5 font-bold text-high-grey-III">Features</h5>
           <ul className="list-inside list-disc space-y-4">
             {product?.highlights.map((highlight, index) => <p key={index}>✔️ {highlight}</p>)}
@@ -115,7 +115,7 @@ export function ViewProductLayout({ productService }: { productService: any }) {
         </section>
 
         {/* Description Section */}
-        <section className="border-default mb-4 rounded-md p-4">
+        <section className="mb-4 rounded-md border-default p-4">
           <h5 className="border-bottom mb-4 py-4 text-h5 font-bold text-high-grey-III">Description</h5>
           <div>
             <p
@@ -140,7 +140,7 @@ export function ViewProductLayout({ productService }: { productService: any }) {
       {/* Sidebar Section */}
       <aside className="md:col-span-4">
         {/* Price and Action Buttons */}
-        <section className="border-default rounded-md p-4">
+        <section className="rounded-md border-default p-4">
           <div className="mb-8">
             <div className={`flex items-center justify-between rounded-md bg-low-purple p-2`}>
               <p className="font-semibold">Sold</p>
@@ -204,7 +204,7 @@ export function ViewProductLayout({ productService }: { productService: any }) {
         </section>
 
         {/* Product Reviews Section */}
-        <section className="border-default mt-4 rounded-md p-4">
+        <section className="mt-4 rounded-md border-default p-4">
           <div className="border-bottom mb-4 flex items-center justify-between pb-4">
             <h5 className="text-h5 font-bold text-high-grey-III">Product Reviews</h5>
             <p className="text-sm font-semibold text-mid-grey-II">10 reviews</p>
