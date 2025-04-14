@@ -76,8 +76,8 @@ export const FunnelCard = ({ template, service }: FunnelCardProperties) => {
   };
 
   return (
-    <div className="border-default max-w-[450px] rounded-lg p-4">
-      <Card className="border-default h-[150px] overflow-hidden rounded-md bg-low-purple">
+    <div className="max-w-[450px] rounded-lg border-default p-4">
+      <Card className="h-[150px] overflow-hidden rounded-md border-default bg-low-purple">
         <BlurImage
           src={typeof thumbnail === "string" ? thumbnail : `/images/question_mark.png`}
           alt="template"

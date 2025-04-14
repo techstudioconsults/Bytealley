@@ -96,7 +96,7 @@ export const DashboardTable = <T extends DataItem>({
           <div
             key={index}
             className={cn(
-              "border-default group relative overflow-hidden rounded-lg bg-card p-5 transition-all",
+              "group relative overflow-hidden rounded-lg border-default bg-card p-5 transition-all",
               "hover:border-primary/50 hover:shadow-md",
               onRowClick && "cursor-pointer",
             )}
