@@ -25,7 +25,11 @@ export const UnreadNotificationCard: FC<CardProperties> = ({ className, ...prope
   };
 
   return (
-    <Card data-testid="cardContainer" className={cn("mx-auto w-full md:w-[600px]", className)} {...properties}>
+    <Card
+      data-testid="cardContainer"
+      className={cn("mx-auto w-full border-default md:w-[600px]", className)}
+      {...properties}
+    >
       <CardHeader className="px-4 sm:p-6">
         <CardTitle>Notifications</CardTitle>
         <CardDescription data-testid="unreadMessageCount">

@@ -3,6 +3,7 @@
 "use client";
 
 import { ChevronDown, Menu, X } from "lucide-react";
+import { useTheme } from "next-themes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -34,6 +35,12 @@ const BaseNavbar = ({ appService }: { appService: AppService }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [navlinks, setNavlinks] = useState<any[]>(externalNavlinks);
   const categories = useProductCategories(appService);
+
+  const { setTheme } = useTheme();
+
+  useEffect(() => {
+    setTheme("light");
+  }, [setTheme]);
 
   useEffect(() => {
     if (categories.length > 0) {
@@ -159,7 +166,7 @@ const BaseNavbar = ({ appService }: { appService: AppService }) => {
             isMobileMenuOpen ? "h-auto opacity-100" : "h-0 opacity-0",
           )}
         >
-          <div className="flex items-center justify-center gap-8 p-4">
+          <div className="flex items-center justify-center gap-8 p-4 py-10">
             {navlinks.map((link, index) =>
               link.type === "dropdown" ? (
                 <DropdownMenu key={index}>

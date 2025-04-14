@@ -76,7 +76,7 @@ const BaseSearchInput: FC<SearchProperties> = ({ appService, inputBackgroundColo
       trigger={
         <div
           className={cn(
-            "flex h-10 items-center justify-between gap-2 rounded-[6px] border border-border bg-white pl-3 text-sm font-normal placeholder:text-sm dark:bg-black",
+            "flex h-10 items-center justify-between gap-2 rounded-[6px] border-default bg-white pl-3 text-sm font-normal placeholder:text-sm dark:bg-black",
             inputBackgroundColor,
             className,
           )}
@@ -97,7 +97,7 @@ const BaseSearchInput: FC<SearchProperties> = ({ appService, inputBackgroundColo
       <section>
         <div
           className={cn(
-            "flex h-14 w-[100%] items-center justify-between gap-2 rounded-none border-b border-mid-grey-II bg-white text-sm font-normal placeholder:text-sm dark:bg-transparent",
+            "border-bottom flex h-14 w-[100%] items-center justify-between gap-2 rounded-none border-mid-grey-II bg-white text-sm font-normal placeholder:text-sm dark:bg-transparent",
           )}
           {...properties}
         >
@@ -115,9 +115,9 @@ const BaseSearchInput: FC<SearchProperties> = ({ appService, inputBackgroundColo
       </section>
 
       {/* Tabs */}
-      <section className={cn(`h-[40rem] overflow-y-auto border p-4`)}>
+      <section className={cn(`h-[40rem] overflow-y-auto border-default p-4`)}>
         <Tabs value={currentTab} onValueChange={onTabChange} className="w-full">
-          <TabsList className="mb-8 flex h-fit w-full flex-col-reverse gap-4 rounded-none border-b bg-transparent p-0 sm:h-[58px] sm:flex-row sm:items-center sm:justify-between lg:h-[58px]">
+          <TabsList className="border-bottom mb-8 flex h-fit w-full flex-col-reverse gap-4 rounded-none bg-transparent p-0 sm:h-[58px] sm:flex-row sm:items-center sm:justify-between lg:h-[58px]">
             <section className="flex h-full w-full flex-wrap items-center gap-2 sm:w-auto sm:flex-nowrap sm:gap-0">
               <TabsTrigger
                 value="all"
@@ -172,7 +172,7 @@ const BaseSearchInput: FC<SearchProperties> = ({ appService, inputBackgroundColo
               searchResultsFormated
             )}
           </TabsContent>
-          <TabsContent value="products">
+          {/* <TabsContent value="products">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex nihil doloribus sed recusandae distinctio
             libero, fuga autem debitis hic laudantium reiciendis dicta. Voluptatum est asperiores consequuntur sit illo
             perspiciatis. Vero!
@@ -186,7 +186,7 @@ const BaseSearchInput: FC<SearchProperties> = ({ appService, inputBackgroundColo
             Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi eveniet unde obcaecati officia, saepe
             laboriosam illo incidunt tempore earum iure ab sunt nesciunt illum tenetur quibusdam accusamus? Excepturi,
             harum fuga.
-          </TabsContent>
+          </TabsContent> */}
         </Tabs>
       </section>
     </ReusableDialog>

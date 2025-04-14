@@ -204,7 +204,7 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
                     })}
                   </span>
                 </div>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between capitalize">
                   <span>Product Type</span>
                   <span>{product?.product_type.replace("_", " ")}</span>
                 </div>
