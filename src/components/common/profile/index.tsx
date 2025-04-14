@@ -32,7 +32,7 @@ export const Profile = () => {
           <p className="hidden font-medium capitalize lg:block">{user?.username || user?.name || "Byte alley User"}</p>
           <LuChevronDown className="hidden lg:block" size="20px" />
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="relative z-[999999]">
+        <DropdownMenuContent className="relative z-[999999] border-default">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <Link href={`/dashboard/${user?.id}/profile`}>

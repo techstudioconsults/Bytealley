@@ -105,10 +105,10 @@ export const ActiveUser = ({
           <AnalyticsCard
             title="Total Revenue"
             value={isPendingAnalytics ? <LoadingSpinner /> : analytics?.total_revenues?.toLocaleString()}
-            valuePrefix={`NGN`}
+            valuePrefix={`₦`}
             icon={<Image src={nairaIcon} alt="naira" width={40} height={40} />}
             backgroundImage={"/images/hook.svg"}
-            className={`col-span-1 sm:col-span-2 lg:col-span-6`}
+            className={`col-span-1 text-mid-success sm:col-span-2 lg:col-span-6`}
           />
           <AnalyticsCard
             title="New Orders"

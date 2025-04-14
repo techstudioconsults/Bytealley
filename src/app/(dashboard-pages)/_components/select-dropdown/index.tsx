@@ -1,6 +1,7 @@
 "use client";
 
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
+import { cn } from "~/utils/utils";
 
 interface Option {
   value: string;
@@ -26,7 +27,7 @@ export const SelectDropdown = ({
 }: SelectDropdownProperties) => {
   return (
     <Select disabled={disabled} value={value} onValueChange={onValueChange}>
-      <SelectTrigger className={triggerClassName}>
+      <SelectTrigger className={cn("gap-8", triggerClassName)}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent className={`border-default`}>

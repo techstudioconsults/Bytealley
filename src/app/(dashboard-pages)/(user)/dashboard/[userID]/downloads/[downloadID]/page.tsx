@@ -82,7 +82,7 @@ const BaseDownloadDetailPage = ({
   return (
     <div className="flex h-full flex-col">
       {/* Header Section */}
-      <div className="mb-4 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+      <div className="mb-4 flex items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <BackNavigator />
           <div className="min-w-0">
@@ -96,9 +96,9 @@ const BaseDownloadDetailPage = ({
       </div>
 
       {/* Main Content Area with sticky footer */}
-      <div className="relative flex-1 overflow-hidden">
+      <div className="flex-1 overflow-hidden">
         {/* Scrollable Content */}
-        <div className="h-full overflow-auto rounded-lg border-default bg-mid-grey-I pb-16">
+        <div className="h-[90%] overflow-auto rounded-md bg-low-grey-II pb-16">
           <div className="p-4">
             {selectedAsset ? (
               <div className="relative h-full w-full">
@@ -117,8 +117,8 @@ const BaseDownloadDetailPage = ({
                             alt={selectedAsset?.name || ""}
                             width={1200}
                             height={800}
-                            className="max-h-full max-w-full object-contain"
-                            sizes="(max-width: 768px) 100vw, 80vw"
+                            className="h-auto w-auto object-contain"
+                            // sizes="(max-width: 768px) 100vw, 80vw"
                           />
                         </div>
                       );
@@ -153,22 +153,20 @@ const BaseDownloadDetailPage = ({
 
         {/* Sticky Asset Selector */}
         {download.length > 1 && (
-          <div className="absolute bottom-0 left-0 right-0 z-10 border-default bg-white p-3 shadow-sm dark:bg-black">
-            <div className="flex gap-2 overflow-x-auto pb-1">
-              {download.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => setSelectedAsset(item)}
-                  className={`whitespace-nowrap rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
-                    selectedAsset?.id === item.id
-                      ? "bg-primary text-white"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                  }`}
-                >
-                  {item.name}
-                </button>
-              ))}
-            </div>
+          <div className="flex h-[10%] items-center gap-4 overflow-x-auto border-default bg-white p-2 px-4 dark:bg-black">
+            {download.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => setSelectedAsset(item)}
+                className={`whitespace-nowrap rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
+                  selectedAsset?.id === item.id
+                    ? "bg-primary text-white"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}
+              >
+                {item.name}
+              </button>
+            ))}
           </div>
         )}
       </div>

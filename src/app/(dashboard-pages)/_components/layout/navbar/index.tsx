@@ -10,12 +10,10 @@ import { SearchInput } from "~/components/common/search-input";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
 import { SidebarTrigger } from "~/components/ui/sidebar";
 import { UnreadNotificationCard, useNotifications } from "~/features/push-notification";
-import { useNavbarVisibility } from "~/hooks/use-navbar-visibility";
 import { cn } from "~/utils/utils";
 
 export const DashboardNavbar = () => {
   const pathname = usePathname();
-  const { isNavbarVisible } = useNavbarVisibility();
   const title = pathname.split("/")[3]?.charAt(0).toUpperCase() + pathname.split("/")[3]?.slice(1);
   const { unreadCount, fetchNotifications } = useNotifications();
 
@@ -26,8 +24,8 @@ export const DashboardNavbar = () => {
   return (
     <nav
       className={cn(
-        `z-[5] w-full border-b-[0.5px] border-border backdrop-blur-sm transition-transform duration-300`,
-        isNavbarVisible ? "translate-y-0" : "-translate-y-full",
+        `border-bottom z-[5] w-full backdrop-blur-sm transition-transform duration-300`,
+        // isNavbarVisible ? "translate-y-0" : "-translate-y-full",
       )}
       role="navbar"
     >
@@ -36,7 +34,7 @@ export const DashboardNavbar = () => {
           <SidebarTrigger className={cn(`h-10 w-10`)} />
           <h4 className="text-h4 sm:text-h4-sm md:text-h4-md">{title}</h4>
         </div>
-        <section className="flex items-center justify-between gap-1 md:gap-2 lg:gap-6">
+        <section className="flex items-center justify-between gap-6">
           <SearchInput inputBackgroundColor="bg-low-grey-III" className="hidden w-[100%] lg:flex lg:w-[270px]" />
           <div className="relative flex items-center justify-center">
             <Popover>
@@ -61,9 +59,9 @@ export const DashboardNavbar = () => {
           <Profile />
         </section>
       </section>
-      <section className="relative z-[5] flex items-center justify-center p-4 lg:hidden">
+      {/* <section className="relative z-[5] flex items-center justify-center p-4 lg:hidden">
         <SearchInput inputBackgroundColor="bg-low-grey-III" className="w-[100%]" />
-      </section>
+      </section> */}
     </nav>
   );
 };
