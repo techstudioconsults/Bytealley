@@ -6,6 +6,7 @@ import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { GotoTop } from "~/components/miscellaneous/goto-top";
+import { NetworkStatusModal } from "~/components/miscellaneous/network-error";
 import { TooltipProvider } from "~/components/ui/tooltip";
 import { LoadingProvider } from "~/context/loading-provider";
 import { ProgressProviders } from "~/context/progress-provider";
@@ -48,7 +49,10 @@ export default async function RootLayout({
                   <ToastProvider>
                     <GotoTop />
                     <PageTransition>
-                      <ProgressProviders>{children}</ProgressProviders>
+                      <ProgressProviders>
+                        <NetworkStatusModal />
+                        {children}
+                      </ProgressProviders>
                       <SpeedInsights />
                     </PageTransition>
                   </ToastProvider>
