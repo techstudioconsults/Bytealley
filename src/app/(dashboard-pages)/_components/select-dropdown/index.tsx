@@ -27,7 +27,7 @@ export const SelectDropdown = ({
 }: SelectDropdownProperties) => {
   return (
     <Select disabled={disabled} value={value} onValueChange={onValueChange}>
-      <SelectTrigger className={cn("gap-8", triggerClassName)}>
+      <SelectTrigger className={cn("gap-8 rounded-md border-default", triggerClassName)}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent className={`border-default`}>

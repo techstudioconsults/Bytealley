@@ -33,7 +33,7 @@ export const DateRangePicker = ({
         <PopoverTrigger asChild>
           <div
             className={cn(
-              "flex h-12 w-full items-center justify-between gap-8 rounded-sm border-default px-4 text-left text-sm",
+              "flex h-12 w-full items-center justify-between gap-8 rounded-md border-default px-4 text-left text-sm",
             )}
           >
             <span id="date" className={cn(!date && "text-muted-foreground")}>

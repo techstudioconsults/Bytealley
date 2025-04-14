@@ -6,6 +6,7 @@ import { useEffect, useState, useTransition } from "react";
 import { BackNavigator } from "~/app/(dashboard-pages)/_components/back-navigator";
 import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import Loading from "~/app/Loading";
+import { VideoPlayerWithCustomControls } from "~/components/common/video-player";
 import { BlurImage } from "~/components/miscellaneous/blur-image";
 import { PDFViewer } from "~/features/PDFviewer";
 import { WithDependency } from "~/HOC/withDependencies";
@@ -98,7 +99,7 @@ const BaseDownloadDetailPage = ({
       {/* Main Content Area with sticky footer */}
       <div className="flex-1 overflow-hidden">
         {/* Scrollable Content */}
-        <div className="h-[90%] overflow-auto rounded-md bg-low-grey-II pb-16">
+        <div className="h-[90%] overflow-auto rounded-tl-md rounded-tr-md border-default bg-low-grey-II pb-16">
           <div className="p-4">
             {selectedAsset ? (
               <div className="relative h-full w-full">
@@ -124,14 +125,15 @@ const BaseDownloadDetailPage = ({
                       );
                     }
                     case "video": {
-                      return (
-                        <div className="flex h-full items-center justify-center">
-                          <video controls className="max-h-full max-w-full">
-                            <source src={selectedAsset.url} type="video/mp4" />
-                            Your browser does not support the video tag.
-                          </video>
-                        </div>
-                      );
+                      return <VideoPlayerWithCustomControls url={selectedAsset?.url || ""} />;
+                      // return (
+                      //   <div className="flex max-h-[700px] items-center justify-center overflow-hidden rounded-md">
+                      //     <video controls className="w-{100%} h-[100%]">
+                      //       <source src={selectedAsset.url} type="video/mp4" />
+                      //       Your browser does not support the video tag.
+                      //     </video>
+                      //   </div>
+                      // );
                     }
                     default: {
                       return (
@@ -153,7 +155,7 @@ const BaseDownloadDetailPage = ({
 
         {/* Sticky Asset Selector */}
         {download.length > 1 && (
-          <div className="flex h-[10%] items-center gap-4 overflow-x-auto border-default bg-white p-2 px-4 dark:bg-black">
+          <div className="flex h-[10%] items-center gap-4 overflow-x-auto rounded-bl-md rounded-br-md border-default bg-white p-2 px-4 dark:bg-black">
             {download.map((item) => (
               <button
                 key={item.id}
