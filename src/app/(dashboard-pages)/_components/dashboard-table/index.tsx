@@ -36,7 +36,7 @@ export const DashboardTable = <T extends DataItem>({
       <div className="hidden md:block">
         <Table>
           <TableHeader className={`bg-muted`}>
-            <TableRow>
+            <TableRow className={`border-default`}>
               {columns.map((column, index) => (
                 <TableHead key={index}>{column.header}</TableHead>
               ))}
@@ -50,7 +50,11 @@ export const DashboardTable = <T extends DataItem>({
                 onClick={() => {
                   if (onRowClick) onRowClick(item);
                 }}
-                className={cn(onRowClick ? "cursor-pointer hover:bg-muted/50" : "", "text-[16px] hover:bg-muted/50")}
+                className={cn(
+                  "border-bottom",
+                  onRowClick ? "cursor-pointer hover:bg-muted/50" : "",
+                  "text-[16px] hover:bg-muted/50",
+                )}
               >
                 {columns.map((column, colIndex) => (
                   <TableCell key={`${rowIndex}-${colIndex}`}>
@@ -63,7 +67,7 @@ export const DashboardTable = <T extends DataItem>({
                       <DropdownMenuTrigger className={`p-2`}>
                         <MoreHorizontal className="h-4 w-4" />
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
+                      <DropdownMenuContent className={`border-default`} align="end">
                         {rowActions(item).map((action: IRowAction<T>, actionIndex: number) => (
                           <DropdownMenuItem
                             key={actionIndex}
@@ -92,7 +96,7 @@ export const DashboardTable = <T extends DataItem>({
           <div
             key={index}
             className={cn(
-              "group relative overflow-hidden rounded-lg border bg-card p-5 transition-all",
+              "group relative overflow-hidden rounded-lg border-default bg-card p-5 transition-all",
               "hover:border-primary/50 hover:shadow-md",
               onRowClick && "cursor-pointer",
             )}

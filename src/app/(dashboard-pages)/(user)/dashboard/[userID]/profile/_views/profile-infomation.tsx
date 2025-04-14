@@ -43,7 +43,7 @@ export const ProfileInformation = () => {
         name="phone_number"
         placeholder="Enter your phone number"
         className={`h-12 border-none bg-transparent`}
-        containerClassName={`bg-low-grey-III border pl-3 rounded-lg`}
+        containerClassName={`bg-low-grey-III border-default pl-3 rounded-lg`}
         leftAddon={"+234"}
         required
       />

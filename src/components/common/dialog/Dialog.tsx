@@ -38,7 +38,7 @@ export function ReusableDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className={cn(`h-full items-center sm:max-w-[425px] md:h-fit`, className)}>
+      <DialogContent className={cn(`h-full items-center border-default sm:max-w-[425px] md:h-fit`, className)}>
         <section>
           <DialogHeader className={cn(`h-fit`, wrapperClassName)}>
             {img && (

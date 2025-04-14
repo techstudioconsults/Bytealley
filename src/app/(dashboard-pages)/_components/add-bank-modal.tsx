@@ -72,7 +72,7 @@ export const AddBankModal = ({ getAccounts, service }: { getAccounts?: () => voi
       wrapperClassName={`mb-8`}
       trigger={
         <div
-          className={`flex min-h-[120px] items-center justify-center gap-4 rounded-md border p-6 text-mid-purple lg:max-w-[357px]`}
+          className={`flex min-h-[120px] items-center justify-center gap-4 rounded-md border-default p-6 text-mid-purple lg:max-w-[357px]`}
         >
           <PlusCircle />
           <p>Add Bank</p>
@@ -107,7 +107,7 @@ export const AddBankModal = ({ getAccounts, service }: { getAccounts?: () => voi
             required
           />
 
-          <div className={`flex items-center gap-4 border-t pt-[32px]`}>
+          <div className={`flex items-center gap-4 border-t border-border pt-[32px]`}>
             <CustomButton
               onClick={(event) => {
                 event.preventDefault();

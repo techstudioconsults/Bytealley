@@ -79,7 +79,7 @@ export const TableHeaderInfo: React.FC<TableHeaderInfoProperties> = ({ headers, 
       {/* Desktop View */}
       <table className="hidden min-w-full md:table">
         <thead>
-          <tr className="border-t">
+          <tr>
             {headers.map((header, index) => (
               <th key={index} className="pb-3 pt-6 text-left font-semibold text-mid-grey-III">
                 {header}
@@ -88,7 +88,7 @@ export const TableHeaderInfo: React.FC<TableHeaderInfoProperties> = ({ headers, 
           </tr>
         </thead>
         <tbody>
-          <tr className="border-b">
+          <tr className="border-bottom">
             {headers.map((header, index) => (
               <td key={index} className="pb-6 pt-3 text-mid-grey-III">
                 {renderCellContent(header, product)}

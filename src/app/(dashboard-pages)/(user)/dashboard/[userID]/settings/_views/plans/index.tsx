@@ -34,7 +34,7 @@ const BasePlans = ({ userID }: { userID: string }) => {
             </div>
             <SubscriptionModal />
           </div>
-          <hr />
+          <hr className={`border-border`} />
           <div>
             <Link href={`/dashboard/${userID}/settings?tab=billing`}>
               {/* <Link href={`billings`}> */}
@@ -47,7 +47,7 @@ const BasePlans = ({ userID }: { userID: string }) => {
               </div>
             </Link>
           </div>
-          <hr />
+          <hr className={`border-border`} />
         </section>
       </section>
     </section>

@@ -2,7 +2,6 @@
 
 import React from "react";
 
-import { FadeIn } from "~/lib/animations";
 import { policies } from "~/utils/constants";
 
 export const TermsAndConditions: React.FC = () => {
@@ -11,19 +10,17 @@ export const TermsAndConditions: React.FC = () => {
       <div className="mx-auto max-w-[70rem] py-10 text-left sm:py-20">
         <div className="list-outside list-decimal space-y-6 px-6">
           {policies.map((term, index) => (
-            <FadeIn key={index}>
-              <div key={index} className="mb-6">
-                <h4 className="text-h4">{term.title}</h4>
-                <p className="mt-2">{term.text}</p>
-                {term.points && (
-                  <div className="mt-2 list-outside list-disc space-y-2 pl-6">
-                    {term.points.map((point, pointIndex) => (
-                      <li key={pointIndex}>{point}</li>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </FadeIn>
+            <div key={index} className="mb-6">
+              <h4 className="text-h4">{term.title}</h4>
+              <p className="mt-2">{term.text}</p>
+              {term.points && (
+                <div className="mt-2 list-outside list-disc space-y-2 pl-6">
+                  {term.points.map((point, pointIndex) => (
+                    <li key={pointIndex}>{point}</li>
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
         </div>
       </div>

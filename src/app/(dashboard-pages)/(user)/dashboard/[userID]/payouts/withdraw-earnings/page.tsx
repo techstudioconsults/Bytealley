@@ -114,7 +114,7 @@ const BaseWithdrawEarnings = ({ earningService }: { earningService: EarningServi
               type="number"
               placeholder="₦0"
               className={`h-[60px] border-none bg-transparent`}
-              containerClassName={`bg-low-grey-III border rounded-md pr-3`}
+              containerClassName={`bg-low-grey-III border-default rounded-md pr-3`}
               required
               rightAddon={
                 <p
