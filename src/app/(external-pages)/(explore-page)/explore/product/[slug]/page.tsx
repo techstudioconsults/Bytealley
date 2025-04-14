@@ -136,133 +136,135 @@ const ProductPreview = ({ appService, params }: { appService: AppService; params
 
       {/* Sidebar Section */}
       <aside className="md:col-span-4">
-        {/* Price and Action Buttons */}
-        <section className="rounded-md border p-4">
-          <div className="mb-8">
-            <div className="flex items-center justify-between rounded-md bg-low-purple p-2">
-              <p className="font-semibold">Sold</p>
-              <p className="text-sm font-semibold">{product?.total_sales}</p>
+        <div className="sticky top-28 space-y-4">
+          {/* Price and Action Buttons */}
+          <section className="rounded-md border p-4">
+            <div className="mb-8">
+              <div className="flex items-center justify-between rounded-md bg-low-purple p-2">
+                <p className="font-semibold">Sold</p>
+                <p className="text-sm font-semibold">{product?.total_sales}</p>
+              </div>
+              <div className="mb-7 mt-4 flex items-center gap-2">
+                <span className="text-2xl font-bold">
+                  ₦
+                  {(product?.discount_price ?? 0) > 0
+                    ? product?.discount_price?.toLocaleString()
+                    : product?.price?.toLocaleString()}
+                </span>
+                {!!product?.discount_price && (
+                  <span className="text-destructive line-through">₦{product?.price.toLocaleString()}</span>
+                )}
+              </div>
+              <div className="flex flex-col gap-2">
+                <SetToolTip content={"You need to be logged in to purchase product"}>
+                  <CustomButton
+                    size={`xl`}
+                    isLoading={isAddToCartPending}
+                    isDisabled={user?.name === product?.publisher || isAddToCartPending}
+                    variant="primary"
+                    className={cn({ "cursor-not-allowed": user?.name === product?.publisher })}
+                    onClick={() => addToCart(slug, 1)}
+                  >
+                    Add to Cart
+                  </CustomButton>
+                </SetToolTip>
+                <SetToolTip content={"You need to be logged in to purchase product"}>
+                  <CustomButton
+                    size={`xl`}
+                    isLoading={isAddToCartWithRoutePending}
+                    isDisabled={user?.name === product?.publisher || isAddToCartPending}
+                    onClick={() => {
+                      addToCartWithRoute(slug, 1);
+                      router.push(`/explore/cart`);
+                    }}
+                    variant="outline"
+                    className={cn(
+                      { "cursor-not-allowed": user?.name === product?.publisher },
+                      "border-primary text-primary",
+                    )}
+                  >
+                    Buy Now
+                  </CustomButton>
+                </SetToolTip>
+              </div>
             </div>
-            <div className="mb-7 mt-4 flex items-center gap-2">
-              <span className="text-2xl font-bold">
-                ₦
-                {(product?.discount_price ?? 0) > 0
-                  ? product?.discount_price?.toLocaleString()
-                  : product?.price?.toLocaleString()}
-              </span>
-              {!!product?.discount_price && (
-                <span className="text-destructive line-through">₦{product?.price.toLocaleString()}</span>
-              )}
-            </div>
-            <div className="flex flex-col gap-2">
-              <SetToolTip content={"You need to be logged in to purchase product"}>
-                <CustomButton
-                  size={`xl`}
-                  isLoading={isAddToCartPending}
-                  isDisabled={user?.name === product?.publisher || isAddToCartPending}
-                  variant="primary"
-                  className={cn({ "cursor-not-allowed": user?.name === product?.publisher })}
-                  onClick={() => addToCart(slug, 1)}
-                >
-                  Add to Cart
-                </CustomButton>
-              </SetToolTip>
-              <SetToolTip content={"You need to be logged in to purchase product"}>
-                <CustomButton
-                  size={`xl`}
-                  isLoading={isAddToCartWithRoutePending}
-                  isDisabled={user?.name === product?.publisher || isAddToCartPending}
-                  onClick={() => {
-                    addToCartWithRoute(slug, 1);
-                    router.push(`/explore/cart`);
-                  }}
-                  variant="outline"
-                  className={cn(
-                    { "cursor-not-allowed": user?.name === product?.publisher },
-                    "border-primary text-primary",
-                  )}
-                >
-                  Buy Now
-                </CustomButton>
-              </SetToolTip>
-            </div>
-          </div>
 
-          {/* Product Includes Section */}
-          <div>
-            <h5 className="mb-4 border-b py-4 text-h5 font-bold text-high-grey-III">The Product Includes</h5>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span>Format</span>
-                <span className={"space-x-1"}>
-                  {product?.assets?.map((asset, index) => {
-                    if (typeof asset === "object" && "extension" in asset) {
-                      return <span key={index}>{asset.extension} |</span>;
-                    }
-                    return null;
-                  })}
-                </span>
+            {/* Product Includes Section */}
+            <div>
+              <h5 className="mb-4 border-b py-4 text-h5 font-bold text-high-grey-III">The Product Includes</h5>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <span>Format</span>
+                  <span className={"space-x-1"}>
+                    {product?.assets?.map((asset, index) => {
+                      if (typeof asset === "object" && "extension" in asset) {
+                        return <span key={index}>{asset.extension} |</span>;
+                      }
+                      return null;
+                    })}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Product Type</span>
+                  <span>{product?.product_type.replace("_", " ")}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>File Size</span>
+                  <span className={"space-x-1"}>
+                    {product?.assets?.map((asset, index) => {
+                      if (typeof asset === "object" && "size" in asset) {
+                        return <span key={index}>{asset.size} |</span>;
+                      }
+                      return null;
+                    })}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Resources</span>
+                  <span>{product?.assets?.length}</span>
+                </div>
               </div>
-              <div className="flex items-center justify-between">
-                <span>Product Type</span>
-                <span>{product?.product_type.replace("_", " ")}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span>File Size</span>
-                <span className={"space-x-1"}>
-                  {product?.assets?.map((asset, index) => {
-                    if (typeof asset === "object" && "size" in asset) {
-                      return <span key={index}>{asset.size} |</span>;
-                    }
-                    return null;
-                  })}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span>Resources</span>
-                <span>{product?.assets?.length}</span>
-              </div>
-            </div>
-            {/* <div className="mt-4 flex items-center gap-4">
+              {/* <div className="mt-4 flex items-center gap-4">
               <p className="text-sm font-semibold">Share</p>
               <p className="text-sm font-semibold">Give as Gift</p>
             </div> */}
-          </div>
-        </section>
+            </div>
+          </section>
 
-        {/* Product Reviews Section */}
-        <section className="mt-4 rounded-md border p-4">
-          <div className="mb-4 flex items-center justify-between border-b pb-4">
-            <h5 className="text-h5 font-bold text-high-grey-III">Product Reviews</h5>
-            <p className="text-sm font-semibold text-mid-grey-II">{productReview?.length} reviews</p>
-          </div>
-          <div className="space-y-4">
-            {productReview?.length > 0 ? (
-              productReview.map((review, index) => (
-                <div key={index}>
-                  <p className="text-sm">{review.comment}</p>
-                  <div className="mt-2 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Avatar className="h-4 w-4">
-                        <AvatarImage src={review.user.logo} />
-                        <AvatarFallback>{review.user.name.charAt(0)}</AvatarFallback>
-                      </Avatar>
-                      <p className="text-[10px] font-semibold capitalize">{review.user.name}</p>
+          {/* Product Reviews Section */}
+          <section className="mt-4 rounded-md border p-4">
+            <div className="mb-4 flex items-center justify-between border-b pb-4">
+              <h5 className="text-h5 font-bold text-high-grey-III">Product Reviews</h5>
+              <p className="text-sm font-semibold text-mid-grey-II">{productReview?.length} reviews</p>
+            </div>
+            <div className="space-y-4">
+              {productReview?.length > 0 ? (
+                productReview.map((review, index) => (
+                  <div key={index}>
+                    <p className="text-sm">{review.comment}</p>
+                    <div className="mt-2 flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Avatar className="h-4 w-4">
+                          <AvatarImage src={review.user.logo} />
+                          <AvatarFallback>{review.user.name.charAt(0)}</AvatarFallback>
+                        </Avatar>
+                        <p className="text-[10px] font-semibold capitalize">{review.user.name}</p>
+                      </div>
+                      <StarRating size="text-xs" rating={review.rating} />
+                      <p className="text-[10px]">{new Date(review.created_at).toLocaleDateString()}</p>
                     </div>
-                    <StarRating size="text-xs" rating={review.rating} />
-                    <p className="text-[10px]">{new Date(review.created_at).toLocaleDateString()}</p>
                   </div>
-                </div>
-              ))
-            ) : (
-              <EmptyState
-                title="No Comments yet."
-                description="There are no reviews available for this product."
-                images={[{ src: empty1.src, alt: "Empty product", width: 50, height: 50 }]}
-              />
-            )}
-          </div>
-        </section>
+                ))
+              ) : (
+                <EmptyState
+                  title="No Comments yet."
+                  description="There are no reviews available for this product."
+                  images={[{ src: empty1.src, alt: "Empty product", width: 50, height: 50 }]}
+                />
+              )}
+            </div>
+          </section>
+        </div>
       </aside>
     </Wrapper>
   );

@@ -56,7 +56,7 @@ export const EmailNotificationSettingsForm = ({ service }: { service: AppService
           className={`flex items-center justify-between`}
           onChange={handlePurchasedChange}
         />
-        <hr />
+        <hr className={`border-border`} />
         <SwitchField
           name={"news_updates"}
           label={
@@ -68,7 +68,7 @@ export const EmailNotificationSettingsForm = ({ service }: { service: AppService
           className={`flex items-center justify-between`}
           onChange={handleNewsAndUpdatesChange}
         />
-        <hr />
+        <hr className={`border-border`} />
         <SwitchField
           name={"product_creation"}
           label={
@@ -80,7 +80,7 @@ export const EmailNotificationSettingsForm = ({ service }: { service: AppService
           className={`flex items-center justify-between`}
           onChange={handleProductCreationChange}
         />
-        <hr />
+        <hr className={`border-border`} />
         <SwitchField
           name={"payout"}
           label={
@@ -92,7 +92,7 @@ export const EmailNotificationSettingsForm = ({ service }: { service: AppService
           className={`flex items-center justify-between`}
           onChange={handlePayoutChange}
         />
-        <hr />
+        <hr className={`border-border`} />
       </form>
     </FormProvider>
   );

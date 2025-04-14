@@ -78,7 +78,7 @@ const BaseExploreNavBar = ({ appService }: { appService: AppService }) => {
         <Wrapper>
           <section className="flex flex-col items-center justify-between gap-4 lg:flex-row">
             <div className="flex w-full items-center justify-between lg:w-auto">
-              <Logo width={100} height={50} className={`h-[50px] w-[100px] md:h-auto md:w-auto`} />
+              <Logo width={100} height={50} className={`h-fit w-[100px] md:h-auto md:w-auto`} />
               <div className={`lg:hidden`}>
                 {user ? (
                   <Profile />
@@ -94,39 +94,44 @@ const BaseExploreNavBar = ({ appService }: { appService: AppService }) => {
                 <SheetTrigger className="lg:hidden">
                   <Menu className="h-6 w-6" />
                 </SheetTrigger>
-                <SheetContent side="right">
-                  <div className="flex flex-col gap-4 p-4">
-                    {navlinks.map((link, index) =>
-                      link.type === "dropdown" ? (
-                        <DropdownMenu key={index}>
-                          <DropdownMenuTrigger asChild>
-                            <p
-                              className={cn(
-                                // getRouteTheme(),
-                                "flex w-full items-center justify-start gap-1 text-sm font-bold",
-                              )}
-                            >
-                              <span>{link.name}</span>
-                              <ChevronDown className="h-4 w-4" />
-                            </p>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent className={cn("w-48 rounded-md bg-white p-2 shadow-lg")}>
-                            {link.subLinks?.map((subLink: any, index: number) => (
-                              <DropdownMenuItem key={index} asChild>
-                                <Link href={subLink.path} className="block px-4 py-2 text-sm hover:bg-gray-100">
-                                  {subLink.name}
-                                </Link>
-                              </DropdownMenuItem>
-                            ))}
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      ) : (
-                        <Link key={link.id} href={link.path} className={cn("text-sm font-bold transition-colors")}>
-                          {link.name}
-                        </Link>
-                      ),
-                    )}
-                  </div>
+                <SheetContent className={`bg-mid-coral`} side="top">
+                  <section className="flex items-center justify-center gap-4 p-4">
+                    <div className={`flex gap-8`}>
+                      {navlinks.map((link, index) =>
+                        link.type === "dropdown" ? (
+                          <DropdownMenu key={index}>
+                            <DropdownMenuTrigger asChild>
+                              <p
+                                className={cn(
+                                  // getRouteTheme(),
+                                  "flex items-center justify-start gap-1 text-sm font-bold",
+                                )}
+                              >
+                                <span>{link.name}</span>
+                                <ChevronDown className="h-4 w-4" />
+                              </p>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className={cn("w-48 rounded-md bg-white p-2 shadow-lg")}>
+                              {link.subLinks?.map((subLink: any, index: number) => (
+                                <DropdownMenuItem key={index} asChild>
+                                  <Link
+                                    href={subLink.path}
+                                    className="block px-4 py-2 text-sm font-medium capitalize hover:bg-gray-100"
+                                  >
+                                    {subLink.name}
+                                  </Link>
+                                </DropdownMenuItem>
+                              ))}
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        ) : (
+                          <Link key={link.id} href={link.path} className={cn("text-sm font-bold transition-colors")}>
+                            {link.name}
+                          </Link>
+                        ),
+                      )}
+                    </div>
+                  </section>
                 </SheetContent>
               </Sheet>
               <div className="flex-1 lg:flex-none">

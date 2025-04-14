@@ -39,7 +39,7 @@ export function Base_Bar_Chart({ analyticsService }: { analyticsService: Analyti
   }, [analyticsService, selectedMonth]);
 
   return (
-    <section className="rounded-[8px] border p-[24px]">
+    <section className="border-default rounded-[8px] p-[24px]">
       <h5 className="text-h5 font-semibold text-high-grey-III">Revenue Overview</h5>
       <section className={`mb-8 mt-4 flex items-center justify-between gap-4`}>
         <SelectDropdown

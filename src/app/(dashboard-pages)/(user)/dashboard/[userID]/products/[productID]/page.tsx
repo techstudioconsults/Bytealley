@@ -146,7 +146,7 @@ const BasePreviewProductDetailsPage = ({
 
       {/* Product Details Section */}
       <section>
-        <p className="mb-4 text-lg font-semibold">{product?.title}</p>
+        <p className="border-bottom pb-4 text-lg font-semibold">{product?.title}</p>
         <TableHeaderInfo headers={["Publish Date", "Price", "Product Link", "Status"]} product={product} />
       </section>
 

@@ -3,8 +3,8 @@
 const StatsGrid = () => {
   const stats = [
     { value: "30k+", label: "Digital Creators" },
-    { value: "100k+", label: "Digital Creators" },
-    { value: "45k+", label: "Digital Creators" },
+    { value: "100k+", label: "Content Creators" },
+    { value: "45k+", label: "Authors" },
   ];
 
   return (

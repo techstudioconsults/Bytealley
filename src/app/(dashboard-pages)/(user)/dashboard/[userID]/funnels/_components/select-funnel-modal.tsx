@@ -49,7 +49,7 @@ const BaseSelectFunnelModal = ({ productService }: { productService: ProductServ
           isLeftIconVisible
           icon={<LucidePlusCircle />}
           variant="primary"
-          size="lg"
+          size="xl"
           className="w-full sm:w-auto"
         >
           New Funnel
@@ -63,7 +63,7 @@ const BaseSelectFunnelModal = ({ productService }: { productService: ProductServ
       {isPending ? (
         <Loading text={`Loading templates...`} className={`w-fill h-fit p-20`} />
       ) : isProduct ? (
-        <section className="grid w-full grid-cols-1 justify-between gap-4 border p-2 lg:grid-cols-3">
+        <section className="grid w-full grid-cols-1 justify-between gap-4 p-2 lg:grid-cols-3">
           {templates.map((template) => (
             <TemplateCard
               key={template.id}
