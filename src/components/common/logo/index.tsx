@@ -24,8 +24,8 @@ export const Logo = ({ width, height, className }: LogoProperties) => {
         <Badge
           variant={`outline`}
           className={cn(
-            `border-mid-success bg-white text-mid-success`,
-            isDashboard && `border-mid-success text-[10px] text-mid-success`,
+            `-3 border-[0.5px] border-mid-success bg-white text-[8.5px] tracking-widest text-mid-success`,
+            isDashboard && `border-mid-success text-mid-success`,
           )}
         >
           Beta
