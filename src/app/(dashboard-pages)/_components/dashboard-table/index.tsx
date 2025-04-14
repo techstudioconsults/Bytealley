@@ -33,7 +33,7 @@ export const DashboardTable = <T extends DataItem>({
   return (
     <div className="w-full space-y-4">
       {/* Desktop Table View */}
-      <div className="hidden md:block">
+      <div className="hidden h-full overflow-auto md:block">
         <Table>
           <TableHeader className={`bg-muted`}>
             <TableRow className={`border-default`}>
@@ -155,9 +155,11 @@ export const DashboardTable = <T extends DataItem>({
 
       {showPagination && (
         <div className="flex flex-col-reverse gap-4 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-          <div>{itemsPerPage} Entries per page</div>
-          <div>
-            Page {currentPage} of {totalPages}
+          <div className={`flex items-center justify-between md:w-[50%]`}>
+            <div>{itemsPerPage} Entries per page</div>
+            <div>
+              Page {currentPage} of {totalPages}
+            </div>
           </div>
           <div className="flex items-center gap-2">
             <CustomButton

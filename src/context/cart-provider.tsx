@@ -1,5 +1,6 @@
 "use client";
 
+import { useTheme } from "next-themes";
 import { createContext, useCallback, useEffect, useState, useTransition } from "react";
 
 import { WithDependency } from "~/HOC/withDependencies";
@@ -19,6 +20,11 @@ const BaseCartProvider = ({ children, appService }: { children: React.ReactNode;
   const [isUpdateQuantityPending, startUpdateQuantityTransition] = useTransition();
   const [isPurchaseProductFromCartPending, startPurchaseProductFromCartTransition] = useTransition();
   const { user } = useSession();
+  const { setTheme } = useTheme();
+
+  useEffect(() => {
+    setTheme("light");
+  }, [setTheme]);
 
   const getAllProductsFromCart = useCallback(() => {
     startTransition(async () => {

@@ -61,7 +61,7 @@ export const NotificationDataFormat = () => {
       {notifications.map((notification) => (
         <div
           key={notification.id}
-          className="grid grid-cols-[25px_1fr] items-start gap-3 rounded-lg border p-3 transition-all hover:bg-accent/50 sm:p-4"
+          className="grid grid-cols-[25px_1fr] items-start gap-3 rounded-lg border-default p-3 transition-all hover:bg-accent/50 sm:p-4"
         >
           <span className="mt-1.5 h-2 w-2 rounded-full bg-sky-500" />
           <div className="w-full overflow-hidden">{renderNotificationContent(notification)}</div>

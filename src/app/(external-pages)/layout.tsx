@@ -1,8 +1,8 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import React from "react";
 
+import { ThemeProvider } from "~/context/theme-provider";
 import { Footer } from "./_components/footer";
 import { Navbar } from "./_components/navbar";
 
@@ -18,10 +18,10 @@ export default function LandingLayout({
   }
 
   return (
-    <>
+    <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
       <Navbar />
       <main>{children}</main>
       <Footer />
-    </>
+    </ThemeProvider>
   );
 }
