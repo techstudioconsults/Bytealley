@@ -74,7 +74,7 @@ export function DashboardSidebar({ navItems }: { navItems: any }) {
                   <SidebarMenuButton
                     asChild
                     className={cn(
-                      "flex h-[40px] items-center gap-3 rounded-lg text-[16px] font-medium transition-all duration-200",
+                      "flex h-[48px] items-center gap-3 rounded-lg text-[16px] font-medium transition-all duration-200",
                       isActive
                         ? "border-2 border-primary text-primary shadow-active"
                         : "text-mid-grey-II hover:bg-low-grey-I",
