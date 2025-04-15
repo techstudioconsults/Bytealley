@@ -2,7 +2,6 @@
 
 import { usePathname } from "next/navigation";
 
-import { ThemeProvider } from "~/context/theme-provider";
 import { Footer } from "./_components/footer";
 import { Navbar } from "./_components/navbar";
 
@@ -18,10 +17,10 @@ export default function LandingLayout({
   }
 
   return (
-    <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+    <main>
       <Navbar />
-      <main>{children}</main>
+      {children}
       <Footer />
-    </ThemeProvider>
+    </main>
   );
 }

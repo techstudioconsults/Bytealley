@@ -23,11 +23,11 @@ export const Logo = ({ width, height, className, link = "/seller" }: LogoPropert
       <div className={cn(`mt-1 flex w-full items-center justify-end`)}>
         <span
           className={cn(
-            `text-[10px] tracking-widest text-mid-success`,
-            isDashboard ? `text-mid-success` : `text-white`,
+            `text-[10px] font-medium tracking-widest`,
+            isDashboard ? `text-mid-success` : `text-white invert filter`,
           )}
         >
-          Beta-0.0.1
+          beta-1.0.0
         </span>
       </div>
       <Image

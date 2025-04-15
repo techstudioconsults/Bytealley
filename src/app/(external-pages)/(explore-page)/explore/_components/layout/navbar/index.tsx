@@ -116,7 +116,7 @@ const BaseExploreNavBar = ({ appService }: { appService: AppService }) => {
                                 <DropdownMenuItem key={index} asChild>
                                   <Link
                                     href={subLink.path}
-                                    className="block px-4 py-2 text-sm font-medium capitalize hover:bg-gray-100"
+                                    className="block px-4 py-2 text-sm font-medium capitalize hover:bg-mid-grey-III"
                                   >
                                     {subLink.name}
                                   </Link>

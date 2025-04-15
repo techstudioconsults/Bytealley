@@ -76,7 +76,7 @@ const BaseSearchInput: FC<SearchProperties> = ({ appService, inputBackgroundColo
       trigger={
         <div
           className={cn(
-            "flex h-10 items-center justify-between gap-2 rounded-[6px] border-default bg-white pl-3 text-sm font-normal placeholder:text-sm dark:bg-black",
+            "flex h-12 items-center justify-between gap-2 rounded-[6px] border-default bg-white pl-3 text-sm font-normal placeholder:text-sm dark:bg-black",
             inputBackgroundColor,
             className,
           )}
@@ -85,11 +85,12 @@ const BaseSearchInput: FC<SearchProperties> = ({ appService, inputBackgroundColo
           <LuSearch data-testid="search" className="text-neutral-dark-2 h-4 w-4 dark:bg-black" />
           <input
             className={cn(
-              `text-neutral-dark-2 placeholder:text-neutral-dark-1 h-full w-full border-none px-3 outline-none ring-0`,
+              `text-neutral-dark-2 placeholder:text-neutral-dark-1 h-[48px] w-full border-none px-3 outline-none ring-0`,
               inputBackgroundColor,
             )}
             placeholder="Search..."
             data-testid="input"
+            readOnly={true}
           />
         </div>
       }

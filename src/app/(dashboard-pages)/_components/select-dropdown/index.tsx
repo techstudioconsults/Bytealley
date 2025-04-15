@@ -1,5 +1,6 @@
 "use client";
 
+// import { SetToolTip } from "~/components/common/tool-tip";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { cn } from "~/utils/utils";
 
@@ -27,9 +28,11 @@ export const SelectDropdown = ({
 }: SelectDropdownProperties) => {
   return (
     <Select disabled={disabled} value={value} onValueChange={onValueChange}>
+      {/* <SetToolTip content="Filter by status"> */}
       <SelectTrigger className={cn("gap-8 rounded-md border-default", triggerClassName)}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
+      {/* </SetToolTip> */}
       <SelectContent className={`border-default`}>
         <SelectGroup>
           {options.map((option) => (
