@@ -76,7 +76,7 @@ const BaseSearchInput: FC<SearchProperties> = ({ appService, inputBackgroundColo
       trigger={
         <div
           className={cn(
-            "flex h-12 items-center justify-between gap-2 rounded-[6px] border-default bg-white pl-3 text-sm font-normal placeholder:text-sm dark:bg-black",
+            "flex h-12 items-center justify-between gap-2 overflow-hidden rounded-[6px] border-default bg-white pl-3 text-sm font-normal placeholder:text-sm dark:bg-black",
             inputBackgroundColor,
             className,
           )}

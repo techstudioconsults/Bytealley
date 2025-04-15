@@ -14,6 +14,7 @@ import SessionProvider from "~/context/session-provider";
 import ToastProvider from "~/context/toast-provider";
 import NotificationProvider from "~/features/push-notification/context/notification-provider";
 import { PageTransition } from "~/lib/animations";
+import { ReduxProvider } from "~/store/provider";
 
 // Configure fonts
 const montserrat = Montserrat({ subsets: ["latin"] });
@@ -37,24 +38,26 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${montserrat.className} ${newsreader.variable}`}>
-        <LoadingProvider>
-          <TooltipProvider>
-            <SessionProvider>
-              <NotificationProvider>
-                <ToastProvider>
-                  <GotoTop />
-                  <PageTransition>
-                    <ProgressProviders>
-                      <NetworkStatusModal />
-                      {children}
-                    </ProgressProviders>
-                    <SpeedInsights />
-                  </PageTransition>
-                </ToastProvider>
-              </NotificationProvider>
-            </SessionProvider>
-          </TooltipProvider>
-        </LoadingProvider>
+        <ReduxProvider>
+          <LoadingProvider>
+            <TooltipProvider>
+              <SessionProvider>
+                <NotificationProvider>
+                  <ToastProvider>
+                    <GotoTop />
+                    <PageTransition>
+                      <ProgressProviders>
+                        <NetworkStatusModal />
+                        {children}
+                      </ProgressProviders>
+                      <SpeedInsights />
+                    </PageTransition>
+                  </ToastProvider>
+                </NotificationProvider>
+              </SessionProvider>
+            </TooltipProvider>
+          </LoadingProvider>
+        </ReduxProvider>
       </body>
     </html>
   );

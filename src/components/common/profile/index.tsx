@@ -32,12 +32,12 @@ export const Profile = () => {
     <div className="flex items-center gap-3">
       <DropdownMenu>
         <DropdownMenuTrigger className="flex items-center gap-2 focus:outline-none active:outline-none">
-          <Avatar className="bg-low-purple">
+          <Avatar className="border-2 border-primary bg-low-purple">
             <AvatarImage src={user?.logo || "https://github.com/shadcn.png"} />
             <AvatarFallback>{user?.name[0]?.toUpperCase() || "U"}</AvatarFallback>
           </Avatar>
           <div className="hidden items-center lg:flex">
-            <p className="font-medium capitalize">{user?.username || user?.name || "User"}</p>
+            <p className="text-sm font-medium capitalize">{user?.username || user?.name || "User"}</p>
             <LuChevronDown className="ml-1" size={18} />
           </div>
         </DropdownMenuTrigger>
