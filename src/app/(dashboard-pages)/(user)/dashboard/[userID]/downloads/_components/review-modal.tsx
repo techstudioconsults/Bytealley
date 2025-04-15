@@ -69,7 +69,7 @@ const BaseReviewModal = ({
         <form onSubmit={handleSubmit(handleSubmitForm)} className="space-y-4">
           <section className={`flex flex-col items-center space-y-4 text-center`}>
             <StarRatingField name={"rating"} size={`text-[4rem]`} className={`h-fit`} />
-            <p>Whats your opinion about this product (optional)</p>
+            <p className={`font-medium`}>Whats your opinion about this product (optional)</p>
           </section>
           <FormField
             name="comment"

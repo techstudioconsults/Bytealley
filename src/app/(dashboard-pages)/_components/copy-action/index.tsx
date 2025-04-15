@@ -2,6 +2,7 @@
 
 import { Copy } from "lucide-react";
 
+import { SetToolTip } from "~/components/common/tool-tip";
 import { Toast } from "~/utils/notificationManager";
 import { cn } from "~/utils/utils";
 
@@ -31,8 +32,10 @@ export const CopyAction = ({ className, textToCopy, onCopy }: CopyActionProperti
   };
 
   return (
-    <span className={cn("cursor-pointer", className)} onClick={handleCopy}>
-      <Copy className={cn("h-4 w-4", className)} />
-    </span>
+    <SetToolTip content="Copy">
+      <span className={cn("cursor-pointer", className)} onClick={handleCopy}>
+        <Copy className={cn("h-4 w-4", className)} />
+      </span>
+    </SetToolTip>
   );
 };

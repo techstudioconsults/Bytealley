@@ -1,5 +1,7 @@
 "use client";
 
+import empty1 from "@/images/empty-cart.svg";
+
 import { BackNavigator } from "~/app/(dashboard-pages)/_components/back-navigator";
 import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import Loading from "~/app/Loading";
@@ -54,7 +56,7 @@ const BaseProductCart = () => {
             className={`h-fit rounded-md border border-black bg-low-purple p-4 shadow-neob md:p-5`}
             title="Empty Cart"
             description="There are no products in your cart."
-            images={[]}
+            images={[{ src: empty1.src, alt: "Empty product", width: 100, height: 100 }]}
           />
         )
       ) : (

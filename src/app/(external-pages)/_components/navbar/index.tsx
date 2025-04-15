@@ -73,9 +73,9 @@ const BaseNavbar = ({ appService }: { appService: AppService }) => {
   return (
     <nav
       className={cn(
-        getRouteTheme(),
         `sticky top-0 z-50 w-full backdrop-blur-sm transition-transform duration-300`,
         isNavbarVisible ? "translate-y-0" : "-translate-y-full",
+        getRouteTheme(),
       )}
     >
       <Wrapper>
@@ -104,7 +104,10 @@ const BaseNavbar = ({ appService }: { appService: AppService }) => {
                     <DropdownMenuContent className={cn("w-48 rounded-md bg-white p-2 shadow-lg")}>
                       {link.subLinks?.map((subLink: any, index: number) => (
                         <DropdownMenuItem key={index} asChild>
-                          <Link href={subLink.path} className="block px-4 py-2 text-sm capitalize hover:bg-gray-100">
+                          <Link
+                            href={subLink.path}
+                            className="block px-4 py-2 text-sm font-medium capitalize hover:bg-mid-grey-III"
+                          >
                             {subLink.name}
                           </Link>
                         </DropdownMenuItem>
@@ -179,7 +182,10 @@ const BaseNavbar = ({ appService }: { appService: AppService }) => {
                   <DropdownMenuContent className={cn("w-48 rounded-md bg-white p-2 shadow-lg")}>
                     {link.subLinks?.map((subLink: any, index: number) => (
                       <DropdownMenuItem key={index} asChild>
-                        <Link href={subLink.path} className="block px-4 py-2 text-sm capitalize hover:bg-gray-100">
+                        <Link
+                          href={subLink.path}
+                          className="block px-4 py-2 text-sm font-medium capitalize hover:bg-mid-grey-III"
+                        >
                           {subLink.name}
                         </Link>
                       </DropdownMenuItem>
