@@ -2,7 +2,7 @@ import { FormField } from "~/components/common/FormFields";
 
 export const SocialLink = () => {
   return (
-    <section>
+    <section className={`space-y-4`}>
       <FormField
         label="X (Twitter)"
         name="twitter_account"

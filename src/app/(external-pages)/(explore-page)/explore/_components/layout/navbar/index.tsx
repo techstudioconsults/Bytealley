@@ -176,11 +176,11 @@ const BaseExploreNavBar = ({ appService }: { appService: AppService }) => {
                 <CustomButton
                   key={index}
                   variant="ghost"
-                  size="sm"
+                  size="lg"
                   onClick={() => handleTagClick(tag)}
-                  className={cn(`rounded-full font-semibold`, isActive && "bg-white shadow-sneob")}
+                  className={cn(`rounded-full font-semibold capitalize`, isActive && "bg-white shadow-sneob")}
                 >
-                  {tag.toUpperCase()}
+                  {tag}
                 </CustomButton>
               );
             })}

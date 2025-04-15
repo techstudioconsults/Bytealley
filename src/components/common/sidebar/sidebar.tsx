@@ -17,12 +17,12 @@ import {
 } from "~/components/ui/sidebar";
 import { cn } from "~/utils/utils";
 import { Logo } from "../logo";
-import { ThemeToggle } from "../theme-toggle";
+import { SearchInput } from "../search-input";
 
 export function DashboardSidebar({ navItems }: { navItems: any }) {
   const pathname = usePathname();
   const userID = pathname.split("/")[2];
-  const { setOpenMobile } = useSidebar();
+  const { setOpenMobile, isMobile } = useSidebar();
 
   const renderIcon = (item: SidebarItem) => {
     if (item.icon) {
@@ -56,6 +56,9 @@ export function DashboardSidebar({ navItems }: { navItems: any }) {
         <Logo width={140} height={47} />
       </SidebarHeader>
       <SidebarContent>
+        {isMobile && (
+          <SearchInput inputBackgroundColor="bg-low-grey-III" className="w-[100%] rounded-none border-none" />
+        )}
         <SidebarMenu className={`space-y-2 p-4`}>
           {navItems?.map((item: any) => {
             if (item.divider) {
@@ -96,7 +99,6 @@ export function DashboardSidebar({ navItems }: { navItems: any }) {
           })}
         </SidebarMenu>
       </SidebarContent>
-      <ThemeToggle />
     </Sidebar>
   );
 }

@@ -6,6 +6,7 @@ import { useEffect, useState, useTransition } from "react";
 import { BackNavigator } from "~/app/(dashboard-pages)/_components/back-navigator";
 import { EmptyState } from "~/app/(dashboard-pages)/_components/empty-state";
 import Loading from "~/app/Loading";
+import { VideoPlayerWithCustomControls } from "~/components/common/video-player";
 import { BlurImage } from "~/components/miscellaneous/blur-image";
 import { PDFViewer } from "~/features/PDFviewer";
 import { WithDependency } from "~/HOC/withDependencies";
@@ -82,7 +83,7 @@ const BaseDownloadDetailPage = ({
   return (
     <div className="flex h-full flex-col">
       {/* Header Section */}
-      <div className="mb-4 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+      <div className="mb-4 flex items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <BackNavigator />
           <div className="min-w-0">
@@ -96,9 +97,9 @@ const BaseDownloadDetailPage = ({
       </div>
 
       {/* Main Content Area with sticky footer */}
-      <div className="relative flex-1 overflow-hidden">
+      <div className="flex-1 overflow-hidden">
         {/* Scrollable Content */}
-        <div className="h-full overflow-auto rounded-lg border-default bg-mid-grey-I pb-16">
+        <div className="h-[90%] overflow-auto rounded-tl-md rounded-tr-md border-default bg-low-grey-II pb-16">
           <div className="p-4">
             {selectedAsset ? (
               <div className="relative h-full w-full">
@@ -117,21 +118,22 @@ const BaseDownloadDetailPage = ({
                             alt={selectedAsset?.name || ""}
                             width={1200}
                             height={800}
-                            className="max-h-full max-w-full object-contain"
-                            sizes="(max-width: 768px) 100vw, 80vw"
+                            className="h-auto w-auto object-contain"
+                            // sizes="(max-width: 768px) 100vw, 80vw"
                           />
                         </div>
                       );
                     }
                     case "video": {
-                      return (
-                        <div className="flex h-full items-center justify-center">
-                          <video controls className="max-h-full max-w-full">
-                            <source src={selectedAsset.url} type="video/mp4" />
-                            Your browser does not support the video tag.
-                          </video>
-                        </div>
-                      );
+                      return <VideoPlayerWithCustomControls url={selectedAsset?.url || ""} />;
+                      // return (
+                      //   <div className="flex max-h-[700px] items-center justify-center overflow-hidden rounded-md">
+                      //     <video controls className="w-{100%} h-[100%]">
+                      //       <source src={selectedAsset.url} type="video/mp4" />
+                      //       Your browser does not support the video tag.
+                      //     </video>
+                      //   </div>
+                      // );
                     }
                     default: {
                       return (
@@ -153,22 +155,20 @@ const BaseDownloadDetailPage = ({
 
         {/* Sticky Asset Selector */}
         {download.length > 1 && (
-          <div className="absolute bottom-0 left-0 right-0 z-10 border-default bg-white p-3 shadow-sm dark:bg-black">
-            <div className="flex gap-2 overflow-x-auto pb-1">
-              {download.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => setSelectedAsset(item)}
-                  className={`whitespace-nowrap rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
-                    selectedAsset?.id === item.id
-                      ? "bg-primary text-white"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                  }`}
-                >
-                  {item.name}
-                </button>
-              ))}
-            </div>
+          <div className="flex h-[10%] items-center gap-4 overflow-x-auto rounded-bl-md rounded-br-md border-default bg-white p-2 px-4 dark:bg-black">
+            {download.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => setSelectedAsset(item)}
+                className={`whitespace-nowrap rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
+                  selectedAsset?.id === item.id
+                    ? "bg-primary text-white"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}
+              >
+                {item.name}
+              </button>
+            ))}
           </div>
         )}
       </div>

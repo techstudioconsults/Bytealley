@@ -35,7 +35,7 @@ export const SectionOne = () => {
           {/* Right Section - Cards */}
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:w-[60%]">
             {cards.map((card, index) => (
-              <Card key={index} className="h-fit rounded-xl border border-black bg-white shadow-neob">
+              <Card key={index} className="max-h-[248px] rounded-xl border border-black bg-white shadow-neob">
                 <CardContent className="p-6">
                   <BlurImage
                     src={card.image}
@@ -45,7 +45,7 @@ export const SectionOne = () => {
                     className="h-auto w-auto rounded-lg"
                   />
                   <h2 className="mt-4 text-h4 font-semibold">{card.title}</h2>
-                  <p className="mt-2 text-gray-500">{card.description}</p>
+                  <p className="mt-2 text-mid-grey-II">{card.description}</p>
                 </CardContent>
               </Card>
             ))}
