@@ -57,9 +57,7 @@ export function DashboardSidebar({ navItems }: { navItems: any }) {
         <Logo width={140} height={47} />
       </SidebarHeader>
       <SidebarContent>
-        {isMobile && (
-          <SearchInput inputBackgroundColor="bg-low-grey-III" className="w-[100%] rounded-none border-none" />
-        )}
+        {isMobile && <SearchInput inputBackgroundColor="bg-low-grey-III" className="w-[100%] rounded-none" />}
         <SidebarMenu className={`space-y-2 p-4`}>
           {navItems?.map((item: any) => {
             if (item.divider) {
