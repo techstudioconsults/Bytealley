@@ -2,7 +2,7 @@
 
 import React from "react";
 
-import { StepCard } from "~/app/(external-pages)/(home)/_views/section-3/_components/step-card";
+import { StepCard } from "~/app/(external-pages)/seller/_views/section-3/_components/step-card";
 import { Wrapper } from "~/components/layout/wrapper";
 import { aboutSteps } from "~/utils/constants";
 
