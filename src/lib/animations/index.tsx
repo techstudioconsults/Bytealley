@@ -3,6 +3,7 @@
 import gsap from "gsap";
 import { useEffect } from "react";
 
+import { ThemeProvider } from "~/context/theme-provider";
 import useGsap from "~/hooks/use-gsap";
 
 export const FadeIn = ({ children }: { children: React.ReactNode }) => {
@@ -36,5 +37,9 @@ export const PageTransition = ({ children }: { children: React.ReactNode }) => {
     gsap.fromTo("body", { opacity: 0 }, { opacity: 1, duration: 1, ease: "power2.out" });
   }, []);
 
-  return <main className={`gpu-optimized`}>{children}</main>;
+  return (
+    <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+      <main className={`gpu-optimized`}>{children}</main>
+    </ThemeProvider>
+  );
 };

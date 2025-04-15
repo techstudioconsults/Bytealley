@@ -3,13 +3,11 @@
 import { useTheme } from "next-themes";
 import { ReactNode, useEffect } from "react";
 
-import { ThemeProvider } from "~/context/theme-provider";
-
 const AuthLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+    <>
       <AuthWapper>{children}</AuthWapper>
-    </ThemeProvider>
+    </>
   );
 };
 

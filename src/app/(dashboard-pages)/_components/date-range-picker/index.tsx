@@ -5,6 +5,7 @@ import { ChevronDown } from "lucide-react";
 import * as React from "react";
 import { DateRange } from "react-day-picker";
 
+// import { SetToolTip } from "~/components/common/tool-tip";
 import { Calendar } from "~/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
 import { cn } from "~/utils/utils";
@@ -31,6 +32,7 @@ export const DateRangePicker = ({
     <div className={cn("flex gap-2", className)}>
       <Popover>
         <PopoverTrigger asChild>
+          {/* <SetToolTip content="Filter by date range"> */}
           <div
             className={cn(
               "flex h-12 w-full items-center justify-between gap-8 rounded-md border-default px-4 text-left text-sm",
@@ -51,6 +53,7 @@ export const DateRangePicker = ({
             </span>
             <ChevronDown />
           </div>
+          {/* </SetToolTip> */}
         </PopoverTrigger>
         <PopoverContent className="w-auto border-default p-0" align={`start`}>
           <Calendar

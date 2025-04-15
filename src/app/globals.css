@@ -255,8 +255,6 @@
 @layer base {
   html,
   body {
-    height: 100%;
-    overflow-x: hidden;
     transition:
       background-color 0.3s ease,
       color 0.3s ease !important;
@@ -328,7 +326,7 @@
   }
 
   .calculated-height {
-    height: calc(100vh - 82px);
+    height: calc(100vh - 90px);
     overflow: auto;
   }
 }

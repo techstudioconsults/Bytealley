@@ -3,6 +3,7 @@
 import { ChevronLeftIcon, ChevronRightIcon, MoreHorizontal } from "lucide-react";
 
 import CustomButton from "~/components/common/common-button/common-button";
+import { SetToolTip } from "~/components/common/tool-tip";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -65,7 +66,9 @@ export const DashboardTable = <T extends DataItem>({
                   <TableCell>
                     <DropdownMenu>
                       <DropdownMenuTrigger className={`p-2`}>
-                        <MoreHorizontal className="h-4 w-4" />
+                        <SetToolTip content={"More actions"}>
+                          <MoreHorizontal className="h-4 w-4" />
+                        </SetToolTip>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent className={`border-default`} align="end">
                         {rowActions(item).map((action: IRowAction<T>, actionIndex: number) => (

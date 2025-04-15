@@ -2,6 +2,7 @@ import { TrashIcon } from "lucide-react";
 
 import CustomButton from "~/components/common/common-button/common-button";
 import { ConfirmationDialog } from "~/components/common/dialog/confirmation-dialog";
+import { SetToolTip } from "~/components/common/tool-tip";
 import { BlurImage } from "~/components/miscellaneous/blur-image";
 import { useCart } from "~/hooks/use-cart";
 
@@ -45,7 +46,11 @@ export const ProductCard = ({ product }: { product: CartedProduct }) => {
               className="border-mid-danger text-mid-danger"
               variant="ghost"
               size="icon"
-              icon={<TrashIcon />}
+              icon={
+                <SetToolTip content="Remove">
+                  <TrashIcon />
+                </SetToolTip>
+              }
             />
           </ConfirmationDialog>
         </div>

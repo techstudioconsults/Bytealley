@@ -88,7 +88,7 @@ const BaseDownloadDetailPage = ({
           <BackNavigator />
           <div className="min-w-0">
             <h1 className="truncate text-lg font-semibold sm:text-xl">{productTitle}</h1>
-            <p className="truncate text-sm text-mid-grey-III">By {productPublisher}</p>
+            <p className="truncate text-sm font-medium text-mid-grey-III">By {productPublisher}</p>
           </div>
         </div>
         <div className="flex-shrink-0">

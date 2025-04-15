@@ -10,7 +10,7 @@ export const IntegrationCard = forwardRef<HTMLDivElement, { image: string; text:
         className={`flex max-w-[190px] flex-col items-center justify-between gap-4 rounded-lg border p-3`}
       >
         <BlurImage src={image} alt={text} />
-        <p className={`text-mid-grey-II`}>{text}</p>
+        <p className={`font-medium text-mid-grey-II`}>{text}</p>
       </div>
     );
   },
