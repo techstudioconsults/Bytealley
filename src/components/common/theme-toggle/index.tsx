@@ -71,7 +71,7 @@ export function ThemeSwitch() {
           isDark ? "translate-x-6" : "translate-x-1"
         }`}
       >
-        {isDark ? <Moon className="h-5 w-5 text-gray-800" /> : <Sun className="h-5 w-5 text-yellow-500" />}
+        {isDark ? <Moon className="h-5 w-5 text-mid-grey-III" /> : <Sun className="h-5 w-5 text-mid-warning" />}
       </span>
     </button>
   );

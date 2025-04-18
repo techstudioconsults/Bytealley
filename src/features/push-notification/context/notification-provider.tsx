@@ -41,17 +41,14 @@ export const BaseNotificationProvider = ({
   const addNotification = (notification: PushNotification) => {
     setNotifications((previous) => [{ ...notification }, ...previous]);
     toast(
-      <div className="flex flex-col gap-2">
+      <div className="flex w-[20rem] flex-col gap-2">
         <div>
-          <p className={`font-semibold`}>New Notification</p>
+          <p className={`text-xl font-semibold`}>New Notification</p>
           <p>{notification.data.message}</p>
         </div>
         <div className="flex justify-end gap-2">
-          <CustomButton size={`sm`} variant="outline" onClick={() => toast.dismiss()}>
+          <CustomButton size={`sm`} variant="primary" onClick={() => toast.dismiss()}>
             Close
-          </CustomButton>
-          <CustomButton size={`sm`} variant="outline">
-            View
           </CustomButton>
         </div>
       </div>,
