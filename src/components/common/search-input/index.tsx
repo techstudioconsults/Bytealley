@@ -87,7 +87,7 @@ const BaseSearchInput: FC<SearchProperties> = ({ appService, inputBackgroundColo
           </span>
           <input
             className={cn(
-              `text-neutral-dark-2 placeholder:text-neutral-dark-1 h-full w-full border-none px-3 outline-none ring-0`,
+              `text-neutral-dark-2 placeholder:text-neutral-dark-1 h-12 w-full border-none px-3 outline-none ring-0`,
               inputBackgroundColor,
             )}
             placeholder="Search..."
